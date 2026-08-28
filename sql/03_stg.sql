@@ -1,0 +1,2 @@
+-- Food Delivery ETL & Data Warehouse
+-- Staging layer creation script

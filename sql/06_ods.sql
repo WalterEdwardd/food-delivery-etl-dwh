@@ -1,0 +1,2 @@
+-- Food Delivery ETL & Data Warehouse
+-- Operational Data Store creation script
