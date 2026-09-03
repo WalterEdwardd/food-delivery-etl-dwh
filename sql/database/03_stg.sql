@@ -28,9 +28,8 @@ GO
 
 -- 2.1 STG CUSTOMER
 
-IF OBJECT_ID(N'stg.stg_customer', N'U') IS NULL
-BEGIN
-    CREATE TABLE stg.stg_customer
+DROP TABLE IF EXISTS stg.stg_customer;
+CREATE TABLE stg.stg_customer
     (
         customer_id            VARCHAR(100),
         signup_date            VARCHAR(50),
@@ -42,15 +41,13 @@ BEGIN
         source_row_number      INT,
         load_timestamp         DATETIME2(3)
     );
-END;
 GO
 
 
 -- 2.2 STG RESTAURANT
 
-IF OBJECT_ID(N'stg.stg_restaurant', N'U') IS NULL
-BEGIN
-    CREATE TABLE stg.stg_restaurant
+DROP TABLE IF EXISTS stg.stg_restaurant;
+CREATE TABLE stg.stg_restaurant
     (
         restaurant_id          VARCHAR(100),
         restaurant_name        VARCHAR(200),
@@ -65,15 +62,13 @@ BEGIN
         source_row_number      INT,
         load_timestamp         DATETIME2(3)
     );
-END;
 GO
 
 
 -- 2.3 STG MENU ITEM
 
-IF OBJECT_ID(N'stg.stg_menu_item', N'U') IS NULL
-BEGIN
-    CREATE TABLE stg.stg_menu_item
+DROP TABLE IF EXISTS stg.stg_menu_item;
+CREATE TABLE stg.stg_menu_item
     (
         menu_item_id           VARCHAR(100),
         restaurant_id          VARCHAR(100),
@@ -87,15 +82,13 @@ BEGIN
         source_row_number      INT,
         load_timestamp         DATETIME2(3)
     );
-END;
 GO
 
 
 -- 2.4 STG DELIVERY PARTNER
 
-IF OBJECT_ID(N'stg.stg_delivery_partner', N'U') IS NULL
-BEGIN
-    CREATE TABLE stg.stg_delivery_partner
+DROP TABLE IF EXISTS stg.stg_delivery_partner;
+CREATE TABLE stg.stg_delivery_partner
     (
         delivery_partner_id    VARCHAR(100),
         partner_name           VARCHAR(200),
@@ -110,15 +103,13 @@ BEGIN
         source_row_number      INT,
         load_timestamp         DATETIME2(3)
     );
-END;
 GO
 
 
 -- 2.5 STG ORDER
 
-IF OBJECT_ID(N'stg.stg_order', N'U') IS NULL
-BEGIN
-    CREATE TABLE stg.stg_order
+DROP TABLE IF EXISTS stg.stg_order;
+CREATE TABLE stg.stg_order
     (
         order_id               VARCHAR(100),
         customer_id            VARCHAR(100),
@@ -137,15 +128,13 @@ BEGIN
         source_row_number      INT,
         load_timestamp         DATETIME2(3)
     );
-END;
 GO
 
 
 -- 2.6 STG ORDER ITEM
 
-IF OBJECT_ID(N'stg.stg_order_item', N'U') IS NULL
-BEGIN
-    CREATE TABLE stg.stg_order_item
+DROP TABLE IF EXISTS stg.stg_order_item;
+CREATE TABLE stg.stg_order_item
     (
         order_line_id          VARCHAR(100),
         order_id               VARCHAR(100),
@@ -161,15 +150,13 @@ BEGIN
         source_row_number      INT,
         load_timestamp          DATETIME2(3)
     );
-END;
 GO
 
 
 -- 2.7 STG DELIVERY PERFORMANCE
 
-IF OBJECT_ID(N'stg.stg_delivery_performance', N'U') IS NULL
-BEGIN
-    CREATE TABLE stg.stg_delivery_performance
+DROP TABLE IF EXISTS stg.stg_delivery_performance;
+CREATE TABLE stg.stg_delivery_performance
     (
         delivery_id                    VARCHAR(100),
         order_id                       VARCHAR(100),
@@ -184,15 +171,13 @@ BEGIN
         source_row_number              INT,
         load_timestamp                 DATETIME2(3)
     );
-END;
 GO
 
 
 -- 2.8 STG RATING
 
-IF OBJECT_ID(N'stg.stg_rating', N'U') IS NULL
-BEGIN
-    CREATE TABLE stg.stg_rating
+DROP TABLE IF EXISTS stg.stg_rating;
+CREATE TABLE stg.stg_rating
     (
         rating_id				VARCHAR(100),
         order_id				VARCHAR(100),
@@ -208,7 +193,6 @@ BEGIN
         source_row_number		INT,
         load_timestamp			DATETIME2(3)
     );
-END;
 GO
 
 
