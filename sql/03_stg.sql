@@ -194,19 +194,19 @@ IF OBJECT_ID(N'stg.stg_rating', N'U') IS NULL
 BEGIN
     CREATE TABLE stg.stg_rating
     (
-        rating_id              VARCHAR(100),
-        order_id               VARCHAR(100),
-        customer_id            VARCHAR(100),
-        restaurant_id          VARCHAR(100),
-        rating_score           VARCHAR(50),
-        sentiment_score        VARCHAR(50),
-        review_text            VARCHAR(MAX),
-        review_timestamp       VARCHAR(100),
+        rating_id				VARCHAR(100),
+        order_id				VARCHAR(100),
+        customer_id				VARCHAR(100),
+        restaurant_id			VARCHAR(100),
+		rating					VARCHAR(50),
+        sentiment_score			VARCHAR(50),
+        review_text				VARCHAR(MAX),
+        review_timestamp		VARCHAR(100),
 
-        batch_id               BIGINT,
-        source_file_name       VARCHAR(200),
-        source_row_number      INT,
-        load_timestamp         DATETIME2(3)
+        batch_id				BIGINT,
+        source_file_name		VARCHAR(200),
+        source_row_number		INT,
+        load_timestamp			DATETIME2(3)
     );
 END;
 GO
