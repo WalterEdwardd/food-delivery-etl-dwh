@@ -78,18 +78,38 @@ def start_batch(
         connection.close()
 
 
+def _validate_record_counts(
+        total_records,
+        success_records,
+        error_records,
+):
+    if total_records <0:
+        raise ValueError("total_records cannot be negative")
+
+    if success_records <0:
+        raise ValueError("success_records cannot be negative")
+
+    if error_records <0:
+        raise ValueError("error_records cannot be nagative")
+
+    if success_records + error_records != total_records:
+        raise ValueError(
+            "success_records + error_records "
+            "must equal total_records"
+        )
+
+
 def complete_batch(
     batch_id,
     total_records,
     success_records,
     error_records,
 ):
-    if total_records != success_records + error_records:
-        raise ValueError(
-            "Record counts are inconsistent: "
-            "total_records must equal "
-            "success_records + error_records."
-            )
+    _validate_record_counts(
+        total_records,
+        success_records,
+        error_records,
+    )
 
     logger.info(
         "Completing ETL batch | batch_id=%s",
@@ -110,7 +130,8 @@ def complete_batch(
                 total_records = ?,
                 success_records = ?,
                 error_records = ?
-            WHERE batch_id = ?;
+            WHERE batch_id = ?
+                AND status = 'RUNNING';
             """,
             "SUCCESS",
             total_records,
@@ -156,6 +177,12 @@ def fail_batch(
     success_records=0,
     error_records=0,
 ):
+    _validate_record_counts(
+        total_records,
+        success_records,
+        error_records,
+    )
+
     logger.error(
         "Failing ETL batch | batch_id=%s",
         batch_id,
@@ -175,7 +202,8 @@ def fail_batch(
                 total_records = ?,
                 success_records = ?,
                 error_records = ?
-            WHERE batch_id = ?;
+            WHERE batch_id = ?
+                AND status = 'RUNNING';
             """,
             "FAILED",
             total_records,
