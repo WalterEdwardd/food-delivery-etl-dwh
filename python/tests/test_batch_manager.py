@@ -1,5 +1,6 @@
 # test start_batch
 from src.orchestration.batch_manager import start_batch
+
 def test_start_batch():
     batch_id = start_batch(
     pipeline_name = "FoodDeliveryETL",
@@ -16,6 +17,7 @@ from src.orchestration.batch_manager import (
     start_batch,
     complete_batch,
 )
+
 def test_batch_lifecycle():
     batch_id = start_batch(
         pipeline_name="FoodDeliveryETL",
@@ -38,6 +40,7 @@ from src.orchestration.batch_manager import (
     start_batch,
     fail_batch,
 )
+
 def test_batch_failure():
     batch_id = start_batch(
         pipeline_name="FoodDeliveryETL",
@@ -55,19 +58,20 @@ def test_batch_failure():
     )
 
 
-
 # test invalid counters
 import pytest
 from src.orchestration.batch_manager import (
     start_batch,
     complete_batch
 )
+
 def test_invalid_record_counts():
     batch_id = start_batch(
         pipeline_name="FoodDeliveryETL",
         source_system="CSV",
         source_file_count=8,
     )
+    
     with pytest.raises(ValueError):
         complete_batch(
             batch_id=batch_id,
