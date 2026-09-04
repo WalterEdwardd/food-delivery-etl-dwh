@@ -1,14 +1,18 @@
 """Load validated CSV source files into SQL Server staging tables."""
 
+import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Iterable
 
 import pandas as pd
 import pyodbc
 
-from src.config.staging_config import STAGING_CONFIG
 from src.config.database import get_connection
+from src.config.staging_config import STAGING_CONFIG
+from src.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 @dataclass(frozen=True)
@@ -20,6 +24,7 @@ class StagingLoadResult:
     target_table: str
     batch_id: int
     rows_loaded: int
+    duration_second: float = 0.0
 
 
 class StagingLoadError(Exception):
@@ -31,7 +36,7 @@ class StagingLoader:
 
     def __init__(
         self,
-        connection_factory: Callable[[], pyodbc.Connection],
+        connection_factory: Callable[[], pyodbc.Connection] = get_connection,
         chunk_size: int = 10_000,
     ) -> None:
         if chunk_size <= 0:
@@ -70,12 +75,21 @@ class StagingLoader:
             raise ValueError("batch_id must be greater than 0.")
 
         config = STAGING_CONFIG[source_name]
-
         target_table = config["table"]
         source_columns = config["columns"]
         source_file_name = file_path.name
 
+        logger.info(
+            "Starting staging load | source=%s | file=%s | batch_id=%s | table=%s",
+            source_name,
+            source_file_name,
+            batch_id,
+            target_table,
+        )
+
+        start_time = time.perf_counter()
         connection = None
+        cursor = None
         rows_loaded = 0
 
         try:
@@ -83,7 +97,9 @@ class StagingLoader:
             connection.autocommit = False
 
             cursor = connection.cursor()
+            cursor.fast_executemany = True
 
+            # clean existing batch data for idempotency
             self._delete_existing_file_rows(
                 cursor=cursor,
                 target_table=target_table,
@@ -101,16 +117,17 @@ class StagingLoader:
             )
 
             next_source_row_number = 2
+            is_first_chunk = True
 
             for chunk in reader:
-                self._validate_chunk_columns(
-                    chunk=chunk,
-                    expected_columns=source_columns,
-                    source_file_name=source_file_name,
-                )
-
+                if is_first_chunk:
+                    self._validate_chunk_columns(
+                        chunk=chunk,
+                        expected_columns=source_columns,
+                        source_file_name=source_file_name,
+                    )
+                    is_first_chunk = False
                 chunk_row_count = len(chunk)
-
                 if chunk_row_count == 0:
                     continue
 
@@ -135,10 +152,19 @@ class StagingLoader:
                 )
 
                 rows_loaded += chunk_row_count
-
                 next_source_row_number += chunk_row_count
 
             connection.commit()
+
+            duration = round(time.perf_counter() - start_time, 2)
+            logger.info(
+                "Staging load succeeded | source=%s | file=%s | batch_id=%s | rows=%d | duration=%.2fs",
+                source_name,
+                source_file_name,
+                batch_id,
+                rows_loaded,
+                duration,
+            )
 
             return StagingLoadResult(
                 source_name=source_name,
@@ -146,21 +172,31 @@ class StagingLoader:
                 target_table=target_table,
                 batch_id=batch_id,
                 rows_loaded=rows_loaded,
+                duration_seconds=duration,
             )
 
         except Exception as exc:
             if connection is not None:
                 connection.rollback()
 
+            logger.exception(
+                "Staging load failed | source=%s | file=%s | batch_id=%s",
+                source_name,
+                source_file_name,
+                batch_id,
+            )        
+
             raise StagingLoadError(
                 "Failed to load source file into staging. "
                 f"source={source_name}, "
-                f"file={file_path.name}, "
+                f"file={source_file_name}, "
                 f"batch_id={batch_id}. "
                 f"Reason: {exc}"
             ) from exc
 
         finally:
+            if cursor is not None:
+                cursor.close()
             if connection is not None:
                 connection.close()
 
@@ -179,11 +215,7 @@ class StagingLoader:
               AND source_file_name = ?;
         """
 
-        cursor.execute(
-            sql,
-            batch_id,
-            source_file_name,
-        )
+        cursor.execute(sql, batch_id, source_file_name)
 
     @staticmethod
     def _validate_chunk_columns(
@@ -191,11 +223,9 @@ class StagingLoader:
         expected_columns: list[str],
         source_file_name: str,
     ) -> None:
-        """Defensive validation before inserting a CSV chunk."""
-
+        """Defensive validation before inserting CSV data."""
         actual_columns = list(chunk.columns)
-
-        if actual_columns != expected_columns:
+        if set(actual_columns) != set(expected_columns):
             raise ValueError(
                 "CSV columns do not match staging contract. "
                 f"file={source_file_name}, "
@@ -209,31 +239,25 @@ class StagingLoader:
         source_columns: list[str],
         batch_id: int,
         source_file_name: str,
-        source_row_numbers,
+        source_row_numbers: Iterable[int],
     ) -> list[tuple]:
         """Build parameter tuples for pyodbc.executemany()."""
-
-        rows = []
-
         source_values = chunk[source_columns].itertuples(
             index=False,
             name=None,
         )
-
-        for values, row_number in zip(
-            source_values,
-            source_row_numbers,
-        ):
-            rows.append(
-                (
-                    *values,
-                    batch_id,
-                    source_file_name,
-                    row_number,
-                )
+        return [
+            (
+                *values,
+                batch_id,
+                source_file_name,
+                row_number,
             )
-
-        return rows
+            for values, row_number in zip(
+                source_values,
+                source_row_numbers,
+            )
+        ]
 
     @staticmethod
     def _insert_rows(
@@ -243,22 +267,16 @@ class StagingLoader:
         rows: list[tuple],
     ) -> None:
         """Insert one chunk into the target staging table."""
-
         if not rows:
             return
-
         insert_columns = [
             *source_columns,
             "batch_id",
             "source_file_name",
             "source_row_number",
         ]
-
         column_sql = ", ".join(insert_columns)
-
-        parameter_count = len(insert_columns)
-        placeholders = ", ".join(["?"] * parameter_count)
-
+        placeholders = ", ".join(["?"] * len(insert_columns))
         sql = f"""
             INSERT INTO {target_table}
             (
@@ -271,6 +289,4 @@ class StagingLoader:
                 SYSUTCDATETIME()
             );
         """
-
-        cursor.fast_executemany = True
         cursor.executemany(sql, rows)
