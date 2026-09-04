@@ -37,9 +37,8 @@ GO
 
 -- 2.1 CONTROL ETL BATCH
 
-IF OBJECT_ID(N'control.etl_batch', N'U') IS NULL
-BEGIN
-    CREATE TABLE control.etl_batch
+DROP TABLE IF EXISTS control.etl_batch
+CREATE TABLE control.etl_batch
     (
         batch_id            BIGINT IDENTITY(1,1) NOT NULL,
         pipeline_name       VARCHAR(100) NOT NULL,
@@ -74,15 +73,13 @@ BEGIN
                 )
             )
     );
-END;
 GO
 
 
 -- 2.2 CONTROL ETL LOG
 
-IF OBJECT_ID(N'control.etl_log', N'U') IS NULL
-BEGIN
-    CREATE TABLE control.etl_log
+DROP TABLE IF EXISTS control.etl_log
+CREATE TABLE control.etl_log
     (
         log_id              BIGINT IDENTITY(1,1) NOT NULL,
         batch_id            BIGINT NOT NULL,
@@ -124,15 +121,13 @@ BEGIN
                 )
             )
     );
-END;
 GO
 
 
 -- 2.3 CONTROL ETL ERROR
 
-IF OBJECT_ID(N'control.etl_error', N'U') IS NULL
-BEGIN
-    CREATE TABLE control.etl_error
+DROP TABLE IF EXISTS control.etl_error
+CREATE TABLE control.etl_error
     (
         error_id             BIGINT IDENTITY(1,1) NOT NULL,
         batch_id             BIGINT NOT NULL,
@@ -159,7 +154,6 @@ BEGIN
             FOREIGN KEY (batch_id)
             REFERENCES control.etl_batch(batch_id)
     );
-END;
 GO
 
 
