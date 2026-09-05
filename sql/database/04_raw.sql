@@ -31,9 +31,8 @@ GO
 
 -- 2.1 RAW CUSTOMER
 
-IF OBJECT_ID(N'raw.raw_customer', N'U') IS NULL
-BEGIN
-    CREATE TABLE raw.raw_customer
+DROP TABLE IF EXISTS raw.raw_customer;
+CREATE TABLE raw.raw_customer
     (
         customer_id           VARCHAR(100) NULL,
         signup_date           VARCHAR(50) NULL,
@@ -47,15 +46,13 @@ BEGIN
             CONSTRAINT DF_raw_customer_load_timestamp
             DEFAULT SYSUTCDATETIME()
     );
-END;
 GO
 
 
 -- 2.2 RAW RESTAURANT
 
-IF OBJECT_ID(N'raw.raw_restaurant', N'U') IS NULL
-BEGIN
-    CREATE TABLE raw.raw_restaurant
+DROP TABLE IF EXISTS raw.raw_restaurant;
+CREATE TABLE raw.raw_restaurant
     (
         restaurant_id        VARCHAR(100) NULL,
         restaurant_name      VARCHAR(200) NULL,
@@ -72,15 +69,13 @@ BEGIN
             CONSTRAINT DF_raw_restaurant_load_timestamp
             DEFAULT SYSUTCDATETIME()
     );
-END;
 GO
 
 
 -- 2.3 RAW MENU ITEM
 
-IF OBJECT_ID(N'raw.raw_menu_item', N'U') IS NULL
-BEGIN
-    CREATE TABLE raw.raw_menu_item
+DROP TABLE IF EXISTS raw.raw_menu_item;
+CREATE TABLE raw.raw_menu_item
     (
         menu_item_id          VARCHAR(100) NULL,
         restaurant_id         VARCHAR(100) NULL,
@@ -96,15 +91,13 @@ BEGIN
             CONSTRAINT DF_raw_menu_item_load_timestamp
             DEFAULT SYSUTCDATETIME()
     );
-END;
 GO
 
 
 -- 2.4 RAW DELIVERY PARTNER
 
-IF OBJECT_ID(N'raw.raw_delivery_partner', N'U') IS NULL
-BEGIN
-    CREATE TABLE raw.raw_delivery_partner
+DROP TABLE IF EXISTS raw.raw_delivery_partner;
+CREATE TABLE raw.raw_delivery_partner
     (
         delivery_partner_id   VARCHAR(100) NULL,
         partner_name          VARCHAR(200) NULL,
@@ -121,15 +114,13 @@ BEGIN
             CONSTRAINT DF_raw_delivery_partner_load_timestamp
             DEFAULT SYSUTCDATETIME()
     );
-END;
 GO
 
 
 -- 2.5 RAW ORDER
 
-IF OBJECT_ID(N'raw.raw_order', N'U') IS NULL
-BEGIN
-    CREATE TABLE raw.raw_order
+DROP TABLE IF EXISTS raw.raw_order;
+CREATE TABLE raw.raw_order
     (
         order_id               VARCHAR(100) NULL,
         customer_id            VARCHAR(100) NULL,
@@ -150,15 +141,13 @@ BEGIN
             CONSTRAINT DF_raw_order_load_timestamp
             DEFAULT SYSUTCDATETIME()
     );
-END;
 GO
 
 
 -- 2.6 RAW ORDER ITEM
 
-IF OBJECT_ID(N'raw.raw_order_item', N'U') IS NULL
-BEGIN
-    CREATE TABLE raw.raw_order_item
+DROP TABLE IF EXISTS raw.raw_order_item;
+CREATE TABLE raw.raw_order_item
     (
         order_line_id          VARCHAR(100) NULL,
         order_id               VARCHAR(100) NULL,
@@ -176,15 +165,13 @@ BEGIN
             CONSTRAINT DF_raw_order_item_load_timestamp
             DEFAULT SYSUTCDATETIME()
     );
-END;
 GO
 
 
 -- 2.7 RAW DELIVERY PERFORMANCE
 
-IF OBJECT_ID(N'raw.raw_delivery_performance', N'U') IS NULL
-BEGIN
-    CREATE TABLE raw.raw_delivery_performance
+DROP TABLE IF EXISTS raw.raw_delivery_performance;
+CREATE TABLE raw.raw_delivery_performance
     (
         delivery_id                    VARCHAR(100) NULL,
         order_id                       VARCHAR(100) NULL,
@@ -201,15 +188,13 @@ BEGIN
             CONSTRAINT DF_raw_delivery_performance_load_timestamp
             DEFAULT SYSUTCDATETIME()
     );
-END;
 GO
 
 
 -- 2.8 RAW RATING
 
-IF OBJECT_ID(N'raw.raw_rating', N'U') IS NULL
-BEGIN
-    CREATE TABLE raw.raw_rating
+DROP TABLE IF EXISTS raw.raw_rating;
+CREATE TABLE raw.raw_rating
     (
         rating_id            VARCHAR(100) NULL,
         order_id             VARCHAR(100) NULL,
@@ -227,7 +212,6 @@ BEGIN
             CONSTRAINT DF_raw_rating_load_timestamp
             DEFAULT SYSUTCDATETIME()
     );
-END;
 GO
 
 
