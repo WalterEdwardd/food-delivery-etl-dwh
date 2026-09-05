@@ -82,7 +82,7 @@ GO
 
 
 /*==============================================================================
-  0. PROCEDURE: dbo.usp_load_raw_customer
+  1. CUSTOMER
 ==============================================================================*/
 
 CREATE OR ALTER PROCEDURE dbo.usp_load_raw_customer
@@ -98,9 +98,9 @@ BEGIN
         @rows_processed  BIGINT = 0,
         @rows_inserted   BIGINT = 0;
 
-    /*-------------------------------------------------------------------------
+    /*----------------------------------------------------------------------
       Validate input
-    -------------------------------------------------------------------------*/
+    ----------------------------------------------------------------------*/
     IF @batch_id IS NULL
     BEGIN
         THROW 50001, 'batch_id must be supplied.', 1;
@@ -109,21 +109,18 @@ BEGIN
 
     BEGIN TRY
 
-        /*---------------------------------------------------------------------
+        /*------------------------------------------------------------------
           Count source rows
-        ---------------------------------------------------------------------*/
+        ------------------------------------------------------------------*/
         SELECT
             @rows_processed = COUNT_BIG(*)
         FROM stg.stg_customer
         WHERE batch_id = @batch_id;
 
 
-        /*---------------------------------------------------------------------
-          Batch replacement transaction
-
-          DELETE existing RAW records for this batch
-          INSERT current STG records for this batch
-        ---------------------------------------------------------------------*/
+        /*------------------------------------------------------------------
+          Replace RAW data for this batch
+        ------------------------------------------------------------------*/
         BEGIN TRANSACTION;
 
             DELETE FROM raw.raw_customer
@@ -157,9 +154,9 @@ BEGIN
         COMMIT TRANSACTION;
 
 
-        /*---------------------------------------------------------------------
-          Success logging
-        ---------------------------------------------------------------------*/
+        /*------------------------------------------------------------------
+          SUCCESS log
+        ------------------------------------------------------------------*/
         SET @end_time = SYSDATETIME();
 
         INSERT INTO control.etl_log
@@ -173,7 +170,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -186,13 +184,14 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            NULL
+            NULL,
+            SYSDATETIME()
         );
 
 
-        /*---------------------------------------------------------------------
-          Return execution result
-        ---------------------------------------------------------------------*/
+        /*------------------------------------------------------------------
+          Return result
+        ------------------------------------------------------------------*/
         SELECT
             @batch_id       AS batch_id,
             'customer'      AS entity_name,
@@ -210,6 +209,9 @@ BEGIN
 
         SET @end_time = SYSDATETIME();
 
+        /*------------------------------------------------------------------
+          FAILED log
+        ------------------------------------------------------------------*/
         INSERT INTO control.etl_log
         (
             batch_id,
@@ -221,7 +223,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -234,7 +237,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            ERROR_MESSAGE()
+            ERROR_MESSAGE(),
+            SYSDATETIME()
         );
 
         THROW;
@@ -246,7 +250,7 @@ GO
 
 
 /*==============================================================================
-  1. PROCEDURE: dbo.usp_load_raw_restaurant
+  2. RESTAURANT
 ==============================================================================*/
 
 CREATE OR ALTER PROCEDURE dbo.usp_load_raw_restaurant
@@ -328,7 +332,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -341,7 +346,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            NULL
+            NULL,
+            SYSDATETIME()
         );
 
 
@@ -373,7 +379,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -386,7 +393,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            ERROR_MESSAGE()
+            ERROR_MESSAGE(),
+            SYSDATETIME()
         );
 
         THROW;
@@ -398,7 +406,7 @@ GO
 
 
 /*==============================================================================
-  2. PROCEDURE: dbo.usp_load_raw_menu_item
+  3. MENU ITEM
 ==============================================================================*/
 
 CREATE OR ALTER PROCEDURE dbo.usp_load_raw_menu_item
@@ -478,7 +486,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -491,7 +500,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            NULL
+            NULL,
+            SYSDATETIME()
         );
 
 
@@ -523,7 +533,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -536,7 +547,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            ERROR_MESSAGE()
+            ERROR_MESSAGE(),
+            SYSDATETIME()
         );
 
         THROW;
@@ -548,7 +560,7 @@ GO
 
 
 /*==============================================================================
-  3. PROCEDURE: dbo.usp_load_raw_delivery_partner
+  4. DELIVERY PARTNER
 ==============================================================================*/
 
 CREATE OR ALTER PROCEDURE dbo.usp_load_raw_delivery_partner
@@ -630,7 +642,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -643,7 +656,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            NULL
+            NULL,
+            SYSDATETIME()
         );
 
 
@@ -675,7 +689,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -688,7 +703,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            ERROR_MESSAGE()
+            ERROR_MESSAGE(),
+            SYSDATETIME()
         );
 
         THROW;
@@ -700,7 +716,7 @@ GO
 
 
 /*==============================================================================
-  4. PROCEDURE: dbo.usp_load_raw_order
+  5. ORDER
 ==============================================================================*/
 
 CREATE OR ALTER PROCEDURE dbo.usp_load_raw_order
@@ -790,7 +806,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -803,7 +820,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            NULL
+            NULL,
+            SYSDATETIME()
         );
 
 
@@ -835,7 +853,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -848,7 +867,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            ERROR_MESSAGE()
+            ERROR_MESSAGE(),
+            SYSDATETIME()
         );
 
         THROW;
@@ -860,7 +880,7 @@ GO
 
 
 /*==============================================================================
-  5. PROCEDURE: dbo.usp_load_raw_order_item
+  6. ORDER ITEM
 ==============================================================================*/
 
 CREATE OR ALTER PROCEDURE dbo.usp_load_raw_order_item
@@ -944,7 +964,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -957,7 +978,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            NULL
+            NULL,
+            SYSDATETIME()
         );
 
 
@@ -989,7 +1011,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -1002,7 +1025,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            ERROR_MESSAGE()
+            ERROR_MESSAGE(),
+            SYSDATETIME()
         );
 
         THROW;
@@ -1014,7 +1038,7 @@ GO
 
 
 /*==============================================================================
-  6. PROCEDURE: dbo.usp_load_raw_delivery_performance
+  7. DELIVERY PERFORMANCE
 ==============================================================================*/
 
 CREATE OR ALTER PROCEDURE dbo.usp_load_raw_delivery_performance
@@ -1096,7 +1120,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -1109,7 +1134,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            NULL
+            NULL,
+            SYSDATETIME()
         );
 
 
@@ -1141,7 +1167,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -1154,7 +1181,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            ERROR_MESSAGE()
+            ERROR_MESSAGE(),
+            SYSDATETIME()
         );
 
         THROW;
@@ -1166,7 +1194,7 @@ GO
 
 
 /*==============================================================================
-  7. PROCEDURE: dbo.usp_load_raw_rating
+  8. RATING
 ==============================================================================*/
 
 CREATE OR ALTER PROCEDURE dbo.usp_load_raw_rating
@@ -1250,7 +1278,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -1263,7 +1292,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            NULL
+            NULL,
+            SYSDATETIME()
         );
 
 
@@ -1295,7 +1325,8 @@ BEGIN
             rows_processed,
             rows_inserted,
             rows_rejected,
-            error_message
+            message,
+            created_at
         )
         VALUES
         (
@@ -1308,7 +1339,8 @@ BEGIN
             @rows_processed,
             @rows_inserted,
             0,
-            ERROR_MESSAGE()
+            ERROR_MESSAGE(),
+            SYSDATETIME()
         );
 
         THROW;
@@ -1320,24 +1352,20 @@ GO
 
 
 /*==============================================================================
-  8. PROCEDURE: dbo.usp_load_raw_batch
+  9. BATCH ORCHESTRATION
 ==============================================================================
 
-  PURPOSE:
-      Orchestrate the complete STG -> RAW load for one batch.
+  Purpose:
+      Execute the complete STG -> RAW process for one batch.
 
-  IMPORTANT:
-      SET XACT_ABORT OFF is intentional.
+  Transaction strategy:
+      - XACT_ABORT OFF intentionally.
+      - Each child procedure controls its own transaction.
+      - A failed child is caught here.
+      - Remaining entities continue.
+      - Final batch status becomes FAILED if any child failed.
+      - THROW 50003 propagates the batch failure to external orchestrators.
 
-      Each child procedure owns its own transaction and failure handling.
-      The batch procedure catches child failures, records them, and continues
-      processing the remaining independent entities.
-
-      At the end:
-          - 0 failures  -> SUCCESS
-          - >=1 failure -> FAILED + THROW
-
-      Therefore an external orchestrator can correctly detect batch failure.
 ==============================================================================*/
 
 CREATE OR ALTER PROCEDURE dbo.usp_load_raw_batch
@@ -1345,7 +1373,17 @@ CREATE OR ALTER PROCEDURE dbo.usp_load_raw_batch
 AS
 BEGIN
     SET NOCOUNT ON;
+
+    /*
+        IMPORTANT:
+        XACT_ABORT is OFF intentionally.
+
+        Child procedures use their own transactions and XACT_ABORT ON.
+        The parent must be able to catch an individual child failure and
+        continue with the remaining independent entities.
+    */
     SET XACT_ABORT OFF;
+
 
     DECLARE
         @batch_start_time DATETIME2(3) = SYSDATETIME(),
@@ -1356,28 +1394,24 @@ BEGIN
         @status           VARCHAR(20);
 
 
-    /*-------------------------------------------------------------------------
-      8.1 Validate input
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      Validate input
+    ----------------------------------------------------------------------*/
     IF @batch_id IS NULL
     BEGIN
         THROW 50001, 'batch_id must be supplied.', 1;
     END;
 
 
-    /*-------------------------------------------------------------------------
-      8.2 Validate batch existence in STG
+    /*----------------------------------------------------------------------
+      Validate batch existence in STG
 
-      A valid batch must exist in at least one STG table.
+      At least one STG table must contain the requested batch.
 
-      We intentionally do not require all 8 STG tables to contain rows because
-      a future valid source batch may legitimately contain only a subset of
-      entities.
-
-      A stronger source/entity manifest can be introduced later in the
-      control layer if required.
-    -------------------------------------------------------------------------*/
-
+      We intentionally do not require all 8 entities to have rows.
+      Expected/optional entity validation can be added later through a
+      control-layer manifest.
+    ----------------------------------------------------------------------*/
     IF NOT EXISTS
     (
         SELECT 1
@@ -1431,9 +1465,9 @@ BEGIN
     END;
 
 
-    /*-------------------------------------------------------------------------
-      8.3 LOAD CUSTOMER
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      1. CUSTOMER
+    ----------------------------------------------------------------------*/
     BEGIN TRY
 
         EXEC dbo.usp_load_raw_customer
@@ -1447,9 +1481,9 @@ BEGIN
     END CATCH;
 
 
-    /*-------------------------------------------------------------------------
-      8.4 LOAD RESTAURANT
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      2. RESTAURANT
+    ----------------------------------------------------------------------*/
     BEGIN TRY
 
         EXEC dbo.usp_load_raw_restaurant
@@ -1463,9 +1497,9 @@ BEGIN
     END CATCH;
 
 
-    /*-------------------------------------------------------------------------
-      8.5 LOAD MENU ITEM
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      3. MENU ITEM
+    ----------------------------------------------------------------------*/
     BEGIN TRY
 
         EXEC dbo.usp_load_raw_menu_item
@@ -1479,9 +1513,9 @@ BEGIN
     END CATCH;
 
 
-    /*-------------------------------------------------------------------------
-      8.6 LOAD DELIVERY PARTNER
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      4. DELIVERY PARTNER
+    ----------------------------------------------------------------------*/
     BEGIN TRY
 
         EXEC dbo.usp_load_raw_delivery_partner
@@ -1495,9 +1529,9 @@ BEGIN
     END CATCH;
 
 
-    /*-------------------------------------------------------------------------
-      8.7 LOAD ORDER
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      5. ORDER
+    ----------------------------------------------------------------------*/
     BEGIN TRY
 
         EXEC dbo.usp_load_raw_order
@@ -1511,9 +1545,9 @@ BEGIN
     END CATCH;
 
 
-    /*-------------------------------------------------------------------------
-      8.8 LOAD ORDER ITEM
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      6. ORDER ITEM
+    ----------------------------------------------------------------------*/
     BEGIN TRY
 
         EXEC dbo.usp_load_raw_order_item
@@ -1527,9 +1561,9 @@ BEGIN
     END CATCH;
 
 
-    /*-------------------------------------------------------------------------
-      8.9 LOAD DELIVERY PERFORMANCE
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      7. DELIVERY PERFORMANCE
+    ----------------------------------------------------------------------*/
     BEGIN TRY
 
         EXEC dbo.usp_load_raw_delivery_performance
@@ -1543,9 +1577,9 @@ BEGIN
     END CATCH;
 
 
-    /*-------------------------------------------------------------------------
-      8.10 LOAD RATING
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      8. RATING
+    ----------------------------------------------------------------------*/
     BEGIN TRY
 
         EXEC dbo.usp_load_raw_rating
@@ -1559,9 +1593,9 @@ BEGIN
     END CATCH;
 
 
-    /*-------------------------------------------------------------------------
-      8.11 Calculate final status
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      Calculate final batch status
+    ----------------------------------------------------------------------*/
     SET @batch_end_time = SYSDATETIME();
 
     SET @status =
@@ -1571,50 +1605,62 @@ BEGIN
         END;
 
 
-    /*-------------------------------------------------------------------------
-      8.12 Calculate final batch metrics directly from STG and RAW
+    /*----------------------------------------------------------------------
+      Calculate total STG rows
 
-      We intentionally calculate the final numbers from the actual data
-      layers rather than relying only on ETL log aggregation.
+      This is based on the actual batch contents rather than summing
+      historical ETL log records.
 
-      This avoids accidentally mixing metrics from previous replays of the
-      same batch.
-    -------------------------------------------------------------------------*/
-
+      This makes reruns/replays safe from double-counting.
+    ----------------------------------------------------------------------*/
     SELECT
         @total_processed =
-              (SELECT COUNT_BIG(*) FROM stg.stg_customer              WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM stg.stg_restaurant            WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM stg.stg_menu_item             WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM stg.stg_delivery_partner      WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM stg.stg_order                 WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM stg.stg_order_item            WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM stg.stg_delivery_performance  WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM stg.stg_rating                WHERE batch_id = @batch_id);
+              (SELECT COUNT_BIG(*) FROM stg.stg_customer
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM stg.stg_restaurant
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM stg.stg_menu_item
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM stg.stg_delivery_partner
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM stg.stg_order
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM stg.stg_order_item
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM stg.stg_delivery_performance
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM stg.stg_rating
+               WHERE batch_id = @batch_id);
 
 
+    /*----------------------------------------------------------------------
+      Calculate total RAW rows
+
+      This represents the final RAW state for the requested batch.
+    ----------------------------------------------------------------------*/
     SELECT
         @total_inserted =
-              (SELECT COUNT_BIG(*) FROM raw.raw_customer              WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM raw.raw_restaurant            WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM raw.raw_menu_item             WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM raw.raw_delivery_partner      WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM raw.raw_order                 WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM raw.raw_order_item            WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM raw.raw_delivery_performance  WHERE batch_id = @batch_id)
-            + (SELECT COUNT_BIG(*) FROM raw.raw_rating                WHERE batch_id = @batch_id);
+              (SELECT COUNT_BIG(*) FROM raw.raw_customer
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM raw.raw_restaurant
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM raw.raw_menu_item
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM raw.raw_delivery_partner
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM raw.raw_order
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM raw.raw_order_item
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM raw.raw_delivery_performance
+               WHERE batch_id = @batch_id)
+            + (SELECT COUNT_BIG(*) FROM raw.raw_rating
+               WHERE batch_id = @batch_id);
 
 
-    /*-------------------------------------------------------------------------
-      8.13 Batch-level logging
-
-      rows_processed = total STG records belonging to this batch
-      rows_inserted  = total RAW records currently present for this batch
-      rows_rejected  = 0
-
-      Entity-level failures are already recorded by the child procedures.
-    -------------------------------------------------------------------------*/
-
+    /*----------------------------------------------------------------------
+      Batch-level logging
+    ----------------------------------------------------------------------*/
     INSERT INTO control.etl_log
     (
         batch_id,
@@ -1626,7 +1672,8 @@ BEGIN
         rows_processed,
         rows_inserted,
         rows_rejected,
-        error_message
+        message,
+        created_at
     )
     VALUES
     (
@@ -1643,17 +1690,18 @@ BEGIN
             WHEN @failed_steps = 0
                 THEN NULL
             ELSE CONCAT(
-                    'STG -> RAW batch completed with ',
-                    @failed_steps,
-                    ' failed step(s).'
-                 )
-        END
+                'STG -> RAW batch completed with ',
+                @failed_steps,
+                ' failed step(s).'
+            )
+        END,
+        SYSDATETIME()
     );
 
 
-    /*-------------------------------------------------------------------------
-      8.14 Return batch execution summary
-    -------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------
+      Return final execution summary
+    ----------------------------------------------------------------------*/
     SELECT
         @batch_id        AS batch_id,
         @total_processed AS total_rows_processed,
@@ -1662,23 +1710,20 @@ BEGIN
         @status          AS status;
 
 
-    /*-------------------------------------------------------------------------
-      8.15 FAILURE PROPAGATION
+    /*----------------------------------------------------------------------
+      FAILURE PROPAGATION
 
-      This is critical.
+      This is intentionally executed AFTER the batch-level log and summary.
 
-      Without THROW here, SQL Server callers such as:
-          - Python
-          - SQL Agent
-          - SSIS
-          - orchestration tools
+      External orchestrators must receive an actual SQL error when the
+      overall batch fails.
 
-      could receive a technically successful procedure execution even though
-      one or more child loads failed.
-
-      We therefore explicitly propagate the batch failure.
-    -------------------------------------------------------------------------*/
-
+      Examples:
+          Python
+          SQL Server Agent
+          SSIS
+          future orchestration layer
+    ----------------------------------------------------------------------*/
     IF @failed_steps > 0
     BEGIN
         THROW 50003,
@@ -1692,7 +1737,7 @@ GO
 
 
 /*==============================================================================
-  9. PROCEDURE INVENTORY
+  10. PROCEDURE INVENTORY
 ==============================================================================*/
 
 SELECT
