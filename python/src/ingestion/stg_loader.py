@@ -24,7 +24,7 @@ class StagingLoadResult:
     target_table: str
     batch_id: int
     rows_loaded: int
-    duration_second: float = 0.0
+    duration_seconds: float = 0.0
 
 
 class StagingLoadError(Exception):
