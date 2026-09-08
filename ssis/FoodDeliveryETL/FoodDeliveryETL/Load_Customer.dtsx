@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Load_Customer"
   DTS:PackageType="5"
-  DTS:VersionBuild="25"
-  DTS:VersionGUID="{74B8B868-8A57-4A10-9E70-70BEE6E269B1}">
+  DTS:VersionBuild="46"
+  DTS:VersionGUID="{26D96731-C760-46E1-9F0E-860D6D27E539}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -188,28 +188,18 @@
                   <inputColumns>
                     <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Inputs[Data Conversion Input].Columns[signup_date_clean]"
-                      cachedDataType="wstr"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
                       cachedLength="50"
                       cachedName="signup_date_clean"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[signup_date_clean]" />
                     <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Inputs[Data Conversion Input].Columns[customer_id_clean]"
-                      cachedDataType="wstr"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
                       cachedLength="100"
                       cachedName="customer_id_clean"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[customer_id_clean]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Inputs[Data Conversion Input].Columns[city_clean]"
-                      cachedDataType="wstr"
-                      cachedLength="100"
-                      cachedName="city_clean"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[city_clean]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Inputs[Data Conversion Input].Columns[acquisition_channel_clean]"
-                      cachedDataType="wstr"
-                      cachedLength="100"
-                      cachedName="acquisition_channel_clean"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[acquisition_channel_clean]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -221,26 +211,6 @@
                   name="Data Conversion Output"
                   synchronousInputId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Inputs[Data Conversion Input]">
                   <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[signup_date_typed]"
-                      dataType="dbDate"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="RedirectRow"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[signup_date_typed]"
-                      name="signup_date_typed"
-                      truncationRowDisposition="RedirectRow">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[signup_date_clean]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[customer_id_typed]"
                       codePage="1252"
@@ -264,43 +234,19 @@
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[city_typed]"
-                      codePage="1252"
-                      dataType="str"
+                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[signup_date_typed]"
+                      dataType="dbDate"
                       errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[city_typed]"
-                      name="city_typed"
-                      truncationRowDisposition="FailComponent">
+                      errorRowDisposition="RedirectRow"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[signup_date_typed]"
+                      name="signup_date_typed"
+                      truncationRowDisposition="RedirectRow">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[city_clean]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[acquisition_channel_typed]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[acquisition_channel_typed]"
-                      name="acquisition_channel_typed"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[acquisition_channel_clean]}</property>
+                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[signup_date_clean]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -327,386 +273,6 @@
                       refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error"
-              componentClassID="Microsoft.DataConvert"
-              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Data Conversion"
-              name="DC - Convert Invalid Signup Date Error"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Inputs[Data Conversion Input]"
-                  name="Data Conversion Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Inputs[Data Conversion Input].Columns[error_table_name]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="error_table_name"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_table_name]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Inputs[Data Conversion Input].Columns[error_column_name]"
-                      cachedDataType="wstr"
-                      cachedLength="11"
-                      cachedName="error_column_name"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_column_name]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Inputs[Data Conversion Input].Columns[error_type]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="error_type"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_type]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Inputs[Data Conversion Input].Columns[error_message]"
-                      cachedDataType="wstr"
-                      cachedLength="43"
-                      cachedName="error_message"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_message]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Inputs[Data Conversion Input].Columns[raw_value]"
-                      cachedDataType="wstr"
-                      cachedLength="50"
-                      cachedName="raw_value"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[raw_value]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output]"
-                  exclusionGroup="1"
-                  name="Data Conversion Output"
-                  synchronousInputId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Inputs[Data Conversion Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_table_name_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="12"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_table_name_conv]"
-                      name="error_table_name_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_table_name]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_column_name_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="11"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_column_name_conv]"
-                      name="error_column_name_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_column_name]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_type_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="12"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_type_conv]"
-                      name="error_type_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_type]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_message_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="43"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_message_conv]"
-                      name="error_message_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_message]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[raw_value_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="50"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[raw_value_conv]"
-                      name="raw_value_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[raw_value]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Data Conversion Error Output"
-                  synchronousInputId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Inputs[Data Conversion Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error"
-              componentClassID="Microsoft.DataConvert"
-              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Data Conversion"
-              name="DC - Convert Missing Customer ID Error"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Inputs[Data Conversion Input]"
-                  name="Data Conversion Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Inputs[Data Conversion Input].Columns[error_table_name]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="error_table_name"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_table_name]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Inputs[Data Conversion Input].Columns[error_column_name]"
-                      cachedDataType="wstr"
-                      cachedLength="11"
-                      cachedName="error_column_name"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_column_name]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Inputs[Data Conversion Input].Columns[error_type]"
-                      cachedDataType="wstr"
-                      cachedLength="14"
-                      cachedName="error_type"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_type]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Inputs[Data Conversion Input].Columns[error_message]"
-                      cachedDataType="wstr"
-                      cachedLength="29"
-                      cachedName="error_message"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_message]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Inputs[Data Conversion Input].Columns[raw_value]"
-                      cachedDataType="wstr"
-                      cachedLength="100"
-                      cachedName="raw_value"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[raw_value]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output]"
-                  exclusionGroup="1"
-                  name="Data Conversion Output"
-                  synchronousInputId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Inputs[Data Conversion Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_table_name_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="50"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_table_name_conv]"
-                      name="error_table_name_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_table_name]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_column_name_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="11"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_column_name_conv]"
-                      name="error_column_name_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_column_name]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_type_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="14"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_type_conv]"
-                      name="error_type_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_type]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_message_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="29"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_message_conv]"
-                      name="error_message_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_message]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[raw_value_conv]"
-                      codePage="1252"
-                      dataType="str"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[raw_value_conv]"
-                      name="raw_value_conv"
-                      truncationRowDisposition="FailComponent">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[raw_value]}</property>
-                        <property
-                          dataType="System.Boolean"
-                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                          name="FastParse">false</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Data Conversion Error Output"
-                  synchronousInputId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Inputs[Data Conversion Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -769,7 +335,8 @@
                   <outputColumns>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[customer_id_clean]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="100"
@@ -781,18 +348,19 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[TRIM](#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]})</property>
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]})</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">TRIM(customer_id)</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(customer_id)</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[city_clean]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="100"
@@ -804,18 +372,19 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[TRIM](#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[city]})</property>
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[city]})</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">TRIM(city)</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(city)</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[acquisition_channel_clean]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="100"
@@ -827,18 +396,19 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[TRIM](#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[acquisition_channel]})</property>
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[acquisition_channel]})</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">TRIM(acquisition_channel)</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(acquisition_channel)</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[signup_date_clean]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="50"
@@ -850,13 +420,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[TRIM](#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[signup_date]})</property>
+                          name="Expression">(DT_STR,50,1252)[TRIM](#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[signup_date]})</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">TRIM(signup_date)</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)TRIM(signup_date)</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -921,10 +491,11 @@
                   <outputColumns>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_table_name]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      length="12"
+                      length="50"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_table_name]"
                       name="error_table_name"
                       truncationRowDisposition="FailComponent">
@@ -933,21 +504,22 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">"raw_customer"</property>
+                          name="Expression">(DT_STR,50,1252)"raw_customer"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">"raw_customer"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"raw_customer"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_column_name]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      length="11"
+                      length="50"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_column_name]"
                       name="error_column_name"
                       truncationRowDisposition="FailComponent">
@@ -956,21 +528,22 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">"signup_date"</property>
+                          name="Expression">(DT_STR,50,1252)"signup_date"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">"signup_date"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"signup_date"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_type]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      length="12"
+                      length="50"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_type]"
                       name="error_type"
                       truncationRowDisposition="FailComponent">
@@ -979,21 +552,22 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">"INVALID_DATE"</property>
+                          name="Expression">(DT_STR,50,1252)"INVALID_DATE"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">"INVALID_DATE"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_DATE"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_message]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      length="43"
+                      length="100"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_message]"
                       name="error_message"
                       truncationRowDisposition="FailComponent">
@@ -1002,18 +576,19 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">"signup_date could not be converted to DATE."</property>
+                          name="Expression">(DT_STR,100,1252)"signup_date could not be converted to DATE."</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">"signup_date could not be converted to DATE."</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"signup_date could not be converted to DATE."</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[raw_value]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="50"
@@ -1025,13 +600,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[signup_date]}</property>
+                          name="Expression">(DT_STR,50,1252)#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[signup_date]}</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">signup_date</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)signup_date</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1096,10 +671,11 @@
                   <outputColumns>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_column_name]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      length="11"
+                      length="50"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_column_name]"
                       name="error_column_name"
                       truncationRowDisposition="FailComponent">
@@ -1108,21 +684,22 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">"customer_id"</property>
+                          name="Expression">(DT_STR,50,1252)"customer_id"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">"customer_id"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"customer_id"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_type]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      length="14"
+                      length="50"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_type]"
                       name="error_type"
                       truncationRowDisposition="FailComponent">
@@ -1131,21 +708,22 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">"REQUIRED_FIELD"</property>
+                          name="Expression">(DT_STR,50,1252)"REQUIRED_FIELD"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">"REQUIRED_FIELD"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"REQUIRED_FIELD"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_message]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      length="29"
+                      length="50"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_message]"
                       name="error_message"
                       truncationRowDisposition="FailComponent">
@@ -1154,18 +732,19 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">"customer_id is NULL or empty."</property>
+                          name="Expression">(DT_STR,50,1252)"customer_id is NULL or empty."</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">"customer_id is NULL or empty."</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"customer_id is NULL or empty."</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[raw_value]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="100"
@@ -1177,21 +756,22 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]}</property>
+                          name="Expression">(DT_STR,100,1252)#{Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]}</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">customer_id</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)customer_id</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_table_name]"
-                      dataType="wstr"
+                      codePage="1252"
+                      dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      length="12"
+                      length="50"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_table_name]"
                       name="error_table_name"
                       truncationRowDisposition="FailComponent">
@@ -1200,13 +780,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">"raw_customer"</property>
+                          name="Expression">(DT_STR,50,1252)"raw_customer"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">"raw_customer"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"raw_customer"</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1330,45 +910,45 @@
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[source_row_number]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[raw_value_conv]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[error_table_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
-                      cachedName="raw_value_conv"
-                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[raw_value_conv]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[error_message_conv]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="43"
-                      cachedName="error_message_conv"
-                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_message_conv]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[error_type_conv]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="12"
-                      cachedName="error_type_conv"
-                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_type_conv]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[error_column_name_conv]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="11"
-                      cachedName="error_column_name_conv"
-                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_column_name_conv]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[error_table_name_conv]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="12"
-                      cachedName="error_table_name_conv"
+                      cachedName="error_table_name"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output].Columns[error_table_name_conv]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_table_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[error_column_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_column_name"
+                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_column_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[error_type]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_type"
+                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_type]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[error_message]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="error_message"
+                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[error_message]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].Columns[raw_value]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="raw_value"
+                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output].Columns[raw_value]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1546,45 +1126,45 @@
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[source_row_number]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[error_table_name_conv]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[error_table_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
-                      cachedName="error_table_name_conv"
+                      cachedName="error_table_name"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_table_name_conv]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_table_name]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[error_column_name_conv]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[error_column_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="11"
-                      cachedName="error_column_name_conv"
+                      cachedLength="50"
+                      cachedName="error_column_name"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_column_name_conv]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_column_name]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[error_type_conv]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[error_type]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="14"
-                      cachedName="error_type_conv"
+                      cachedLength="50"
+                      cachedName="error_type"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_type_conv]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_type]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[error_message_conv]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[error_message]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="29"
-                      cachedName="error_message_conv"
+                      cachedLength="50"
+                      cachedName="error_message"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[error_message_conv]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[error_message]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[raw_value_conv]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].Columns[raw_value]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="raw_value_conv"
+                      cachedName="raw_value"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output].Columns[raw_value_conv]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output].Columns[raw_value]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1768,6 +1348,22 @@
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[signup_date]"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[signup_date_typed]" />
                     <inputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[city_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="city_clean"
+                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[city]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[city_clean]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[acquisition_channel_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="acquisition_channel_clean"
+                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[acquisition_channel]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[acquisition_channel_clean]" />
+                    <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[customer_id_typed]"
                       cachedCodepage="1252"
                       cachedDataType="str"
@@ -1775,22 +1371,6 @@
                       cachedName="customer_id_typed"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[customer_id]"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[customer_id_typed]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[city_typed]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="city_typed"
-                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[city]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[city_typed]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[acquisition_channel_typed]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="acquisition_channel_typed"
-                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[acquisition_channel]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output].Columns[acquisition_channel_typed]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1895,8 +1475,7 @@
     acquisition_channel,
     batch_id,
     source_file_name,
-    source_row_number,
-    load_timestamp
+    source_row_number
 FROM raw.raw_customer;</property>
                 <property
                   dataType="System.String"
@@ -2006,16 +1585,6 @@ FROM raw.raw_customer;</property>
                       lineageId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[source_row_number]"
                       name="source_row_number"
                       truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[load_timestamp]"
-                      dataType="dbTimeStamp2"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].ExternalColumns[load_timestamp]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[load_timestamp]"
-                      name="load_timestamp"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -2057,11 +1626,6 @@ FROM raw.raw_customer;</property>
                       refId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].ExternalColumns[source_row_number]"
                       dataType="i4"
                       name="source_row_number" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Output].ExternalColumns[load_timestamp]"
-                      dataType="dbTimeStamp2"
-                      name="load_timestamp"
-                      scale="3" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -2115,12 +1679,6 @@ FROM raw.raw_customer;</property>
                       lineageId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Error Output].Columns[source_row_number]"
                       name="source_row_number" />
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Error Output].Columns[load_timestamp]"
-                      dataType="dbTimeStamp2"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Error Output].Columns[load_timestamp]"
-                      name="load_timestamp"
-                      scale="3" />
-                    <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
@@ -2146,16 +1704,6 @@ FROM raw.raw_customer;</property>
               startId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Error Output]" />
             <path
               refId="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output]"
-              endId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input]"
-              name="Data Conversion Output"
-              startId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Outputs[Data Conversion Output]" />
-            <path
-              refId="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output1]"
-              endId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input]"
-              name="Data Conversion Output"
-              startId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Outputs[Data Conversion Output]" />
-            <path
-              refId="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output2]"
               endId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input]"
               name="Data Conversion Output"
               startId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types.Outputs[Data Conversion Output]" />
@@ -2166,12 +1714,12 @@ FROM raw.raw_customer;</property>
               startId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output1]"
-              endId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error.Inputs[Data Conversion Input]"
+              endId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output2]"
-              endId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error.Inputs[Data Conversion Input]"
+              endId="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date.Outputs[Derived Column Output]" />
             <path
@@ -2247,14 +1795,14 @@ FROM raw.raw_customer;</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,40.3333329243793"
+              EndConnector="0,40.3333329243794"
               Start="0,0"
-              End="0,32.8333329243793">
+              End="0,32.8333329243794">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,32.8333329243793" />
+                    End="0,32.8333329243794" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2272,171 +1820,75 @@ FROM raw.raw_customer;</property>
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="219.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types"
-          TopLeft="653.119047619047,382.607141194422" />
-        <NodeLayout
-          Size="266,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DC - Convert Missing Customer ID Error"
-          TopLeft="245.047619047619,384.740077603066" />
+          Size="278.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\CSPL - Validate Customer Required Fields"
+          TopLeft="475.166666666666,268.305554222867" />
         <NodeLayout
           Size="227.5,42"
           Id="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Signup Date"
-          TopLeft="965.5,380.972220329913" />
+          TopLeft="819.666666666666,377.361109236739" />
         <NodeLayout
           Size="183,42"
           Id="Package\DFT - RAW Customer to ODS Customer\SRC - RAW Customer"
-          TopLeft="675.5,70.9583329808794" />
-        <NodeLayout
-          Size="221.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings"
-          TopLeft="650.5,174.41666580033" />
+          TopLeft="529.666666666666,67.3472218877049" />
         <NodeLayout
           Size="254.5,42"
           Id="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Missing Customer ID"
-          TopLeft="254.738095238095,489.428569011745" />
+          TopLeft="127.904761904761,382.900791763097" />
         <NodeLayout
-          Size="260,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DC - Convert Invalid Signup Date Error"
-          TopLeft="951.166666666667,486.055553141292" />
+          Size="180,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer"
+          TopLeft="530.333333333333,484.069442040045" />
         <NodeLayout
           Size="248,42"
           Id="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date"
-          TopLeft="958.5,583.624997204584" />
+          TopLeft="811.666666666666,482.513886595698" />
         <NodeLayout
-          Size="278.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\CSPL - Validate Customer Required Fields"
-          TopLeft="621,271.916665316042" />
+          Size="221.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings"
+          TopLeft="504.666666666666,170.805554707156" />
         <NodeLayout
           Size="233.5,42"
           Id="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID"
-          TopLeft="263.928571428571,274.934522443909" />
+          TopLeft="136.095238095237,270.240078022783" />
         <EdgeLayout
-          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output1]"
-          TopLeft="1081.83333333333,528.055553141292">
+          Id="Package\DFT - RAW Customer to ODS Customer.Paths[REJECT_MISSING_CUSTOMER_ID]"
+          TopLeft="475.166666666666,290.272816122825">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,55.5694440632918"
+              EndConnector="-105.571428571429,0"
               Start="0,0"
-              End="0,48.0694440632918">
+              End="-98.0714285714291,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,48.0694440632918" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output]"
-          TopLeft="380.017857142857,426.740077603066">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,62.6884914086789"
-              Start="0,0"
-              End="0,55.1884914086789">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,55.1884914086789" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Error Output]"
-          TopLeft="872.619047619047,402.789680762167">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="92.8809523809526,0"
-              Start="0,0"
-              End="85.3809523809526,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="85.3809523809526,0" />
+                    End="-98.0714285714291,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-23.3959105282737,5,132.1727734375,11.43359375"
+              BoundingBox="-124.801925223215,5,151.532421875,10.88671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[OLE DB Source Output]"
-          TopLeft="764.125,112.958332980879">
+          TopLeft="618.291666666666,109.347221887705">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,61.4583328194502"
+              EndConnector="0,61.4583328194511"
               Start="0,0"
-              End="0,53.9583328194502">
+              End="0,53.9583328194511">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,53.9583328194502" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output2]"
-          TopLeft="1080.20833333333,422.972220329913">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,63.0833328113793"
-              Start="0,0"
-              End="0,55.5833328113793">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,55.5833328113793" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output1]"
-          TopLeft="379.363095238095,316.934522443909">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,67.8055551591568"
-              Start="0,0"
-              End="0,60.3055551591568">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,60.3055551591568" />
+                    End="0,53.9583328194511" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2447,18 +1899,18 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output]"
-          TopLeft="760.75,216.41666580033">
+          TopLeft="614.916666666666,212.805554707156">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,55.4999995157122"
+              EndConnector="0,55.499999515711"
               Start="0,0"
-              End="0,47.9999995157122">
+              End="0,47.999999515711">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,47.9999995157122" />
+                    End="0,47.999999515711" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2468,71 +1920,115 @@ FROM raw.raw_customer;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Customer to ODS Customer.Paths[REJECT_MISSING_CUSTOMER_ID]"
-          TopLeft="621,294.425593879976">
+          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output1]"
+          TopLeft="253.999999999999,312.240078022783">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-123.571428571429,0"
+              EndConnector="0,70.6607137403143"
               Start="0,0"
-              End="-116.071428571429,0">
+              End="0,63.1607137403143">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-116.071428571429,0" />
+                    End="0,63.1607137403143" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-133.801925223215,5,151.532421875,10.88671875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Customer to ODS Customer.Paths[VALID_REQUIRED_FIELDS]"
-          TopLeft="761.559523809524,313.916665316042">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,68.6904758783797"
-              Start="0,0"
-              End="0,61.1904758783797">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,61.1904758783797" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-59.9206640625,24.9272691891899,119.841328125,11.3359375"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <NodeLayout
-          Size="180,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer"
-          TopLeft="676.166666666667,487.68055313322" />
+          Size="219.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DC - Convert Customer Types"
+          TopLeft="505,375.916664799468" />
         <EdgeLayout
-          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output2]"
-          TopLeft="764.517857142857,424.607141194422">
+          Id="Package\DFT - RAW Customer to ODS Customer.Paths[VALID_REQUIRED_FIELDS]"
+          TopLeft="614.583333333333,310.305554222867">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,63.0734119387979"
+              EndConnector="0,65.6111105766014"
               Start="0,0"
-              End="0,55.5734119387979">
+              End="0,58.1111105766014">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,55.5734119387979" />
+                    End="0,58.1111105766014" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-59.9206640625,23.3875865383007,119.841328125,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output]"
+          TopLeft="617.541666666667,417.916664799468">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,66.1527772405766"
+              Start="0,0"
+              End="0,58.6527772405766">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,58.6527772405766" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Error Output]"
+          TopLeft="724.5,397.638887018104">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="95.1666666666659,0"
+              Start="0,0"
+              End="87.6666666666659,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="87.6666666666659,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-22.253053385417,5,132.1727734375,11.43359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output2]"
+          TopLeft="934.541666666666,419.361109236739">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,63.1527773589587"
+              Start="0,0"
+              End="0,55.6527773589587">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,55.6527773589587" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2566,7 +2062,7 @@ FROM raw.raw_customer;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date">
+    design-time-name="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2579,7 +2075,7 @@ FROM raw.raw_customer;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer">
+    design-time-name="Package\DFT - RAW Customer to ODS Customer\DST - ETL Error Invalid Signup Date">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

@@ -85,7 +85,7 @@ CREATE TABLE ods.ods_restaurant
     city				VARCHAR(100)  NULL,
     cuisine_type		VARCHAR(100)  NULL,
     partner_type		VARCHAR(100)  NULL,
-    avg_prep_time_min	INT            NULL,
+    avg_prep_time_min	VARCHAR(50)  NULL,
     is_active			BIT            NULL,
 
     batch_id             BIGINT        NOT NULL,

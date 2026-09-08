@@ -1,0 +1,2498 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/7/2026 3:22:20 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DD-WALTER"
+  DTS:CreatorName="DD-WALTER\PC"
+  DTS:DTSID="{63299A02-D544-430C-9732-58628DBFE146}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Load_Restaurant"
+  DTS:PackageType="5"
+  DTS:VersionBuild="40"
+  DTS:VersionGUID="{953EF58F-2F33-4337-BD35-EED8E1E36668}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{56945C99-844C-42B9-8EF1-61A1DAF4CD8F}"
+      DTS:ObjectName="localhost\SQLEXPRESS.FoodDeliveryDW">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=FoodDeliveryDW;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Load_Restaurant-{56945C99-844C-42B9-8EF1-61A1DAF4CD8F}localhost\SQLEXPRESS.FoodDeliveryDW;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DFT - RAW Restaurant to ODS Restaurant"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{162FED1C-79E3-4B02-9917-304A290A7F57}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DFT - RAW Restaurant to ODS Restaurant"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="CSPL - Validate IsActive Status"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Inputs[Conditional Split Input].Columns[is_active_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="is_active_clean"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[is_active_clean]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Outputs[VALID_IS_ACTIVE]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="VALID_IS_ACTIVE"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[is_active_clean]} == "Y" || #{Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[is_active_clean]} == "N"</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">is_active_clean == "Y" || is_active_clean == "N"</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Outputs[REJECTED_INVALID_IS_ACTIVE]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="REJECTED_INVALID_IS_ACTIVE"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="CSPL - Validate Restaurant Required Fields"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Inputs[Conditional Split Input].Columns[restaurant_id]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="restaurant_id"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_id]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Outputs[REJECT_MISSING_RESTAURANT_ID]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="REJECT_MISSING_RESTAURANT_ID"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_id]}) || [LEN]([TRIM](#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_id]})) == 0</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(restaurant_id) || LEN(TRIM(restaurant_id)) == 0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Outputs[VALID_REQUIRED_FIELDS]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="VALID_REQUIRED_FIELDS"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="DC - Convert Restaurant Types"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Inputs[Data Conversion Input].Columns[restaurant_id_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="restaurant_id_clean"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[restaurant_id_clean]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Inputs[Data Conversion Input].Columns[is_active_int]"
+                      cachedDataType="i4"
+                      cachedName="is_active_int"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Output].Columns[is_active_int]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Output].Columns[restaurant_id_typed]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Output].Columns[restaurant_id_typed]"
+                      name="restaurant_id_typed"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[restaurant_id_clean]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Output].Columns[is_active_typed]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Output].Columns[is_active_typed]"
+                      name="is_active_typed"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Output].Columns[is_active_int]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="DRV - Clean Restaurant Strings"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input].Columns[restaurant_id]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="restaurant_id"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input].Columns[restaurant_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="restaurant_name"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input].Columns[city]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="city"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[city]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input].Columns[cuisine_type]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="cuisine_type"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[cuisine_type]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input].Columns[partner_type]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="partner_type"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[partner_type]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input].Columns[avg_prep_time_min]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="avg_prep_time_min"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[avg_prep_time_min]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input].Columns[is_active]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="is_active"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[is_active]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[restaurant_id_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[restaurant_id_clean]"
+                      name="restaurant_id_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_id]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(restaurant_id)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[restaurant_name_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="200"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[restaurant_name_clean]"
+                      name="restaurant_name_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,200,1252)[TRIM](#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_name]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,200,1252)TRIM(restaurant_name)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[city_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[city_clean]"
+                      name="city_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[city]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(city)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[cuisine_type_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[cuisine_type_clean]"
+                      name="cuisine_type_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[cuisine_type]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(cuisine_type)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[partner_type_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[partner_type_clean]"
+                      name="partner_type_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[partner_type]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(partner_type)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[avg_prep_time_min_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[avg_prep_time_min_clean]"
+                      name="avg_prep_time_min_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)[TRIM](#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[avg_prep_time_min]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)TRIM(avg_prep_time_min)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[is_active_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[is_active_clean]"
+                      name="is_active_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)[TRIM](#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[is_active]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)TRIM(is_active)</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="DRV - Convert IsActive to Boolean"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Inputs[Derived Column Input].Columns[is_active_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="is_active_clean"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[is_active_clean]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Output].Columns[is_active_int]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Output].Columns[is_active_int]"
+                      name="is_active_int"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[is_active_clean]} == "Y" ? 1 : #{Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[is_active_clean]} == "N" ? 0 : NULL(DT_I4)</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">is_active_clean == "Y" ? 1 : is_active_clean == "N" ? 0 : NULL(DT_I4)</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="DRV - Error Invalid IsActive Status"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Inputs[Derived Column Input].Columns[is_active]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="is_active"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[is_active]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_column_name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_column_name]"
+                      name="error_column_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"is_active"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"is_active"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_type]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_type]"
+                      name="error_type"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"INVALID_INT"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_INT"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_message]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_message]"
+                      name="error_message"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)"is_active could not be converted to INT"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)"is_active could not be converted to INT"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[raw_value]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[raw_value]"
+                      name="raw_value"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[is_active]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)is_active</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_table_name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_table_name]"
+                      name="error_table_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"raw_restaurant"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"raw_restaurant"</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="DRV - Error Missing Restaurant ID"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Inputs[Derived Column Input].Columns[restaurant_id]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="restaurant_id"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_id]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_column_name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_column_name]"
+                      name="error_column_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)"restaurant_id"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)"restaurant_id"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_type]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_type]"
+                      name="error_type"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_message]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_message]"
+                      name="error_message"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"restaurant_id is NULL or empty."</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"restaurant_id is NULL or empty."</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[raw_value]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[raw_value]"
+                      name="raw_value"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)#{Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_id]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)restaurant_id</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_table_name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_table_name]"
+                      name="error_table_name"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"raw_restaurant"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"raw_restaurant"</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="DST - ETL Error Invalid IsActive Status"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[control].[etl_error]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].Columns[batch_id]"
+                      cachedDataType="i8"
+                      cachedName="batch_id"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[batch_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].Columns[source_file_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="source_file_name"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_file_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].Columns[source_row_number]"
+                      cachedDataType="i4"
+                      cachedName="source_row_number"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_row_number]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].Columns[error_type]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_type"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_type]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].Columns[error_message]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="error_message"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_message]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].Columns[raw_value]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="raw_value"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[raw_value]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].Columns[error_table_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_table_name"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_table_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].Columns[error_column_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_column_name"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output].Columns[error_column_name]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[error_id]"
+                      dataType="i8"
+                      name="error_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      dataType="i8"
+                      name="batch_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      name="source_file_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      dataType="i8"
+                      name="source_row_number" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="table_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="column_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="error_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="error_message" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="raw_value" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input].ExternalColumns[error_timestamp]"
+                      dataType="dbTimeStamp2"
+                      name="error_timestamp"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="DST - ETL Error Missing Restaurant ID"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[control].[etl_error]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].Columns[batch_id]"
+                      cachedDataType="i8"
+                      cachedName="batch_id"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[batch_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].Columns[source_file_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="source_file_name"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_file_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].Columns[source_row_number]"
+                      cachedDataType="i4"
+                      cachedName="source_row_number"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_row_number]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].Columns[error_type]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_type"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_type]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].Columns[error_message]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_message"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_message]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].Columns[raw_value]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="raw_value"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[raw_value]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].Columns[error_table_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_table_name"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_table_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].Columns[error_column_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="error_column_name"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output].Columns[error_column_name]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[error_id]"
+                      dataType="i8"
+                      name="error_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      dataType="i8"
+                      name="batch_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      name="source_file_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      dataType="i8"
+                      name="source_row_number" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="table_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="column_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="error_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="error_message" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="raw_value" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input].ExternalColumns[error_timestamp]"
+                      dataType="dbTimeStamp2"
+                      name="error_timestamp"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="DST - ODS Restauant"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[ods].[ods_restaurant]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[batch_id]"
+                      cachedDataType="i8"
+                      cachedName="batch_id"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[batch_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[source_file_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="source_file_name"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_file_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[source_row_number]"
+                      cachedDataType="i4"
+                      cachedName="source_row_number"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_row_number]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[restaurant_name_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="restaurant_name_clean"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[restaurant_name]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[restaurant_name_clean]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[city_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="city_clean"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[city]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[city_clean]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[cuisine_type_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="cuisine_type_clean"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[cuisine_type]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[cuisine_type_clean]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[partner_type_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="partner_type_clean"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[partner_type]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[partner_type_clean]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[is_active_typed]"
+                      cachedDataType="bool"
+                      cachedName="is_active_typed"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[is_active]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Output].Columns[is_active_typed]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[restaurant_id_typed]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="restaurant_id_typed"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[restaurant_id]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Output].Columns[restaurant_id_typed]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].Columns[avg_prep_time_min_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="avg_prep_time_min_clean"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[avg_prep_time_min]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output].Columns[avg_prep_time_min_clean]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[restaurant_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="restaurant_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[restaurant_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="restaurant_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[city]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="city" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[cuisine_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="cuisine_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[partner_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="partner_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[avg_prep_time_min]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="avg_prep_time_min" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[is_active]"
+                      dataType="bool"
+                      name="is_active" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      dataType="i8"
+                      name="batch_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="source_file_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      dataType="i4"
+                      name="source_row_number" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input].ExternalColumns[load_timestamp]"
+                      dataType="dbTimeStamp2"
+                      name="load_timestamp"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="SRC - RAW Restaurant"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+    restaurant_id,
+    restaurant_name,
+    city,
+    cuisine_type,
+    partner_type,
+    avg_prep_time_min,
+    is_active,
+    batch_id,
+    source_file_name,
+    source_row_number
+FROM raw.raw_restaurant;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_id]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[restaurant_id]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_id]"
+                      name="restaurant_id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[restaurant_name]"
+                      length="200"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[restaurant_name]"
+                      name="restaurant_name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[city]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[city]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[city]"
+                      name="city"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[cuisine_type]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[cuisine_type]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[cuisine_type]"
+                      name="cuisine_type"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[partner_type]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[partner_type]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[partner_type]"
+                      name="partner_type"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[avg_prep_time_min]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[avg_prep_time_min]"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[avg_prep_time_min]"
+                      name="avg_prep_time_min"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[is_active]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[is_active]"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[is_active]"
+                      name="is_active"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[batch_id]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[batch_id]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[batch_id]"
+                      name="batch_id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[source_file_name]"
+                      length="200"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_file_name]"
+                      name="source_file_name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_row_number]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[source_row_number]"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].Columns[source_row_number]"
+                      name="source_row_number"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[restaurant_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="restaurant_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[restaurant_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="restaurant_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[city]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="city" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[cuisine_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="cuisine_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[partner_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="partner_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[avg_prep_time_min]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="avg_prep_time_min" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[is_active]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="is_active" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[batch_id]"
+                      dataType="i8"
+                      name="batch_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="source_file_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output].ExternalColumns[source_row_number]"
+                      dataType="i4"
+                      name="source_row_number" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[restaurant_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[restaurant_id]"
+                      name="restaurant_id" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[restaurant_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[restaurant_name]"
+                      name="restaurant_name" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[city]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[city]"
+                      name="city" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[cuisine_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[cuisine_type]"
+                      name="cuisine_type" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[partner_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[partner_type]"
+                      name="partner_type" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[avg_prep_time_min]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[avg_prep_time_min]"
+                      name="avg_prep_time_min" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[is_active]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[is_active]"
+                      name="is_active" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[batch_id]"
+                      dataType="i8"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[batch_id]"
+                      name="batch_id" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[source_file_name]"
+                      name="source_file_name" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[source_row_number]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[source_row_number]"
+                      name="source_row_number" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Data Conversion Output]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Derived Column Output]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Inputs[Conditional Split Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Derived Column Output1]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Derived Column Output2]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Derived Column Output3]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types.Inputs[Data Conversion Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[OLE DB Source Output]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[REJECTED_INVALID_IS_ACTIVE]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status.Inputs[Derived Column Input]"
+              name="REJECTED_INVALID_IS_ACTIVE"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Outputs[REJECTED_INVALID_IS_ACTIVE]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[REJECT_MISSING_RESTAURANT_ID]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID.Inputs[Derived Column Input]"
+              name="REJECT_MISSING_RESTAURANT_ID"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Outputs[REJECT_MISSING_RESTAURANT_ID]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[VALID_IS_ACTIVE]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean.Inputs[Derived Column Input]"
+              name="VALID_IS_ACTIVE"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Outputs[VALID_IS_ACTIVE]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[VALID_REQUIRED_FIELDS]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status.Inputs[Conditional Split Input]"
+              name="VALID_REQUIRED_FIELDS"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields.Outputs[VALID_REQUIRED_FIELDS]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Execute SQL Task"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{49f85904-7b9f-459a-9675-54bf3575e1a4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute SQL Task"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{56945C99-844C-42B9-8EF1-61A1DAF4CD8F}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE ods.ods_restaurant;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{0FC42AC6-9F19-4498-89A7-E5698D14F458}"
+      DTS:From="Package\Execute SQL Task"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\DFT - RAW Restaurant to ODS Restaurant" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="278.5,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant"
+          TopLeft="68,153.833332569235" />
+        <NodeLayout
+          Size="166.5,42"
+          Id="Package\Execute SQL Task"
+          TopLeft="119.5,63.2499999838571" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="205,105.249999983857">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,48.5833325853779"
+              Start="0,0"
+              End="0,41.0833325853779">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41.0833325853779" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\DFT - RAW Restaurant to ODS Restaurant">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="260.5,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID"
+          TopLeft="103,391.986109164095" />
+        <NodeLayout
+          Size="225.5,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\DC - Convert Restaurant Types"
+          TopLeft="454,597.013886122171" />
+        <NodeLayout
+          Size="227.5,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Clean Restaurant Strings"
+          TopLeft="447.5,190.486110164956" />
+        <NodeLayout
+          Size="189,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant"
+          TopLeft="462.5,90.8194439933394" />
+        <NodeLayout
+          Size="284,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate Restaurant Required Fields"
+          TopLeft="418.833333333333,284.736109696812" />
+        <NodeLayout
+          Size="239.5,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Missing Restaurant ID"
+          TopLeft="112.666666666667,288.708331899303" />
+        <NodeLayout
+          Size="182.5,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant"
+          TopLeft="479.833333333333,705.888885581383" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Derived Column Output1]"
+          TopLeft="232.833333333333,330.708331899303">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,61.2777772647916"
+              Start="0,0"
+              End="0,53.7777772647916">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,53.7777772647916" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Derived Column Output]"
+          TopLeft="561.041666666667,232.486110164956">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52.2499995318557"
+              Start="0,0"
+              End="0,44.7499995318557">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,44.7499995318557" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Data Conversion Output]"
+          TopLeft="568.916666666667,639.013886122171">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,66.8749994592118"
+              Start="0,0"
+              End="0,59.3749994592118">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,59.3749994592118" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[REJECT_MISSING_RESTAURANT_ID]"
+          TopLeft="418.833333333333,307.722220798058">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-66.6666666666661,0"
+              Start="0,0"
+              End="-59.1666666666661,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-59.1666666666661,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-110.309544270833,5,161.452421875,10.8671875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[OLE DB Source Output]"
+          TopLeft="559.125,132.819443993339">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,57.6666661716169"
+              Start="0,0"
+              End="0,50.1666661716169">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,50.1666661716169" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="239.5,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Convert IsActive to Boolean"
+          TopLeft="443.5,499.763886525744" />
+        <NodeLayout
+          Size="225.5,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\CSPL - Validate IsActive Status"
+          TopLeft="448.166666666667,392.666664880183" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[VALID_REQUIRED_FIELDS]"
+          TopLeft="560.875,326.736109696812">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,65.9305551833711"
+              Start="0,0"
+              End="0,58.4305551833711">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,58.4305551833711" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-59.9206640625,23.5473088416855,119.841328125,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="239,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\DRV - Error Invalid IsActive Status"
+          TopLeft="753.833333333333,392.124998216207" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[REJECTED_INVALID_IS_ACTIVE]"
+          TopLeft="673.666666666667,413.395831548195">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="80.1666666666667,0"
+              Start="0,0"
+              End="72.6666666666667,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="72.6666666666667,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-35.4046158854166,5,143.4758984375,10.8671875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[VALID_IS_ACTIVE]"
+          TopLeft="562.083333333333,434.666664880183">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,65.097221645561"
+              Start="0,0"
+              End="0,57.597221645561">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,57.597221645561" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-41.2761328125,23.3650170727805,82.552265625,10.8671875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="260,42"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status"
+          TopLeft="743.166666666667,502.26388655803" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Derived Column Output2]"
+          TopLeft="873.25,434.124998216207">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,68.1388883418231"
+              Start="0,0"
+              End="0,60.6388883418231">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,60.6388883418231" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Derived Column Output3]"
+          TopLeft="565,541.763886525744">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,55.2499995964272"
+              Start="0,0"
+              End="0,47.7499995964272">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,47.7499995964272" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
