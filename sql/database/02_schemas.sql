@@ -85,6 +85,15 @@ BEGIN
 END;
 GO
 
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.schemas
+    WHERE name = N'ref'
+)
+BEGIN
+    EXEC(N'CREATE SCHEMA ref');
+END;
+GO
 
 -- 3. VERIFY SCHEMAS
 
@@ -102,7 +111,8 @@ WHERE name IN
     N'ods',
     N'dwh',
     N'mart',
-    N'control'
+    N'control',
+	N'ref'
 )
 ORDER BY
     name;
@@ -127,7 +137,8 @@ WHERE s.name IN
     N'ods',
     N'dwh',
     N'mart',
-    N'control'
+    N'control',
+	N'ref'
 )
 GROUP BY
     s.name
