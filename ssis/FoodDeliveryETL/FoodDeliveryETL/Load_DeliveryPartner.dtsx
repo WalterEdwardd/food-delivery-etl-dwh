@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="61"
-  DTS:VersionGUID="{74329F39-6CC8-4D2C-966F-D50A07294C59}">
+  DTS:VersionBuild="62"
+  DTS:VersionGUID="{E50F985D-C157-4170-B2B2-E0C18B835D35}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -9316,62 +9316,62 @@ FROM raw.raw_delivery_partner;</property>
               name="Data Conversion Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DC - Convert Avg Rating Format.Outputs[Data Conversion Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Delivery Partner Required Fields.Inputs[Conditional Split Input]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output9]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Clean Delivery Partner Strings.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output1]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Missing Delivery Partner ID.Inputs[OLE DB Destination Input]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output7]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Vehicle Type.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Missing Delivery Partner ID.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Vehicle Type.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output2]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output6]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Partner Name.Inputs[Sort Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Normalize Delivery Partner Name.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output5]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output8]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Avg Rating Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Avg Rating Range.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output3]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Convert Avg Rating Format.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Convert Avg Rating Format.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output6]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output2]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid IsActive Status.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid IsActive Status.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output1]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Missing Delivery Partner ID.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Missing Delivery Partner ID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Delivery Partner Required Fields.Inputs[Conditional Split Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Clean Delivery Partner Strings.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output4]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - IsActive.Inputs[Sort Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Convert IsActive to Boolean.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output9]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output5]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Partner Name.Inputs[Sort Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Normalize Delivery Partner Name.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output8]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Vehicle Type.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Vehicle Type.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output4]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Avg Rating Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Avg Rating Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output7]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Invalid_Rating_Range]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Avg Rating Range.Inputs[Derived Column Input]"
               name="Invalid_Rating_Range"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Avg Rating Range.Outputs[Invalid_Rating_Range]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output2]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Vehicle Type.Inputs[Sort Input]"
               name="Lookup Match Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Vehicle Type.Outputs[Lookup Match Output]" />
@@ -9381,45 +9381,45 @@ FROM raw.raw_delivery_partner;</property>
               name="Lookup Match Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Employment Type.Outputs[Lookup Match Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output2]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - City.Inputs[Sort Input]"
               name="Lookup Match Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid City.Outputs[Lookup Match Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output1]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Vehicle Type.Inputs[Derived Column Input]"
               name="Lookup No Match Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Vehicle Type.Outputs[Lookup No Match Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output2]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output1]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Inputs[Derived Column Input]"
               name="Lookup No Match Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Employment Type.Outputs[Lookup No Match Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output2]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Inputs[Derived Column Input]"
               name="Lookup No Match Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid City.Outputs[Lookup No Match Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output2]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v2.Inputs[Merge Join Left Input]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output3]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Inputs[Merge Join Left Input]"
               name="Merge Join Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v1.Outputs[Merge Join Output]" />
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v1.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output2]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ODS Delivery Partner.Inputs[OLE DB Destination Input]"
+              name="Merge Join Output"
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v2.Outputs[Merge Join Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output1]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Multicast.Inputs[Multicast Input 1]"
               name="Merge Join Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output3]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ODS Delivery Partner.Inputs[OLE DB Destination Input]"
-              name="Merge Join Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v2.Outputs[Merge Join Output]" />
-            <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Inputs[Merge Join Left Input]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v2.Inputs[Merge Join Left Input]"
               name="Merge Join Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v1.Outputs[Merge Join Output]" />
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v1.Outputs[Merge Join Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 1]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate IsActive Status.Inputs[Conditional Split Input]"
@@ -9466,12 +9466,12 @@ FROM raw.raw_delivery_partner;</property>
               name="REJECT_MISSING_DELIVERY_PARTNER_ID"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Delivery Partner Required Fields.Outputs[REJECT_MISSING_DELIVERY_PARTNER_ID]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output4]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v1.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Vehicle Type.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output3]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output1]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v1.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - City.Outputs[Sort Output]" />
@@ -9481,17 +9481,17 @@ FROM raw.raw_delivery_partner;</property>
               name="Sort Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - IsActive.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output3]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v1.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Partner Name.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output5]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output4]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v2.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Employment Type.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output1]"
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output5]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v1.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Avg Rating.Outputs[Sort Output]" />
@@ -9593,29 +9593,145 @@ FROM raw.raw_delivery_partner;</property>
       <GraphLayout
         Capacity="128" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="239,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid IsActive Status"
-          TopLeft="1396,608.20138586792" />
+          Size="125.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - City"
+          TopLeft="326.166666666667,1286.71776825324" />
+        <NodeLayout
+          Size="218.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Employment Type"
+          TopLeft="1101.33333333333,1283.47221864029" />
         <NodeLayout
           Size="239.5,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Convert IsActive to Boolean"
           TopLeft="1082.08333333333,819.520829742878" />
         <NodeLayout
+          Size="152.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid City"
+          TopLeft="568,1292.38443382219" />
+        <NodeLayout
+          Size="192,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Employment Type"
+          TopLeft="1107.83333333333,1570.30555161847" />
+        <NodeLayout
+          Size="168,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Vehicle Type"
+          TopLeft="837.500000000001,1573.63888335904" />
+        <NodeLayout
+          Size="278,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Vehicle Type"
+          TopLeft="533.833333333333,1468.43055015754" />
+        <NodeLayout
+          Size="254,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type"
+          TopLeft="1344.33333333334,1283.18055233683" />
+        <NodeLayout
+          Size="266.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Normalize Delivery Partner Name"
+          TopLeft="779.666666666667,723.881941584008" />
+        <NodeLayout
+          Size="235.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City"
+          TopLeft="27.1666666666668,1163.81499069518" />
+        <NodeLayout
+          Size="227,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v1"
+          TopLeft="567,1729.74999640013" />
+        <NodeLayout
+          Size="284,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Convert Avg Rating Format"
+          TopLeft="230.916666666667,716.444440885827" />
+        <NodeLayout
+          Size="254,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Multicast - Validation Delivery Partner"
+          TopLeft="784.916666666667,474.444442822977" />
+        <NodeLayout
+          Size="260,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid IsActive Status"
+          TopLeft="1386.83333333334,718.340274209744" />
+        <NodeLayout
           Size="213,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\SRC - RAW Delivery Partner"
           TopLeft="804.791666666667,123.680554941227" />
+        <NodeLayout
+          Size="239,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid IsActive Status"
+          TopLeft="1396,608.20138586792" />
+        <NodeLayout
+          Size="120.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Multicast"
+          TopLeft="857.5,1285.9722202761" />
+        <NodeLayout
+          Size="234.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v1"
+          TopLeft="675.833333333334,1041.73610916948" />
+        <NodeLayout
+          Size="251.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Clean Delivery Partner Strings"
+          TopLeft="792.291666666667,230.388887744534" />
+        <NodeLayout
+          Size="188,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City"
+          TopLeft="312.666666666668,1160.28721261786" />
+        <NodeLayout
+          Size="263.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Missing Delivery Partner ID"
+          TopLeft="381.434523809524,339.773311804391" />
+        <NodeLayout
+          Size="210,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ODS Delivery Partner"
+          TopLeft="812.916666666667,1927.24999113753" />
+        <NodeLayout
+          Size="195,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Vehicle Type"
+          TopLeft="826.000000000001,1386.47221655247" />
         <NodeLayout
           Size="230,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DC - Convert Avg Rating Format"
           TopLeft="552.666666666667,613.347219175693" />
         <NodeLayout
+          Size="172.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Partner Name"
+          TopLeft="827.583333333333,935.715274346957" />
+        <NodeLayout
           Size="225.5,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate IsActive Status"
           TopLeft="1088.72619047619,609.15475912741" />
         <NodeLayout
-          Size="263.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Missing Delivery Partner ID"
-          TopLeft="381.434523809524,339.773311804391" />
+          Size="254.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Avg Rating Range"
+          TopLeft="230.083333333334,825.527774622732" />
+        <NodeLayout
+          Size="230.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Vehicle Type"
+          TopLeft="561.000000000002,1381.84721693721" />
+        <NodeLayout
+          Size="275.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Avg Rating Range"
+          TopLeft="223.833333333334,938.194440729777" />
+        <NodeLayout
+          Size="158.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Avg Rating"
+          TopLeft="589.583333333333,937.083330680513" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - IsActive"
+          TopLeft="1123.83333333333,1043.1458293689" />
+        <NodeLayout
+          Size="308,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Delivery Partner Required Fields"
+          TopLeft="758.916666666667,335.472220555913" />
+        <NodeLayout
+          Size="302,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type"
+          TopLeft="1315.5,1400.45832984915" />
+        <NodeLayout
+          Size="227,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v2"
+          TopLeft="810,1807.99999709427" />
+        <NodeLayout
+          Size="234.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2"
+          TopLeft="805.833333333334,1160.90277524423" />
         <NodeLayout
           Size="284.5,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Missing Delivery Partner ID"
@@ -9625,25 +9741,57 @@ FROM raw.raw_delivery_partner;</property>
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Convert Avg Rating Format"
           TopLeft="235.416666666667,610.548608078484" />
         <NodeLayout
-          Size="251.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Clean Delivery Partner Strings"
-          TopLeft="792.291666666667,230.388887744534" />
-        <NodeLayout
-          Size="284,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Convert Avg Rating Format"
-          TopLeft="230.916666666667,716.444440885827" />
-        <NodeLayout
-          Size="260,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid IsActive Status"
-          TopLeft="1386.83333333334,718.340274209744" />
-        <NodeLayout
-          Size="308,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Delivery Partner Required Fields"
-          TopLeft="758.916666666667,335.472220555913" />
-        <NodeLayout
-          Size="210,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ODS Delivery Partner"
-          TopLeft="812.916666666667,1927.24999113753" />
+          Size="241.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Avg Rating Range"
+          TopLeft="547.166666666667,817.861109139881" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[VALID_REQUIRED_FIELDS]"
+          TopLeft="912.416666666667,377.472220555913">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,96.972222267064"
+              Start="0,0"
+              End="0,89.472222267064">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,89.472222267064" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-59.9206640625,39.068142383532,119.841328125,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Valid_Rating]"
+          TopLeft="668.375,859.861109139881">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,77.2222215406322"
+              Start="0,0"
+              End="0,69.7222215406322">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,69.7222215406322" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-28.181171875,29.0295678015661,56.36234375,11.6630859375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[VALID_IS_ACTIVE]"
           TopLeft="1201.65476190476,651.15475912741">
@@ -9666,6 +9814,210 @@ FROM raw.raw_delivery_partner;</property>
             <mssgm:EdgeLabel
               BoundingBox="-41.2761328125,74.999441557734,82.552265625,10.8671875"
               RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output5]"
+          TopLeft="668.833333333333,979.083330680513">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="86.5000000000002,62.6527784889628"
+              Start="0,0"
+              End="86.5000000000002,55.1527784889628">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.3369162786832" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33.3369162786832"
+                    Point2="0,37.3369162786832"
+                    Point3="4,37.3369162786832" />
+                  <mssgle:LineSegment
+                    End="82.5000000000002,37.3369162786832" />
+                  <mssgle:CubicBezierSegment
+                    Point1="82.5000000000002,37.3369162786832"
+                    Point2="86.5000000000002,37.3369162786832"
+                    Point3="86.5000000000002,41.3369162786832" />
+                  <mssgle:LineSegment
+                    End="86.5000000000002,55.1527784889628" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output4]"
+          TopLeft="1203.83333333333,1612.30555161847">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-243.833333333334,195.6944454758"
+              Start="0,0"
+              End="-243.833333333334,188.1944454758">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,112.594853341225" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,112.594853341225"
+                    Point2="0,116.594853341225"
+                    Point3="-4,116.594853341225" />
+                  <mssgle:LineSegment
+                    End="-239.833333333334,116.594853341225" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-239.833333333334,116.594853341225"
+                    Point2="-243.833333333334,116.594853341225"
+                    Point3="-243.833333333334,120.594853341225" />
+                  <mssgle:LineSegment
+                    End="-243.833333333334,188.1944454758" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output3]"
+          TopLeft="913.833333333333,977.715274346957">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-82.9999999999995,64.0208348225182"
+              Start="0,0"
+              End="-82.9999999999995,56.5208348225182">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.1521874609418" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.1521874609418"
+                    Point2="0,38.1521874609418"
+                    Point3="-4,38.1521874609418" />
+                  <mssgle:LineSegment
+                    End="-78.9999999999995,38.1521874609418" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-78.9999999999995,38.1521874609418"
+                    Point2="-82.9999999999995,38.1521874609418"
+                    Point3="-82.9999999999995,42.1521874609418" />
+                  <mssgle:LineSegment
+                    End="-82.9999999999995,56.5208348225182" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output2]"
+          TopLeft="1195.83333333333,1085.1458293689">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-234.999999999999,75.7569458753351"
+              Start="0,0"
+              End="-234.999999999999,68.2569458753351">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41.1461342001678" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,41.1461342001678"
+                    Point2="0,45.1461342001678"
+                    Point3="-4,45.1461342001678" />
+                  <mssgle:LineSegment
+                    End="-230.999999999999,45.1461342001678" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-230.999999999999,45.1461342001678"
+                    Point2="-234.999999999999,45.1461342001678"
+                    Point3="-234.999999999999,49.1461342001678" />
+                  <mssgle:LineSegment
+                    End="-234.999999999999,68.2569458753351" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output1]"
+          TopLeft="388.916666666667,1328.71776825324">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="255.083333333333,401.03222814689"
+              Start="0,0"
+              End="255.083333333333,393.53222814689">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,234.935212045522" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,234.935212045522"
+                    Point2="0,238.935212045522"
+                    Point3="4,238.935212045522" />
+                  <mssgle:LineSegment
+                    End="251.083333333333,238.935212045522" />
+                  <mssgle:CubicBezierSegment
+                    Point1="251.083333333333,238.935212045522"
+                    Point2="255.083333333333,238.935212045522"
+                    Point3="255.083333333333,242.935212045522" />
+                  <mssgle:LineSegment
+                    End="255.083333333333,393.53222814689" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output]"
+          TopLeft="921.500000000001,1615.63888335904">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-204.500000000001,114.11111304109"
+              Start="0,0"
+              End="-204.500000000001,106.61111304109">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.9874610507282" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,63.9874610507282"
+                    Point2="0,67.9874610507282"
+                    Point3="-4,67.9874610507282" />
+                  <mssgle:LineSegment
+                    End="-200.500000000001,67.9874610507282" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-200.500000000001,67.9874610507282"
+                    Point2="-204.500000000001,67.9874610507282"
+                    Point3="-204.500000000001,71.9874610507282" />
+                  <mssgle:LineSegment
+                    End="-204.500000000001,106.61111304109" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9730,6 +10082,586 @@ FROM raw.raw_delivery_partner;</property>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,57.2083328033073" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 31]"
+          TopLeft="978,1305.72221945819">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="123.333333333333,0"
+              Start="0,0"
+              End="115.833333333333,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="115.833333333333,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 3]"
+          TopLeft="912.416666666667,516.444442822977">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,207.43749876103"
+              Start="0,0"
+              End="0,199.93749876103">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,199.93749876103" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 21]"
+          TopLeft="920.625,1327.9722202761">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,58.4999962763645"
+              Start="0,0"
+              End="0,50.9999962763645">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,50.9999962763645" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 2]"
+          TopLeft="850.416666666667,516.444442822977">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-182.75,96.9027763527159"
+              Start="0,0"
+              End="-182.75,89.4027763527159">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.9721135122228" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.9721135122228"
+                    Point2="0,32.9721135122228"
+                    Point3="-4,32.9721135122228" />
+                  <mssgle:LineSegment
+                    End="-178.75,32.9721135122228" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-178.75,32.9721135122228"
+                    Point2="-182.75,32.9721135122228"
+                    Point3="-182.75,36.9721135122228" />
+                  <mssgle:LineSegment
+                    End="-182.75,89.4027763527159" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 11]"
+          TopLeft="857.5,1310.17832704914">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-137,0"
+              Start="0,0"
+              End="-129.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-129.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 1]"
+          TopLeft="973.416666666667,516.444442822977">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="228.059523809524,92.7103163044329"
+              Start="0,0"
+              End="228.059523809524,85.2103163044329">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.5455881451447" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27.5455881451447"
+                    Point2="0,31.5455881451447"
+                    Point3="4,31.5455881451447" />
+                  <mssgle:LineSegment
+                    End="224.059523809524,31.5455881451447" />
+                  <mssgle:CubicBezierSegment
+                    Point1="224.059523809524,31.5455881451447"
+                    Point2="228.059523809524,31.5455881451447"
+                    Point3="228.059523809524,35.5455881451447" />
+                  <mssgle:LineSegment
+                    End="228.059523809524,85.2103163044329" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output3]"
+          TopLeft="793.083333333334,1083.73610916948">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="92.2500000000002,77.1666660747587"
+              Start="0,0"
+              End="92.2500000000002,69.6666660747587">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41.9862342935983" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,41.9862342935983"
+                    Point2="0,45.9862342935983"
+                    Point3="4,45.9862342935983" />
+                  <mssgle:LineSegment
+                    End="88.2500000000002,45.9862342935983" />
+                  <mssgle:CubicBezierSegment
+                    Point1="88.2500000000002,45.9862342935983"
+                    Point2="92.2500000000002,45.9862342935983"
+                    Point3="92.2500000000002,49.9862342935983" />
+                  <mssgle:LineSegment
+                    End="92.2500000000002,69.6666660747587" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output2]"
+          TopLeft="920.708333333333,1849.99999709427">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,77.2499940432597"
+              Start="0,0"
+              End="0,69.7499940432597">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,69.7499940432597" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output1]"
+          TopLeft="920.416666666667,1202.90277524423">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,83.0694450318683"
+              Start="0,0"
+              End="0,75.5694450318683">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,75.5694450318683" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output]"
+          TopLeft="680.5,1771.74999640013">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="206.5,36.25000069414"
+              Start="0,0"
+              End="206.5,28.75000069414">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.5977694424404" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17.5977694424404"
+                    Point2="0,21.5977694424404"
+                    Point3="4,21.5977694424404" />
+                  <mssgle:LineSegment
+                    End="202.5,21.5977694424404" />
+                  <mssgle:CubicBezierSegment
+                    Point1="202.5,21.5977694424404"
+                    Point2="206.5,21.5977694424404"
+                    Point3="206.5,25.5977694424404" />
+                  <mssgle:LineSegment
+                    End="206.5,28.75000069414" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output2]"
+          TopLeft="644.25,1292.38443382219">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-207.583333333333,-90.0972212043209"
+              Start="0,0"
+              End="-207.583333333333,-82.5972212043209">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-49.6021442607985" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-49.6021442607985"
+                    Point2="0,-53.6021442607985"
+                    Point3="-4,-53.6021442607985" />
+                  <mssgle:LineSegment
+                    End="-203.583333333333,-53.6021442607985" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-203.583333333333,-53.6021442607985"
+                    Point2="-207.583333333333,-53.6021442607985"
+                    Point3="-207.583333333333,-57.6021442607985" />
+                  <mssgle:LineSegment
+                    End="-207.583333333333,-82.5972212043209" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-159.598053385416,-48.6021442607985,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output1]"
+          TopLeft="1319.83333333333,1304.32638548856">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="24.5000000000016,0"
+              Start="0,0"
+              End="17.0000000000016,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="17.0000000000016,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-47.3063867187492,5,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output]"
+          TopLeft="826.000000000001,1405.15971674484">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-34.4999999999991,0"
+              Start="0,0"
+              End="-26.9999999999991,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-26.9999999999991,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-69.3063867187495,5,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output2]"
+          TopLeft="568,1310.55110103771">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-116.333333333333,0"
+              Start="0,0"
+              End="-108.833333333333,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-108.833333333333,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-102.608053385417,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output1]"
+          TopLeft="1207.20833333333,1325.47221864029">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,244.833332978188"
+              Start="0,0"
+              End="0,237.333332978188">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,237.333332978188" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,112.861978989094,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output]"
+          TopLeft="922.500000000001,1428.47221655247">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,145.166666806571"
+              Start="0,0"
+              End="0,137.666666806571">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,137.666666806571" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,63.0286459032856,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Invalid_Rating_Range]"
+          TopLeft="547.166666666667,842.694441881306">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-62.583333333333,0"
+              Start="0,0"
+              End="-55.083333333333,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-55.083333333333,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-76.4846158854165,5,97.8858984375,11.6630859375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output9]"
+          TopLeft="312.666666666668,1183.05110165652">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-50.0000000000009,0"
+              Start="0,0"
+              End="-42.5000000000009,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-42.5000000000009,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output8]"
+          TopLeft="359.458333333334,867.527774622732">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,70.6666661070444"
+              Start="0,0"
+              End="0,63.1666661070444">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.1666661070444" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output7]"
+          TopLeft="674.541666666668,1423.84721693721">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,44.5833332203326"
+              Start="0,0"
+              End="0,37.0833332203326">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37.0833332203326" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output6]"
+          TopLeft="913.375,765.881941584008">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,169.83333276295"
+              Start="0,0"
+              End="0,162.33333276295">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,162.33333276295" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output5]"
+          TopLeft="1468.91666666667,1325.18055233683">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,75.2777775123161"
+              Start="0,0"
+              End="0,67.7777775123161">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,67.7777775123161" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output4]"
+          TopLeft="1198.83333333333,861.520829742878">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,181.624999626021"
+              Start="0,0"
+              End="0,174.124999626021">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,174.124999626021" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9826,120 +10758,20 @@ FROM raw.raw_delivery_partner;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="254,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Multicast - Validation Delivery Partner"
-          TopLeft="784.916666666667,474.444442822977" />
         <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[VALID_REQUIRED_FIELDS]"
-          TopLeft="912.416666666667,377.472220555913">
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Data Conversion Output]"
+          TopLeft="667.791666666667,655.347219175693">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,96.972222267064"
+              EndConnector="0,162.513889964187"
               Start="0,0"
-              End="0,89.472222267064">
+              End="0,155.013889964187">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,89.472222267064" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-59.9206640625,39.068142383532,119.841328125,11.3359375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 1]"
-          TopLeft="973.416666666667,516.444442822977">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="228.059523809524,92.7103163044329"
-              Start="0,0"
-              End="228.059523809524,85.2103163044329">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,27.5455881451447" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,27.5455881451447"
-                    Point2="0,31.5455881451447"
-                    Point3="4,31.5455881451447" />
-                  <mssgle:LineSegment
-                    End="224.059523809524,31.5455881451447" />
-                  <mssgle:CubicBezierSegment
-                    Point1="224.059523809524,31.5455881451447"
-                    Point2="228.059523809524,31.5455881451447"
-                    Point3="228.059523809524,35.5455881451447" />
-                  <mssgle:LineSegment
-                    End="228.059523809524,85.2103163044329" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="266.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Normalize Delivery Partner Name"
-          TopLeft="779.666666666667,723.881941584008" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 2]"
-          TopLeft="850.416666666667,516.444442822977">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-182.75,96.9027763527159"
-              Start="0,0"
-              End="-182.75,89.4027763527159">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,28.9721135122228" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,28.9721135122228"
-                    Point2="0,32.9721135122228"
-                    Point3="-4,32.9721135122228" />
-                  <mssgle:LineSegment
-                    End="-178.75,32.9721135122228" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-178.75,32.9721135122228"
-                    Point2="-182.75,32.9721135122228"
-                    Point3="-182.75,36.9721135122228" />
-                  <mssgle:LineSegment
-                    End="-182.75,89.4027763527159" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 3]"
-          TopLeft="912.416666666667,516.444442822977">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,207.43749876103"
-              Start="0,0"
-              End="0,199.93749876103">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,199.93749876103" />
+                    End="0,155.013889964187" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9972,851 +10804,70 @@ FROM raw.raw_delivery_partner;</property>
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="241.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Avg Rating Range"
-          TopLeft="547.166666666667,817.861109139881" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Data Conversion Output]"
-          TopLeft="667.791666666667,655.347219175693">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,162.513889964187"
-              Start="0,0"
-              End="0,155.013889964187">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,155.013889964187" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="254.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Avg Rating Range"
-          TopLeft="230.083333333334,825.527774622732" />
-        <NodeLayout
-          Size="275.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Avg Rating Range"
-          TopLeft="223.833333333334,938.194440729777" />
-        <NodeLayout
-          Size="158.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Avg Rating"
-          TopLeft="589.583333333333,937.083330680513" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Valid_Rating]"
-          TopLeft="668.375,859.861109139881">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,77.2222215406322"
-              Start="0,0"
-              End="0,69.7222215406322">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,69.7222215406322" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-28.181171875,29.0295678015661,56.36234375,11.6630859375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Invalid_Rating_Range]"
-          TopLeft="547.166666666667,842.694441881306">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-62.583333333333,0"
-              Start="0,0"
-              End="-55.083333333333,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-55.083333333333,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-76.4846158854165,5,97.8858984375,11.6630859375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output4]"
-          TopLeft="359.458333333334,867.527774622732">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,70.6666661070444"
-              Start="0,0"
-              End="0,63.1666661070444">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,63.1666661070444" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="172.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Partner Name"
-          TopLeft="827.583333333333,935.715274346957" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output5]"
-          TopLeft="913.375,765.881941584008">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,169.83333276295"
-              Start="0,0"
-              End="0,162.33333276295">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,162.33333276295" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="144,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - IsActive"
-          TopLeft="1123.83333333333,1043.1458293689" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output6]"
-          TopLeft="1198.83333333333,861.520829742878">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,181.624999626021"
-              Start="0,0"
-              End="0,174.124999626021">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,174.124999626021" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="234.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v1"
-          TopLeft="675.833333333334,1041.73610916948" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output]"
-          TopLeft="913.833333333333,977.715274346957">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-82.9999999999995,64.0208348225182"
-              Start="0,0"
-              End="-82.9999999999995,56.5208348225182">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,34.1521874609418" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,34.1521874609418"
-                    Point2="0,38.1521874609418"
-                    Point3="-4,38.1521874609418" />
-                  <mssgle:LineSegment
-                    End="-78.9999999999995,38.1521874609418" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-78.9999999999995,38.1521874609418"
-                    Point2="-82.9999999999995,38.1521874609418"
-                    Point3="-82.9999999999995,42.1521874609418" />
-                  <mssgle:LineSegment
-                    End="-82.9999999999995,56.5208348225182" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output1]"
-          TopLeft="668.833333333333,979.083330680513">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="86.5000000000002,62.6527784889628"
-              Start="0,0"
-              End="86.5000000000002,55.1527784889628">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,33.3369162786832" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,33.3369162786832"
-                    Point2="0,37.3369162786832"
-                    Point3="4,37.3369162786832" />
-                  <mssgle:LineSegment
-                    End="82.5000000000002,37.3369162786832" />
-                  <mssgle:CubicBezierSegment
-                    Point1="82.5000000000002,37.3369162786832"
-                    Point2="86.5000000000002,37.3369162786832"
-                    Point3="86.5000000000002,41.3369162786832" />
-                  <mssgle:LineSegment
-                    End="86.5000000000002,55.1527784889628" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="234.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2"
-          TopLeft="805.833333333334,1160.90277524423" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output]"
-          TopLeft="793.083333333334,1083.73610916948">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="92.2500000000002,77.1666660747587"
-              Start="0,0"
-              End="92.2500000000002,69.6666660747587">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,41.9862342935983" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,41.9862342935983"
-                    Point2="0,45.9862342935983"
-                    Point3="4,45.9862342935983" />
-                  <mssgle:LineSegment
-                    End="88.2500000000002,45.9862342935983" />
-                  <mssgle:CubicBezierSegment
-                    Point1="88.2500000000002,45.9862342935983"
-                    Point2="92.2500000000002,45.9862342935983"
-                    Point3="92.2500000000002,49.9862342935983" />
-                  <mssgle:LineSegment
-                    End="92.2500000000002,69.6666660747587" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output2]"
-          TopLeft="1195.83333333333,1085.1458293689">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-234.999999999999,75.7569458753351"
-              Start="0,0"
-              End="-234.999999999999,68.2569458753351">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,41.1461342001678" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,41.1461342001678"
-                    Point2="0,45.1461342001678"
-                    Point3="-4,45.1461342001678" />
-                  <mssgle:LineSegment
-                    End="-230.999999999999,45.1461342001678" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-230.999999999999,45.1461342001678"
-                    Point2="-234.999999999999,45.1461342001678"
-                    Point3="-234.999999999999,49.1461342001678" />
-                  <mssgle:LineSegment
-                    End="-234.999999999999,68.2569458753351" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="120.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Multicast"
-          TopLeft="857.5,1285.9722202761" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output1]"
-          TopLeft="920.416666666667,1202.90277524423">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,83.0694450318683"
-              Start="0,0"
-              End="0,75.5694450318683">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,75.5694450318683" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="188,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City"
-          TopLeft="312.666666666668,1160.28721261786" />
-        <NodeLayout
-          Size="125.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - City"
-          TopLeft="326.166666666667,1286.71776825324" />
-        <NodeLayout
-          Size="235.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City"
-          TopLeft="27.1666666666668,1163.81499069518" />
-        <NodeLayout
-          Size="152.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid City"
-          TopLeft="568,1292.38443382219" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output]"
-          TopLeft="644.25,1292.38443382219">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-207.583333333333,-90.0972212043209"
-              Start="0,0"
-              End="-207.583333333333,-82.5972212043209">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-49.6021442607985" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,-49.6021442607985"
-                    Point2="0,-53.6021442607985"
-                    Point3="-4,-53.6021442607985" />
-                  <mssgle:LineSegment
-                    End="-203.583333333333,-53.6021442607985" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-203.583333333333,-53.6021442607985"
-                    Point2="-207.583333333333,-53.6021442607985"
-                    Point3="-207.583333333333,-57.6021442607985" />
-                  <mssgle:LineSegment
-                    End="-207.583333333333,-82.5972212043209" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-159.598053385416,-48.6021442607985,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output]"
-          TopLeft="568,1310.55110103771">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-116.333333333333,0"
-              Start="0,0"
-              End="-108.833333333333,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-108.833333333333,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-102.608053385417,5,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output7]"
-          TopLeft="312.666666666668,1183.05110165652">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-50.0000000000009,0"
-              Start="0,0"
-              End="-42.5000000000009,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-42.5000000000009,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="230.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Vehicle Type"
-          TopLeft="561.000000000002,1381.84721693721" />
-        <NodeLayout
-          Size="168,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Vehicle Type"
-          TopLeft="837.500000000001,1573.63888335904" />
-        <NodeLayout
-          Size="278,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Vehicle Type"
-          TopLeft="533.833333333333,1468.43055015754" />
-        <NodeLayout
-          Size="195,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Vehicle Type"
-          TopLeft="826.000000000001,1386.47221655247" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output1]"
-          TopLeft="826.000000000001,1405.15971674484">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-34.4999999999991,0"
-              Start="0,0"
-              End="-26.9999999999991,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-26.9999999999991,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-69.3063867187495,5,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output8]"
-          TopLeft="674.541666666668,1423.84721693721">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,44.5833332203326"
-              Start="0,0"
-              End="0,37.0833332203326">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,37.0833332203326" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="254,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type"
-          TopLeft="1344.33333333334,1283.18055233683" />
-        <NodeLayout
-          Size="192,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - Employment Type"
-          TopLeft="1107.83333333333,1570.30555161847" />
-        <NodeLayout
-          Size="302,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type"
-          TopLeft="1315.5,1400.45832984915" />
-        <NodeLayout
-          Size="218.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Employment Type"
-          TopLeft="1101.33333333333,1283.47221864029" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup No Match Output2]"
-          TopLeft="1319.83333333333,1304.32638548856">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="24.5000000000016,0"
-              Start="0,0"
-              End="17.0000000000016,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="17.0000000000016,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-47.3063867187492,5,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output1]"
-          TopLeft="1207.20833333333,1325.47221864029">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,244.833332978188"
-              Start="0,0"
-              End="0,237.333332978188">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,237.333332978188" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,112.861978989094,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output9]"
-          TopLeft="1468.91666666667,1325.18055233683">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,75.2777775123161"
-              Start="0,0"
-              End="0,67.7777775123161">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,67.7777775123161" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 11]"
-          TopLeft="857.5,1310.17832704914">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-137,0"
-              Start="0,0"
-              End="-129.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-129.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 21]"
-          TopLeft="920.625,1327.9722202761">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,58.4999962763645"
-              Start="0,0"
-              End="0,50.9999962763645">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,50.9999962763645" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 31]"
-          TopLeft="978,1305.72221945819">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="123.333333333333,0"
-              Start="0,0"
-              End="115.833333333333,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="115.833333333333,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="227,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v1"
-          TopLeft="567,1729.74999640013" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output3]"
-          TopLeft="388.916666666667,1328.71776825324">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="255.083333333333,401.03222814689"
-              Start="0,0"
-              End="255.083333333333,393.53222814689">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,234.935212045522" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,234.935212045522"
-                    Point2="0,238.935212045522"
-                    Point3="4,238.935212045522" />
-                  <mssgle:LineSegment
-                    End="251.083333333333,238.935212045522" />
-                  <mssgle:CubicBezierSegment
-                    Point1="251.083333333333,238.935212045522"
-                    Point2="255.083333333333,238.935212045522"
-                    Point3="255.083333333333,242.935212045522" />
-                  <mssgle:LineSegment
-                    End="255.083333333333,393.53222814689" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Lookup Match Output2]"
-          TopLeft="922.500000000001,1428.47221655247">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,145.166666806571"
-              Start="0,0"
-              End="0,137.666666806571">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,137.666666806571" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,63.0286459032856,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output4]"
-          TopLeft="921.500000000001,1615.63888335904">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-204.500000000001,114.111113041089"
-              Start="0,0"
-              End="-204.500000000001,106.611113041089">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,63.9874610507277" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,63.9874610507277"
-                    Point2="0,67.9874610507277"
-                    Point3="-4,67.9874610507277" />
-                  <mssgle:LineSegment
-                    End="-200.500000000001,67.9874610507277" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-200.500000000001,67.9874610507277"
-                    Point2="-204.500000000001,67.9874610507277"
-                    Point3="-204.500000000001,71.9874610507277" />
-                  <mssgle:LineSegment
-                    End="-204.500000000001,106.611113041089" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="227,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v2"
-          TopLeft="810,1807.99999709427" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output2]"
-          TopLeft="680.5,1771.74999640013">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="206.5,36.2500006941455"
-              Start="0,0"
-              End="206.5,28.7500006941455">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,17.5977694424437" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,17.5977694424437"
-                    Point2="0,21.5977694424437"
-                    Point3="4,21.5977694424437" />
-                  <mssgle:LineSegment
-                    End="202.5,21.5977694424437" />
-                  <mssgle:CubicBezierSegment
-                    Point1="202.5,21.5977694424437"
-                    Point2="206.5,21.5977694424437"
-                    Point3="206.5,25.5977694424437" />
-                  <mssgle:LineSegment
-                    End="206.5,28.7500006941455" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output5]"
-          TopLeft="1203.83333333333,1612.30555161847">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-243.833333333334,195.6944454758"
-              Start="0,0"
-              End="-243.833333333334,188.1944454758">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,112.594853341225" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,112.594853341225"
-                    Point2="0,116.594853341225"
-                    Point3="-4,116.594853341225" />
-                  <mssgle:LineSegment
-                    End="-239.833333333334,116.594853341225" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-239.833333333334,116.594853341225"
-                    Point2="-243.833333333334,116.594853341225"
-                    Point3="-243.833333333334,120.594853341225" />
-                  <mssgle:LineSegment
-                    End="-243.833333333334,188.1944454758" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output3]"
-          TopLeft="920.708333333333,1849.99999709427">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,77.2499940432597"
-              Start="0,0"
-              End="0,69.7499940432597">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,69.7499940432597" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\SRC - RAW Delivery Partner">
+    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Employment Type">
     <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
       <Property>
         <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Missing Delivery Partner ID">
+    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid City">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Vehicle Type">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -10855,56 +10906,15 @@ FROM raw.raw_delivery_partner;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\SRC - RAW Delivery Partner">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ODS Delivery Partner">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid City">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string"></Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Vehicle Type">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -10922,7 +10932,7 @@ FROM raw.raw_delivery_partner;</property>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:boolean">false</Value>
+          type="q2:string">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -10932,7 +10942,7 @@ FROM raw.raw_delivery_partner;</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:int">0</Value>
+          type="q4:string">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -10953,25 +10963,15 @@ FROM raw.raw_delivery_partner;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Employment Type">
+    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Missing Delivery Partner ID">
     <Properties>
       <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string"></Value>
+        <Name>DataSourceViewID</Name>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
