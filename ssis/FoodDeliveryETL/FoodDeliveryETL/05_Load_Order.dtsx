@@ -1,0 +1,1653 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/17/2026 11:19:40 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DD-WALTER"
+  DTS:CreatorName="DD-WALTER\PC"
+  DTS:DTSID="{C83DFF00-3E6C-45A3-B761-75A41A166B0E}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="05_Load_Order"
+  DTS:PackageType="5"
+  DTS:VersionBuild="13"
+  DTS:VersionGUID="{9304BA12-774C-481D-8010-8F7E4BDA921F}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{2D381065-E79F-4C03-9FF3-91EC3ADF5E8C}"
+      DTS:ObjectName="CM_FoodDeliveryDW">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=FoodDeliveryDW;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-05_Load_Order-{2D381065-E79F-4C03-9FF3-91EC3ADF5E8C}localhost\SQLEXPRESS.FoodDeliveryDW;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\DFT - RAW Order to ODS Order"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{1F5CF97C-C040-41C5-8299-C52233342085}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DFT - RAW Order to ODS Order"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="CSPL - Validate Order Required Fields"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Inputs[Conditional Split Input].Columns[order_id_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="order_id_clean"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[order_id_clean]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[REJECT_MISSING_ORDER_ID]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="REJECT_MISSING_ORDER_ID"
+                  synchronousInputId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[order_id_clean]}) || [LEN](#{Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[order_id_clean]}) == 0</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(order_id_clean) || LEN(order_id_clean) == 0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[VALID_REQUIRED_FIELDS]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="VALID_REQUIRED_FIELDS"
+                  synchronousInputId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="DRV - Clean Order Strings"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[order_id]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="order_id"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[customer_id]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="customer_id"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[customer_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[restaurant_id]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="restaurant_id"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[restaurant_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[delivery_partner_id]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="delivery_partner_id"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[delivery_partner_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[order_timestamp]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="order_timestamp"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_timestamp]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[subtotal_amount]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="subtotal_amount"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[subtotal_amount]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[discount_amount]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="discount_amount"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[discount_amount]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[delivery_fee]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="delivery_fee"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[delivery_fee]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[total_amount]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="total_amount"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[total_amount]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[is_cod]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="is_cod"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[is_cod]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input].Columns[is_cancelled]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="is_cancelled"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[is_cancelled]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[order_id_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[order_id_clean]"
+                      name="order_id_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[UPPER]([TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_id]}))</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(order_id))</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[customer_id_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[customer_id_clean]"
+                      name="customer_id_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[UPPER]([TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[customer_id]}))</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(customer_id))</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[restaurant_id_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[restaurant_id_clean]"
+                      name="restaurant_id_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[UPPER]([TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[restaurant_id]}))</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(restaurant_id))</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[delivery_partner_id_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[delivery_partner_id_clean]"
+                      name="delivery_partner_id_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[UPPER]([TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[delivery_partner_id]}))</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(delivery_partner_id))</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[order_timestamp_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[order_timestamp_clean]"
+                      name="order_timestamp_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_timestamp]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(order_timestamp)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[subtotal_amount_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[subtotal_amount_clean]"
+                      name="subtotal_amount_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[subtotal_amount]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(subtotal_amount)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[discount_amount_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[discount_amount_clean]"
+                      name="discount_amount_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[discount_amount]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(discount_amount)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[delivery_fee_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[delivery_fee_clean]"
+                      name="delivery_fee_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[delivery_fee]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(delivery_fee)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[total_amount_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[total_amount_clean]"
+                      name="total_amount_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)[TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[total_amount]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(total_amount)</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[is_cod_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[is_cod_clean]"
+                      name="is_cod_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)[UPPER]([TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[is_cod]}))</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)UPPER(TRIM(is_cod))</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[is_cancelled_clean]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output].Columns[is_cancelled_clean]"
+                      name="is_cancelled_clean"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)[UPPER]([TRIM](#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[is_cancelled]}))</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)UPPER(TRIM(is_cancelled))</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="DRV - Error Missing Order ID"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Inputs[Derived Column Input].Columns[order_id]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="order_id"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_id]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_table]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_table]"
+                      name="error_table"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"raw_order"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"raw_order"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_column]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_column]"
+                      name="error_column"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"order_id"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"order_id"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_type]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_type]"
+                      name="error_type"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_message]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_message]"
+                      name="error_message"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)"order_id is NULL or empty"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)"order_id is NULL or empty"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_value]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_value]"
+                      name="error_value"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">(DT_STR,100,1252)#{Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_id]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">(DT_STR,100,1252)order_id</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="DST - ETL Error Missing Order ID"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[control].[etl_error]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].Columns[batch_id]"
+                      cachedDataType="i8"
+                      cachedName="batch_id"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[batch_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].Columns[source_file_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="source_file_name"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[source_file_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].Columns[source_row_number]"
+                      cachedDataType="i4"
+                      cachedName="source_row_number"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[source_row_number]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].Columns[error_type]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_type"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_type]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].Columns[error_message]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="error_message"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_message]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].Columns[error_table]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_table"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_table]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].Columns[error_column]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_column"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_column]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].Columns[error_value]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="error_value"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output].Columns[error_value]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[error_id]"
+                      dataType="i8"
+                      name="error_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      dataType="i8"
+                      name="batch_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      name="source_file_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      dataType="i8"
+                      name="source_row_number" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="table_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="column_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="error_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="error_message" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="raw_value" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input].ExternalColumns[error_timestamp]"
+                      dataType="dbTimeStamp2"
+                      name="error_timestamp"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Order to ODS Order\Multicast - Normalize Order"
+              componentClassID="Microsoft.Multicast"
+              contactInfo="Multicast;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Distributes every input row to every row in one or more outputs. For example, branch your data flow to make a copy of data so that some values can be masked before sharing with external partners."
+              name="Multicast - Normalize Order">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Order to ODS Order\Multicast - Normalize Order.Inputs[Multicast Input 1]"
+                  name="Multicast Input 1">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\Multicast - Normalize Order.Outputs[Multicast Output 1]"
+                  dangling="true"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 1"
+                  synchronousInputId="Package\DFT - RAW Order to ODS Order\Multicast - Normalize Order.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="SRC - RAW Order"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+	order_id,
+	customer_id,
+	restaurant_id,
+	delivery_partner_id,
+	order_timestamp,
+	subtotal_amount,
+	discount_amount,
+	delivery_fee,
+	total_amount,
+	is_cod,
+	is_cancelled,
+
+	batch_id,
+	source_file_name,
+	source_row_number
+FROM raw.raw_order;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_id]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[order_id]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_id]"
+                      name="order_id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[customer_id]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[customer_id]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[customer_id]"
+                      name="customer_id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[restaurant_id]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[restaurant_id]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[restaurant_id]"
+                      name="restaurant_id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[delivery_partner_id]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[delivery_partner_id]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[delivery_partner_id]"
+                      name="delivery_partner_id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_timestamp]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[order_timestamp]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[order_timestamp]"
+                      name="order_timestamp"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[subtotal_amount]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[subtotal_amount]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[subtotal_amount]"
+                      name="subtotal_amount"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[discount_amount]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[discount_amount]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[discount_amount]"
+                      name="discount_amount"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[delivery_fee]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[delivery_fee]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[delivery_fee]"
+                      name="delivery_fee"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[total_amount]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[total_amount]"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[total_amount]"
+                      name="total_amount"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[is_cod]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[is_cod]"
+                      length="50"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[is_cod]"
+                      name="is_cod"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[is_cancelled]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[is_cancelled]"
+                      length="50"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[is_cancelled]"
+                      name="is_cancelled"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[batch_id]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[batch_id]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[batch_id]"
+                      name="batch_id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[source_file_name]"
+                      length="200"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[source_file_name]"
+                      name="source_file_name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[source_row_number]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[source_row_number]"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].Columns[source_row_number]"
+                      name="source_row_number"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[order_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="order_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[customer_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="customer_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[restaurant_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="restaurant_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[delivery_partner_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="delivery_partner_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[order_timestamp]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="order_timestamp" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[subtotal_amount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="subtotal_amount" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[discount_amount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="discount_amount" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[delivery_fee]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="delivery_fee" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[total_amount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="total_amount" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[is_cod]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="is_cod" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[is_cancelled]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="is_cancelled" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[batch_id]"
+                      dataType="i8"
+                      name="batch_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="source_file_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output].ExternalColumns[source_row_number]"
+                      dataType="i4"
+                      name="source_row_number" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[order_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[order_id]"
+                      name="order_id" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[customer_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[customer_id]"
+                      name="customer_id" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[restaurant_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[restaurant_id]"
+                      name="restaurant_id" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[delivery_partner_id]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[delivery_partner_id]"
+                      name="delivery_partner_id" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[order_timestamp]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[order_timestamp]"
+                      name="order_timestamp" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[subtotal_amount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[subtotal_amount]"
+                      name="subtotal_amount" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[discount_amount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[discount_amount]"
+                      name="discount_amount" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[delivery_fee]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[delivery_fee]"
+                      name="delivery_fee" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[total_amount]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[total_amount]"
+                      name="total_amount" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[is_cod]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[is_cod]"
+                      name="is_cod" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[is_cancelled]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[is_cancelled]"
+                      name="is_cancelled" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[batch_id]"
+                      dataType="i8"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[batch_id]"
+                      name="batch_id" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[source_file_name]"
+                      name="source_file_name" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[source_row_number]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[source_row_number]"
+                      name="source_row_number" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output]"
+              endId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Inputs[Conditional Split Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output1]"
+              endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order to ODS Order.Paths[OLE DB Source Output]"
+              endId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\DFT - RAW Order to ODS Order\SRC - RAW Order.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\DFT - RAW Order to ODS Order.Paths[REJECT_MISSING_ORDER_ID]"
+              endId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Inputs[Derived Column Input]"
+              name="REJECT_MISSING_ORDER_ID"
+              startId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[REJECT_MISSING_ORDER_ID]" />
+            <path
+              refId="Package\DFT - RAW Order to ODS Order.Paths[VALID_REQUIRED_FIELDS]"
+              endId="Package\DFT - RAW Order to ODS Order\Multicast - Normalize Order.Inputs[Multicast Input 1]"
+              name="VALID_REQUIRED_FIELDS"
+              startId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[VALID_REQUIRED_FIELDS]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Execute SQL Task"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{1CCA2CF7-9FE5-401D-A38D-343E8137C1FB}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute SQL Task"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{2D381065-E79F-4C03-9FF3-91EC3ADF5E8C}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE ods.ods_order;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{2B2DD0C6-968B-497D-8911-DA4439AFF7FF}"
+      DTS:From="Package\Execute SQL Task"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\DFT - RAW Order to ODS Order" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="166.5,42"
+          Id="Package\Execute SQL Task"
+          TopLeft="172.5,67.1666663330462" />
+        <NodeLayout
+          Size="229.5,42"
+          Id="Package\DFT - RAW Order to ODS Order"
+          TopLeft="146,171.708332480449" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="258.25,109.166666333046">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,62.5416661474026"
+              Start="0,0"
+              End="0,55.0416661474026">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,55.0416661474026" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\DFT - RAW Order to ODS Order">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="164.5,42"
+          Id="Package\DFT - RAW Order to ODS Order\SRC - RAW Order"
+          TopLeft="377.5,74.2083329647366" />
+        <NodeLayout
+          Size="203,42"
+          Id="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings"
+          TopLeft="352,193.374999039496" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Order to ODS Order.Paths[OLE DB Source Output]"
+          TopLeft="456.625,116.208332964737">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,77.1666660747594"
+              Start="0,0"
+              End="0,69.6666660747594">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,69.6666660747594" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="259.5,42"
+          Id="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields"
+          TopLeft="330,307.66666513847" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output]"
+          TopLeft="456.625,235.374999039496">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,72.2916660989739"
+              Start="0,0"
+              End="0,64.7916660989739">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,64.7916660989739" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="215,42"
+          Id="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID"
+          TopLeft="675.285714285714,309.797617700069" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Order to ODS Order.Paths[REJECT_MISSING_ORDER_ID]"
+          TopLeft="589.5,329.73214141927">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="85.7857142857143,0"
+              Start="0,0"
+              End="78.2857142857143,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="78.2857142857143,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-27.2733537946428,5,132.832421875,10.88671875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="236,42"
+          Id="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID"
+          TopLeft="961,310.904760531845" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output1]"
+          TopLeft="890.285714285714,331.351189115957">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="70.7142857142859,0"
+              Start="0,0"
+              End="63.2142857142859,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="63.2142857142859,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="206.5,42"
+          Id="Package\DFT - RAW Order to ODS Order\Multicast - Normalize Order"
+          TopLeft="355,414.874998652066" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Order to ODS Order.Paths[VALID_REQUIRED_FIELDS]"
+          TopLeft="459,349.66666513847">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,65.208333513596"
+              Start="0,0"
+              End="0,57.708333513596">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,57.708333513596" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-59.9206640625,23.186198006798,119.841328125,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Order to ODS Order\SRC - RAW Order">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
