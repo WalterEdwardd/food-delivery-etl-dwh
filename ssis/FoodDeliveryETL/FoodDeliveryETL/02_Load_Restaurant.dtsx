@@ -11,16 +11,16 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Load_Restaurant"
   DTS:PackageType="5"
-  DTS:VersionBuild="82"
-  DTS:VersionGUID="{CF5FE9B9-0B5F-404B-BABE-0C73D60E3328}">
+  DTS:VersionBuild="83"
+  DTS:VersionGUID="{98087A82-987E-43C4-BD49-5557A01577F7}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
     <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+      DTS:refId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
       DTS:CreationName="OLEDB"
       DTS:DTSID="{56945C99-844C-42B9-8EF1-61A1DAF4CD8F}"
-      DTS:ObjectName="localhost\SQLEXPRESS.FoodDeliveryDW">
+      DTS:ObjectName="CM_FoodDeliveryDW">
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectRetryCount="1"
@@ -1809,8 +1809,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid City.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -2025,8 +2025,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid Cuisine Type.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -2241,8 +2241,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid IsActive Status.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -2457,8 +2457,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Invalid Partner Type.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -2673,8 +2673,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant ID.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -2889,8 +2889,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ETL Error Missing Restaurant Name.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -3105,8 +3105,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -3348,7 +3348,7 @@ where [refTable].[partner_type_code] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\DFT - RAW Restaurant to ODS Restaurant\1390:invalid};</property>
+                  name="ParameterMap">#{Package\DFT - RAW Restaurant to ODS Restaurant\1393:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3361,8 +3361,8 @@ where [refTable].[partner_type_code] = ?</property>
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\LKP - Partner Type.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="Connection manager used to access lookup data."
                   name="OleDbConnection" />
               </connections>
@@ -3517,7 +3517,7 @@ where [refTable].[city_code] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\DFT - RAW Restaurant to ODS Restaurant\1391:invalid};</property>
+                  name="ParameterMap">#{Package\DFT - RAW Restaurant to ODS Restaurant\1394:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3530,8 +3530,8 @@ where [refTable].[city_code] = ?</property>
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\LKP - Valid City.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="Connection manager used to access lookup data."
                   name="OleDbConnection" />
               </connections>
@@ -3686,7 +3686,7 @@ where [refTable].[cuisine_type_code] = ?</property>
                   containsID="true"
                   dataType="System.String"
                   description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                  name="ParameterMap">#{Package\DFT - RAW Restaurant to ODS Restaurant\1392:invalid};</property>
+                  name="ParameterMap">#{Package\DFT - RAW Restaurant to ODS Restaurant\1395:invalid};</property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3699,8 +3699,8 @@ where [refTable].[cuisine_type_code] = ?</property>
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\LKP - Valid Cuisine Type.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="Connection manager used to access lookup data."
                   name="OleDbConnection" />
               </connections>
@@ -7481,8 +7481,8 @@ FROM raw.raw_restaurant;</property>
               <connections>
                 <connection
                   refId="Package\DFT - RAW Restaurant to ODS Restaurant\SRC - RAW Restaurant.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -7820,19 +7820,19 @@ FROM raw.raw_restaurant;</property>
               startId="Package\DFT - RAW Restaurant to ODS Restaurant\LKP - Valid City.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output1]"
-              endId="Package\DFT - RAW Restaurant to ODS Restaurant\MJ - Combine Valid Lookups v2.Inputs[Merge Join Left Input]"
-              name="Merge Join Output"
-              startId="Package\DFT - RAW Restaurant to ODS Restaurant\MJ - Combine Valid Lookups v1.Outputs[Merge Join Output]" />
-            <path
-              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output2]"
               endId="Package\DFT - RAW Restaurant to ODS Restaurant\DST - ODS Restauant.Inputs[OLE DB Destination Input]"
               name="Merge Join Output"
               startId="Package\DFT - RAW Restaurant to ODS Restaurant\MJ - Combine Valid Lookups v2.Outputs[Merge Join Output]" />
             <path
-              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output]"
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output2]"
               endId="Package\DFT - RAW Restaurant to ODS Restaurant\Multicast - Valid Reference.Inputs[Multicast Input 1]"
               name="Merge Join Output"
               startId="Package\DFT - RAW Restaurant to ODS Restaurant\MJ - Combine Valid Normalize.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output]"
+              endId="Package\DFT - RAW Restaurant to ODS Restaurant\MJ - Combine Valid Lookups v2.Inputs[Merge Join Left Input]"
+              name="Merge Join Output"
+              startId="Package\DFT - RAW Restaurant to ODS Restaurant\MJ - Combine Valid Lookups v1.Outputs[Merge Join Output]" />
             <path
               refId="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Multicast Output 1]"
               endId="Package\DFT - RAW Restaurant to ODS Restaurant\LKP - Valid City.Inputs[Lookup Input]"
@@ -8492,6 +8492,28 @@ FROM raw.raw_restaurant;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output2]"
+          TopLeft="860.25,817.520831443265">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,85.916665316042"
+              Start="0,0"
+              End="0,78.416665316042">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,78.416665316042" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output1]"
           TopLeft="1244.5,1377.21180054834">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -8513,7 +8535,7 @@ FROM raw.raw_restaurant;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output1]"
+          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output]"
           TopLeft="747,1375.99999652927">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -8526,28 +8548,6 @@ FROM raw.raw_restaurant;</property>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="263,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Restaurant to ODS Restaurant.Paths[Merge Join Output]"
-          TopLeft="860.25,817.520831443265">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,85.916665316042"
-              Start="0,0"
-              End="0,78.416665316042">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,78.416665316042" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
