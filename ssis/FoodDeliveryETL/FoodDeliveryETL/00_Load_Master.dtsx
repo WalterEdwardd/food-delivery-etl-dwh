@@ -5,17 +5,29 @@
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="DD-WALTER"
   DTS:CreatorName="DD-WALTER\PC"
-  DTS:DTSID="{40B4CCA8-115C-47CA-8F5A-2E06518EFBD2}"
+  DTS:DTSID="{CFC05834-0F0C-444D-98F1-B48F17F8291F}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="16.0.5685.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="Load_Master"
+  DTS:ObjectName="00_Load_Master"
   DTS:PackageType="5"
-  DTS:VersionBuild="46"
-  DTS:VersionGUID="{79A95668-387C-4196-98A4-E87F2613EB61}">
+  DTS:VersionBuild="48"
+  DTS:VersionGUID="{1D378497-B953-4FF8-877D-8EAAB45030E7}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{8E2FAC78-45B9-48C5-8AD3-DDD2DF5B7048}"
+      DTS:ObjectName="CM_FoodDeliveryDW">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=FoodDeliveryDW;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Load_Master-{8E2FAC78-45B9-48C5-8AD3-DDD2DF5B7048}localhost\SQLEXPRESS.FoodDeliveryDW;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[Excel Connection Manager]"
       DTS:CreationName="EXCEL"
@@ -28,18 +40,6 @@
           DTS:ConnectRetryCount="0"
           DTS:ConnectRetryInterval="0"
           DTS:ConnectionString="Provider=Microsoft.ACE.OLEDB.12.0;Data Source=c:\Users\PC\Downloads\food-delivery-etl-dwh\data\reference\raw_ref.xlsx;Extended Properties=&quot;EXCEL 12.0 XML;HDR=YES&quot;;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-      DTS:CreationName="OLEDB"
-      DTS:DTSID="{8E2FAC78-45B9-48C5-8AD3-DDD2DF5B7048}"
-      DTS:ObjectName="localhost\SQLEXPRESS.FoodDeliveryDW">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectRetryCount="1"
-          DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=FoodDeliveryDW;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Load_Master-{8E2FAC78-45B9-48C5-8AD3-DDD2DF5B7048}localhost\SQLEXPRESS.FoodDeliveryDW;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -367,8 +367,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\DST - REF Acquisition Channel.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -1152,8 +1152,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - SRC CATEGORY to REF CATEGORY\DST - REF Category.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -1937,8 +1937,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - SRC City to REF City\DST - REF City.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -2722,8 +2722,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\DST - REF Cuisine Type.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -3507,8 +3507,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\DST - REF Employment Type.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -4292,8 +4292,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\DST - REF Partner Type.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -5077,8 +5077,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\DST - REF Vehicle Type.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -6100,10 +6100,6 @@
           Id="Package\DFT - SRC City to REF City\DST - REF City"
           TopLeft="29.8214285714286,413.559523339841" />
         <NodeLayout
-          Size="194.5,42"
-          Id="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows"
-          TopLeft="5.50000000000003,209.5" />
-        <NodeLayout
           Size="194,42"
           Id="Package\DFT - SRC City to REF City\DRV - Clean City Strings"
           TopLeft="5.75000000000001,107.5" />
@@ -6111,54 +6107,14 @@
           Size="163.5,42"
           Id="Package\DFT - SRC City to REF City\SRC - Master City"
           TopLeft="21,5.5" />
-        <EdgeLayout
-          Id="Package\DFT - SRC City to REF City.Paths[Excel Source Output]"
-          TopLeft="102.75,47.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60"
-              Start="0,0"
-              End="0,52.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - SRC City to REF City.Paths[Derived Column Output]"
-          TopLeft="102.75,149.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60"
-              Start="0,0"
-              End="0,52.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <NodeLayout
           Size="135.5,42"
           Id="Package\DFT - SRC City to REF City\SORT - City"
           TopLeft="38.3571428571428,310.374998458351" />
+        <NodeLayout
+          Size="194.5,42"
+          Id="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows"
+          TopLeft="5.50000000000003,209.5" />
         <EdgeLayout
           Id="Package\DFT - SRC City to REF City.Paths[Valid_Rows]"
           TopLeft="104.428571428571,251.5">
@@ -6197,6 +6153,50 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,53.6845248814906" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - SRC City to REF City.Paths[Excel Source Output]"
+          TopLeft="102.75,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - SRC City to REF City.Paths[Derived Column Output]"
+          TopLeft="102.75,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
