@@ -5,14 +5,14 @@
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="DD-WALTER"
   DTS:CreatorName="DD-WALTER\PC"
-  DTS:DTSID="{0205311F-C926-4921-9B67-89F5E6E3964D}"
+  DTS:DTSID="{D3F4FF87-C7D7-4127-9454-D9EF49BAB923}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="16.0.5685.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="Package1"
+  DTS:ObjectName="01_Load_DeliveryPartner"
   DTS:PackageType="5"
-  DTS:VersionBuild="62"
-  DTS:VersionGUID="{E50F985D-C157-4170-B2B2-E0C18B835D35}">
+  DTS:VersionBuild="67"
+  DTS:VersionGUID="{88CBB187-6079-48B8-B46A-D3C63FC780F7}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -26,18 +26,6 @@
           DTS:ConnectRetryCount="1"
           DTS:ConnectRetryInterval="5"
           DTS:ConnectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=FoodDeliveryDW;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Load_Customer-{6317833F-CB1B-468C-AE48-DE1048AF5E91}localhost\SQLEXPRESS.FoodDeliveryDW;Auto Translate=False;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-      DTS:CreationName="OLEDB"
-      DTS:DTSID="{0E631983-7A2A-411A-9BCF-2901AD3907B9}"
-      DTS:ObjectName="localhost\SQLEXPRESS.FoodDeliveryDW">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectRetryCount="1"
-          DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=FoodDeliveryDW;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Package1-{0E631983-7A2A-411A-9BCF-2901AD3907B9}localhost\SQLEXPRESS.FoodDeliveryDW;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -2164,8 +2152,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Convert Avg Rating Format.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -2380,8 +2368,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Avg Rating Range.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -2538,6 +2526,438 @@
               </outputs>
             </component>
             <component
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="DST - ETL Error Invalid City"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[control].[etl_error]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[batch_id]"
+                      cachedDataType="i8"
+                      cachedName="batch_id"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[batch_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[source_file_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="source_file_name"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[source_file_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[source_row_number]"
+                      cachedDataType="i4"
+                      cachedName="source_row_number"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[source_row_number]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[error_type]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="error_type"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[error_type]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[error_message]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="error_message"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[error_message]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[raw_value]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="raw_value"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[raw_value]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[error_table]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_table"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[error_table]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[error_column]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_column"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[error_column]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_id]"
+                      dataType="i8"
+                      name="error_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      dataType="i8"
+                      name="batch_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      name="source_file_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      dataType="i8"
+                      name="source_row_number" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="table_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="column_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="error_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="error_message" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="raw_value" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_timestamp]"
+                      dataType="dbTimeStamp2"
+                      name="error_timestamp"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="DST - ETL Error Invalid Employment Type"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[control].[etl_error]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[batch_id]"
+                      cachedDataType="i8"
+                      cachedName="batch_id"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[batch_id]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[source_file_name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="200"
+                      cachedName="source_file_name"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[source_file_name]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[source_row_number]"
+                      cachedDataType="i4"
+                      cachedName="source_row_number"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[source_row_number]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[error_type]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="error_type"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[error_type]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[error_message]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="error_message"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[error_message]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[raw_value]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="raw_value"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[raw_value]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[error_table]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_table"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[error_table]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[error_column]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="error_column"
+                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[error_column]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_id]"
+                      dataType="i8"
+                      name="error_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      dataType="i8"
+                      name="batch_id" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="500"
+                      name="source_file_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      dataType="i8"
+                      name="source_row_number" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="table_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="column_name" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="error_type" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="error_message" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4000"
+                      name="raw_value" />
+                    <externalMetadataColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_timestamp]"
+                      dataType="dbTimeStamp2"
+                      name="error_timestamp"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid IsActive Status"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
@@ -2596,8 +3016,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid IsActive Status.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -2812,8 +3232,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Missing Delivery Partner ID.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -3028,8 +3448,8 @@
               <connections>
                 <connection
                   refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ODS Delivery Partner.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -4983,438 +5403,6 @@ where [refTable].[vehicle_type_code] = ?</property>
                   deleteOutputOnPathDetached="true"
                   name="Multicast Output 4"
                   synchronousInputId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Multicast - Validation Delivery Partner.Inputs[Multicast Input 1]">
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City"
-              componentClassID="Microsoft.OLEDBDestination"
-              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
-              description="OLE DB Destination"
-              name="OLE_DST - ETL Error Invalid City"
-              usesDispositions="true"
-              version="4">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[control].[etl_error]</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">3</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepIdentity">false</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepNulls">false</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
-                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
-                  name="FastLoadMaxInsertCommitSize">2147483647</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input]"
-                  errorOrTruncationOperation="Insert"
-                  errorRowDisposition="FailComponent"
-                  hasSideEffects="true"
-                  name="OLE DB Destination Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[batch_id]"
-                      cachedDataType="i8"
-                      cachedName="batch_id"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[batch_id]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[source_file_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="200"
-                      cachedName="source_file_name"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[source_file_name]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[source_row_number]"
-                      cachedDataType="i4"
-                      cachedName="source_row_number"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[source_row_number]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[error_type]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="error_type"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[error_type]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[error_message]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="error_message"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[error_message]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[raw_value]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="raw_value"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[raw_value]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[error_table]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="error_table"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[error_table]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].Columns[error_column]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="error_column"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output].Columns[error_column]" />
-                  </inputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_id]"
-                      dataType="i8"
-                      name="error_id" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
-                      dataType="i8"
-                      name="batch_id" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="500"
-                      name="source_file_name" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
-                      dataType="i8"
-                      name="source_row_number" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="200"
-                      name="table_name" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="200"
-                      name="column_name" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      name="error_type" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
-                      codePage="1252"
-                      dataType="str"
-                      length="4000"
-                      name="error_message" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
-                      codePage="1252"
-                      dataType="str"
-                      length="4000"
-                      name="raw_value" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input].ExternalColumns[error_timestamp]"
-                      dataType="dbTimeStamp2"
-                      name="error_timestamp"
-                      scale="3" />
-                  </externalMetadataColumns>
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type"
-              componentClassID="Microsoft.OLEDBDestination"
-              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
-              description="OLE DB Destination"
-              name="OLE_DST - ETL Error Invalid Employment Type"
-              usesDispositions="true"
-              version="4">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[control].[etl_error]</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">3</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepIdentity">false</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
-                  name="FastLoadKeepNulls">false</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
-                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
-                  name="FastLoadMaxInsertCommitSize">2147483647</property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <inputs>
-                <input
-                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input]"
-                  errorOrTruncationOperation="Insert"
-                  errorRowDisposition="FailComponent"
-                  hasSideEffects="true"
-                  name="OLE DB Destination Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[batch_id]"
-                      cachedDataType="i8"
-                      cachedName="batch_id"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[batch_id]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[source_file_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="200"
-                      cachedName="source_file_name"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[source_file_name]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[source_row_number]"
-                      cachedDataType="i4"
-                      cachedName="source_row_number"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2.Outputs[Merge Join Output].Columns[source_row_number]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[error_type]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="error_type"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[error_type]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[error_message]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="error_message"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[error_message]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[raw_value]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="raw_value"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[raw_value]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[error_table]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="error_table"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[error_table]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].Columns[error_column]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="error_column"
-                      externalMetadataColumnId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output].Columns[error_column]" />
-                  </inputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_id]"
-                      dataType="i8"
-                      name="error_id" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
-                      dataType="i8"
-                      name="batch_id" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="500"
-                      name="source_file_name" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
-                      dataType="i8"
-                      name="source_row_number" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="200"
-                      name="table_name" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="200"
-                      name="column_name" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      name="error_type" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
-                      codePage="1252"
-                      dataType="str"
-                      length="4000"
-                      name="error_message" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
-                      codePage="1252"
-                      dataType="str"
-                      length="4000"
-                      name="raw_value" />
-                    <externalMetadataColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input].ExternalColumns[error_timestamp]"
-                      dataType="dbTimeStamp2"
-                      name="error_timestamp"
-                      scale="3" />
-                  </externalMetadataColumns>
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output]"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
                   <externalMetadataColumns />
                 </output>
               </outputs>
@@ -9038,8 +9026,8 @@ FROM raw.raw_delivery_partner;</property>
               <connections>
                 <connection
                   refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\SRC - RAW Delivery Partner.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
-                  connectionManagerRefId="Package.ConnectionManagers[localhost\SQLEXPRESS.FoodDeliveryDW]"
+                  connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+                  connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -9317,9 +9305,9 @@ FROM raw.raw_delivery_partner;</property>
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DC - Convert Avg Rating Format.Outputs[Data Conversion Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output9]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City.Inputs[OLE DB Destination Input]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Avg Rating Range.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Avg Rating Range.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output7]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Vehicle Type.Inputs[OLE DB Destination Input]"
@@ -9332,14 +9320,14 @@ FROM raw.raw_delivery_partner;</property>
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Normalize Delivery Partner Name.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output5]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Employment Type.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output8]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Avg Rating Range.Inputs[OLE DB Destination Input]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Avg Rating Range.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid City.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output3]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Convert Avg Rating Format.Inputs[OLE DB Destination Input]"
@@ -9357,14 +9345,14 @@ FROM raw.raw_delivery_partner;</property>
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Missing Delivery Partner ID.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output]"
-              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Delivery Partner Required Fields.Inputs[Conditional Split Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Clean Delivery Partner Strings.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output4]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Sort - IsActive.Inputs[Sort Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Convert IsActive to Boolean.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output4]"
+              endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Delivery Partner Required Fields.Inputs[Conditional Split Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Clean Delivery Partner Strings.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Invalid_Rating_Range]"
               endId="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Error Invalid Avg Rating Range.Inputs[Derived Column Input]"
@@ -9527,7 +9515,7 @@ FROM raw.raw_delivery_partner;</property>
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
-          SQLTask:Connection="{0E631983-7A2A-411A-9BCF-2901AD3907B9}"
+          SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}"
           SQLTask:SqlStatementSource="TRUNCATE TABLE ods.ods_delivery_partner;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
@@ -9629,13 +9617,13 @@ FROM raw.raw_delivery_partner;</property>
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DRV - Normalize Delivery Partner Name"
           TopLeft="779.666666666667,723.881941584008" />
         <NodeLayout
-          Size="235.5,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City"
+          Size="208.5,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City"
           TopLeft="27.1666666666668,1163.81499069518" />
         <NodeLayout
           Size="227,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v1"
-          TopLeft="567,1729.74999640013" />
+          TopLeft="278.25,1575.37499716692" />
         <NodeLayout
           Size="284,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Convert Avg Rating Format"
@@ -9643,7 +9631,7 @@ FROM raw.raw_delivery_partner;</property>
         <NodeLayout
           Size="254,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\Multicast - Validation Delivery Partner"
-          TopLeft="784.916666666667,474.444442822977" />
+          TopLeft="784.916666666667,448.715276284108" />
         <NodeLayout
           Size="260,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid IsActive Status"
@@ -9679,7 +9667,7 @@ FROM raw.raw_delivery_partner;</property>
         <NodeLayout
           Size="210,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ODS Delivery Partner"
-          TopLeft="812.916666666667,1927.24999113753" />
+          TopLeft="665.416666666667,1927.24999113753" />
         <NodeLayout
           Size="195,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\LKP - Valid Vehicle Type"
@@ -9721,13 +9709,13 @@ FROM raw.raw_delivery_partner;</property>
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\CSPL - Validate Delivery Partner Required Fields"
           TopLeft="758.916666666667,335.472220555913" />
         <NodeLayout
-          Size="302,42"
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type"
-          TopLeft="1315.5,1400.45832984915" />
+          Size="275,42"
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type"
+          TopLeft="1340.5,1400.45832984915" />
         <NodeLayout
           Size="227,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Lookups v2"
-          TopLeft="810,1807.99999709427" />
+          TopLeft="662.5,1807.99999709427" />
         <NodeLayout
           Size="234.5,42"
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\MJ - Combine Valid Normalize v2"
@@ -9750,21 +9738,21 @@ FROM raw.raw_delivery_partner;</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,96.972222267064"
+              EndConnector="0,71.2430557281955"
               Start="0,0"
-              End="0,89.472222267064">
+              End="0,63.7430557281955">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,89.472222267064" />
+                    End="0,63.7430557281955" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-59.9206640625,39.068142383532,119.841328125,11.3359375"
+              BoundingBox="-59.9206640625,26.2035591140977,119.841328125,11.3359375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9856,9 +9844,9 @@ FROM raw.raw_delivery_partner;</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-243.833333333334,195.6944454758"
+              EndConnector="-391.33333333333,195.6944454758"
               Start="0,0"
-              End="-243.833333333334,188.1944454758">
+              End="-391.33333333333,188.1944454758">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -9869,13 +9857,13 @@ FROM raw.raw_delivery_partner;</property>
                     Point2="0,116.594853341225"
                     Point3="-4,116.594853341225" />
                   <mssgle:LineSegment
-                    End="-239.833333333334,116.594853341225" />
+                    End="-387.33333333333,116.594853341225" />
                   <mssgle:CubicBezierSegment
-                    Point1="-239.833333333334,116.594853341225"
-                    Point2="-243.833333333334,116.594853341225"
-                    Point3="-243.833333333334,120.594853341225" />
+                    Point1="-387.33333333333,116.594853341225"
+                    Point2="-391.33333333333,116.594853341225"
+                    Point3="-391.33333333333,120.594853341225" />
                   <mssgle:LineSegment
-                    End="-243.833333333334,188.1944454758" />
+                    End="-391.33333333333,188.1944454758" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9954,30 +9942,18 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output1]"
-          TopLeft="388.916666666667,1328.71776825324">
+          TopLeft="390.333333333333,1328.71776825324">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="255.083333333333,401.03222814689"
+              EndConnector="0,246.657228913679"
               Start="0,0"
-              End="255.083333333333,393.53222814689">
+              End="0,239.157228913679">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,234.935212045522" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,234.935212045522"
-                    Point2="0,238.935212045522"
-                    Point3="4,238.935212045522" />
-                  <mssgle:LineSegment
-                    End="251.083333333333,238.935212045522" />
-                  <mssgle:CubicBezierSegment
-                    Point1="251.083333333333,238.935212045522"
-                    Point2="255.083333333333,238.935212045522"
-                    Point3="255.083333333333,242.935212045522" />
-                  <mssgle:LineSegment
-                    End="255.083333333333,393.53222814689" />
+                    End="0,239.157228913679" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9988,30 +9964,18 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Sort Output]"
-          TopLeft="921.500000000001,1615.63888335904">
+          TopLeft="837.500000000001,1595.50694026298">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-204.500000000001,114.11111304109"
+              EndConnector="-332.250000000001,0"
               Start="0,0"
-              End="-204.500000000001,106.61111304109">
+              End="-324.750000000001,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,63.9874610507282" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,63.9874610507282"
-                    Point2="0,67.9874610507282"
-                    Point3="-4,67.9874610507282" />
-                  <mssgle:LineSegment
-                    End="-200.500000000001,67.9874610507282" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-200.500000000001,67.9874610507282"
-                    Point2="-204.500000000001,67.9874610507282"
-                    Point3="-204.500000000001,71.9874610507282" />
-                  <mssgle:LineSegment
-                    End="-204.500000000001,106.61111304109" />
+                    End="-324.750000000001,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10114,18 +10078,18 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 3]"
-          TopLeft="912.416666666667,516.444442822977">
+          TopLeft="912.416666666667,490.715276284108">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,207.43749876103"
+              EndConnector="0,233.1666652999"
               Start="0,0"
-              End="0,199.93749876103">
+              End="0,225.6666652999">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,199.93749876103" />
+                    End="0,225.6666652999" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10158,30 +10122,30 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 2]"
-          TopLeft="850.416666666667,516.444442822977">
+          TopLeft="850.416666666667,490.715276284108">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-182.75,96.9027763527159"
+              EndConnector="-182.75,122.631942891585"
               Start="0,0"
-              End="-182.75,89.4027763527159">
+              End="-182.75,115.131942891585">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,28.9721135122228" />
+                    End="0,37.7267130358378" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,28.9721135122228"
-                    Point2="0,32.9721135122228"
-                    Point3="-4,32.9721135122228" />
+                    Point1="0,37.7267130358378"
+                    Point2="0,41.7267130358378"
+                    Point3="-4,41.7267130358378" />
                   <mssgle:LineSegment
-                    End="-178.75,32.9721135122228" />
+                    End="-178.75,41.7267130358378" />
                   <mssgle:CubicBezierSegment
-                    Point1="-178.75,32.9721135122228"
-                    Point2="-182.75,32.9721135122228"
-                    Point3="-182.75,36.9721135122228" />
+                    Point1="-178.75,41.7267130358378"
+                    Point2="-182.75,41.7267130358378"
+                    Point3="-182.75,45.7267130358378" />
                   <mssgle:LineSegment
-                    End="-182.75,89.4027763527159" />
+                    End="-182.75,115.131942891585" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10214,30 +10178,30 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Multicast Output 1]"
-          TopLeft="973.416666666667,516.444442822977">
+          TopLeft="973.416666666667,490.715276284108">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="228.059523809524,92.7103163044329"
+              EndConnector="228.059523809523,118.439482843302"
               Start="0,0"
-              End="228.059523809524,85.2103163044329">
+              End="228.059523809523,110.939482843302">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.5455881451447" />
+                    End="0,36.3001876687597" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,27.5455881451447"
-                    Point2="0,31.5455881451447"
-                    Point3="4,31.5455881451447" />
+                    Point1="0,36.3001876687597"
+                    Point2="0,40.3001876687597"
+                    Point3="4,40.3001876687597" />
                   <mssgle:LineSegment
-                    End="224.059523809524,31.5455881451447" />
+                    End="224.059523809523,40.3001876687597" />
                   <mssgle:CubicBezierSegment
-                    Point1="224.059523809524,31.5455881451447"
-                    Point2="228.059523809524,31.5455881451447"
-                    Point3="228.059523809524,35.5455881451447" />
+                    Point1="224.059523809523,40.3001876687597"
+                    Point2="228.059523809523,40.3001876687597"
+                    Point3="228.059523809523,44.3001876687597" />
                   <mssgle:LineSegment
-                    End="228.059523809524,85.2103163044329" />
+                    End="228.059523809523,110.939482843302" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10282,7 +10246,7 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output2]"
-          TopLeft="920.708333333333,1849.99999709427">
+          TopLeft="773.208333333333,1849.99999709427">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -10326,30 +10290,30 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Merge Join Output]"
-          TopLeft="680.5,1771.74999640013">
+          TopLeft="391.75,1617.37499716692">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="206.5,36.25000069414"
+              EndConnector="347.75,190.624999927351"
               Start="0,0"
-              End="206.5,28.75000069414">
+              End="347.75,183.124999927351">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,17.5977694424404" />
+                    End="0,109.574475022333" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,17.5977694424404"
-                    Point2="0,21.5977694424404"
-                    Point3="4,21.5977694424404" />
+                    Point1="0,109.574475022333"
+                    Point2="0,113.574475022333"
+                    Point3="4,113.574475022333" />
                   <mssgle:LineSegment
-                    End="202.5,21.5977694424404" />
+                    End="343.75,113.574475022333" />
                   <mssgle:CubicBezierSegment
-                    Point1="202.5,21.5977694424404"
-                    Point2="206.5,21.5977694424404"
-                    Point3="206.5,25.5977694424404" />
+                    Point1="343.75,113.574475022333"
+                    Point2="347.75,113.574475022333"
+                    Point3="347.75,117.574475022333" />
                   <mssgle:LineSegment
-                    End="206.5,28.75000069414" />
+                    End="347.75,183.124999927351" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10540,28 +10504,6 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output9]"
-          TopLeft="312.666666666668,1183.05110165652">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-50.0000000000009,0"
-              Start="0,0"
-              End="-42.5000000000009,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-42.5000000000009,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output8]"
           TopLeft="359.458333333334,867.527774622732">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -10574,6 +10516,28 @@ FROM raw.raw_delivery_partner;</property>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,63.1666661070444" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output8]"
+          TopLeft="312.666666666668,1183.05110165652">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-77.0000000000012,0"
+              Start="0,0"
+              End="-69.5000000000012,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-69.5000000000012,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10610,14 +10574,14 @@ FROM raw.raw_delivery_partner;</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,169.83333276295"
+              EndConnector="0,169.833332762949"
               Start="0,0"
-              End="0,162.33333276295">
+              End="0,162.333332762949">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,162.33333276295" />
+                    End="0,162.333332762949" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10628,18 +10592,18 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output5]"
-          TopLeft="1468.91666666667,1325.18055233683">
+          TopLeft="1474.66666666667,1325.18055233683">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,75.2777775123161"
+              EndConnector="0,75.27777751232"
               Start="0,0"
-              End="0,67.7777775123161">
+              End="0,67.77777751232">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,67.7777775123161" />
+                    End="0,67.77777751232" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10650,18 +10614,18 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output4]"
-          TopLeft="1198.83333333333,861.520829742878">
+          TopLeft="915.479166666667,272.388887744534">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,181.624999626021"
+              EndConnector="0,63.0833328113787"
               Start="0,0"
-              End="0,174.124999626021">
+              End="0,55.5833328113787">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,174.124999626021" />
+                    End="0,55.5833328113787" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10738,18 +10702,18 @@ FROM raw.raw_delivery_partner;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Partner to ODS Delivery Partner.Paths[Derived Column Output]"
-          TopLeft="915.479166666667,272.388887744534">
+          TopLeft="1198.83333333333,861.520829742878">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,63.0833328113787"
+              EndConnector="0,181.624999626021"
               Start="0,0"
-              End="0,55.5833328113787">
+              End="0,174.124999626021">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,55.5833328113787" />
+                    End="0,174.124999626021" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10867,7 +10831,7 @@ FROM raw.raw_delivery_partner;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid City">
+    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid City">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -10950,7 +10914,20 @@ FROM raw.raw_delivery_partner;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\OLE_DST - ETL Error Invalid Employment Type">
+    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Avg Rating Range">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Delivery Partner to ODS Delivery Partner\DST - ETL Error Invalid Employment Type">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
