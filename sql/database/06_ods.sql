@@ -197,7 +197,6 @@ CREATE TABLE ods.ods_order_item
     order_line_id		VARCHAR(50)     NOT NULL,
     order_id			VARCHAR(50)     NOT NULL,
     menu_item_id		VARCHAR(50)     NOT NULL,
-    restaurant_id		VARCHAR(50)     NOT NULL,
 
     quantity			INT             NULL,
 
