@@ -201,7 +201,7 @@ CREATE TABLE raw.raw_rating
         customer_id          VARCHAR(100) NULL,
         restaurant_id        VARCHAR(100) NULL,
         rating               VARCHAR(50) NULL,
-        review_text          VARCHAR(MAX) NULL,
+        review_text          VARCHAR(5000) NULL,
         review_timestamp     VARCHAR(100) NULL,
         sentiment_score      VARCHAR(50) NULL,
 

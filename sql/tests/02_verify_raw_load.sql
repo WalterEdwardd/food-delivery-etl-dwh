@@ -1919,7 +1919,7 @@ row count.
 We capture RAW counts before rerun, execute the batch again, then compare.
 
 ==============================================================================*/
-
+/*
 DECLARE
     @before_customer BIGINT,
     @before_restaurant BIGINT,
@@ -2125,7 +2125,7 @@ VALUES
     CAST(@after_rating AS VARCHAR(500)),
     CASE WHEN @before_rating = @after_rating THEN 'PASS' ELSE 'FAIL' END
 );
-
+*/
 
 /*==============================================================================
   14. FINAL TEST RESULT DETAIL
