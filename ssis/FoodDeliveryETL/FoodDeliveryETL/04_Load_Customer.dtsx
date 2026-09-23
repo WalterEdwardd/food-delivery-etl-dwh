@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Load_Customer"
   DTS:PackageType="5"
-  DTS:VersionBuild="86"
-  DTS:VersionGUID="{3E130B57-FFF0-4FC3-A707-C33A77529ACD}">
+  DTS:VersionBuild="90"
+  DTS:VersionGUID="{7E1144E8-EA9B-4786-9987-9998143561DF}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -100,7 +100,7 @@
                       refId="Package\DFT - RAW Customer to ODS Customer\CSPL - Validate Customer Required Fields.Inputs[Conditional Split Input].Columns[customer_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="50"
+                      cachedLength="100"
                       cachedName="customer_id_clean"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[customer_id_clean]" />
                   </inputColumns>
@@ -252,6 +252,86 @@
               </outputs>
             </component>
             <component
+              refId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="DC - Final Data Type Mapping"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Inputs[Data Conversion Input].Columns[customer_id_clean]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="customer_id_clean"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[customer_id_clean]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Output].Columns[customer_id_final]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Output].Columns[customer_id_final]"
+                      name="customer_id_final"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[customer_id_clean]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
               refId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings"
               componentClassID="Microsoft.DerivedColumn"
               contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
@@ -310,7 +390,7 @@
                       dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
-                      length="50"
+                      length="100"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[customer_id_clean]"
                       name="customer_id_clean"
                       truncationRowDisposition="FailComponent">
@@ -319,13 +399,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)[UPPER]([TRIM](#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]}))</property>
+                          name="Expression">(DT_STR,100,1252)[UPPER]([TRIM](#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]}))</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)UPPER(TRIM(customer_id))</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(customer_id))</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1225,7 +1305,7 @@
                       cachedDataType="i8"
                       cachedName="batch_id"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[batch_id]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[batch_id]" />
                     <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[source_file_name]"
                       cachedCodepage="1252"
@@ -1233,28 +1313,19 @@
                       cachedLength="200"
                       cachedName="source_file_name"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[source_file_name]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[source_file_name]" />
                     <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[source_row_number]"
                       cachedDataType="i4"
                       cachedName="source_row_number"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[source_row_number]" />
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[customer_id_final]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="customer_id_final"
-                      cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[customer_id]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[customer_id_final]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[source_row_number]" />
                     <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[signup_date_final]"
                       cachedDataType="dbDate"
                       cachedName="signup_date_final"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[signup_date]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[signup_date_final]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[signup_date_final]" />
                     <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[city_final]"
                       cachedCodepage="1252"
@@ -1262,7 +1333,7 @@
                       cachedLength="100"
                       cachedName="city_final"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[city]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[city_final]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[city_final]" />
                     <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[acquisition_channel_final]"
                       cachedCodepage="1252"
@@ -1270,7 +1341,15 @@
                       cachedLength="100"
                       cachedName="acquisition_channel_final"
                       externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[acquisition_channel]"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[acquisition_channel_final]" />
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[acquisition_channel_final]" />
+                    <inputColumn
+                      refId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].Columns[customer_id_final]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="customer_id_final"
+                      externalMetadataColumnId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input].ExternalColumns[customer_id]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Output].Columns[customer_id_final]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1462,13 +1541,13 @@ where [refTable].[acquisition_channel_code] = ?</property>
                   synchronousInputId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Outputs[Lookup Match Output].Columns[lookup_acquisition_channel_name]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Outputs[Lookup Match Output].Columns[lkp_acquisition_channel_name]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Copy Column"
                       length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Outputs[Lookup Match Output].Columns[lookup_acquisition_channel_name]"
-                      name="lookup_acquisition_channel_name"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Outputs[Lookup Match Output].Columns[lkp_acquisition_channel_name]"
+                      name="lkp_acquisition_channel_name"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
@@ -1631,13 +1710,13 @@ where [refTable].[city_code] = ?</property>
                   synchronousInputId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Inputs[Lookup Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Outputs[Lookup Match Output].Columns[lookup_city_name]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Outputs[Lookup Match Output].Columns[lkp_city_name]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Copy Column"
                       length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Outputs[Lookup Match Output].Columns[lookup_city_name]"
-                      name="lookup_city_name"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Outputs[Lookup Match Output].Columns[lkp_city_name]"
+                      name="lkp_city_name"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
@@ -1682,11 +1761,11 @@ where [refTable].[city_code] = ?</property>
               </outputs>
             </component>
             <component
-              refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups"
+              refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
-              name="MJ - Combine Valid Lookups"
+              name="MRG - Join All Valid Fields"
               version="1">
               <properties>
                 <property
@@ -1709,44 +1788,44 @@ where [refTable].[city_code] = ?</property>
               </properties>
               <inputs>
                 <input
-                  refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input]"
+                  refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[signup_date_typed]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[signup_date_typed]"
                       cachedDataType="dbDate"
                       cachedName="signup_date_typed"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[signup_date_typed]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[lookup_city_name]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[lkp_city_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="lookup_city_name"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[lookup_city_name]" />
+                      cachedName="lkp_city_name"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[lkp_city_name]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[batch_id]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[batch_id]"
                       cachedDataType="i8"
                       cachedName="batch_id"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[batch_id]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[source_file_name]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[source_file_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="200"
                       cachedName="source_file_name"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[source_file_name]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[source_row_number]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[source_row_number]"
                       cachedDataType="i4"
                       cachedName="source_row_number"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[source_row_number]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[customer_id_clean]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[customer_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="50"
+                      cachedLength="100"
                       cachedName="customer_id_clean"
                       cachedSortKeyPosition="1"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[customer_id_clean]" />
@@ -1754,22 +1833,22 @@ where [refTable].[city_code] = ?</property>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Right Input]"
+                  refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Right Input].Columns[lookup_acquisition_channel_name]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Right Input].Columns[lkp_acquisition_channel_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="lookup_acquisition_channel_name"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[lookup_acquisition_channel_name]" />
+                      cachedName="lkp_acquisition_channel_name"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[lkp_acquisition_channel_name]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Right Input].Columns[customer_id_clean]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Right Input].Columns[customer_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="50"
+                      cachedLength="100"
                       cachedName="customer_id_clean"
                       cachedSortKeyPosition="1"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[customer_id_clean]" />
@@ -1779,108 +1858,108 @@ where [refTable].[city_code] = ?</property>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output]"
+                  refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[signup_date_final]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[signup_date_final]"
                       dataType="dbDate"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[signup_date_final]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[signup_date_final]"
                       name="signup_date_final">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[signup_date_typed]}</property>
+                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[signup_date_typed]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[city_final]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[city_final]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[city_final]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[city_final]"
                       name="city_final">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[lookup_city_name]}</property>
+                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[lkp_city_name]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[acquisition_channel_final]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[acquisition_channel_final]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[acquisition_channel_final]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[acquisition_channel_final]"
                       name="acquisition_channel_final">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Right Input].Columns[lookup_acquisition_channel_name]}</property>
+                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Right Input].Columns[lkp_acquisition_channel_name]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[batch_id]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[batch_id]"
                       dataType="i8"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[batch_id]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[batch_id]"
                       name="batch_id">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[batch_id]}</property>
+                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[batch_id]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[source_file_name]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[source_file_name]"
                       codePage="1252"
                       dataType="str"
                       length="200"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[source_file_name]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[source_file_name]"
                       name="source_file_name">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[source_file_name]}</property>
+                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[source_file_name]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[source_row_number]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[source_row_number]"
                       dataType="i4"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[source_row_number]"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[source_row_number]"
                       name="source_row_number">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[source_row_number]}</property>
+                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[source_row_number]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[customer_id_final]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[customer_id_clean]"
                       codePage="1252"
                       dataType="str"
-                      length="50"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output].Columns[customer_id_final]"
-                      name="customer_id_final"
+                      length="100"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output].Columns[customer_id_clean]"
+                      name="customer_id_clean"
                       sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input].Columns[customer_id_clean]}</property>
+                          name="InputColumnID">#{Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input].Columns[customer_id_clean]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -3066,132 +3145,10 @@ FROM raw.raw_customer;</property>
                   name="Sort Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[customer_id]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="customer_id"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[signup_date]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="signup_date"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[signup_date]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[city]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="city"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[city]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[acquisition_channel]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="acquisition_channel"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[acquisition_channel]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[batch_id]"
-                      cachedDataType="i8"
-                      cachedName="batch_id"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[batch_id]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[source_file_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="200"
-                      cachedName="source_file_name"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[source_file_name]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[source_row_number]"
-                      cachedDataType="i4"
-                      cachedName="source_row_number"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[source_row_number]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[customer_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="50"
+                      cachedLength="100"
                       cachedName="customer_id_clean"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[customer_id_clean]">
                       <properties>
@@ -3206,82 +3163,12 @@ FROM raw.raw_customer;</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[city_clean]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[lkp_acquisition_channel_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="city_clean"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[city_clean]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[acquisition_channel_clean]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="acquisition_channel_clean"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[acquisition_channel_clean]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[signup_date_clean]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="signup_date_clean"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[signup_date_clean]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[signup_date_typed]"
-                      cachedDataType="dbDate"
-                      cachedName="signup_date_typed"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Singup Date Format.Outputs[Data Conversion Output].Columns[signup_date_typed]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Inputs[Sort Input].Columns[lookup_acquisition_channel_name]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="lookup_acquisition_channel_name"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Outputs[Lookup Match Output].Columns[lookup_acquisition_channel_name]">
+                      cachedName="lkp_acquisition_channel_name"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Outputs[Lookup Match Output].Columns[lkp_acquisition_channel_name]">
                       <properties>
                         <property
                           dataType="System.Int32"
@@ -3304,111 +3191,10 @@ FROM raw.raw_customer;</property>
                   name="Sort Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[customer_id]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[customer_id]"
-                      name="customer_id">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[signup_date]"
-                      codePage="1252"
-                      dataType="str"
-                      length="50"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[signup_date]"
-                      name="signup_date">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[signup_date]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[city]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[city]"
-                      name="city">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[city]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[acquisition_channel]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[acquisition_channel]"
-                      name="acquisition_channel">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[acquisition_channel]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[batch_id]"
-                      dataType="i8"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[batch_id]"
-                      name="batch_id">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[batch_id]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[source_file_name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="200"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[source_file_name]"
-                      name="source_file_name">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[source_file_name]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[source_row_number]"
-                      dataType="i4"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[source_row_number]"
-                      name="source_row_number">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[source_row_number]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[customer_id_clean]"
                       codePage="1252"
                       dataType="str"
-                      length="50"
+                      length="100"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[customer_id_clean]"
                       name="customer_id_clean"
                       sortKeyPosition="1">
@@ -3421,76 +3207,18 @@ FROM raw.raw_customer;</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[city_clean]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[lkp_acquisition_channel_name]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[city_clean]"
-                      name="city_clean">
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[lkp_acquisition_channel_name]"
+                      name="lkp_acquisition_channel_name">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[city_clean]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[acquisition_channel_clean]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[acquisition_channel_clean]"
-                      name="acquisition_channel_clean">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[acquisition_channel_clean]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[signup_date_clean]"
-                      codePage="1252"
-                      dataType="str"
-                      length="50"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[signup_date_clean]"
-                      name="signup_date_clean">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[signup_date_clean]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[signup_date_typed]"
-                      dataType="dbDate"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[signup_date_typed]"
-                      name="signup_date_typed">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\DC - Convert Singup Date Format.Outputs[Data Conversion Output].Columns[signup_date_typed]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[lookup_acquisition_channel_name]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output].Columns[lookup_acquisition_channel_name]"
-                      name="lookup_acquisition_channel_name">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Outputs[Lookup Match Output].Columns[lookup_acquisition_channel_name]}</property>
+                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Outputs[Lookup Match Output].Columns[lkp_acquisition_channel_name]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -3521,78 +3249,6 @@ FROM raw.raw_customer;</property>
                   refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input]"
                   name="Sort Input">
                   <inputColumns>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[customer_id]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="customer_id"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[signup_date]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="signup_date"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[signup_date]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[city]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="city"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[city]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[acquisition_channel]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="acquisition_channel"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[acquisition_channel]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
                     <inputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[batch_id]"
                       cachedDataType="i8"
@@ -3647,7 +3303,7 @@ FROM raw.raw_customer;</property>
                       refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[customer_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
-                      cachedLength="50"
+                      cachedLength="100"
                       cachedName="customer_id_clean"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[customer_id_clean]">
                       <properties>
@@ -3659,60 +3315,6 @@ FROM raw.raw_customer;</property>
                           dataType="System.Int32"
                           description="Specifies the sort order of the column."
                           name="NewSortKeyPosition">1</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[city_clean]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="city_clean"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[city_clean]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[acquisition_channel_clean]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="100"
-                      cachedName="acquisition_channel_clean"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[acquisition_channel_clean]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
-                      </properties>
-                    </inputColumn>
-                    <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[signup_date_clean]"
-                      cachedCodepage="1252"
-                      cachedDataType="str"
-                      cachedLength="50"
-                      cachedName="signup_date_clean"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[signup_date_clean]">
-                      <properties>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the comparison options for character data."
-                          name="NewComparisonFlags">0</property>
-                        <property
-                          dataType="System.Int32"
-                          description="Specifies the sort order of the column."
-                          name="NewSortKeyPosition">0</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
@@ -3732,12 +3334,12 @@ FROM raw.raw_customer;</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[lookup_city_name]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Inputs[Sort Input].Columns[lkp_city_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="lookup_city_name"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Outputs[Lookup Match Output].Columns[lookup_city_name]">
+                      cachedName="lkp_city_name"
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Outputs[Lookup Match Output].Columns[lkp_city_name]">
                       <properties>
                         <property
                           dataType="System.Int32"
@@ -3759,66 +3361,6 @@ FROM raw.raw_customer;</property>
                   isSorted="true"
                   name="Sort Output">
                   <outputColumns>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[customer_id]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[customer_id]"
-                      name="customer_id">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[customer_id]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[signup_date]"
-                      codePage="1252"
-                      dataType="str"
-                      length="50"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[signup_date]"
-                      name="signup_date">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[signup_date]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[city]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[city]"
-                      name="city">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[city]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[acquisition_channel]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[acquisition_channel]"
-                      name="acquisition_channel">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer.Outputs[OLE DB Source Output].Columns[acquisition_channel]}</property>
-                      </properties>
-                    </outputColumn>
                     <outputColumn
                       refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[batch_id]"
                       dataType="i8"
@@ -3864,7 +3406,7 @@ FROM raw.raw_customer;</property>
                       refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[customer_id_clean]"
                       codePage="1252"
                       dataType="str"
-                      length="50"
+                      length="100"
                       lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[customer_id_clean]"
                       name="customer_id_clean"
                       sortKeyPosition="1">
@@ -3874,51 +3416,6 @@ FROM raw.raw_customer;</property>
                           dataType="System.Int32"
                           description="Specifies the lineage identifier of the input column that is associated with this output column."
                           name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[customer_id_clean]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[city_clean]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[city_clean]"
-                      name="city_clean">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[city_clean]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[acquisition_channel_clean]"
-                      codePage="1252"
-                      dataType="str"
-                      length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[acquisition_channel_clean]"
-                      name="acquisition_channel_clean">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[acquisition_channel_clean]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[signup_date_clean]"
-                      codePage="1252"
-                      dataType="str"
-                      length="50"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[signup_date_clean]"
-                      name="signup_date_clean">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings.Outputs[Derived Column Output].Columns[signup_date_clean]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3935,18 +3432,18 @@ FROM raw.raw_customer;</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[lookup_city_name]"
+                      refId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[lkp_city_name]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[lookup_city_name]"
-                      name="lookup_city_name">
+                      lineageId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output].Columns[lkp_city_name]"
+                      name="lkp_city_name">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Outputs[Lookup Match Output].Columns[lookup_city_name]}</property>
+                          name="SortColumnId">#{Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Outputs[Lookup Match Output].Columns[lkp_city_name]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -3961,6 +3458,11 @@ FROM raw.raw_customer;</property>
               endId="Package\DFT - RAW Customer to ODS Customer\DRV - Error Convert Signup Date Format.Inputs[Derived Column Input]"
               name="Data Conversion Error Output"
               startId="Package\DFT - RAW Customer to ODS Customer\DC - Convert Singup Date Format.Outputs[Data Conversion Error Output]" />
+            <path
+              refId="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output1]"
+              endId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Outputs[Data Conversion Output]" />
             <path
               refId="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output]"
               endId="Package\DFT - RAW Customer to ODS Customer\Multicast.Inputs[Multicast Input 1]"
@@ -4013,9 +3515,9 @@ FROM raw.raw_customer;</property>
               startId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\DFT - RAW Customer to ODS Customer.Paths[Merge Join Output]"
-              endId="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer.Inputs[OLE DB Destination Input]"
+              endId="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping.Inputs[Data Conversion Input]"
               name="Merge Join Output"
-              startId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Outputs[Merge Join Output]" />
+              startId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Outputs[Merge Join Output]" />
             <path
               refId="Package\DFT - RAW Customer to ODS Customer.Paths[Multicast Output 1]"
               endId="Package\DFT - RAW Customer to ODS Customer\LKP - Valid City.Inputs[Lookup Input]"
@@ -4038,12 +3540,12 @@ FROM raw.raw_customer;</property>
               startId="Package\DFT - RAW Customer to ODS Customer\CSPL - Validate Customer Required Fields.Outputs[REJECT_MISSING_CUSTOMER_ID]" />
             <path
               refId="Package\DFT - RAW Customer to ODS Customer.Paths[Sort Output]"
-              endId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Left Input]"
+              endId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Customer to ODS Customer\Sort - City.Outputs[Sort Output]" />
             <path
               refId="Package\DFT - RAW Customer to ODS Customer.Paths[Sort Output1]"
-              endId="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups.Inputs[Merge Join Right Input]"
+              endId="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel.Outputs[Sort Output]" />
             <path
@@ -4056,13 +3558,13 @@ FROM raw.raw_customer;</property>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Execute SQL Task"
+      DTS:refId="Package\SQL - Truncate ODS Customer"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{ABF0FCFD-B7C8-4771-A8CF-5D2F0412EF1E}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Execute SQL Task"
+      DTS:ObjectName="SQL - Truncate ODS Customer"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
@@ -4078,7 +3580,7 @@ FROM raw.raw_customer;</property>
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
       DTS:DTSID="{3500F04E-46FC-4A33-99FF-E82641FCB6EF}"
-      DTS:From="Package\Execute SQL Task"
+      DTS:From="Package\SQL - Truncate ODS Customer"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
       DTS:To="Package\DFT - RAW Customer to ODS Customer" />
@@ -4100,12 +3602,12 @@ FROM raw.raw_customer;</property>
           Id="Package\DFT - RAW Customer to ODS Customer"
           TopLeft="104,174.958332464306" />
         <NodeLayout
-          Size="166.5,42"
-          Id="Package\Execute SQL Task"
-          TopLeft="155,92.6249995399266" />
+          Size="224.5,42"
+          Id="Package\SQL - Truncate ODS Customer"
+          TopLeft="120.5,92.6249995399266" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="237.75,134.624999539927">
+          TopLeft="235,134.624999539927">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4134,84 +3636,84 @@ FROM raw.raw_customer;</property>
       <GraphLayout
         Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="213,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\MJ - Combine Valid Lookups"
-          TopLeft="725.333333333333,953.847219638457" />
-        <NodeLayout
-          Size="188,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid City"
-          TopLeft="365.666666666667,750.319442163808" />
-        <NodeLayout
-          Size="125.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\Sort - City"
-          TopLeft="619.166666666667,858.694442333308" />
-        <NodeLayout
-          Size="310,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Invalid Acquisition Channel"
-          TopLeft="1175,860.166662781603" />
-        <NodeLayout
-          Size="235.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Invalid City"
-          TopLeft="341.833333333333,860.374997489775" />
-        <NodeLayout
-          Size="317.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Convert Signup Date Format"
-          TopLeft="1023.16666666667,631.465274815103" />
-        <NodeLayout
-          Size="221.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings"
-          TopLeft="721.333333333333,326.708331780923" />
-        <NodeLayout
-          Size="180,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer"
-          TopLeft="738.333333333333,1062.59721880441" />
-        <NodeLayout
-          Size="210,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer"
-          TopLeft="721.333333333333,228.666665601234" />
-        <NodeLayout
-          Size="200.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel"
-          TopLeft="920.666666666667,859.236108997284" />
-        <NodeLayout
-          Size="227,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel"
-          TopLeft="908.166666666666,742.865558370018" />
-        <NodeLayout
-          Size="269.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Error Convert Signup Date Format"
-          TopLeft="1043.33333333333,524.597219686887" />
-        <NodeLayout
-          Size="281.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Missing Customer ID"
-          TopLeft="334.571428571428,525.261902237459" />
-        <NodeLayout
-          Size="236.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DC - Convert Singup Date Format"
-          TopLeft="710,526.402775233473" />
-        <NodeLayout
-          Size="233.5,42"
-          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID"
-          TopLeft="358.595238095237,423.434521776669" />
+          Size="203.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\MRG - Join All Valid Fields"
+          TopLeft="486.333333333333,933.263886407362" />
         <NodeLayout
           Size="262.5,42"
           Id="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid Acquisition Channel"
-          TopLeft="1192.5,743.611107487921" />
+          TopLeft="948.5,720.861107600921" />
+        <NodeLayout
+          Size="125.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\Sort - City"
+          TopLeft="375.166666666667,835.944442446308" />
+        <NodeLayout
+          Size="317.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Convert Signup Date Format"
+          TopLeft="779.16666666667,608.715274928103" />
+        <NodeLayout
+          Size="310,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Invalid Acquisition Channel"
+          TopLeft="931,837.416662894603" />
+        <NodeLayout
+          Size="235.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Invalid City"
+          TopLeft="97.833333333333,837.624997602775" />
+        <NodeLayout
+          Size="221.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Clean Customer Strings"
+          TopLeft="477.333333333333,303.958331893923" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DST - ODS Customer"
+          TopLeft="499.333333333333,1157.01388505674" />
+        <NodeLayout
+          Size="210,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\OLE_SRC - RAW Customer"
+          TopLeft="477.333333333333,205.916665714234" />
+        <NodeLayout
+          Size="200.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\Sort - Acquisition Channel"
+          TopLeft="676.666666666667,836.486109110284" />
+        <NodeLayout
+          Size="227,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\LKP - Valid Acquisition Channel"
+          TopLeft="664.166666666666,720.115558483018" />
+        <NodeLayout
+          Size="188,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Error Invalid City"
+          TopLeft="121.666666666667,727.569442276808" />
+        <NodeLayout
+          Size="281.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Missing Customer ID"
+          TopLeft="90.571428571428,502.51190235046" />
+        <NodeLayout
+          Size="236.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DC - Convert Singup Date Format"
+          TopLeft="466,503.652775346474" />
+        <NodeLayout
+          Size="233.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Error Missing Customer ID"
+          TopLeft="114.595238095237,400.684521889669" />
+        <NodeLayout
+          Size="269.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DRV - Error Convert Signup Date Format"
+          TopLeft="799.33333333333,501.847219799888" />
         <NodeLayout
           Size="152.5,42"
           Id="Package\DFT - RAW Customer to ODS Customer\LKP - Valid City"
-          TopLeft="601,746.999997374084" />
+          TopLeft="357,724.249997487084" />
         <NodeLayout
           Size="278.5,42"
           Id="Package\DFT - RAW Customer to ODS Customer\CSPL - Validate Customer Required Fields"
-          TopLeft="687.666666666666,424.208331296634" />
+          TopLeft="443.666666666666,401.458331409634" />
         <NodeLayout
           Size="120.5,42"
           Id="Package\DFT - RAW Customer to ODS Customer\Multicast"
-          TopLeft="772.333333333334,630.88888601186" />
+          TopLeft="528.333333333334,608.13888612486" />
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[VALID_REQUIRED_FIELDS]"
-          TopLeft="827.583333333333,466.208331296634">
+          TopLeft="583.583333333333,443.458331409634">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4235,30 +3737,30 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Sort Output1]"
-          TopLeft="1020.91666666667,901.236108997284">
+          TopLeft="776.916666666667,878.486109110284">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-154.916666666667,52.611110641173"
+              EndConnector="-156.250000000001,54.7777772970776"
               Start="0,0"
-              End="-154.916666666667,45.111110641173">
+              End="-156.250000000001,47.2777772970776">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.3313137928328" />
+                    End="0,28.6102711261491" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,27.3313137928328"
-                    Point2="0,31.3313137928328"
-                    Point3="-4,31.3313137928328" />
+                    Point1="0,28.6102711261491"
+                    Point2="0,32.6102711261491"
+                    Point3="-4,32.6102711261491" />
                   <mssgle:LineSegment
-                    End="-150.916666666667,31.3313137928328" />
+                    End="-152.250000000001,32.6102711261491" />
                   <mssgle:CubicBezierSegment
-                    Point1="-150.916666666667,31.3313137928328"
-                    Point2="-154.916666666667,31.3313137928328"
-                    Point3="-154.916666666667,35.3313137928328" />
+                    Point1="-152.250000000001,32.6102711261491"
+                    Point2="-156.250000000001,32.6102711261491"
+                    Point3="-156.250000000001,36.6102711261491" />
                   <mssgle:LineSegment
-                    End="-154.916666666667,45.111110641173" />
+                    End="-156.250000000001,47.2777772970776" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -4269,30 +3771,30 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Sort Output]"
-          TopLeft="681.916666666667,900.694442333308">
+          TopLeft="437.916666666667,877.944442446308">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="115.749999999999,53.152777305149"
+              EndConnector="117.583333333333,55.3194439610536"
               Start="0,0"
-              End="115.749999999999,45.652777305149">
+              End="117.583333333333,47.8194439610536">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.6538906784625" />
+                    End="0,28.9327357759368" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,27.6538906784625"
-                    Point2="0,31.6538906784625"
-                    Point3="4,31.6538906784625" />
+                    Point1="0,28.9327357759368"
+                    Point2="0,32.9327357759368"
+                    Point3="4,32.9327357759368" />
                   <mssgle:LineSegment
-                    End="111.749999999999,31.6538906784625" />
+                    End="113.583333333333,32.9327357759368" />
                   <mssgle:CubicBezierSegment
-                    Point1="111.749999999999,31.6538906784625"
-                    Point2="115.749999999999,31.6538906784625"
-                    Point3="115.749999999999,35.6538906784625" />
+                    Point1="113.583333333333,32.9327357759368"
+                    Point2="117.583333333333,32.9327357759368"
+                    Point3="117.583333333333,36.9327357759368" />
                   <mssgle:LineSegment
-                    End="115.749999999999,45.652777305149" />
+                    End="117.583333333333,47.8194439610536" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -4303,7 +3805,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[REJECT_MISSING_CUSTOMER_ID]"
-          TopLeft="687.666666666666,444.821426536651">
+          TopLeft="443.666666666666,422.071426649651">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4327,7 +3829,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[OLE DB Source Output]"
-          TopLeft="829.208333333333,270.666665601234">
+          TopLeft="585.208333333333,247.916665714234">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4349,7 +3851,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Multicast Output 2]"
-          TopLeft="851.333333333334,672.88888601186">
+          TopLeft="607.333333333334,650.13888612486">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4360,17 +3862,17 @@ FROM raw.raw_customer;</property>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,31.2540372185693" />
+                    End="0,31.2540372185694" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,31.2540372185693"
-                    Point2="0,35.2540372185693"
-                    Point3="4,35.2540372185693" />
+                    Point1="0,31.2540372185694"
+                    Point2="0,35.2540372185694"
+                    Point3="4,35.2540372185694" />
                   <mssgle:LineSegment
-                    End="129.833333333332,35.2540372185693" />
+                    End="129.833333333332,35.2540372185694" />
                   <mssgle:CubicBezierSegment
-                    Point1="129.833333333332,35.2540372185693"
-                    Point2="133.833333333332,35.2540372185693"
-                    Point3="133.833333333332,39.2540372185693" />
+                    Point1="129.833333333332,35.2540372185694"
+                    Point2="133.833333333332,35.2540372185694"
+                    Point3="133.833333333332,39.2540372185694" />
                   <mssgle:LineSegment
                     End="133.833333333332,62.476672358158" />
                 </mssgle:SegmentCollection>
@@ -4383,7 +3885,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Multicast Output 1]"
-          TopLeft="813.833333333334,672.88888601186">
+          TopLeft="569.833333333334,650.13888612486">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4416,30 +3918,8 @@ FROM raw.raw_customer;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Merge Join Output]"
-          TopLeft="830.083333333333,995.847219638457">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,66.749999165953"
-              Start="0,0"
-              End="0,59.249999165953">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,59.249999165953" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Lookup No Match Output1]"
-          TopLeft="601,769.659719768946">
+          TopLeft="357,746.909719881946">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4463,7 +3943,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Lookup No Match Output]"
-          TopLeft="1135.16666666667,764.23833292897">
+          TopLeft="891.16666666667,741.48833304197">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4487,7 +3967,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Lookup Match Output1]"
-          TopLeft="1021.29166666667,784.865558370018">
+          TopLeft="777.29166666667,762.115558483018">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4511,7 +3991,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Lookup Match Output]"
-          TopLeft="679.583333333333,788.999997374084">
+          TopLeft="435.583333333333,766.249997487084">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4535,7 +4015,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output4]"
-          TopLeft="475.333333333332,465.434521776669">
+          TopLeft="231.333333333332,442.684521889669">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4557,7 +4037,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output3]"
-          TopLeft="829.5,368.708331780923">
+          TopLeft="585.5,345.958331893923">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4579,7 +4059,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output2]"
-          TopLeft="1326.875,785.611107487921">
+          TopLeft="1082.875,762.861107600921">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4601,7 +4081,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output1]"
-          TopLeft="1180,566.597219686887">
+          TopLeft="936,543.847219799887">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4623,7 +4103,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Derived Column Output]"
-          TopLeft="459.625,792.319442163808">
+          TopLeft="215.625,769.569442276808">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4645,7 +4125,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output]"
-          TopLeft="830.416666666667,568.402775233473">
+          TopLeft="586.416666666667,545.652775346473">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4667,7 +4147,7 @@ FROM raw.raw_customer;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Error Output]"
-          TopLeft="946.5,546.49999746018">
+          TopLeft="702.5,523.749997573181">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4689,9 +4169,70 @@ FROM raw.raw_customer;</property>
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="220.5,42"
+          Id="Package\DFT - RAW Customer to ODS Customer\DC - Final Data Type Mapping"
+          TopLeft="484,1042.58333084194" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Merge Join Output]"
+          TopLeft="591.166666666667,975.263886407362">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,67.31944443458"
+              Start="0,0"
+              End="0,59.81944443458">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,59.81944443458" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Customer to ODS Customer.Paths[Data Conversion Output1]"
+          TopLeft="591.791666666667,1084.58333084194">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,72.4305542147995"
+              Start="0,0"
+              End="0,64.9305542147995">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,64.9305542147995" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Convert Signup Date Format">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Invalid Acquisition Channel">
     <Properties>
@@ -4707,19 +4248,6 @@ FROM raw.raw_customer;</property>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Invalid City">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Customer to ODS Customer\OLE_DST - ETL Error Convert Signup Date Format">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -4758,7 +4286,7 @@ FROM raw.raw_customer;</property>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -4768,7 +4296,7 @@ FROM raw.raw_customer;</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:string">0</Value>
+          type="q4:int">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -4794,7 +4322,7 @@ FROM raw.raw_customer;</property>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -4804,7 +4332,7 @@ FROM raw.raw_customer;</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:string">0</Value>
+          type="q4:int">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
