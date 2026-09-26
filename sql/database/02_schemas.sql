@@ -95,6 +95,16 @@ BEGIN
 END;
 GO
 
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.schemas
+    WHERE name = N'temp'
+)
+BEGIN
+    EXEC(N'CREATE SCHEMA temp');
+END;
+GO
+
 -- 3. VERIFY SCHEMAS
 
 USE FoodDeliveryDW;
@@ -112,7 +122,8 @@ WHERE name IN
     N'dwh',
     N'mart',
     N'control',
-	N'ref'
+	N'ref',
+    N'temp'
 )
 ORDER BY
     name;
@@ -138,7 +149,8 @@ WHERE s.name IN
     N'dwh',
     N'mart',
     N'control',
-	N'ref'
+	N'ref',
+    N'temp'
 )
 GROUP BY
     s.name
