@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/17/2026 11:19:40 AM"
@@ -9,10 +9,10 @@
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="16.0.5685.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="05_Load_Order"
+  DTS:ObjectName="06_Load_Order"
   DTS:PackageType="5"
-  DTS:VersionBuild="87"
-  DTS:VersionGUID="{CA40B5AC-B8BC-4F9A-8B1C-3A7DFA2C3531}">
+  DTS:VersionBuild="92"
+  DTS:VersionGUID="{866F51E8-75A1-4511-9D78-196E923F22E5}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -99,10 +99,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Delivery Fee Range.Outputs[REJECTED_INVALID_DELIVERY_FEE_RANGE]"
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Delivery Fee Range.Outputs[INVALID_DELIVERY_FEE_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_DELIVERY_FEE_RANGE"
+                  name="INVALID_DELIVERY_FEE_RANGE"
                   synchronousInputId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Delivery Fee Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -270,7 +270,7 @@
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">is_cancelled_typed ==  TRUE </property>
+                      name="FriendlyExpression">is_cancelled_final ==  TRUE </property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -370,10 +370,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Discount Amount Range.Outputs[REJECTED_INVALID_DISCOUNT_AMOUNT_RANGE]"
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Discount Amount Range.Outputs[INVALID_DISCOUNT_AMOUNT_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_DISCOUNT_AMOUNT_RANGE"
+                  name="INVALID_DISCOUNT_AMOUNT_RANGE"
                   synchronousInputId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Discount Amount Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -552,10 +552,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Total Amount Range.Outputs[REJECTED_INVALID_TOTAL_AMOUNT_RANGE]"
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Total Amount Range.Outputs[INVALID_TOTAL_AMOUNT_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_TOTAL_AMOUNT_RANGE"
+                  name="INVALID_TOTAL_AMOUNT_RANGE"
                   synchronousInputId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Total Amount Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -643,10 +643,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCancelled Status.Outputs[REJECTED_INVALID_IS_CANCELLED]"
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCancelled Status.Outputs[INVALID_IS_CANCELLED]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_IS_CANCELLED"
+                  name="INVALID_IS_CANCELLED"
                   synchronousInputId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCancelled Status.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -734,10 +734,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCOD Status.Outputs[REJECTED_INVALID_IS_COD]"
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCOD Status.Outputs[INVALID_IS_COD]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_IS_COD"
+                  name="INVALID_IS_COD"
                   synchronousInputId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCOD Status.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -797,12 +797,12 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[REJECT_MISSING_ORDER_ID]"
+                  refId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="REJECT_MISSING_ORDER_ID"
+                  name="INVALID_REQUIRED_FIELD"
                   synchronousInputId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
@@ -2099,13 +2099,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"delivery_fee could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"delivery_fee could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_fee could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_fee could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2279,13 +2279,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"discount_amount could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"discount_amount could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"discount_amount could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"discount_amount could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2459,13 +2459,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"order_timestamp could not be converted to DATETIME"</property>
+                          name="Expression">(DT_STR,100,1252)"order_timestamp could not be converted to datetime"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"order_timestamp could not be converted to DATETIME"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"order_timestamp could not be converted to datetime"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2639,13 +2639,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"subtotal_amount could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"subtotal_amount could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"subtotal_amount could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"subtotal_amount could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2819,13 +2819,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"total_amount could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"total_amount could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"total_amount could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"total_amount could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3179,13 +3179,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"delivery_fee NOT in range 0 - 1000"</property>
+                          name="Expression">(DT_STR,100,1252)"delivery_fee not in range 0 - 1000"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_fee NOT in range 0 - 1000"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_fee not in range 0 - 1000"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3539,13 +3539,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"discount_amount NOT in range 0 - 2500"</property>
+                          name="Expression">(DT_STR,100,1252)"discount_amount not in range 0 - 2500"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"discount_amount NOT in range 0 - 2500"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"discount_amount not in range 0 - 2500"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3719,13 +3719,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"is_cancelled could not be converted to BOOLEAN"</property>
+                          name="Expression">(DT_STR,100,1252)"is_cancelled could not be converted to boolean"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"is_cancelled could not be converted to BOOLEAN"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"is_cancelled could not be converted to boolean"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3899,13 +3899,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"is_cod could not be converted to BOOLEAN"</property>
+                          name="Expression">(DT_STR,100,1252)"is_cod could not be converted to boolean"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"is_cod could not be converted to BOOLEAN"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"is_cod could not be converted to boolean"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4259,13 +4259,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"subtotal_amount NOT in range 0 - 5000"</property>
+                          name="Expression">(DT_STR,100,1252)"subtotal_amount not in range 0 - 5000"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"subtotal_amount NOT in range 0 - 5000"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"subtotal_amount not in range 0 - 5000"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4439,13 +4439,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"total_amount NOT in range 0 - 5000"</property>
+                          name="Expression">(DT_STR,100,1252)"total_amount not in range 0 - 5000"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"total_amount NOT in range 0 - 5000"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"total_amount not in range 0 - 5000"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4595,13 +4595,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                          name="Expression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4619,13 +4619,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"delivery_partner_id is NULL or empty"</property>
+                          name="Expression">(DT_STR,100,1252)"delivery_partner_id is null or empty"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_partner_id is NULL or empty"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_partner_id is null or empty"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4775,13 +4775,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                          name="Expression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4799,13 +4799,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"order_id is NULL or empty"</property>
+                          name="Expression">(DT_STR,100,1252)"order_id is null or empty"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"order_id is NULL or empty"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"order_id is null or empty"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -8332,7 +8332,7 @@
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[ods].[ods_order]</property>
+                  name="OpenRowset">[temp].[ods_order]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -14390,7 +14390,8 @@ where [refTable].[restaurant_id] = ?</property>
 	batch_id,
 	source_file_name,
 	source_row_number
-FROM raw.raw_order;</property>
+FROM raw.raw_order
+WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_ORDER' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_order));</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -15596,9 +15597,9 @@ FROM raw.raw_order;</property>
               startId="Package\DFT - RAW Order to ODS Order\DC - Convert Order Timestamp Format.Outputs[Data Conversion Error Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output5]"
-              endId="Package\DFT - RAW Order to ODS Order\CSPL - Valid SubTotal Amount Range.Inputs[Conditional Split Input]"
+              endId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Discount Amount Range.Inputs[Conditional Split Input]"
               name="Data Conversion Output"
-              startId="Package\DFT - RAW Order to ODS Order\DC - Convert SubTotal Amount Format.Outputs[Data Conversion Output]" />
+              startId="Package\DFT - RAW Order to ODS Order\DC - Convert Discount Amount Format.Outputs[Data Conversion Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output3]"
               endId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Delivery Fee Range.Inputs[Conditional Split Input]"
@@ -15606,9 +15607,9 @@ FROM raw.raw_order;</property>
               startId="Package\DFT - RAW Order to ODS Order\DC - Convert Delivery Fee Format.Outputs[Data Conversion Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output4]"
-              endId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Discount Amount Range.Inputs[Conditional Split Input]"
+              endId="Package\DFT - RAW Order to ODS Order\CSPL - Valid SubTotal Amount Range.Inputs[Conditional Split Input]"
               name="Data Conversion Output"
-              startId="Package\DFT - RAW Order to ODS Order\DC - Convert Discount Amount Format.Outputs[Data Conversion Output]" />
+              startId="Package\DFT - RAW Order to ODS Order\DC - Convert SubTotal Amount Format.Outputs[Data Conversion Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output1]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ODS Order.Inputs[OLE DB Destination Input]"
@@ -15616,54 +15617,54 @@ FROM raw.raw_order;</property>
               startId="Package\DFT - RAW Order to ODS Order\DC - Final Data Type Mapping.Outputs[Data Conversion Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output]"
-              endId="Package\DFT - RAW Order to ODS Order\Sort - Order TimeStamp.Inputs[Sort Input]"
-              name="Data Conversion Output"
-              startId="Package\DFT - RAW Order to ODS Order\DC - Convert Order Timestamp Format.Outputs[Data Conversion Output]" />
-            <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output2]"
               endId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Total Amount Range.Inputs[Conditional Split Input]"
               name="Data Conversion Output"
               startId="Package\DFT - RAW Order to ODS Order\DC - Convert Total Amount Format.Outputs[Data Conversion Output]" />
             <path
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output2]"
+              endId="Package\DFT - RAW Order to ODS Order\Sort - Order TimeStamp.Inputs[Sort Input]"
+              name="Data Conversion Output"
+              startId="Package\DFT - RAW Order to ODS Order\DC - Convert Order Timestamp Format.Outputs[Data Conversion Output]" />
+            <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output11]"
+              endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Convert Delivery Fee Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order to ODS Order\DRV - Error Convert Delivery Fee Format.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output18]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Missing Order ID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output18]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output17]"
               endId="Package\DFT - RAW Order to ODS Order\Sort - IsCOD.Inputs[Sort Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Convert IsCOD to Boolean.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output17]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output16]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Convert SubTotal Amount Format.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Convert SubTotal Amount Format.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output16]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output15]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Invalid IsCOD Status.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid IsCOD Status.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output15]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output14]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Invalid CustomerID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid CustomerID.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output14]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output13]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Invalid RestaurantID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid RestaurantID.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output13]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output12]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Convert Total Amount Format.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Convert Total Amount Format.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output12]"
-              endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Convert Delivery Fee Format.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order to ODS Order\DRV - Error Convert Delivery Fee Format.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output10]"
               endId="Package\DFT - RAW Order to ODS Order\Sort - IsCancelled.Inputs[Sort Input]"
@@ -15681,44 +15682,44 @@ FROM raw.raw_order;</property>
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Delivery Partner ID.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output7]"
-              endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Invalid Total Amount Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid Total Amount Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output6]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Convert OrderTimeStamp Format.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Convert OrderTimeStamp Format.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output5]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output6]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Invalid SubTotal Amount Range.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid SubTotal Amount Range.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output4]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output5]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Invalid Delivery Partner ID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid Delivery Partner ID.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output3]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output4]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Invalid Discount Amount Range.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid Discount Amount Range.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output2]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output3]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Invalid Delivery Fee Range.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid Delivery Fee Range.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output1]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output2]"
               endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Convert Discount Amount Format.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Error Convert Discount Amount Format.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output]"
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output1]"
               endId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Inputs[Conditional Split Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order to ODS Order\DRV - Clean Order Strings.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output]"
+              endId="Package\DFT - RAW Order to ODS Order\DST - ETL Error Invalid Total Amount Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid Total Amount Range.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[INVALID_NULL_DELIVERY_PARTNER_ID]"
               endId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Delivery Partner ID.Inputs[Derived Column Input]"
@@ -15863,37 +15864,37 @@ FROM raw.raw_order;</property>
               refId="Package\DFT - RAW Order to ODS Order.Paths[REJECTED_INVALID_DELIVERY_FEE_RANGE]"
               endId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid Delivery Fee Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_DELIVERY_FEE_RANGE"
-              startId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Delivery Fee Range.Outputs[REJECTED_INVALID_DELIVERY_FEE_RANGE]" />
+              startId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Delivery Fee Range.Outputs[INVALID_DELIVERY_FEE_RANGE]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[REJECTED_INVALID_DISCOUNT_AMOUNT_RANGE]"
               endId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid Discount Amount Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_DISCOUNT_AMOUNT_RANGE"
-              startId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Discount Amount Range.Outputs[REJECTED_INVALID_DISCOUNT_AMOUNT_RANGE]" />
+              startId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Discount Amount Range.Outputs[INVALID_DISCOUNT_AMOUNT_RANGE]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[REJECTED_INVALID_IS_COD]"
               endId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid IsCancelled Status.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_IS_COD"
-              startId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCancelled Status.Outputs[REJECTED_INVALID_IS_CANCELLED]" />
+              startId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCancelled Status.Outputs[INVALID_IS_CANCELLED]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[REJECTED_INVALID_IS_COD1]"
               endId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid IsCOD Status.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_IS_COD"
-              startId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCOD Status.Outputs[REJECTED_INVALID_IS_COD]" />
+              startId="Package\DFT - RAW Order to ODS Order\CSPL - Validate IsCOD Status.Outputs[INVALID_IS_COD]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[REJECTED_INVALID_TOTAL_AMOUNT_RANGE]"
               endId="Package\DFT - RAW Order to ODS Order\DRV - Error Invalid Total Amount Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_TOTAL_AMOUNT_RANGE"
-              startId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Total Amount Range.Outputs[REJECTED_INVALID_TOTAL_AMOUNT_RANGE]" />
+              startId="Package\DFT - RAW Order to ODS Order\CSPL - Valid Total Amount Range.Outputs[INVALID_TOTAL_AMOUNT_RANGE]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[REJECT_MISSING_ORDER_ID]"
               endId="Package\DFT - RAW Order to ODS Order\DRV - Error Missing Order ID.Inputs[Derived Column Input]"
               name="REJECT_MISSING_ORDER_ID"
-              startId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[REJECT_MISSING_ORDER_ID]" />
+              startId="Package\DFT - RAW Order to ODS Order\CSPL - Validate Order Required Fields.Outputs[INVALID_REQUIRED_FIELD]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Sort Output9]"
-              endId="Package\DFT - RAW Order to ODS Order\MRG - Join All Valid Fields v1.Inputs[Merge Join Right Input]"
+              endId="Package\DFT - RAW Order to ODS Order\MJ - Combine Valid Numeric v1.Inputs[Merge Join Right Input]"
               name="Sort Output"
-              startId="Package\DFT - RAW Order to ODS Order\Sort - IsCancelled.Outputs[Sort Output]" />
+              startId="Package\DFT - RAW Order to ODS Order\Sort - Discount Amount.Outputs[Sort Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Sort Output7]"
               endId="Package\DFT - RAW Order to ODS Order\MRG - Join Order Time &amp; IsCOD.Inputs[Merge Join Right Input]"
@@ -15911,9 +15912,9 @@ FROM raw.raw_order;</property>
               startId="Package\DFT - RAW Order to ODS Order\Sort - Total Amount.Outputs[Sort Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Sort Output8]"
-              endId="Package\DFT - RAW Order to ODS Order\MJ - Combine Valid Numeric v1.Inputs[Merge Join Right Input]"
+              endId="Package\DFT - RAW Order to ODS Order\MRG - Join All Valid Fields v1.Inputs[Merge Join Right Input]"
               name="Sort Output"
-              startId="Package\DFT - RAW Order to ODS Order\Sort - Discount Amount.Outputs[Sort Output]" />
+              startId="Package\DFT - RAW Order to ODS Order\Sort - IsCancelled.Outputs[Sort Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Sort Output3]"
               endId="Package\DFT - RAW Order to ODS Order\MRG - Join Customer &amp; Restaurant.Inputs[Merge Join Right Input]"
@@ -15931,14 +15932,14 @@ FROM raw.raw_order;</property>
               startId="Package\DFT - RAW Order to ODS Order\Sort - Delivery Fee.Outputs[Sort Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Sort Output]"
-              endId="Package\DFT - RAW Order to ODS Order\MRG - Join All Valid Fields v2.Inputs[Merge Join Right Input]"
-              name="Sort Output"
-              startId="Package\DFT - RAW Order to ODS Order\Sort - Delivery Partner ID.Outputs[Sort Output]" />
-            <path
-              refId="Package\DFT - RAW Order to ODS Order.Paths[Sort Output4]"
               endId="Package\DFT - RAW Order to ODS Order\MRG - Join Customer &amp; Restaurant.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Order to ODS Order\Sort - Customer ID.Outputs[Sort Output]" />
+            <path
+              refId="Package\DFT - RAW Order to ODS Order.Paths[Sort Output4]"
+              endId="Package\DFT - RAW Order to ODS Order\MRG - Join All Valid Fields v2.Inputs[Merge Join Right Input]"
+              name="Sort Output"
+              startId="Package\DFT - RAW Order to ODS Order\Sort - Delivery Partner ID.Outputs[Sort Output]" />
             <path
               refId="Package\DFT - RAW Order to ODS Order.Paths[Union All Output 1]"
               endId="Package\DFT - RAW Order to ODS Order\Sort - Delivery Partner ID.Inputs[Sort Input]"
@@ -15989,33 +15990,149 @@ FROM raw.raw_order;</property>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\SQL - Truncate ODS Order"
+      DTS:refId="Package\SQL - Start ETL Log"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{1CCA2CF7-9FE5-401D-A38D-343E8137C1FB}"
+      DTS:DTSID="{E5A0F2B5-4A5C-4E7B-9E31-10B5C98E5001}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="SQL - Truncate ODS Order"
+      DTS:ObjectName="SQL - Start ETL Log"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{2D381065-E79F-4C03-9FF3-91EC3ADF5E8C}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE ods.ods_order;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ORDER';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Truncate Temp Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{CC1FE5F3-6300-4C82-ADFE-13E3F39E63CE}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Truncate Temp Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{2D381065-E79F-4C03-9FF3-91EC3ADF5E8C}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE temp.ods_order;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Upsert ODS Order"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{A4E194F3-FFA0-4535-9611-3DF84D03DEF6}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Upsert ODS Order"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{2D381065-E79F-4C03-9FF3-91EC3ADF5E8C}"
+          SQLTask:SqlStatementSource="EXEC ods.usp_upsert_ods_order;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - End ETL Log"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{E5A0F2B5-4A5C-4E7B-9E31-10B5C98E5002}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - End ETL Log"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{2D381065-E79F-4C03-9FF3-91EC3ADF5E8C}"
+          SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ORDER', @target_table = 'ods_order', @raw_table = 'raw_order';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
       DTS:CreationName=""
-      DTS:DTSID="{2B2DD0C6-968B-497D-8911-DA4439AFF7FF}"
-      DTS:From="Package\SQL - Truncate ODS Order"
+      DTS:DTSID="{4DDB8D73-A219-49C8-950A-12139B8DE1D9}"
+      DTS:From="Package\SQL - Start ETL Log"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="Constraint"
+      DTS:ObjectName="Constraint_Start_To_Truncate"
+      DTS:To="Package\SQL - Truncate Temp Table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+      DTS:CreationName=""
+      DTS:DTSID="{5D0E4376-0B34-43BF-8367-0C1AA7EEDDF4}"
+      DTS:From="Package\SQL - Truncate Temp Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Truncate_To_DFT"
       DTS:To="Package\DFT - RAW Order to ODS Order" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+      DTS:CreationName=""
+      DTS:DTSID="{F28F1258-80DE-40D2-83D0-94F204FA2972}"
+      DTS:From="Package\DFT - RAW Order to ODS Order"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_DFT_To_Upsert"
+      DTS:To="Package\SQL - Upsert ODS Order" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+      DTS:CreationName=""
+      DTS:DTSID="{9C55D5F0-3DDE-4A69-9CF7-3FEEA865F1B9}"
+      DTS:From="Package\SQL - Upsert ODS Order"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Upsert_To_End"
+      DTS:To="Package\SQL - End ETL Log" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{8C235BC3-2A62-4D3B-A790-2B34FF585001}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="OnError">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{D668FA63-8F4C-40FB-8BAE-F7C5FF685002}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\SQL - Log Package Failure"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{7C981442-8367-4DF8-B043-4BC812385003}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL - Log Package Failure"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{2D381065-E79F-4C03-9FF3-91EC3ADF5E8C}"
+              SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ORDER', @status_override = 'FAILED', @error_message = 'Package execution encountered an error.';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
 <!--If you manually edit this section and make a mistake, you can delete it. -->
@@ -16027,29 +16144,41 @@ FROM raw.raw_order;</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="229.5,42"
+          Size="200,42"
+          Id="Package\SQL - Start ETL Log"
+          TopLeft="181,20" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - Truncate Temp Table"
+          TopLeft="181,95" />
+        <NodeLayout
+          Size="326,42"
           Id="Package\DFT - RAW Order to ODS Order"
-          TopLeft="146,171.708332480449" />
+          TopLeft="121.5,170" />
         <NodeLayout
-          Size="205.5,42"
-          Id="Package\SQL - Truncate ODS Order"
-          TopLeft="154,69.3333329889509" />
+          Size="226,42"
+          Id="Package\SQL - Upsert ODS Order"
+          TopLeft="168,245" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - End ETL Log"
+          TopLeft="181,320" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="258.75,111.333332988951">
+          Id="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
+          TopLeft="281,62">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60.3749994914981"
+              EndConnector="0,33"
               Start="0,0"
-              End="0,52.8749994914981">
+              End="0,25.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.8749994914981" />
+                    End="0,25.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -16058,6 +16187,75 @@ FROM raw.raw_order;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+          TopLeft="282.75,137">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+          TopLeft="282.75,212">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+          TopLeft="281,287">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -16586,28 +16784,6 @@ FROM raw.raw_order;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Order to ODS Order.Paths[Sort Output9]"
-          TopLeft="989.482142857145,670.017854711809">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,173.711308130329"
-              Start="0,0"
-              End="0,166.211308130329">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,166.211308130329" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Sort Output8]"
           TopLeft="1145.5,1893.20138385006">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16632,6 +16808,28 @@ FROM raw.raw_order;</property>
                     Point3="-288.500000000003,45.3725734257307" />
                   <mssgle:LineSegment
                     End="-288.500000000003,61.9424610007102" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Sort Output8]"
+          TopLeft="989.482142857145,670.017854711809">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,173.711308130329"
+              Start="0,0"
+              End="0,166.211308130329">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,166.211308130329" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -16708,18 +16906,18 @@ FROM raw.raw_order;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Order to ODS Order.Paths[Sort Output4]"
-          TopLeft="424.583333333334,995.979170370123">
+          TopLeft="1509.66666666666,1400.12499998655">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,383.277775144684"
+              EndConnector="-103.16666666666,0"
               Start="0,0"
-              End="0,375.777775144684">
+              End="-95.6666666666599,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,375.777775144684" />
+                    End="-95.6666666666599,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -16820,18 +17018,18 @@ FROM raw.raw_order;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Order to ODS Order.Paths[Sort Output]"
-          TopLeft="1509.66666666666,1400.12499998655">
+          TopLeft="424.583333333334,995.979170370123">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-103.16666666666,0"
+              EndConnector="0,383.277775144684"
               Start="0,0"
-              End="-95.6666666666599,0">
+              End="0,375.777775144684">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-95.6666666666599,0" />
+                    End="0,375.777775144684" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -16860,7 +17058,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-31.44002046131,5,132.832421875,10.88671875"
+              BoundingBox="-27.0816220238099,5,124.115625,11.3359375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -16884,7 +17082,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-84.2846158854165,5,207.2358984375,10.88671875"
+              BoundingBox="-58.7762174479165,5,156.2191015625,10.88671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -16908,7 +17106,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-31.7143061756002,5,130.202421875,10.88671875"
+              BoundingBox="-6.2059077381002,5,79.185625,10.88671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -16932,7 +17130,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-81.4912109375,-37.9450023199143,162.982421875,10.8671875"
+              BoundingBox="-55.9828125,-37.9450023199143,111.965625,10.8671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -16956,7 +17154,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-136.701282552083,5,225.7358984375,10.88671875"
+              BoundingBox="-111.192884114583,5,174.7191015625,10.88671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -16980,7 +17178,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-75.6912825520834,5,198.7158984375,10.8671875"
+              BoundingBox="-50.1828841145833,5,147.6991015625,10.8671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -17646,6 +17844,28 @@ FROM raw.raw_order;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output18]"
+          TopLeft="2062.61904761905,418.733133492691">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="80.7142857142799,0"
+              Start="0,0"
+              End="73.2142857142799,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="73.2142857142799,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output17]"
           TopLeft="1944.64880952382,663.86607040561">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17667,7 +17887,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output17]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output16]"
           TopLeft="199.386904761904,1519.07638363213">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17689,7 +17909,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output16]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output15]"
           TopLeft="2253.25,540.180554666798">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17711,7 +17931,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output15]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output14]"
           TopLeft="691.95833333333,846.72222604451">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17733,7 +17953,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output14]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output13]"
           TopLeft="714.125,1103.82639170897">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17755,7 +17975,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output13]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output12]"
           TopLeft="2355.51785714286,1514.74305032032">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17777,7 +17997,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output12]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output11]"
           TopLeft="1764.47619047619,1602.13193877514">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17790,28 +18010,6 @@ FROM raw.raw_order;</property>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,40.652779565153" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output11]"
-          TopLeft="2062.61904761905,418.733133492691">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="80.7142857142799,0"
-              Start="0,0"
-              End="73.2142857142799,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="73.2142857142799,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -17888,28 +18086,6 @@ FROM raw.raw_order;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output7]"
-          TopLeft="2357.22619047619,1691.3660691357">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,50.5664679022211"
-              Start="0,0"
-              End="0,43.0664679022211">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,43.0664679022211" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output6]"
           TopLeft="1294.66071428572,668.678570058729">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17931,7 +18107,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output5]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output6]"
           TopLeft="206.059523809524,1784.69444157997">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17953,7 +18129,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output4]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output5]"
           TopLeft="1916.14285714286,986.52777516621">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17975,7 +18151,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output3]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output4]"
           TopLeft="822.434523809524,1787.24106865948">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -17997,7 +18173,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output2]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output3]"
           TopLeft="1765.93452380952,1780.37995758245">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -18019,7 +18195,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output1]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output2]"
           TopLeft="818.434523809521,1604.07638092011">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -18041,7 +18217,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output1]"
           TopLeft="1638.54166666667,338.104165562221">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -18063,19 +18239,19 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output5]"
-          TopLeft="514.613095238097,1520.90971574935">
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Derived Column Output]"
+          TopLeft="2357.22619047619,1691.3660691357">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,222.437503426339"
+              EndConnector="0,50.5664679022211"
               Start="0,0"
-              End="0,214.937503426339">
+              End="0,43.0664679022211">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,214.937503426339" />
+                    End="0,43.0664679022211" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -18085,7 +18261,7 @@ FROM raw.raw_order;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output4]"
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output5]"
           TopLeft="1144.90476190476,1602.49304988446">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -18098,6 +18274,28 @@ FROM raw.raw_order;</property>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,131.590280957486" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output4]"
+          TopLeft="514.613095238097,1520.90971574935">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,222.437503426339"
+              Start="0,0"
+              End="0,214.937503426339">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,214.937503426339" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -18130,18 +18328,18 @@ FROM raw.raw_order;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output2]"
-          TopLeft="2056.15476190476,1517.27082808554">
+          TopLeft="1646.07142857143,666.895830595762">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,133.562503192259"
+              EndConnector="0,67.3809532142343"
               Start="0,0"
-              End="0,126.062503192259">
+              End="0,59.8809532142343">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,126.062503192259" />
+                    End="0,59.8809532142343" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -18174,18 +18372,18 @@ FROM raw.raw_order;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Order to ODS Order.Paths[Data Conversion Output]"
-          TopLeft="1646.07142857143,666.895830595762">
+          TopLeft="2056.15476190476,1517.27082808554">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,67.3809532142343"
+              EndConnector="0,133.562503192259"
               Start="0,0"
-              End="0,59.8809532142343">
+              End="0,126.062503192259">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,59.8809532142343" />
+                    End="0,126.062503192259" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
