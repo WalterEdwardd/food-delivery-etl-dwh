@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/22/2026 10:22:54 AM"
@@ -9,10 +9,10 @@
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="16.0.5685.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="07_Load_DeliveryPerformance"
+  DTS:ObjectName="08_Load_DeliveryPerformance"
   DTS:PackageType="5"
-  DTS:VersionBuild="50"
-  DTS:VersionGUID="{F77A4A70-5D01-4444-B5E5-F033D3DE4F87}">
+  DTS:VersionBuild="51"
+  DTS:VersionGUID="{B81F81DF-B3E2-4E1E-ACA2-23D3A5F658C4}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -97,10 +97,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Actual Delivery Time Range.Outputs[REJECTED_INVALID_ACTUAL_DELIVERY_TIME_RANGE]"
+                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Actual Delivery Time Range.Outputs[INVALID_ACTUAL_DELIVERY_TIME_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_ACTUAL_DELIVERY_TIME_RANGE"
+                  name="INVALID_ACTUAL_DELIVERY_TIME_RANGE"
                   synchronousInputId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Actual Delivery Time Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -186,10 +186,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Delivery Item Range.Outputs[REJECTED_INVALID_DELIVERY_ITEM_RANGE]"
+                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Delivery Item Range.Outputs[INVALID_DELIVERY_ITEM_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_DELIVERY_ITEM_RANGE"
+                  name="INVALID_DELIVERY_ITEM_RANGE"
                   synchronousInputId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Delivery Item Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -277,10 +277,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Distance Range.Outputs[REJECTED_INVALID_DISTANCE_RANGE]"
+                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Distance Range.Outputs[INVALID_DISTANCE_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_DISTANCE_RANGE"
+                  name="INVALID_DISTANCE_RANGE"
                   synchronousInputId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Distance Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -366,10 +366,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Expected Delivery Time Range.Outputs[REJECTED_INVALID_EXPECTED_TIME_RANGE]"
+                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Expected Delivery Time Range.Outputs[INVALID_EXPECTED_TIME_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_EXPECTED_TIME_RANGE"
+                  name="INVALID_EXPECTED_TIME_RANGE"
                   synchronousInputId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Expected Delivery Time Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -455,10 +455,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Order Item Range.Outputs[REJECTED_INVALID_ORDER_ITEM_RANGE]"
+                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Order Item Range.Outputs[INVALID_ORDER_ITEM_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_ORDER_ITEM_RANGE"
+                  name="INVALID_ORDER_ITEM_RANGE"
                   synchronousInputId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Order Item Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -518,12 +518,12 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Validate Required Field.Outputs[REJECTED_MISSING_DELIVERY_ID]"
+                  refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Validate Required Field.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="REJECTED_MISSING_DELIVERY_ID"
+                  name="INVALID_REQUIRED_FIELD"
                   synchronousInputId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Validate Required Field.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
@@ -1468,13 +1468,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"actual_delivery_time_min could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"actual_delivery_time_min could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"actual_delivery_time_min could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"actual_delivery_time_min could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1648,13 +1648,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"delivery_item could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"delivery_item could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_item could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_item could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1828,13 +1828,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"distance_km could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"distance_km could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"distance_km could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"distance_km could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2008,13 +2008,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"expected_delivery_time_min could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"expected_delivery_time_min could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"expected_delivery_time_min could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"expected_delivery_time_min could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2188,13 +2188,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"order_item could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"order_item could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"order_item could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"order_item could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2368,13 +2368,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"actual_delivery_time_min NOT in range 5-120"</property>
+                          name="Expression">(DT_STR,100,1252)"actual_delivery_time_min not in range 5-120"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"actual_delivery_time_min NOT in range 5-120"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"actual_delivery_time_min not in range 5-120"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2548,13 +2548,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"delivery_item NOT in range 0-100"</property>
+                          name="Expression">(DT_STR,100,1252)"delivery_item not in range 0-100"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_item NOT in range 0-100"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"delivery_item not in range 0-100"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2728,13 +2728,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"distance_km NOT in range 0-100"</property>
+                          name="Expression">(DT_STR,100,1252)"distance_km not in range 0-100"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"distance_km NOT in range 0-100"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"distance_km not in range 0-100"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2908,13 +2908,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"expected_delivery_time_min NOT in range 5-120"</property>
+                          name="Expression">(DT_STR,100,1252)"expected_delivery_time_min not in range 5-120"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"expected_delivery_time_min NOT in range 5-120"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"expected_delivery_time_min not in range 5-120"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3268,13 +3268,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"order_item NOT in range 0-100"</property>
+                          name="Expression">(DT_STR,100,1252)"order_item not in range 0-100"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"order_item NOT in range 0-100"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"order_item not in range 0-100"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3424,13 +3424,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"REQUIRED_FIELD"</property>
+                          name="Expression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"REQUIRED_FIELD"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3448,13 +3448,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"delivery is NULL or empty"</property>
+                          name="Expression">(DT_STR,100,1252)"delivery is null or empty"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"delivery is NULL or empty"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"delivery is null or empty"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -6117,7 +6117,7 @@
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[ods].[ods_delivery_performance]</property>
+                  name="OpenRowset">[temp].[ods_delivery_performance]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -8026,7 +8026,8 @@ where [refTable].[order_id] = ?</property>
 	batch_id,
 	source_file_name,
 	source_row_number
-FROM raw.raw_delivery_performance;</property>
+FROM raw.raw_delivery_performance
+WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_DELIVERY_PERFORMANCE' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_delivery_performance));</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -8346,99 +8347,99 @@ FROM raw.raw_delivery_performance;</property>
               startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Expected Delivery Time.Outputs[Data Conversion Error Output]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output5]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Expected Delivery Time Range.Inputs[Conditional Split Input]"
-              name="Data Conversion Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Expected Delivery Time.Outputs[Data Conversion Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output4]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ODS Delivery Performance.Inputs[OLE DB Destination Input]"
-              name="Data Conversion Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Final Data Type Mapping.Outputs[Data Conversion Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output3]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Actual Delivery Time Range.Inputs[Conditional Split Input]"
-              name="Data Conversion Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Actual Delivery Time.Outputs[Data Conversion Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output1]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Order Item Range.Inputs[Conditional Split Input]"
-              name="Data Conversion Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Order Item Format.Outputs[Data Conversion Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Distance Range.Inputs[Conditional Split Input]"
-              name="Data Conversion Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Distance Format.Outputs[Data Conversion Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output2]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Delivery Item Range.Inputs[Conditional Split Input]"
               name="Data Conversion Output"
               startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Delivery Item Format.Outputs[Data Conversion Output]" />
             <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output4]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Distance Range.Inputs[Conditional Split Input]"
+              name="Data Conversion Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Distance Format.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output3]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Order Item Range.Inputs[Conditional Split Input]"
+              name="Data Conversion Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Order Item Format.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output1]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ODS Delivery Performance.Inputs[OLE DB Destination Input]"
+              name="Data Conversion Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Final Data Type Mapping.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Expected Delivery Time Range.Inputs[Conditional Split Input]"
+              name="Data Conversion Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Expected Delivery Time.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output2]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Actual Delivery Time Range.Inputs[Conditional Split Input]"
+              name="Data Conversion Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Actual Delivery Time.Outputs[Data Conversion Output]" />
+            <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output8]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Expected Delivery Time Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Expected Delivery Time Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output12]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Validate Required Field.Inputs[Conditional Split Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Clean Delivery Performance Strings.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output11]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Convert Expected Delivery Time Format.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Convert Expected Delivery Time Format.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output10]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Convert Order Item Format.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Convert Order Item Format.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output9]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Convert Actual Delivery Time Format.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Actual Delivery Time Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output7]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Distance Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Distance Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output2]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Order ID.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Order ID.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output5]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Delivery Item Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Delivery Item Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output4]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Convert Delivery Item Format.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Convert Delivery Item Format.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output3]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Order Item Range.Inputs[OLE DB Destination Input]"
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output12]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Convert Distance Format.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Order Item Range.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Convert Distance Format.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output1]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Actual Delivery Time Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Convert Actual Delivery Time Format.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output]"
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output11]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Missing Required Field.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Missing Required Field.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output6]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Convert Distance Format.Inputs[OLE DB Destination Input]"
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output10]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Actual Delivery Time Range.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Convert Distance Format.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Convert Actual Delivery Time Format.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output9]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Order Item Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Order Item Range.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output7]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Delivery Item Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Delivery Item Range.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output2]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Convert Expected Delivery Time Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Convert Expected Delivery Time Format.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output5]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Distance Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Distance Range.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output4]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Convert Actual Delivery Time Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Actual Delivery Time Range.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output3]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Convert Order Item Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Convert Order Item Format.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output1]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Validate Required Field.Inputs[Conditional Split Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Clean Delivery Performance Strings.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Expected Delivery Time Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Expected Delivery Time Range.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output6]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DST - ETL Error Invalid Order ID.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Order ID.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Lookup Match Output]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\Multicast - Normalize Delivery Performance.Inputs[Multicast Input 1]"
@@ -8451,24 +8452,24 @@ FROM raw.raw_delivery_performance;</property>
               startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\LKP - Validate Order ID.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output3]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Item &amp; Time.Inputs[Merge Join Right Input]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join All Valid Fields.Inputs[Merge Join Left Input]"
               name="Merge Join Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Expected Time &amp; Actual Time.Outputs[Merge Join Output]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Item &amp; Time.Outputs[Merge Join Output]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output2]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Item &amp; Time.Inputs[Merge Join Left Input]"
-              name="Merge Join Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Order Item &amp; Delivery Item.Outputs[Merge Join Output]" />
-            <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Final Data Type Mapping.Inputs[Data Conversion Input]"
               name="Merge Join Output"
               startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join All Valid Fields.Outputs[Merge Join Output]" />
             <path
-              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output1]"
-              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join All Valid Fields.Inputs[Merge Join Left Input]"
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Item &amp; Time.Inputs[Merge Join Right Input]"
               name="Merge Join Output"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Item &amp; Time.Outputs[Merge Join Output]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Expected Time &amp; Actual Time.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output1]"
+              endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Item &amp; Time.Inputs[Merge Join Left Input]"
+              name="Merge Join Output"
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Order Item &amp; Delivery Item.Outputs[Merge Join Output]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Multicast Output 1]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DC - Convert Distance Format.Inputs[Data Conversion Input]"
@@ -8503,32 +8504,32 @@ FROM raw.raw_delivery_performance;</property>
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[REJECTED_INVALID_ACTUAL_DELIVERY_TIME_RANGE]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Actual Delivery Time Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_ACTUAL_DELIVERY_TIME_RANGE"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Actual Delivery Time Range.Outputs[REJECTED_INVALID_ACTUAL_DELIVERY_TIME_RANGE]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Actual Delivery Time Range.Outputs[INVALID_ACTUAL_DELIVERY_TIME_RANGE]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[REJECTED_INVALID_DELIVERY_ITEM_RANGE]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Delivery Item Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_DELIVERY_ITEM_RANGE"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Delivery Item Range.Outputs[REJECTED_INVALID_DELIVERY_ITEM_RANGE]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Delivery Item Range.Outputs[INVALID_DELIVERY_ITEM_RANGE]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[REJECTED_INVALID_DISTANCE_RANGE]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Distance Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_DISTANCE_RANGE"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Distance Range.Outputs[REJECTED_INVALID_DISTANCE_RANGE]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Distance Range.Outputs[INVALID_DISTANCE_RANGE]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[REJECTED_INVALID_EXPECTED_TIME_RANGE]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Expected Delivery Time Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_EXPECTED_TIME_RANGE"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Expected Delivery Time Range.Outputs[REJECTED_INVALID_EXPECTED_TIME_RANGE]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Expected Delivery Time Range.Outputs[INVALID_EXPECTED_TIME_RANGE]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[REJECTED_INVALID_ORDER_ITEM_RANGE]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Invalid Order Item Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_ORDER_ITEM_RANGE"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Order Item Range.Outputs[REJECTED_INVALID_ORDER_ITEM_RANGE]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Valid Order Item Range.Outputs[INVALID_ORDER_ITEM_RANGE]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[REJECTED_MISSING_DELIVERY_ID]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\DRV - Error Missing Required Field.Inputs[Derived Column Input]"
               name="REJECTED_MISSING_DELIVERY_ID"
-              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Validate Required Field.Outputs[REJECTED_MISSING_DELIVERY_ID]" />
+              startId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\CSPL - Validate Required Field.Outputs[INVALID_REQUIRED_FIELD]" />
             <path
               refId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Sort Output]"
               endId="Package\DFT - RAW Delivery Performance to ODS Delivery Performance\MRG - Join Order Item &amp; Delivery Item.Inputs[Merge Join Left Input]"
@@ -8589,33 +8590,149 @@ FROM raw.raw_delivery_performance;</property>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\SQL - Truncate ODS Delivery Performance"
+      DTS:refId="Package\SQL - Start ETL Log"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{43628B6C-7E20-47C8-8FB2-2195DECA99B9}"
+      DTS:DTSID="{E7A0F2B7-4A5C-4E7B-9E31-10B5C98E7001}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="SQL - Truncate ODS Delivery Performance"
+      DTS:ObjectName="SQL - Start ETL Log"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{BD7B8F15-16B7-42EA-B352-824F4FD2220F}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE ods.ods_delivery_performance;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_DELIVERY_PERFORMANCE';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Truncate Temp Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{D7314F81-1FA6-4BED-9BBB-CE4B11DD26F4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Truncate Temp Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{BD7B8F15-16B7-42EA-B352-824F4FD2220F}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE temp.ods_delivery_performance;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Upsert ODS Delivery Performance"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{6CB6430D-1366-418E-A2F0-D42ED3237A24}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Upsert ODS Delivery Performance"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{BD7B8F15-16B7-42EA-B352-824F4FD2220F}"
+          SQLTask:SqlStatementSource="EXEC ods.usp_upsert_ods_delivery_performance;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - End ETL Log"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{E7A0F2B7-4A5C-4E7B-9E31-10B5C98E7002}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - End ETL Log"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{BD7B8F15-16B7-42EA-B352-824F4FD2220F}"
+          SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_DELIVERY_PERFORMANCE', @target_table = 'ods_delivery_performance', @raw_table = 'raw_delivery_performance';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
       DTS:CreationName=""
-      DTS:DTSID="{5F97FA4F-38E7-46A4-A98A-1E2276CB21F7}"
-      DTS:From="Package\SQL - Truncate ODS Delivery Performance"
+      DTS:DTSID="{EB832822-8824-4473-B764-57F115C11819}"
+      DTS:From="Package\SQL - Start ETL Log"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="Constraint"
+      DTS:ObjectName="Constraint_Start_To_Truncate"
+      DTS:To="Package\SQL - Truncate Temp Table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+      DTS:CreationName=""
+      DTS:DTSID="{F9CE28D3-2D8D-4465-8A57-70B78A124673}"
+      DTS:From="Package\SQL - Truncate Temp Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Truncate_To_DFT"
       DTS:To="Package\DFT - RAW Delivery Performance to ODS Delivery Performance" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+      DTS:CreationName=""
+      DTS:DTSID="{A7B9F275-6009-40EE-B239-FCE8B5798492}"
+      DTS:From="Package\DFT - RAW Delivery Performance to ODS Delivery Performance"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_DFT_To_Upsert"
+      DTS:To="Package\SQL - Upsert ODS Delivery Performance" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+      DTS:CreationName=""
+      DTS:DTSID="{E00E2AE2-4525-4370-8EA3-CC79AB60512D}"
+      DTS:From="Package\SQL - Upsert ODS Delivery Performance"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Upsert_To_End"
+      DTS:To="Package\SQL - End ETL Log" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{8C235BC3-2A62-4D3B-A790-2B34FF587001}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="OnError">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{D668FA63-8F4C-40FB-8BAE-F7C5FF687002}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\SQL - Log Package Failure"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{7C981442-8367-4DF8-B043-4BC812387003}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL - Log Package Failure"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{BD7B8F15-16B7-42EA-B352-824F4FD2220F}"
+              SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_DELIVERY_PERFORMANCE', @status_override = 'FAILED', @error_message = 'Package execution encountered an error.';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
 <!--If you manually edit this section and make a mistake, you can delete it. -->
@@ -8627,29 +8744,41 @@ FROM raw.raw_delivery_performance;</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="377.5,42"
+          Size="200,42"
+          Id="Package\SQL - Start ETL Log"
+          TopLeft="181,20" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - Truncate Temp Table"
+          TopLeft="181,95" />
+        <NodeLayout
+          Size="326,42"
           Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance"
-          TopLeft="110.5,163.04166585683" />
+          TopLeft="121.5,170" />
         <NodeLayout
-          Size="280,42"
-          Id="Package\SQL - Truncate ODS Delivery Performance"
-          TopLeft="165,68.2499996609986" />
+          Size="226,42"
+          Id="Package\SQL - Upsert ODS Delivery Performance"
+          TopLeft="168,245" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - End ETL Log"
+          TopLeft="181,320" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="302.125,110.249999660999">
+          Id="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
+          TopLeft="281,62">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,52.7916661958314"
+              EndConnector="0,33"
               Start="0,0"
-              End="0,45.2916661958314">
+              End="0,25.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,45.2916661958314" />
+                    End="0,25.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -8658,6 +8787,75 @@ FROM raw.raw_delivery_performance;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+          TopLeft="282.75,137">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+          TopLeft="282.75,212">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+          TopLeft="281,287">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -9164,7 +9362,7 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-108.241210937498,5,157.982421875,10.8671875"
+              BoundingBox="-91.3078124999982,5,124.115625,11.3359375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9188,7 +9386,7 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-96.20794921875,-30.1596287172484,192.4158984375,10.88671875"
+              BoundingBox="-70.69955078125,-30.1596287172484,141.3991015625,10.88671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9212,7 +9410,7 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-68.9148539806546,5,207.3058984375,10.8671875"
+              BoundingBox="-43.4064555431546,5,156.2891015625,10.8671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9236,7 +9434,7 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-120.94294921875,5,178.3858984375,10.8671875"
+              BoundingBox="-95.4345507812498,5,127.3691015625,10.8671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9260,7 +9458,7 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-130.50461588542,5,205.1758984375,10.8671875"
+              BoundingBox="-104.99621744792,5,154.1591015625,10.8671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9284,7 +9482,7 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-123.01294921875,-31.2968553241488,246.0258984375,10.8671875"
+              BoundingBox="-97.50455078125,-31.2968553241488,195.0091015625,10.8671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9446,30 +9644,18 @@ FROM raw.raw_delivery_performance;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output3]"
-          TopLeft="1966.91666666667,1275.8680519104">
+          TopLeft="1105,1543.13193953386">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-911.666666666667,245.95833188316"
+              EndConnector="73.6666666666665,0"
               Start="0,0"
-              End="-911.666666666667,238.45833188316">
+              End="66.1666666666665,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,157.714428191682" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,157.714428191682"
-                    Point2="0,161.714428191682"
-                    Point3="-4,161.714428191682" />
-                  <mssgle:LineSegment
-                    End="-907.666666666667,161.714428191682" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-907.666666666667,161.714428191682"
-                    Point2="-911.666666666667,161.714428191682"
-                    Point3="-911.666666666667,165.714428191682" />
-                  <mssgle:LineSegment
-                    End="-911.666666666667,238.45833188316" />
+                    End="66.1666666666665,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9480,6 +9666,28 @@ FROM raw.raw_delivery_performance;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output2]"
+          TopLeft="1280.47222222222,1564.43749527416">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,65.32870520709"
+              Start="0,0"
+              End="0,57.82870520709">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,57.82870520709" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output1]"
           TopLeft="169.75,1267.15971613679">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9513,41 +9721,31 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output1]"
-          TopLeft="1105,1543.13193953386">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="73.6666666666665,0"
-              Start="0,0"
-              End="66.1666666666665,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="66.1666666666665,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
           Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Merge Join Output]"
-          TopLeft="1280.47222222222,1564.43749527416">
+          TopLeft="1966.91666666667,1275.8680519104">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,65.32870520709"
+              EndConnector="-911.666666666667,245.95833188316"
               Start="0,0"
-              End="0,57.82870520709">
+              End="-911.666666666667,238.45833188316">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,57.82870520709" />
+                    End="0,157.714428191682" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,157.714428191682"
+                    Point2="0,161.714428191682"
+                    Point3="-4,161.714428191682" />
+                  <mssgle:LineSegment
+                    End="-907.666666666667,161.714428191682" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-907.666666666667,161.714428191682"
+                    Point2="-911.666666666667,161.714428191682"
+                    Point3="-911.666666666667,165.714428191682" />
+                  <mssgle:LineSegment
+                    End="-911.666666666667,238.45833188316" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9606,138 +9804,6 @@ FROM raw.raw_delivery_performance;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output12]"
-          TopLeft="1013.15277777778,233.118054606261">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,55.7407402552577"
-              Start="0,0"
-              End="0,48.2407402552577">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,48.2407402552577" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output11]"
-          TopLeft="1565.01785714285,886.663689101157">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-60.4791661245312"
-              Start="0,0"
-              End="0,-52.9791661245312">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-52.9791661245312" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output10]"
-          TopLeft="734.5,595.916665488235">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-59.5763883512409"
-              Start="0,0"
-              End="0,-52.0763883512409">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-52.0763883512409" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output9]"
-          TopLeft="1667.18849206349,589.109785433649">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-62.052578815129"
-              Start="0,0"
-              End="0,-54.552578815129">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-54.552578815129" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output8]"
-          TopLeft="1564.94047619048,1045.12202185604">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,62.4126978940728"
-              Start="0,0"
-              End="0,54.9126978940728">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,54.9126978940728" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output7]"
-          TopLeft="717.95833333333,1342.27082736987">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-67.7777772325069"
-              Start="0,0"
-              End="0,-60.2777772325069">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-60.2777772325069" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output6]"
           TopLeft="1432.58333333333,1251.7777723681">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9759,117 +9825,7 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output5]"
-          TopLeft="516.999999999995,1053.85416416317">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,56.7380947476499"
-              Start="0,0"
-              End="0,49.2380947476499">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.2380947476499" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output4]"
-          TopLeft="515.16666666667,899.637895239866">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-61.3819438978276"
-              Start="0,0"
-              End="0,-53.8819438978276">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-53.8819438978276" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output3]"
-          TopLeft="421.07142857143,595.983134336736">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-60.5813486968236"
-              Start="0,0"
-              End="0,-53.0813486968236">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-53.0813486968236" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output2]"
-          TopLeft="1313.45833333334,398.437498459696">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-66.6342587196671"
-              Start="0,0"
-              End="0,-59.1342587196671">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-59.1342587196671" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output1]"
-          TopLeft="1319.15277777778,588.335975913683">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-59.8462296528555"
-              Start="0,0"
-              End="0,-52.3462296528555">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-52.3462296528555" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output]"
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output11]"
           TopLeft="715.22222222223,332.543980038334">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9891,73 +9847,249 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output10]"
+          TopLeft="1319.15277777778,588.335975913683">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-59.8462296528555"
+              Start="0,0"
+              End="0,-52.3462296528555">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-52.3462296528555" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output9]"
+          TopLeft="421.07142857143,595.983134336736">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-60.5813486968236"
+              Start="0,0"
+              End="0,-53.0813486968236">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-53.0813486968236" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output8]"
+          TopLeft="515.16666666667,899.637895239866">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-61.3819438978276"
+              Start="0,0"
+              End="0,-53.8819438978276">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-53.8819438978276" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output7]"
+          TopLeft="516.999999999995,1053.85416416317">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.7380947476499"
+              Start="0,0"
+              End="0,49.2380947476499">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49.2380947476499" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output6]"
+          TopLeft="1313.45833333334,398.437498459696">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-66.6342587196671"
+              Start="0,0"
+              End="0,-59.1342587196671">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-59.1342587196671" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output5]"
+          TopLeft="717.95833333333,1342.27082736987">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-67.7777772325069"
+              Start="0,0"
+              End="0,-60.2777772325069">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-60.2777772325069" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output4]"
+          TopLeft="1667.18849206349,589.109785433649">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-62.052578815129"
+              Start="0,0"
+              End="0,-54.552578815129">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-54.552578815129" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output3]"
+          TopLeft="734.5,595.916665488235">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-59.5763883512409"
+              Start="0,0"
+              End="0,-52.0763883512409">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-52.0763883512409" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output2]"
+          TopLeft="1565.01785714285,886.663689101157">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-60.4791661245312"
+              Start="0,0"
+              End="0,-52.9791661245312">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-52.9791661245312" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output1]"
+          TopLeft="1013.15277777778,233.118054606261">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,55.7407402552577"
+              Start="0,0"
+              End="0,48.2407402552577">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,48.2407402552577" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Derived Column Output]"
+          TopLeft="1564.94047619048,1045.12202185604">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,62.4126978940728"
+              Start="0,0"
+              End="0,54.9126978940728">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.9126978940728" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output5]"
-          TopLeft="1189.04761904762,934.893847212249">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,71.9682534660296"
-              Start="0,0"
-              End="0,64.4682534660296">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,64.4682534660296" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output4]"
-          TopLeft="1278.61111111111,1671.76620048125">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,68.69444280683"
-              Start="0,0"
-              End="0,61.19444280683">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,61.19444280683" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output3]"
-          TopLeft="1439.65873015873,711.123014837306">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="95.0079365079396,0"
-              Start="0,0"
-              End="87.5079365079396,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="87.5079365079396,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output2]"
           TopLeft="830.5,938.756941236935">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9979,7 +10111,29 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output1]"
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output4]"
+          TopLeft="1016.59722222222,1273.31249492709">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,72.2083324266405"
+              Start="0,0"
+              End="0,64.7083324266405">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,64.7083324266405" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output3]"
           TopLeft="613.52777777778,713.454363349638">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -10001,19 +10155,63 @@ FROM raw.raw_delivery_performance;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output]"
-          TopLeft="1016.59722222222,1273.31249492709">
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output2]"
+          TopLeft="1439.65873015873,711.123014837306">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,72.2083324266405"
+              EndConnector="95.0079365079396,0"
               Start="0,0"
-              End="0,64.7083324266405">
+              End="87.5079365079396,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,64.7083324266405" />
+                    End="87.5079365079396,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output1]"
+          TopLeft="1278.61111111111,1671.76620048125">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,68.69444280683"
+              Start="0,0"
+              End="0,61.19444280683">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,61.19444280683" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Delivery Performance to ODS Delivery Performance.Paths[Data Conversion Output]"
+          TopLeft="1189.04761904762,934.893847212249">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71.9682534660296"
+              Start="0,0"
+              End="0,64.4682534660296">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,64.4682534660296" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
