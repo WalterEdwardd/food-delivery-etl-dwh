@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/23/2026 9:04:56 AM"
@@ -9,10 +9,10 @@
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="16.0.5685.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="08_Load_Rating"
+  DTS:ObjectName="09_Load_Rating"
   DTS:PackageType="5"
-  DTS:VersionBuild="35"
-  DTS:VersionGUID="{2938C0B5-7AD1-478D-800A-2372BF9920C3}">
+  DTS:VersionBuild="37"
+  DTS:VersionGUID="{0392EB65-480C-4661-BBDF-66CBC6F54D41}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -99,10 +99,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Rating Range.Outputs[REJECTED_INVALID_RATING_RANGE]"
+                  refId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Rating Range.Outputs[INVALID_RATING_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_RATING_RANGE"
+                  name="INVALID_RATING_RANGE"
                   synchronousInputId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Rating Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -190,10 +190,10 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Sentiment Score Range.Outputs[REJECTED_INVALID_SENTIMENT_SCORE_RANGE]"
+                  refId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Sentiment Score Range.Outputs[INVALID_SENTIMENT_SCORE_RANGE]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="REJECTED_INVALID_SENTIMENT_SCORE_RANGE"
+                  name="INVALID_SENTIMENT_SCORE_RANGE"
                   synchronousInputId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Sentiment Score Range.Inputs[Conditional Split Input]">
                   <properties>
                     <property
@@ -253,12 +253,12 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - RAW Rating to ODS Rating\CSPL - Validate Rating Required Fields.Outputs[REJECTED_MISSING_RATING_ID]"
+                  refId="Package\DFT - RAW Rating to ODS Rating\CSPL - Validate Rating Required Fields.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="REJECTED_MISSING_RATING_ID"
+                  name="INVALID_REQUIRED_FIELD"
                   synchronousInputId="Package\DFT - RAW Rating to ODS Rating\CSPL - Validate Rating Required Fields.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
@@ -1169,13 +1169,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"rating could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"rating could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"rating could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"rating could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1349,13 +1349,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"review_timestamp could not be converted to DATETIME"</property>
+                          name="Expression">(DT_STR,100,1252)"review_timestamp could not be converted to datetime"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"review_timestamp could not be converted to DATETIME"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"review_timestamp could not be converted to datetime"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1529,13 +1529,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"sentiment_score could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"sentiment_score could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"sentiment_score could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"sentiment_score could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2069,13 +2069,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"rating NOT in range 1 - 5"</property>
+                          name="Expression">(DT_STR,100,1252)"rating not in range 1 - 5"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"rating NOT in range 1 - 5"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"rating not in range 1 - 5"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2429,13 +2429,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"sentiment_score NOT in range (-1) - 1"</property>
+                          name="Expression">(DT_STR,100,1252)"sentiment_score not in range (-1) - 1"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"sentiment_score NOT in range (-1) - 1"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"sentiment_score not in range (-1) - 1"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2585,13 +2585,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"REQUIRED_FIELD"</property>
+                          name="Expression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"REQUIRED_FIELD"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2609,13 +2609,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"rating_id is NULL or empty"</property>
+                          name="Expression">(DT_STR,100,1252)"rating_id is null or empty"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"rating_id is NULL or empty"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"rating_id is null or empty"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4630,7 +4630,7 @@
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[ods].[ods_rating]</property>
+                  name="OpenRowset">[temp].[ods_rating]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -7960,7 +7960,8 @@ where [refTable].[restaurant_id] = ?</property>
 	batch_id,
 	source_file_name,
 	source_row_number
-FROM raw.raw_rating;</property>
+FROM raw.raw_rating
+WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_RATING' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_rating));</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -8278,12 +8279,12 @@ FROM raw.raw_rating;</property>
           </components>
           <paths>
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output1]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output]"
               endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert Sentiment Score Format.Inputs[Derived Column Input]"
               name="Data Conversion Error Output"
               startId="Package\DFT - RAW Rating to ODS Rating\DC - Convert Sentiment Score Format.Outputs[Data Conversion Error Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output1]"
               endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert ReviewTimeStamp Format.Inputs[Derived Column Input]"
               name="Data Conversion Error Output"
               startId="Package\DFT - RAW Rating to ODS Rating\DC - Convert Review Timestamp Format.Outputs[Data Conversion Error Output]" />
@@ -8303,95 +8304,95 @@ FROM raw.raw_rating;</property>
               name="Data Conversion Output"
               startId="Package\DFT - RAW Rating to ODS Rating\DC - Convert Sentiment Score Format.Outputs[Data Conversion Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output3]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output2]"
               endId="Package\DFT - RAW Rating to ODS Rating\DST - ODS Rating.Inputs[OLE DB Destination Input]"
               name="Data Conversion Output"
               startId="Package\DFT - RAW Rating to ODS Rating\DC - Final Data Type Mapping.Outputs[Data Conversion Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output2]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output3]"
               endId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Rating Range.Inputs[Conditional Split Input]"
               name="Data Conversion Output"
               startId="Package\DFT - RAW Rating to ODS Rating\DC - Convert Rating Format.Outputs[Data Conversion Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output4]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Customer ID.Inputs[OLE DB Destination Input]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output9]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Sentiment Score Range.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Customer ID.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Sentiment Score Range.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output]"
-              endId="Package\DFT - RAW Rating to ODS Rating\CSPL - Validate Rating Required Fields.Inputs[Conditional Split Input]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output8]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Restaurant ID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\DRC - Clean Rating Strings.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Restaurant ID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output7]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert ReviewTimeStamp Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert ReviewTimeStamp Format.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output6]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Rating Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Rating Range.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output5]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Missing Rating ID.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Missing Rating ID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output3]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert Rating Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert Rating Format.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output2]"
               endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid OrderID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid OrderID.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output8]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert Rating Format.Inputs[OLE DB Destination Input]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output1]"
+              endId="Package\DFT - RAW Rating to ODS Rating\CSPL - Validate Rating Required Fields.Inputs[Conditional Split Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert Rating Format.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Rating to ODS Rating\DRC - Clean Rating Strings.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output6]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Customer ID.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Customer ID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output4]"
               endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert Sentiment Score Format.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert Sentiment Score Format.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output1]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Missing Rating ID.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Missing Rating ID.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output9]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Rating Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Rating Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output5]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert ReviewTimeStamp Format.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert ReviewTimeStamp Format.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output3]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Restaurant ID.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Restaurant ID.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output7]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Sentiment Score Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Sentiment Score Range.Outputs[Derived Column Output]" />
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output2]"
+              endId="Package\DFT - RAW Rating to ODS Rating\Sort - Customer ID.Inputs[Sort Input]"
+              name="Lookup Match Output"
+              startId="Package\DFT - RAW Rating to ODS Rating\LKP - Customer ID.Outputs[Lookup Match Output]" />
             <path
               refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output]"
               endId="Package\DFT - RAW Rating to ODS Rating\Sort - Order ID.Inputs[Sort Input]"
               name="Lookup Match Output"
               startId="Package\DFT - RAW Rating to ODS Rating\LKP - Order ID.Outputs[Lookup Match Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output2]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output1]"
               endId="Package\DFT - RAW Rating to ODS Rating\Sort - Restaurant ID.Inputs[Sort Input]"
               name="Lookup Match Output"
               startId="Package\DFT - RAW Rating to ODS Rating\LKP - Restaurant ID.Outputs[Lookup Match Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output1]"
-              endId="Package\DFT - RAW Rating to ODS Rating\Sort - Customer ID.Inputs[Sort Input]"
-              name="Lookup Match Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\LKP - Customer ID.Outputs[Lookup Match Output]" />
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output1]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Customer ID.Inputs[Derived Column Input]"
+              name="Lookup No Match Output"
+              startId="Package\DFT - RAW Rating to ODS Rating\LKP - Customer ID.Outputs[Lookup No Match Output]" />
+            <path
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output2]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Restaurant ID.Inputs[Derived Column Input]"
+              name="Lookup No Match Output"
+              startId="Package\DFT - RAW Rating to ODS Rating\LKP - Restaurant ID.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output]"
               endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid OrderID.Inputs[Derived Column Input]"
               name="Lookup No Match Output"
               startId="Package\DFT - RAW Rating to ODS Rating\LKP - Order ID.Outputs[Lookup No Match Output]" />
-            <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output2]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Customer ID.Inputs[Derived Column Input]"
-              name="Lookup No Match Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\LKP - Customer ID.Outputs[Lookup No Match Output]" />
-            <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output1]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Restaurant ID.Inputs[Derived Column Input]"
-              name="Lookup No Match Output"
-              startId="Package\DFT - RAW Rating to ODS Rating\LKP - Restaurant ID.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output]"
               endId="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v1.Inputs[Merge Join Left Input]"
@@ -8403,22 +8404,22 @@ FROM raw.raw_rating;</property>
               name="Merge Join Output"
               startId="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v1.Outputs[Merge Join Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output3]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output2]"
               endId="Package\DFT - RAW Rating to ODS Rating\DC - Final Data Type Mapping.Inputs[Data Conversion Input]"
               name="Merge Join Output"
               startId="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v2.Outputs[Merge Join Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output2]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output3]"
               endId="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v2.Inputs[Merge Join Left Input]"
               name="Merge Join Output"
               startId="Package\DFT - RAW Rating to ODS Rating\MRG - Join Sentiment Score &amp; Review TimeStamp.Outputs[Merge Join Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 11]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 1]"
               endId="Package\DFT - RAW Rating to ODS Rating\DC - Convert Review Timestamp Format.Inputs[Data Conversion Input]"
               name="Multicast Output 1"
               startId="Package\DFT - RAW Rating to ODS Rating\Multicast - Normalize Rating.Outputs[Multicast Output 1]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 1]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 11]"
               endId="Package\DFT - RAW Rating to ODS Rating\LKP - Customer ID.Inputs[Lookup Input]"
               name="Multicast Output 1"
               startId="Package\DFT - RAW Rating to ODS Rating\Multicast - Validate Foreign Key.Outputs[Multicast Output 1]" />
@@ -8434,14 +8435,14 @@ FROM raw.raw_rating;</property>
               startId="Package\DFT - RAW Rating to ODS Rating\Multicast - Normalize Rating.Outputs[Multicast Output 2]" />
             <path
               refId="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 31]"
-              endId="Package\DFT - RAW Rating to ODS Rating\DC - Convert Rating Format.Inputs[Data Conversion Input]"
-              name="Multicast Output 3"
-              startId="Package\DFT - RAW Rating to ODS Rating\Multicast - Normalize Rating.Outputs[Multicast Output 3]" />
-            <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 3]"
               endId="Package\DFT - RAW Rating to ODS Rating\LKP - Restaurant ID.Inputs[Lookup Input]"
               name="Multicast Output 3"
               startId="Package\DFT - RAW Rating to ODS Rating\Multicast - Validate Foreign Key.Outputs[Multicast Output 3]" />
+            <path
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 3]"
+              endId="Package\DFT - RAW Rating to ODS Rating\DC - Convert Rating Format.Inputs[Data Conversion Input]"
+              name="Multicast Output 3"
+              startId="Package\DFT - RAW Rating to ODS Rating\Multicast - Normalize Rating.Outputs[Multicast Output 3]" />
             <path
               refId="Package\DFT - RAW Rating to ODS Rating.Paths[OLE DB Source Output]"
               endId="Package\DFT - RAW Rating to ODS Rating\DRC - Clean Rating Strings.Inputs[Derived Column Input]"
@@ -8451,44 +8452,44 @@ FROM raw.raw_rating;</property>
               refId="Package\DFT - RAW Rating to ODS Rating.Paths[REJECTED_INVALID_SENTIMENT_SCORE_RANGE]"
               endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Sentiment Score Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_SENTIMENT_SCORE_RANGE"
-              startId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Sentiment Score Range.Outputs[REJECTED_INVALID_SENTIMENT_SCORE_RANGE]" />
+              startId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Sentiment Score Range.Outputs[INVALID_SENTIMENT_SCORE_RANGE]" />
             <path
               refId="Package\DFT - RAW Rating to ODS Rating.Paths[REJECTED_INVALID_SENTIMENT_SCORE_RANGE1]"
               endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Rating Range.Inputs[Derived Column Input]"
               name="REJECTED_INVALID_SENTIMENT_SCORE_RANGE"
-              startId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Rating Range.Outputs[REJECTED_INVALID_RATING_RANGE]" />
+              startId="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Rating Range.Outputs[INVALID_RATING_RANGE]" />
             <path
               refId="Package\DFT - RAW Rating to ODS Rating.Paths[REJECTED_MISSING_RATING_ID]"
               endId="Package\DFT - RAW Rating to ODS Rating\DRV - Error Missing Rating ID.Inputs[Derived Column Input]"
               name="REJECTED_MISSING_RATING_ID"
-              startId="Package\DFT - RAW Rating to ODS Rating\CSPL - Validate Rating Required Fields.Outputs[REJECTED_MISSING_RATING_ID]" />
+              startId="Package\DFT - RAW Rating to ODS Rating\CSPL - Validate Rating Required Fields.Outputs[INVALID_REQUIRED_FIELD]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output4]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output]"
               endId="Package\DFT - RAW Rating to ODS Rating\MRG - Join Sentiment Score &amp; Review TimeStamp.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Rating to ODS Rating\Sort - Sentiment Score.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output1]"
               endId="Package\DFT - RAW Rating to ODS Rating\MRG - Join OrderID &amp; CustomerID.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Rating to ODS Rating\Sort - Order ID.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output1]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output2]"
               endId="Package\DFT - RAW Rating to ODS Rating\MRG - Join OrderID &amp; CustomerID.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Rating to ODS Rating\Sort - Customer ID.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output5]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output3]"
               endId="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v2.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Rating to ODS Rating\Sort - Rating.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output3]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output4]"
               endId="Package\DFT - RAW Rating to ODS Rating\MRG - Join Sentiment Score &amp; Review TimeStamp.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Rating to ODS Rating\Sort - Review TimeStamp.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output2]"
+              refId="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output5]"
               endId="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v1.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\DFT - RAW Rating to ODS Rating\Sort - Restaurant ID.Outputs[Sort Output]" />
@@ -8512,33 +8513,149 @@ FROM raw.raw_rating;</property>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\SQL - Truncate ODS Rating Table"
+      DTS:refId="Package\SQL - Start ETL Log"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{E23CFE10-E431-44E2-A2F7-D1651AC56E52}"
+      DTS:DTSID="{4730A7F1-38A2-4CF0-B2A8-E0B5B1123401}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="SQL - Truncate ODS Rating Table"
+      DTS:ObjectName="SQL - Start ETL Log"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{080BB402-425B-4533-A64F-4840D127D019}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE ods.ods_rating;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_RATING';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Truncate Temp Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{57A1B7DB-D694-4350-893C-3DE69ABE587A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Truncate Temp Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{080BB402-425B-4533-A64F-4840D127D019}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE temp.ods_rating;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Upsert ODS Rating"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{730215C2-6A7F-433E-A170-81076CB10C34}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Upsert ODS Rating"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{080BB402-425B-4533-A64F-4840D127D019}"
+          SQLTask:SqlStatementSource="EXEC ods.usp_upsert_ods_rating;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - End ETL Log"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{4730A7F1-38A2-4CF0-B2A8-E0B5B1123402}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - End ETL Log"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{080BB402-425B-4533-A64F-4840D127D019}"
+          SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_RATING', @target_table = 'ods_rating', @raw_table = 'raw_rating';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
       DTS:CreationName=""
-      DTS:DTSID="{22B03ECA-1C91-4CE6-AC48-9F1E5A70933C}"
-      DTS:From="Package\SQL - Truncate ODS Rating Table"
+      DTS:DTSID="{02AFCE6C-4031-4E5B-9053-735F01B376C1}"
+      DTS:From="Package\SQL - Start ETL Log"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="Constraint"
+      DTS:ObjectName="Constraint_Start_To_Truncate"
+      DTS:To="Package\SQL - Truncate Temp Table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+      DTS:CreationName=""
+      DTS:DTSID="{58160D93-2551-45FA-B5FE-36EBF8664118}"
+      DTS:From="Package\SQL - Truncate Temp Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Truncate_To_DFT"
       DTS:To="Package\DFT - RAW Rating to ODS Rating" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+      DTS:CreationName=""
+      DTS:DTSID="{1E98F7F8-E2F9-4CDD-86FD-32A13C0886B8}"
+      DTS:From="Package\DFT - RAW Rating to ODS Rating"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_DFT_To_Upsert"
+      DTS:To="Package\SQL - Upsert ODS Rating" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+      DTS:CreationName=""
+      DTS:DTSID="{92B88CC1-4BD7-4BE9-9749-C95F4FC80DFA}"
+      DTS:From="Package\SQL - Upsert ODS Rating"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Upsert_To_End"
+      DTS:To="Package\SQL - End ETL Log" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{4730A7F1-38A2-4CF0-B2A8-E0B5B1123406}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="OnError">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{4730A7F1-38A2-4CF0-B2A8-E0B5B1123407}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\SQL - Log Package Failure"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{4730A7F1-38A2-4CF0-B2A8-E0B5B1123408}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL - Log Package Failure"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{080BB402-425B-4533-A64F-4840D127D019}"
+              SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_RATING', @status_override = 'FAILED', @error_message = 'Package execution encountered an error.';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
 <!--If you manually edit this section and make a mistake, you can delete it. -->
@@ -8550,29 +8667,107 @@ FROM raw.raw_rating;</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="236.5,42"
+          Size="200,42"
+          Id="Package\SQL - Start ETL Log"
+          TopLeft="181,20" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - Truncate Temp Table"
+          TopLeft="181,95" />
+        <NodeLayout
+          Size="326,42"
           Id="Package\DFT - RAW Rating to ODS Rating"
-          TopLeft="154,214.499998934567" />
+          TopLeft="121.5,170" />
         <NodeLayout
-          Size="238.5,42"
-          Id="Package\SQL - Truncate ODS Rating Table"
-          TopLeft="155,95.8749995237837" />
+          Size="226,42"
+          Id="Package\SQL - Upsert ODS Rating"
+          TopLeft="168,245" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - End ETL Log"
+          TopLeft="181,320" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="273.25,137.874999523784">
+          Id="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
+          TopLeft="281,62">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,76.6249994107832"
+              EndConnector="0,33"
               Start="0,0"
-              End="0,69.1249994107832">
+              End="0,25.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,69.1249994107832" />
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+          TopLeft="282.75,137">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+          TopLeft="282.75,212">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+          TopLeft="281,287">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -8590,63 +8785,199 @@ FROM raw.raw_rating;</property>
       <GraphLayout
         Capacity="128" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="168,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\SRC - RAW Rating"
-          TopLeft="672.5,54.1666663976179" />
+          Size="198.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Review TimeStamp"
+          TopLeft="1178.32142857143,1015.02678292214" />
         <NodeLayout
-          Size="207,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRC - Clean Rating Strings"
-          TopLeft="655.5,165.749999176711" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[OLE DB Source Output]"
-          TopLeft="757.75,96.1666663976179">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,69.5833327790929"
-              Start="0,0"
-              End="0,62.0833327790929">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,62.0833327790929" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          Size="289.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert Sentiment Score Format"
+          TopLeft="136.488095238097,819.110117735238" />
+        <NodeLayout
+          Size="234.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Restaurant ID"
+          TopLeft="949,286.020832508699" />
+        <NodeLayout
+          Size="148,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\LKP - Order ID"
+          TopLeft="394,399.74999801442" />
+        <NodeLayout
+          Size="249.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Customer ID"
+          TopLeft="949.25,624.020830829835" />
+        <NodeLayout
+          Size="217.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v1"
+          TopLeft="1285,716.354163108497" />
+        <NodeLayout
+          Size="239.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Missing Rating ID"
+          TopLeft="340,165.749999176711" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Restaurant ID"
+          TopLeft="1300.75,403.770831943697" />
+        <NodeLayout
+          Size="220.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DC - Final Data Type Mapping"
+          TopLeft="1314.16666666667,1328.95833097916" />
+        <NodeLayout
+          Size="300,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert ReviewTimeStamp Format"
+          TopLeft="774.82142857143,914.650791357217" />
+        <NodeLayout
+          Size="234,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Rating Range"
+          TopLeft="1914.82142857143,1021.43055663624" />
+        <NodeLayout
+          Size="263.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert Rating Format"
+          TopLeft="1908.83333333333,919.588293797297" />
+        <NodeLayout
+          Size="166.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\LKP - Customer ID"
+          TopLeft="678,515.249997530133" />
+        <NodeLayout
+          Size="254.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Rating Range"
+          TopLeft="1898.83333333333,1137.40873011543" />
+        <NodeLayout
+          Size="256.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DC - Convert Sentiment Score Format"
+          TopLeft="480.833333333333,816.631942213582" />
         <NodeLayout
           Size="227,42"
           Id="Package\DFT - RAW Rating to ODS Rating\Multicast - Validate Foreign Key"
           TopLeft="646,400.833331342373" />
         <NodeLayout
+          Size="185,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Sentiment Score"
+          TopLeft="508.333333333333,1139.86110859102" />
+        <NodeLayout
+          Size="147.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Order ID"
+          TopLeft="398,515.666664105323" />
+        <NodeLayout
+          Size="210,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\Multicast - Normalize Rating"
+          TopLeft="1296.25,818.541662967246" />
+        <NodeLayout
+          Size="240.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\MRG - Join OrderID &amp; CustomerID"
+          TopLeft="476.25,721.770829748259" />
+        <NodeLayout
+          Size="268,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DC - Convert Review Timestamp Format"
+          TopLeft="1138.9880952381,916.479162987425" />
+        <NodeLayout
+          Size="310.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert Sentiment Score Format"
+          TopLeft="124.666666666667,917.93551352185" />
+        <NodeLayout
+          Size="242.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert Rating Format"
+          TopLeft="1920.65476190476,820.762898010685" />
+        <NodeLayout
+          Size="207,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid OrderID"
+          TopLeft="93,397.749998530994" />
+        <NodeLayout
+          Size="218.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Missing Rating ID"
+          TopLeft="347,284.91666525147" />
+        <NodeLayout
+          Size="209.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DC - Convert Rating Format"
+          TopLeft="1605,819.638889148969" />
+        <NodeLayout
+          Size="302,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Sentiment Score Range"
+          TopLeft="118.833333333333,1118.6031721474" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Customer ID"
+          TopLeft="682,623.583330325368" />
+        <NodeLayout
           Size="263,42"
           Id="Package\DFT - RAW Rating to ODS Rating\CSPL - Validate Rating Required Fields"
           TopLeft="627,287.083331907375" />
+        <NodeLayout
+          Size="228,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid OrderID"
+          TopLeft="78,516.916664605753" />
+        <NodeLayout
+          Size="137.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Rating"
+          TopLeft="1638.33333333333,1136.54861111335" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ODS Rating"
+          TopLeft="1341.66666666667,1433.40277540566" />
+        <NodeLayout
+          Size="228.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Customer ID"
+          TopLeft="963,514.333331374659" />
+        <NodeLayout
+          Size="281,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Sentiment Score Range"
+          TopLeft="130.654761904763,1019.77777636079" />
+        <NodeLayout
+          Size="172.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\LKP - Restaurant ID"
+          TopLeft="981.5,400.52083195984" />
+        <NodeLayout
+          Size="168,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\SRC - RAW Rating"
+          TopLeft="672.5,54.1666663976179" />
+        <NodeLayout
+          Size="253,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Sentiment Score Range"
+          TopLeft="477.5,1019.09722045099" />
+        <NodeLayout
+          Size="316,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\MRG - Join Sentiment Score &amp; Review TimeStamp"
+          TopLeft="861.666666666667,1140.13888705039" />
+        <NodeLayout
+          Size="321,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert ReviewTimeStamp Format"
+          TopLeft="763,1013.47618714383" />
+        <NodeLayout
+          Size="217.5,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v2"
+          TopLeft="1313.33333333333,1224.99999773999" />
+        <NodeLayout
+          Size="255,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Restaurant ID"
+          TopLeft="1262.75,283.854165852794" />
+        <NodeLayout
+          Size="207,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\DRC - Clean Rating Strings"
+          TopLeft="655.5,165.749999176711" />
+        <NodeLayout
+          Size="206,42"
+          Id="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Rating Range"
+          TopLeft="1601.66666666667,1018.04166740655" />
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output]"
-          TopLeft="758.75,207.749999176711">
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[VALID_SENTIMENT_SCORE_RANGE]"
+          TopLeft="602.416666666667,1061.09722045099">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,79.3333327306642"
+              EndConnector="0,78.763888140036"
               Start="0,0"
-              End="0,71.8333327306642">
+              End="0,71.263888140036">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,71.8333327306642" />
+                    End="0,71.263888140036" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="-80.2211328125,30.188584695018,160.442265625,10.88671875"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -8673,484 +9004,32 @@ FROM raw.raw_rating;</property>
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="218.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Missing Rating ID"
-          TopLeft="347,284.91666525147" />
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[REJECTED_MISSING_RATING_ID]"
-          TopLeft="627,306.999998579423">
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[VALID_RATING_RANGE]"
+          TopLeft="1705.875,1060.04166740655">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-61.5,0"
+              EndConnector="0,76.5069437068025"
               Start="0,0"
-              End="-54,0">
+              End="0,69.0069437068025">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-54,0" />
+                    End="0,69.0069437068025" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-101.2262109375,5,148.452421875,10.8671875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="239.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Missing Rating ID"
-          TopLeft="340,165.749999176711" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output1]"
-          TopLeft="458,284.91666525147">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-77.1666660747594"
-              Start="0,0"
-              End="0,-69.6666660747594">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-69.6666660747594" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="148,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\LKP - Order ID"
-          TopLeft="394,399.74999801442" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 2]"
-          TopLeft="646,421.291664678397">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-104,0"
-              Start="0,0"
-              End="-96.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-96.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="147.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Order ID"
-          TopLeft="398,515.666664105323" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output]"
-          TopLeft="469.875,441.74999801442">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,73.9166660909024"
-              Start="0,0"
-              End="0,66.4166660909024">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,66.4166660909024" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,27.4036455454512,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="207,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid OrderID"
-          TopLeft="93,397.749998530994" />
-        <NodeLayout
-          Size="228,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid OrderID"
-          TopLeft="78,516.916664605753" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output]"
-          TopLeft="394,419.749998272707">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-94,0"
-              Start="0,0"
-              End="-86.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-86.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-99.05638671875,5,111.6127734375,11.609375"
+              BoundingBox="-53.1861328125,29.0698781034013,106.372265625,10.8671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output2]"
-          TopLeft="194.25,439.749998530994">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,77.1666660747593"
-              Start="0,0"
-              End="0,69.6666660747593">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,69.6666660747593" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="166.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\LKP - Customer ID"
-          TopLeft="678,515.249997530133" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 1]"
-          TopLeft="760.375,442.833331342373">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,72.4166661877598"
-              Start="0,0"
-              End="0,64.9166661877598">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,64.9166661877598" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="166,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Customer ID"
-          TopLeft="682,623.583330325368" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output1]"
-          TopLeft="763.125,557.249997530133">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,66.3333327952359"
-              Start="0,0"
-              End="0,58.8333327952359">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,58.8333327952359" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,23.611978897618,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="172.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\LKP - Restaurant ID"
-          TopLeft="981.5,400.52083195984" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 3]"
-          TopLeft="873,421.677081651106">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="108.5,0"
-              Start="0,0"
-              End="101,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="101,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="172,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Restaurant ID"
-          TopLeft="1300.75,403.770831943697" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output2]"
-          TopLeft="1154,423.145831951768">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="146.75,0"
-              Start="0,0"
-              End="139.25,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="139.25,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="21.43361328125,5,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="234.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Restaurant ID"
-          TopLeft="949,286.020832508699" />
-        <NodeLayout
-          Size="255,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Restaurant ID"
-          TopLeft="1262.75,283.854165852794" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output1]"
-          TopLeft="1067,400.52083195984">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,-72.4999994511406"
-              Start="0,0"
-              End="0,-64.9999994511406">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,-64.9999994511406" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-55.80638671875,-38.3046872255703,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output3]"
-          TopLeft="1183.5,305.937499180746">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="79.25,0"
-              Start="0,0"
-              End="71.75,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="71.75,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="228.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Customer ID"
-          TopLeft="963,514.333331374659" />
-        <NodeLayout
-          Size="249.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Customer ID"
-          TopLeft="949.25,624.020830829835" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output2]"
-          TopLeft="844.5,535.791664452395">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="118.5,0"
-              Start="0,0"
-              End="111,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="111,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-0.306386718749998,5,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output4]"
-          TopLeft="1075.625,556.333331374659">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,67.6874994551761"
-              Start="0,0"
-              End="0,60.1874994551761">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,60.1874994551761" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="240.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\MRG - Join OrderID &amp; CustomerID"
-          TopLeft="476.25,721.770829748259" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output]"
-          TopLeft="471.75,557.666664105323">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="86,164.104165642936"
-              Start="0,0"
-              End="86,156.604165642936">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,93.8117765480202" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,93.8117765480202"
-                    Point2="0,97.8117765480202"
-                    Point3="4,97.8117765480202" />
-                  <mssgle:LineSegment
-                    End="82,97.8117765480202" />
-                  <mssgle:CubicBezierSegment
-                    Point1="82,97.8117765480202"
-                    Point2="86,97.8117765480202"
-                    Point3="86,101.81177654802" />
-                  <mssgle:LineSegment
-                    End="86,156.604165642936" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output1]"
-          TopLeft="765,665.583330325368">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-129.75,56.1874994228904"
-              Start="0,0"
-              End="-129.75,48.6874994228904">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,29.4896991603597" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,29.4896991603597"
-                    Point2="0,33.4896991603597"
-                    Point3="-4,33.4896991603597" />
-                  <mssgle:LineSegment
-                    End="-125.75,33.4896991603597" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-125.75,33.4896991603597"
-                    Point2="-129.75,33.4896991603597"
-                    Point3="-129.75,37.4896991603597" />
-                  <mssgle:LineSegment
-                    End="-129.75,48.6874994228904" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="217.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v1"
-          TopLeft="1285,716.354163108497" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output]"
-          TopLeft="716.75,740.062496428378">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="568.25,0"
-              Start="0,0"
-              End="560.75,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="560.75,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output2]"
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output5]"
           TopLeft="1390.25,445.770831943697">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9171,344 +9050,8 @@ FROM raw.raw_rating;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="210,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\Multicast - Normalize Rating"
-          TopLeft="1296.25,818.541662967246" />
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output1]"
-          TopLeft="1397.5,758.354163108497">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60.1874998587492"
-              Start="0,0"
-              End="0,52.6874998587492">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,52.6874998587492" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="268,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DC - Convert Review Timestamp Format"
-          TopLeft="1138.9880952381,916.479162987425" />
-        <NodeLayout
-          Size="198.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Review TimeStamp"
-          TopLeft="1178.32142857143,1015.02678292214" />
-        <NodeLayout
-          Size="300,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert ReviewTimeStamp Format"
-          TopLeft="774.82142857143,914.650791357217" />
-        <NodeLayout
-          Size="321,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert ReviewTimeStamp Format"
-          TopLeft="763,1013.47618714383" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 11]"
-          TopLeft="1401.25,860.541662967246">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-128.261904761903,55.9375000201786"
-              Start="0,0"
-              End="-128.261904761903,48.4375000201786">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,23.9687500100893" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,23.9687500100893"
-                    Point2="0,27.9687500100893"
-                    Point3="-4,27.9687500100893" />
-                  <mssgle:LineSegment
-                    End="-124.261904761903,27.9687500100893" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-124.261904761903,27.9687500100893"
-                    Point2="-128.261904761903,27.9687500100893"
-                    Point3="-128.261904761903,31.9687500100893" />
-                  <mssgle:LineSegment
-                    End="-128.261904761903,48.4375000201786" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output]"
-          TopLeft="1275.27976190476,958.479162987425">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,56.5476199347116"
-              Start="0,0"
-              End="0,49.0476199347116">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.0476199347116" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output]"
-          TopLeft="1138.9880952381,936.564977172321">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-64.1666666666665,0"
-              Start="0,0"
-              End="-56.6666666666665,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-56.6666666666665,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-94.4197200520832,5,132.1727734375,11.43359375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output5]"
-          TopLeft="924.160714285715,956.650791357218">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,56.8253957866121"
-              Start="0,0"
-              End="0,49.3253957866121">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.3253957866121" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="256.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DC - Convert Sentiment Score Format"
-          TopLeft="480.833333333333,816.631942213582" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 21]"
-          TopLeft="1296.25,838.586802590414">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-558.916666666667,0"
-              Start="0,0"
-              End="-551.416666666667,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-551.416666666667,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="289.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert Sentiment Score Format"
-          TopLeft="136.488095238097,819.110117735238" />
-        <NodeLayout
-          Size="310.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert Sentiment Score Format"
-          TopLeft="124.666666666667,917.93551352185" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output1]"
-          TopLeft="480.833333333333,838.87102997441">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-54.8452380952366,0"
-              Start="0,0"
-              End="-47.3452380952366,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-47.3452380952366,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-89.7590057663683,5,132.1727734375,11.43359375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output6]"
-          TopLeft="280.577380952382,861.110117735238">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,56.825395786612"
-              Start="0,0"
-              End="0,49.325395786612">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.325395786612" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="185,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Sentiment Score"
-          TopLeft="508.333333333333,1139.86110859102" />
-        <NodeLayout
-          Size="253,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Sentiment Score Range"
-          TopLeft="477.5,1019.09722045099" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output1]"
-          TopLeft="606.541666666667,858.631942213582">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,160.465278237403"
-              Start="0,0"
-              End="0,152.965278237403">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,152.965278237403" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[VALID_SENTIMENT_SCORE_RANGE]"
-          TopLeft="602.416666666667,1061.09722045099">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,78.763888140036"
-              Start="0,0"
-              End="0,71.263888140036">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,71.263888140036" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-80.2211328125,30.188584695018,160.442265625,10.88671875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="281,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Sentiment Score Range"
-          TopLeft="130.654761904763,1019.77777636079" />
-        <NodeLayout
-          Size="302,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Sentiment Score Range"
-          TopLeft="118.833333333333,1118.6031721474" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[REJECTED_INVALID_SENTIMENT_SCORE_RANGE]"
-          TopLeft="477.5,1040.43749840589">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-65.8452380952368,0"
-              Start="0,0"
-              End="-58.3452380952368,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-58.3452380952368,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-139.855568266368,5,221.3658984375,10.88671875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output7]"
-          TopLeft="270.494047619048,1061.77777636079">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,56.8253957866123"
-              Start="0,0"
-              End="0,49.3253957866123">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.3253957866123" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="316,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\MRG - Join Sentiment Score &amp; Review TimeStamp"
-          TopLeft="861.666666666667,1140.13888705039" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output3]"
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output4]"
           TopLeft="1277.57142857143,1057.02678292214">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9542,7 +9085,109 @@ FROM raw.raw_rating;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output4]"
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output3]"
+          TopLeft="1707.08333333333,1178.54861111335">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-250.083333333333,46.4513866266366"
+              Start="0,0"
+              End="-250.083333333333,38.9513866266366">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.6673023951441" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.6673023951441"
+                    Point2="0,27.6673023951441"
+                    Point3="-4,27.6673023951441" />
+                  <mssgle:LineSegment
+                    End="-246.083333333333,27.6673023951441" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-246.083333333333,27.6673023951441"
+                    Point2="-250.083333333333,27.6673023951441"
+                    Point3="-250.083333333333,31.6673023951441" />
+                  <mssgle:LineSegment
+                    End="-250.083333333333,38.9513866266366" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output2]"
+          TopLeft="765,665.583330325368">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-129.75,56.1874994228904"
+              Start="0,0"
+              End="-129.75,48.6874994228904">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.4896991603597" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.4896991603597"
+                    Point2="0,33.4896991603597"
+                    Point3="-4,33.4896991603597" />
+                  <mssgle:LineSegment
+                    End="-125.75,33.4896991603597" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-125.75,33.4896991603597"
+                    Point2="-129.75,33.4896991603597"
+                    Point3="-129.75,37.4896991603597" />
+                  <mssgle:LineSegment
+                    End="-129.75,48.6874994228904" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output1]"
+          TopLeft="471.75,557.666664105323">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="86,164.104165642936"
+              Start="0,0"
+              End="86,156.604165642936">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,93.8117765480202" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,93.8117765480202"
+                    Point2="0,97.8117765480202"
+                    Point3="4,97.8117765480202" />
+                  <mssgle:LineSegment
+                    End="82,97.8117765480202" />
+                  <mssgle:CubicBezierSegment
+                    Point1="82,97.8117765480202"
+                    Point2="86,97.8117765480202"
+                    Point3="86,101.81177654802" />
+                  <mssgle:LineSegment
+                    End="86,156.604165642936" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output]"
           TopLeft="693.333333333333,1160.99999782071">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9563,100 +9208,28 @@ FROM raw.raw_rating;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="209.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DC - Convert Rating Format"
-          TopLeft="1605,819.638889148969" />
-        <NodeLayout
-          Size="242.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Convert Rating Format"
-          TopLeft="1920.65476190476,820.762898010685" />
-        <NodeLayout
-          Size="263.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert Rating Format"
-          TopLeft="1908.83333333333,919.588293797297" />
-        <NodeLayout
-          Size="137.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\Sort - Rating"
-          TopLeft="1638.33333333333,1136.54861111335" />
-        <NodeLayout
-          Size="206,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\CSPL - Valid Rating Range"
-          TopLeft="1601.66666666667,1018.04166740655" />
-        <NodeLayout
-          Size="234,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DRV - Error Invalid Rating Range"
-          TopLeft="1914.82142857143,1021.43055663624" />
-        <NodeLayout
-          Size="254.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Rating Range"
-          TopLeft="1898.83333333333,1137.40873011543" />
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output2]"
-          TopLeft="1814.5,841.200893579827">
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[REJECTED_MISSING_RATING_ID]"
+          TopLeft="627,306.999998579423">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="106.154761904763,0"
+              EndConnector="-61.5,0"
               Start="0,0"
-              End="98.6547619047633,0">
+              End="-54,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="98.6547619047633,0" />
+                    End="-54,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-16.7590057663683,5,132.1727734375,11.43359375"
+              BoundingBox="-89.0578125,5,124.115625,11.3359375"
               RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output8]"
-          TopLeft="2041.24404761905,862.762898010685">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,56.8253957866123"
-              Start="0,0"
-              End="0,49.3253957866123">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.3253957866123" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output2]"
-          TopLeft="1707.20833333333,861.638889148969">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,156.402778257582"
-              Start="0,0"
-              End="0,148.902778257582">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,148.902778257582" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -9679,12 +9252,80 @@ FROM raw.raw_rating;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-33.8205682663684,5,167.2958984375,10.8671875"
+              BoundingBox="-8.31216982886835,5,116.2791015625,10.8671875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[REJECTED_INVALID_SENTIMENT_SCORE_RANGE]"
+          TopLeft="477.5,1040.43749840589">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-65.8452380952368,0"
+              Start="0,0"
+              End="-58.3452380952368,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-58.3452380952368,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-114.347169828868,5,170.3491015625,10.88671875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[OLE DB Source Output]"
+          TopLeft="757.75,96.1666663976179">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,69.5833327790929"
+              Start="0,0"
+              End="0,62.0833327790929">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.0833327790929" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 31]"
+          TopLeft="873,421.677081651106">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="108.5,0"
+              Start="0,0"
+              End="101,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="101,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 3]"
           TopLeft="1506.25,840.090276058108">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9706,19 +9347,19 @@ FROM raw.raw_rating;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output9]"
-          TopLeft="2028.95238095238,1063.43055663624">
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 21]"
+          TopLeft="1296.25,838.586802590414">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,73.978173479192"
+              EndConnector="-558.916666666667,0"
               Start="0,0"
-              End="0,66.478173479192">
+              End="-551.416666666667,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,66.478173479192" />
+                    End="-551.416666666667,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9728,35 +9369,85 @@ FROM raw.raw_rating;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[VALID_RATING_RANGE]"
-          TopLeft="1705.875,1060.04166740655">
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 2]"
+          TopLeft="646,421.291664678397">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,76.5069437068025"
+              EndConnector="-104,0"
               Start="0,0"
-              End="0,69.0069437068025">
+              End="-96.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,69.0069437068025" />
+                    End="-96.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-53.1861328125,29.0698781034013,106.372265625,10.8671875"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="217.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\MRG - Join All Valid Fields v2"
-          TopLeft="1313.33333333333,1224.99999773999" />
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output2]"
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 11]"
+          TopLeft="760.375,442.833331342373">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,72.4166661877598"
+              Start="0,0"
+              End="0,64.9166661877598">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,64.9166661877598" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Multicast Output 1]"
+          TopLeft="1401.25,860.541662967246">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-128.261904761903,55.9375000201786"
+              Start="0,0"
+              End="-128.261904761903,48.4375000201786">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.9687500100893" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.9687500100893"
+                    Point2="0,27.9687500100893"
+                    Point3="-4,27.9687500100893" />
+                  <mssgle:LineSegment
+                    End="-124.261904761903,27.9687500100893" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-124.261904761903,27.9687500100893"
+                    Point2="-128.261904761903,27.9687500100893"
+                    Point3="-128.261904761903,31.9687500100893" />
+                  <mssgle:LineSegment
+                    End="-128.261904761903,48.4375000201786" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output3]"
           TopLeft="1019.66666666667,1182.13888705039">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9790,45 +9481,7 @@ FROM raw.raw_rating;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Sort Output5]"
-          TopLeft="1707.08333333333,1178.54861111335">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-250.083333333333,46.4513866266366"
-              Start="0,0"
-              End="-250.083333333333,38.9513866266366">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,23.6673023951441" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,23.6673023951441"
-                    Point2="0,27.6673023951441"
-                    Point3="-4,27.6673023951441" />
-                  <mssgle:LineSegment
-                    End="-246.083333333333,27.6673023951441" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-246.083333333333,27.6673023951441"
-                    Point2="-250.083333333333,27.6673023951441"
-                    Point3="-250.083333333333,31.6673023951441" />
-                  <mssgle:LineSegment
-                    End="-250.083333333333,38.9513866266366" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="220.5,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DC - Final Data Type Mapping"
-          TopLeft="1314.16666666667,1328.95833097916" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output3]"
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output2]"
           TopLeft="1423.25,1266.99999773999">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9849,12 +9502,438 @@ FROM raw.raw_rating;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="165,42"
-          Id="Package\DFT - RAW Rating to ODS Rating\DST - ODS Rating"
-          TopLeft="1341.66666666667,1433.40277540566" />
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output1]"
+          TopLeft="1397.5,758.354163108497">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.1874998587492"
+              Start="0,0"
+              End="0,52.6874998587492">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.6874998587492" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Merge Join Output]"
+          TopLeft="716.75,740.062496428378">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="568.25,0"
+              Start="0,0"
+              End="560.75,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="560.75,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output2]"
+          TopLeft="1067,400.52083195984">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-72.4999994511406"
+              Start="0,0"
+              End="0,-64.9999994511406">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-64.9999994511406" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-55.80638671875,-38.3046872255703,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output1]"
+          TopLeft="844.5,535.791664452395">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="118.5,0"
+              Start="0,0"
+              End="111,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="111,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-0.306386718749998,5,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup No Match Output]"
+          TopLeft="394,419.749998272707">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-94,0"
+              Start="0,0"
+              End="-86.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-86.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-99.05638671875,5,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output2]"
+          TopLeft="763.125,557.249997530133">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,66.3333327952359"
+              Start="0,0"
+              End="0,58.8333327952359">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,58.8333327952359" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,23.611978897618,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output1]"
+          TopLeft="1154,423.145831951768">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="146.75,0"
+              Start="0,0"
+              End="139.25,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="139.25,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="21.43361328125,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Lookup Match Output]"
+          TopLeft="469.875,441.74999801442">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,73.9166660909024"
+              Start="0,0"
+              End="0,66.4166660909024">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,66.4166660909024" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,27.4036455454512,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output9]"
+          TopLeft="270.494047619048,1061.77777636079">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.8253957866123"
+              Start="0,0"
+              End="0,49.3253957866123">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49.3253957866123" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output8]"
+          TopLeft="1183.5,305.937499180746">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="79.25,0"
+              Start="0,0"
+              End="71.75,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="71.75,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output7]"
+          TopLeft="924.160714285715,956.650791357218">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.8253957866121"
+              Start="0,0"
+              End="0,49.3253957866121">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49.3253957866121" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output6]"
+          TopLeft="2028.95238095238,1063.43055663624">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,73.978173479192"
+              Start="0,0"
+              End="0,66.478173479192">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,66.478173479192" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output5]"
+          TopLeft="458,284.91666525147">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,-77.1666660747594"
+              Start="0,0"
+              End="0,-69.6666660747594">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-69.6666660747594" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output4]"
+          TopLeft="280.577380952382,861.110117735238">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.825395786612"
+              Start="0,0"
+              End="0,49.325395786612">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49.325395786612" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output3]"
+          TopLeft="2041.24404761905,862.762898010685">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.8253957866123"
+              Start="0,0"
+              End="0,49.3253957866123">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49.3253957866123" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output2]"
+          TopLeft="194.25,439.749998530994">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,77.1666660747593"
+              Start="0,0"
+              End="0,69.6666660747593">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,69.6666660747593" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output1]"
+          TopLeft="758.75,207.749999176711">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,79.3333327306642"
+              Start="0,0"
+              End="0,71.8333327306642">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,71.8333327306642" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Derived Column Output]"
+          TopLeft="1075.625,556.333331374659">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,67.6874994551761"
+              Start="0,0"
+              End="0,60.1874994551761">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,60.1874994551761" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output3]"
+          TopLeft="1707.20833333333,861.638889148969">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,156.402778257582"
+              Start="0,0"
+              End="0,148.902778257582">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,148.902778257582" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output2]"
           TopLeft="1424.29166666667,1370.95833097916">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9875,12 +9954,143 @@ FROM raw.raw_rating;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output1]"
+          TopLeft="606.541666666667,858.631942213582">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,160.465278237403"
+              Start="0,0"
+              End="0,152.965278237403">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,152.965278237403" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Output]"
+          TopLeft="1275.27976190476,958.479162987425">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.5476199347116"
+              Start="0,0"
+              End="0,49.0476199347116">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49.0476199347116" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output2]"
+          TopLeft="1814.5,841.200893579827">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="106.154761904763,0"
+              Start="0,0"
+              End="98.6547619047633,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="98.6547619047633,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-16.7590057663683,5,132.1727734375,11.43359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output1]"
+          TopLeft="1138.9880952381,936.564977172321">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-64.1666666666665,0"
+              Start="0,0"
+              End="-56.6666666666665,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-56.6666666666665,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-94.4197200520832,5,132.1727734375,11.43359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Rating to ODS Rating.Paths[Data Conversion Error Output]"
+          TopLeft="480.833333333333,838.87102997441">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-54.8452380952366,0"
+              Start="0,0"
+              End="-47.3452380952366,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-47.3452380952366,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-89.7590057663683,5,132.1727734375,11.43359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Rating to ODS Rating\SRC - RAW Rating">
+    design-time-name="Package\DFT - RAW Rating to ODS Rating\LKP - Order ID">
     <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
       <Property>
         <Name>DataSourceViewID</Name>
       </Property>
@@ -9888,114 +10098,6 @@ FROM raw.raw_rating;</property>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Missing Rating ID">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Rating to ODS Rating\LKP - Order ID">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string"></Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid OrderID">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Rating to ODS Rating\LKP - Customer ID">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string"></Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Rating to ODS Rating\LKP - Restaurant ID">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string"></Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert ReviewTimeStamp Format">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Sentiment Score Range">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -10021,6 +10123,29 @@ FROM raw.raw_rating;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Rating to ODS Rating\LKP - Customer ID">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Rating Range">
     <Properties>
       <Property>
@@ -10034,7 +10159,77 @@ FROM raw.raw_rating;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid Sentiment Score Range">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Invalid OrderID">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\DFT - RAW Rating to ODS Rating\DST - ODS Rating">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Rating to ODS Rating\LKP - Restaurant ID">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string"></Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Rating to ODS Rating\SRC - RAW Rating">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Rating to ODS Rating\DST - ETL Error Convert ReviewTimeStamp Format">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
