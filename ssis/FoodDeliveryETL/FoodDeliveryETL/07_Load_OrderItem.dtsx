@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/18/2026 11:00:17 AM"
@@ -9,10 +9,10 @@
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="16.0.5685.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="Package1"
+  DTS:ObjectName="07_Load_OrderItem"
   DTS:PackageType="5"
-  DTS:VersionBuild="63"
-  DTS:VersionGUID="{304808BF-9870-4BBE-8AB1-1AFB7820B415}">
+  DTS:VersionBuild="66"
+  DTS:VersionGUID="{143F5512-693F-4DB3-B988-15FECDF35A13}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -464,12 +464,12 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Outputs[REJECT_MISSING_ORDER_LINE_ID]"
+                  refId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="REJECT_MISSING_ORDER_LINE_ID"
+                  name="INVALID_REQUIRED_FIELD"
                   synchronousInputId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
@@ -1370,13 +1370,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"item_discount could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,50,1252)"item_discount could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"item_discount could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"item_discount could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1550,13 +1550,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"line_total could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,50,1252)"line_total could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"line_total could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"line_total could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1730,13 +1730,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"quantity could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,50,1252)"quantity could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"quantity could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"quantity could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1910,13 +1910,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"unit_price could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,50,1252)"unit_price could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"unit_price could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"unit_price could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2066,13 +2066,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"INVALID_ITEM_DISCOUNT_RANGE"</property>
+                          name="Expression">(DT_STR,50,1252)"INVALID_RANGE"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_ITEM_DISCOUNT_RANGE"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_RANGE"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2090,13 +2090,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"Item discount must be greater than or equal to 0 and not exceed the total item amount."</property>
+                          name="Expression">(DT_STR,100,1252)"Item discount is less than 0 or exceeds the total item amount"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"Item discount must be greater than or equal to 0 and not exceed the total item amount."</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"Item discount is less than 0 or exceeds the total item amount"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2246,13 +2246,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"INVALID_LINE_TOTAL_LOGIC"</property>
+                          name="Expression">(DT_STR,50,1252)"INVALID_LOGIC"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_LINE_TOTAL_LOGIC"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_LOGIC"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2270,13 +2270,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"line_total does not match the calculated value within the allowed tolerance."</property>
+                          name="Expression">(DT_STR,100,1252)"line_total does not match the calculated value within the allowed tolerance"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"line_total does not match the calculated value within the allowed tolerance."</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"line_total does not match the calculated value within the allowed tolerance"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2786,13 +2786,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"INVALID_QUANTITY_RANGE"</property>
+                          name="Expression">(DT_STR,50,1252)"INVALID_RANGE"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_QUANTITY_RANGE"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_RANGE"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2966,13 +2966,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"INVALID_UNIT_PRICE_RANGE"</property>
+                          name="Expression">(DT_STR,50,1252)"INVALID_RANGE"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_UNIT_PRICE_RANGE"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_RANGE"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2990,13 +2990,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"unit_price NOT in range 0-1000$"</property>
+                          name="Expression">(DT_STR,50,1252)"unit_price not in range 0-1000"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"unit_price NOT in range 0-1000$"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"unit_price not in range 0-1000"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3146,13 +3146,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                          name="Expression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3170,13 +3170,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"order_line_id is NULL or empty"</property>
+                          name="Expression">(DT_STR,50,1252)"order_line_id is null or empty"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"order_line_id is NULL or empty"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"order_line_id is null or empty"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -5623,7 +5623,7 @@
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[ods].[ods_order_item]</property>
+                  name="OpenRowset">[temp].[ods_order_item]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -8001,7 +8001,8 @@ where [refTable].[order_id] = ?</property>
 	batch_id,		
 	source_file_name,
 	source_row_number
-FROM raw.raw_order_item;</property>
+FROM raw.raw_order_item
+WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_ORDER_ITEM' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_order_item));</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -8341,64 +8342,64 @@ FROM raw.raw_order_item;</property>
               startId="Package\DFT - RAW Order Item to ODS Order Item\DC - Convert Line Total Format.Outputs[Data Conversion Output]" />
             <path
               refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output10]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Line Total Logic.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid Line Total Logic.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output9]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output8]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Line Total Format.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Convert Line Total Format.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output7]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Quantity Format.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Convert Quantity Format.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output6]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Quantity Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid Quantity Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output1]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Item Discount Format.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Convert Item Discount Format.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output4]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Unit Price Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid UnitPrice Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output3]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid MenuItemID.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid MenuItemID.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output2]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Item Discount Range.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid Item Discount Range.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output11]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Inputs[Conditional Split Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output]"
               endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Unit Price Format.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Convert Unit Price Format.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output5]"
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output9]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Inputs[Conditional Split Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output8]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Item Discount Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid Item Discount Range.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output7]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid MenuItemID.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid MenuItemID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output6]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Unit Price Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid UnitPrice Range.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output1]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output4]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Quantity Range.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid Quantity Range.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output3]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Quantity Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Convert Quantity Format.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output2]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Line Total Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Convert Line Total Format.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output11]"
               endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid OrderID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid OrderID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Line Total Logic.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid Line Total Logic.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output5]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Item Discount Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Convert Item Discount Format.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[INVALID_ITEM_DISCOUNT_RANGE]"
               endId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid Item Discount Range.Inputs[Derived Column Input]"
@@ -8461,14 +8462,14 @@ FROM raw.raw_order_item;</property>
               startId="Package\DFT - RAW Order Item to ODS Order Item\Multicast - Validate Lookup Value.Outputs[Multicast Output 1]" />
             <path
               refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Multicast Output 21]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\LKP - Valid Order ID.Inputs[Lookup Input]"
-              name="Multicast Output 2"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\Multicast - Validate Lookup Value.Outputs[Multicast Output 2]" />
-            <path
-              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Multicast Output 2]"
               endId="Package\DFT - RAW Order Item to ODS Order Item\DC - Convert Unit Price Format.Inputs[Data Conversion Input]"
               name="Multicast Output 2"
               startId="Package\DFT - RAW Order Item to ODS Order Item\Multicast - Normalize Order Item.Outputs[Multicast Output 2]" />
+            <path
+              refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Multicast Output 2]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\LKP - Valid Order ID.Inputs[Lookup Input]"
+              name="Multicast Output 2"
+              startId="Package\DFT - RAW Order Item to ODS Order Item\Multicast - Validate Lookup Value.Outputs[Multicast Output 2]" />
             <path
               refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[OLE DB Source Output]"
               endId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Inputs[Derived Column Input]"
@@ -8478,7 +8479,7 @@ FROM raw.raw_order_item;</property>
               refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[REJECT_MISSING_ORDER_LINE_ID]"
               endId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Inputs[Derived Column Input]"
               name="REJECT_MISSING_ORDER_LINE_ID"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Outputs[REJECT_MISSING_ORDER_LINE_ID]" />
+              startId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Outputs[INVALID_REQUIRED_FIELD]" />
             <path
               refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Sort Output]"
               endId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Inputs[Merge Join Left Input]"
@@ -8529,33 +8530,149 @@ FROM raw.raw_order_item;</property>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\SQL - Truncate ODS Order Item"
+      DTS:refId="Package\SQL - Start ETL Log"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{A5D8D867-0443-4CA3-8A44-86356E9E5F1B}"
+      DTS:DTSID="{E6A0F2B6-4A5C-4E7B-9E31-10B5C98E6001}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="SQL - Truncate ODS Order Item"
+      DTS:ObjectName="SQL - Start ETL Log"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{4F9C1D80-ADF2-4711-A2C8-F6D1CC11664B}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE ods.ods_order_item;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ORDER_ITEM';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Truncate Temp Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{42F70AE5-E249-40D9-832D-F6AF4FF970A0}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Truncate Temp Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{4F9C1D80-ADF2-4711-A2C8-F6D1CC11664B}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE temp.ods_order_item;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Upsert ODS Order Item"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{C7DECC09-16D5-4114-B130-707FEA55BE10}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Upsert ODS Order Item"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{4F9C1D80-ADF2-4711-A2C8-F6D1CC11664B}"
+          SQLTask:SqlStatementSource="EXEC ods.usp_upsert_ods_order_item;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - End ETL Log"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{E6A0F2B6-4A5C-4E7B-9E31-10B5C98E6002}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - End ETL Log"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{4F9C1D80-ADF2-4711-A2C8-F6D1CC11664B}"
+          SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ORDER_ITEM', @target_table = 'ods_order_item', @raw_table = 'raw_order_item';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
       DTS:CreationName=""
-      DTS:DTSID="{FEA73EB0-6D3A-44CF-8C50-259165750A89}"
-      DTS:From="Package\SQL - Truncate ODS Order Item"
+      DTS:DTSID="{728230D2-BA52-4D94-803E-0C8421452B21}"
+      DTS:From="Package\SQL - Start ETL Log"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="Constraint"
+      DTS:ObjectName="Constraint_Start_To_Truncate"
+      DTS:To="Package\SQL - Truncate Temp Table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+      DTS:CreationName=""
+      DTS:DTSID="{2DA44459-6C40-4A7F-805F-69DCB53A6E34}"
+      DTS:From="Package\SQL - Truncate Temp Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Truncate_To_DFT"
       DTS:To="Package\DFT - RAW Order Item to ODS Order Item" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+      DTS:CreationName=""
+      DTS:DTSID="{788C7077-302A-4562-8839-48DBAB667C7F}"
+      DTS:From="Package\DFT - RAW Order Item to ODS Order Item"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_DFT_To_Upsert"
+      DTS:To="Package\SQL - Upsert ODS Order Item" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+      DTS:CreationName=""
+      DTS:DTSID="{3814482F-E23F-4F9E-9312-DC1A66A08AB0}"
+      DTS:From="Package\SQL - Upsert ODS Order Item"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Upsert_To_End"
+      DTS:To="Package\SQL - End ETL Log" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{8C235BC3-2A62-4D3B-A790-2B34FF586001}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="OnError">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{D668FA63-8F4C-40FB-8BAE-F7C5FF686002}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\SQL - Log Package Failure"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{7C981442-8367-4DF8-B043-4BC812386003}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL - Log Package Failure"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{4F9C1D80-ADF2-4711-A2C8-F6D1CC11664B}"
+              SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ORDER_ITEM', @status_override = 'FAILED', @error_message = 'Package execution encountered an error.';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
 <!--If you manually edit this section and make a mistake, you can delete it. -->
@@ -8567,29 +8684,41 @@ FROM raw.raw_order_item;</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="276,42"
+          Size="200,42"
+          Id="Package\SQL - Start ETL Log"
+          TopLeft="181,20" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - Truncate Temp Table"
+          TopLeft="181,95" />
+        <NodeLayout
+          Size="326,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item"
-          TopLeft="211.5,200.416665671186" />
+          TopLeft="121.5,170" />
         <NodeLayout
-          Size="229,42"
-          Id="Package\SQL - Truncate ODS Order Item"
-          TopLeft="238,101.291666163545" />
+          Size="226,42"
+          Id="Package\SQL - Upsert ODS Order Item"
+          TopLeft="168,245" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - End ETL Log"
+          TopLeft="181,320" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="351,143.291666163545">
+          Id="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
+          TopLeft="281,62">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,57.1249995076406"
+              EndConnector="0,33"
               Start="0,0"
-              End="0,49.6249995076406">
+              End="0,25.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,49.6249995076406" />
+                    End="0,25.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -8598,6 +8727,75 @@ FROM raw.raw_order_item;</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+          TopLeft="282.75,137">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+          TopLeft="282.75,212">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+          TopLeft="281,287">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -8615,25 +8813,29 @@ FROM raw.raw_order_item;</property>
           Id="Package\DFT - RAW Order Item to ODS Order Item\DC - Convert Quantity Format"
           TopLeft="361,775.097219934411" />
         <NodeLayout
-          Size="230,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\Multicast - Normalize Order Item"
-          TopLeft="635.333333333333,775.986110003527" />
+          Size="170,42"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID"
+          TopLeft="665.666666666667,511.652779242304" />
         <NodeLayout
           Size="174.5,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\LKP - Valid Order ID"
           TopLeft="392.166666666667,522.347219627695" />
         <NodeLayout
+          Size="234.5,42"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\Multicast - Validate Lookup Value"
+          TopLeft="363.333333333333,394.708331996161" />
+        <NodeLayout
           Size="279,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Line Total Format"
           TopLeft="12.1666666666667,1674.6805524875" />
         <NodeLayout
-          Size="147.5,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID"
-          TopLeft="403.333333333333,640.736108921952" />
-        <NodeLayout
           Size="225,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DC - Convert Line Total Format"
           TopLeft="350.166666666667,1557.22221915148" />
+        <NodeLayout
+          Size="230,42"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\Multicast - Normalize Order Item"
+          TopLeft="635.333333333333,775.986110003527" />
         <NodeLayout
           Size="184.5,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item"
@@ -8663,6 +8865,10 @@ FROM raw.raw_order_item;</property>
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Unit Price Format"
           TopLeft="910.83333333333,1000.61110831659" />
         <NodeLayout
+          Size="146.5,42"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity"
+          TopLeft="388.5,1097.04166421026" />
+        <NodeLayout
           Size="263.5,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Quantity Range"
           TopLeft="18,1099.91666470261" />
@@ -8671,9 +8877,17 @@ FROM raw.raw_order_item;</property>
           Id="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field"
           TopLeft="350.5,288.166665235327" />
         <NodeLayout
-          Size="234.5,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\Multicast - Validate Lookup Value"
-          TopLeft="363.333333333333,394.708331996161" />
+          Size="153,42"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price"
+          TopLeft="683.833333333333,1214.33332956665" />
+        <NodeLayout
+          Size="187.5,42"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item"
+          TopLeft="378,85.5833329082363" />
+        <NodeLayout
+          Size="147.5,42"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID"
+          TopLeft="403.333333333333,640.736108921952" />
         <NodeLayout
           Size="257.5,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Convert Unit Price Format"
@@ -8691,10 +8905,6 @@ FROM raw.raw_order_item;</property>
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Line Total Logic"
           TopLeft="967.666666666666,1671.55555291529" />
         <NodeLayout
-          Size="217.5,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1"
-          TopLeft="643.666666666667,637.986109616097" />
-        <NodeLayout
           Size="230.5,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Line Total Logic"
           TopLeft="349.666666666667,1676.68055197093" />
@@ -8703,21 +8913,21 @@ FROM raw.raw_order_item;</property>
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID"
           TopLeft="25,398.916664767183" />
         <NodeLayout
-          Size="146.5,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity"
-          TopLeft="388.5,1097.04166421026" />
-        <NodeLayout
           Size="226.5,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings"
           TopLeft="362,190.124999055639" />
+        <NodeLayout
+          Size="217.5,42"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2"
+          TopLeft="348,1215.49999686827" />
         <NodeLayout
           Size="221,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Valid Unit Price Range"
           TopLeft="646.333333333333,1087.40277464157" />
         <NodeLayout
           Size="217.5,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2"
-          TopLeft="348,1215.49999686827" />
+          Id="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1"
+          TopLeft="643.666666666667,637.986109616097" />
         <NodeLayout
           Size="272,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Quantity Format"
@@ -8747,17 +8957,9 @@ FROM raw.raw_order_item;</property>
           Id="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Valid Quantity Range"
           TopLeft="359.5,985.74999756242" />
         <NodeLayout
-          Size="187.5,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item"
-          TopLeft="378,85.5833329082363" />
-        <NodeLayout
           Size="247.5,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid MenuItemID"
           TopLeft="911.666666666667,514.361112562185" />
-        <NodeLayout
-          Size="153,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price"
-          TopLeft="683.833333333333,1214.33332956665" />
         <NodeLayout
           Size="224.5,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DC - Convert Unit Price Format"
@@ -8766,10 +8968,6 @@ FROM raw.raw_order_item;</property>
           Size="288.5,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Item Discount Range"
           TopLeft="966.333333333333,1444.8749976512" />
-        <NodeLayout
-          Size="170,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID"
-          TopLeft="665.666666666667,511.652779242304" />
         <NodeLayout
           Size="270,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Unit Price Range"
@@ -8786,668 +8984,6 @@ FROM raw.raw_order_item;</property>
           Size="246,42"
           Id="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid UnitPrice Range"
           TopLeft="927.83333333333,1082.02777640922" />
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Lookup No Match Output1]"
-          TopLeft="392.166666666667,543.59722162942">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-109,0"
-              Start="0,0"
-              End="-101.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-101.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-106.55638671875,5,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Lookup No Match Output]"
-          TopLeft="851.833333333333,414.930557604813">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="69.6666666666667,0"
-              Start="0,0"
-              End="62.1666666666667,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="62.1666666666667,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-24.7230533854166,5,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Lookup Match Output1]"
-          TopLeft="752,438.097224260718">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,73.5555549815853"
-              Start="0,0"
-              End="0,66.0555549815853">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,66.0555549815853" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,27.2230899907927,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Lookup Match Output]"
-          TopLeft="478.25,564.347219627695">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,76.3888892942567"
-              Start="0,0"
-              End="0,68.8888892942567">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,68.8888892942567" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.19138671875,28.6397571471284,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[INVALID_UNIT_PRICE_RANGE]"
-          TopLeft="867.333333333333,1105.71527552539">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="60.4999999999968,0"
-              Start="0,0"
-              End="52.9999999999968,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="52.9999999999968,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-41.7445507812516,5,136.4891015625,10.8671875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[INVALID_QUANTITY_RANGE]"
-          TopLeft="359.5,1007.16666454118">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-86.5,0"
-              Start="0,0"
-              End="-79,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-79,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-103.81955078125,5,128.6391015625,11.3359375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[INVALID_LINE_TOTAL_LOGIC]"
-          TopLeft="580.166666666667,1697.13194111586">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="74.1666666666661,0"
-              Start="0,0"
-              End="66.6666666666661,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="66.6666666666661,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-34.074537760417,5,134.8157421875,10.88671875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[INVALID_ITEM_DISCOUNT_RANGE]"
-          TopLeft="585,1465.12499698934">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="68.0000000000003,0"
-              Start="0,0"
-              End="60.5000000000003,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="60.5000000000003,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-48.6245507812498,5,157.7491015625,10.88671875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output11]"
-          TopLeft="476.5,232.124999055639">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,56.0416661796883"
-              Start="0,0"
-              End="0,48.5416661796883">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,48.5416661796883" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output10]"
-          TopLeft="897.833333333333,1694.56944158804">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="69.8333333333335,0"
-              Start="0,0"
-              End="62.3333333333335,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="62.3333333333335,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output9]"
-          TopLeft="155.75,332.208331963875">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,66.708332803308"
-              Start="0,0"
-              End="0,59.208332803308">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,59.208332803308" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output8]"
-          TopLeft="154.916666666667,1601.30555306057">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,73.3749994269263"
-              Start="0,0"
-              End="0,65.8749994269263">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,65.8749994269263" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output7]"
-          TopLeft="154.25,818.05555478787">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,75.3611105281722"
-              Start="0,0"
-              End="0,67.8611105281722">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,67.8611105281722" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output6]"
-          TopLeft="150.75,1028.58333151995">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,71.3333331826659"
-              Start="0,0"
-              End="0,63.8333331826659">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,63.8333331826659" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output5]"
-          TopLeft="178.416666666667,564.847223631144">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,77.1666660747599"
-              Start="0,0"
-              End="0,69.6666660747599">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,69.6666660747599" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output4]"
-          TopLeft="1049.83333333333,1124.02777640922">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,73.4999981919909"
-              Start="0,0"
-              End="0,65.9999981919909">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,65.9999981919909" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output3]"
-          TopLeft="1035.20833333333,433.763890948908">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,80.5972216132761"
-              Start="0,0"
-              End="0,73.0972216132761">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,73.0972216132761" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output2]"
-          TopLeft="920.5,1465.18055300407">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="45.8333333333327,0"
-              Start="0,0"
-              End="38.3333333333327,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="38.3333333333327,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output1]"
-          TopLeft="918.333333333333,1340.74999678756">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="40.3333333333337,0"
-              Start="0,0"
-              End="32.8333333333337,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="32.8333333333337,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output]"
-          TopLeft="1047.33333333333,934.444444017556">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,66.1666642990352"
-              Start="0,0"
-              End="0,58.6666642990352">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,58.6666642990352" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output4]"
-          TopLeft="463.791666666667,1599.22221915148">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,77.4583328194474"
-              Start="0,0"
-              End="0,69.9583328194474">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,69.9583328194474" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output3]"
-          TopLeft="464.041666666667,1364.83332959894">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,79.9305560228011"
-              Start="0,0"
-              End="0,72.4305560228011">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,72.4305560228011" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output2]"
-          TopLeft="468.375,817.097219934411">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,168.652777628009"
-              Start="0,0"
-              End="0,161.152777628009">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,161.152777628009" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output1]"
-          TopLeft="757.208333333333,934.986109422382">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,152.416665219184"
-              Start="0,0"
-              End="0,144.916665219184">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,144.916665219184" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output]"
-          TopLeft="467.666666666667,1831.27777500478">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,69.2499992735734"
-              Start="0,0"
-              End="0,61.7499992735734">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,61.7499992735734" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Error Output3]"
-          TopLeft="350.166666666667,1579.26388610603">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-63,0"
-              Start="0,0"
-              End="-55.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-55.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-93.83638671875,5,132.1727734375,11.43359375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Error Output2]"
-          TopLeft="361,796.57638736114">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-78,0"
-              Start="0,0"
-              End="-70.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="-70.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-101.33638671875,5,132.1727734375,11.43359375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Error Output1]"
-          TopLeft="869.833333333333,913.715276719969">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="45.9999999999968,0"
-              Start="0,0"
-              End="38.4999999999968,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="38.4999999999968,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-46.8363867187516,5,132.1727734375,11.43359375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Error Output]"
-          TopLeft="584.333333333333,1342.7430520799">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="57.9999999999999,0"
-              Start="0,0"
-              End="50.4999999999999,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="50.4999999999999,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-40.83638671875,5,132.1727734375,11.43359375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[VALID_UNIT_PRICE]"
           TopLeft="758.583333333333,1129.40277464157">
@@ -9676,7 +9212,7 @@ FROM raw.raw_order_item;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-113.1412109375,5,159.282421875,10.88671875"
+              BoundingBox="-95.5578125,5,124.115625,11.3359375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -9704,28 +9240,6 @@ FROM raw.raw_order_item;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Multicast Output 21]"
-          TopLeft="480,436.708331996161">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,85.638887631534"
-              Start="0,0"
-              End="0,78.138887631534">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,78.138887631534" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Multicast Output 2]"
           TopLeft="753.958333333333,817.986110003527">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -9738,6 +9252,28 @@ FROM raw.raw_order_item;</property>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,67.4999994188546" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Multicast Output 2]"
+          TopLeft="480,436.708331996161">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,85.638887631534"
+              Start="0,0"
+              End="0,78.138887631534">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,78.138887631534" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -9832,6 +9368,668 @@ FROM raw.raw_order_item;</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Lookup No Match Output1]"
+          TopLeft="392.166666666667,543.59722162942">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-109,0"
+              Start="0,0"
+              End="-101.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-101.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-106.55638671875,5,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Lookup No Match Output]"
+          TopLeft="851.833333333333,414.930557604813">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="69.6666666666667,0"
+              Start="0,0"
+              End="62.1666666666667,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="62.1666666666667,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-24.7230533854166,5,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Lookup Match Output1]"
+          TopLeft="752,438.097224260718">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,73.5555549815853"
+              Start="0,0"
+              End="0,66.0555549815853">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,66.0555549815853" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,27.2230899907927,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Lookup Match Output]"
+          TopLeft="478.25,564.347219627695">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,76.3888892942567"
+              Start="0,0"
+              End="0,68.8888892942567">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,68.8888892942567" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,28.6397571471284,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[INVALID_UNIT_PRICE_RANGE]"
+          TopLeft="867.333333333333,1105.71527552539">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="60.4999999999968,0"
+              Start="0,0"
+              End="52.9999999999968,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="52.9999999999968,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-41.7445507812516,5,136.4891015625,10.8671875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[INVALID_QUANTITY_RANGE]"
+          TopLeft="359.5,1007.16666454118">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-86.5,0"
+              Start="0,0"
+              End="-79,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-79,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-103.81955078125,5,128.6391015625,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[INVALID_LINE_TOTAL_LOGIC]"
+          TopLeft="580.166666666667,1697.13194111586">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="74.1666666666661,0"
+              Start="0,0"
+              End="66.6666666666661,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="66.6666666666661,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-34.074537760417,5,134.8157421875,10.88671875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[INVALID_ITEM_DISCOUNT_RANGE]"
+          TopLeft="585,1465.12499698934">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="68.0000000000003,0"
+              Start="0,0"
+              End="60.5000000000003,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="60.5000000000003,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.6245507812498,5,157.7491015625,10.88671875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output11]"
+          TopLeft="178.416666666667,564.847223631144">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,77.1666660747599"
+              Start="0,0"
+              End="0,69.6666660747599">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,69.6666660747599" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output10]"
+          TopLeft="1047.33333333333,934.444444017556">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,66.1666642990352"
+              Start="0,0"
+              End="0,58.6666642990352">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,58.6666642990352" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output9]"
+          TopLeft="476.5,232.124999055639">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56.0416661796883"
+              Start="0,0"
+              End="0,48.5416661796883">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,48.5416661796883" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output8]"
+          TopLeft="920.5,1465.18055300407">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="45.8333333333327,0"
+              Start="0,0"
+              End="38.3333333333327,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="38.3333333333327,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output7]"
+          TopLeft="1035.20833333333,433.763890948908">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,80.5972216132761"
+              Start="0,0"
+              End="0,73.0972216132761">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,73.0972216132761" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output6]"
+          TopLeft="1049.83333333333,1124.02777640922">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,73.4999981919909"
+              Start="0,0"
+              End="0,65.9999981919909">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,65.9999981919909" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output5]"
+          TopLeft="918.333333333333,1340.74999678756">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="40.3333333333337,0"
+              Start="0,0"
+              End="32.8333333333337,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="32.8333333333337,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output4]"
+          TopLeft="150.75,1028.58333151995">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71.3333331826659"
+              Start="0,0"
+              End="0,63.8333331826659">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.8333331826659" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output3]"
+          TopLeft="154.25,818.05555478787">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,75.3611105281722"
+              Start="0,0"
+              End="0,67.8611105281722">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,67.8611105281722" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output2]"
+          TopLeft="154.916666666667,1601.30555306057">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,73.3749994269263"
+              Start="0,0"
+              End="0,65.8749994269263">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,65.8749994269263" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output1]"
+          TopLeft="155.75,332.208331963875">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,66.708332803308"
+              Start="0,0"
+              End="0,59.208332803308">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,59.208332803308" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output]"
+          TopLeft="897.833333333333,1694.56944158804">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="69.8333333333335,0"
+              Start="0,0"
+              End="62.3333333333335,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="62.3333333333335,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output4]"
+          TopLeft="463.791666666667,1599.22221915148">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,77.4583328194474"
+              Start="0,0"
+              End="0,69.9583328194474">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,69.9583328194474" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output3]"
+          TopLeft="464.041666666667,1364.83332959894">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,79.9305560228011"
+              Start="0,0"
+              End="0,72.4305560228011">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,72.4305560228011" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output2]"
+          TopLeft="468.375,817.097219934411">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,168.652777628009"
+              Start="0,0"
+              End="0,161.152777628009">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,161.152777628009" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output1]"
+          TopLeft="757.208333333333,934.986109422382">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,152.416665219184"
+              Start="0,0"
+              End="0,144.916665219184">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,144.916665219184" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Output]"
+          TopLeft="467.666666666667,1831.27777500478">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,69.2499992735734"
+              Start="0,0"
+              End="0,61.7499992735734">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,61.7499992735734" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Error Output3]"
+          TopLeft="350.166666666667,1579.26388610603">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-63,0"
+              Start="0,0"
+              End="-55.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-55.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-93.83638671875,5,132.1727734375,11.43359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Error Output2]"
+          TopLeft="361,796.57638736114">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-78,0"
+              Start="0,0"
+              End="-70.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-70.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-101.33638671875,5,132.1727734375,11.43359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Error Output1]"
+          TopLeft="869.833333333333,913.715276719969">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="45.9999999999968,0"
+              Start="0,0"
+              End="38.4999999999968,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="38.4999999999968,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-46.8363867187516,5,132.1727734375,11.43359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Order Item to ODS Order Item.Paths[Data Conversion Error Output]"
+          TopLeft="584.333333333333,1342.7430520799">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="57.9999999999999,0"
+              Start="0,0"
+              End="50.4999999999999,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="50.4999999999999,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-40.83638671875,5,132.1727734375,11.43359375"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -9949,6 +10147,14 @@ FROM raw.raw_order_item;</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Convert Item Discount Format">
     <Properties>
       <Property>
@@ -9997,14 +10203,6 @@ FROM raw.raw_order_item;</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
