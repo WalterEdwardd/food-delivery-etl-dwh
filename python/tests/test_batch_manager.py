@@ -130,3 +130,31 @@ def test_batch_execution():
         success_records=990,
         error_records=10,
     )
+
+
+def test_log_etl_error():
+    from src.orchestration.batch_manager import log_etl_error
+
+    batch_id = start_batch(
+        pipeline_name="FoodDeliveryETL_ErrorTest",
+        source_system="CSV",
+        source_file_count=1,
+    )
+
+    error_id = log_etl_error(
+        batch_id=batch_id,
+        error_type="FILE_VALIDATION_ERROR",
+        error_message="Test validation error for unit test",
+        source_file_name="test_customer.csv",
+        table_name="customer",
+    )
+
+    assert error_id is not None
+    assert isinstance(error_id, int)
+
+    fail_batch(
+        batch_id=batch_id,
+        total_records=0,
+        success_records=0,
+        error_records=0,
+    )

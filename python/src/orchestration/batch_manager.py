@@ -237,3 +237,67 @@ def fail_batch(
 
     finally:
         connection.close()
+
+
+def log_etl_error(
+    batch_id: int,
+    error_type: str,
+    error_message: str,
+    source_file_name: str | None = None,
+    source_row_number: int | None = None,
+    table_name: str | None = None,
+    column_name: str | None = None,
+    raw_value: str | None = None,
+) -> int | None:
+    """
+    Log an error entry into control.etl_error.
+    Returns the generated error_id or None if logging failed.
+    """
+    logger.warning(
+        "Logging ETL error | batch_id=%s | type=%s | file=%s | msg=%s",
+        batch_id,
+        error_type,
+        source_file_name,
+        error_message,
+    )
+    connection = None
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(
+            """
+            INSERT INTO control.etl_error
+            (
+                batch_id,
+                source_file_name,
+                source_row_number,
+                table_name,
+                column_name,
+                error_type,
+                error_message,
+                raw_value,
+                error_timestamp
+            )
+            OUTPUT INSERTED.error_id
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, SYSUTCDATETIME());
+            """,
+            batch_id,
+            source_file_name,
+            source_row_number,
+            table_name,
+            column_name,
+            error_type,
+            error_message[:4000] if error_message else "Unknown error",
+            raw_value[:4000] if raw_value else None,
+        )
+        error_id = cursor.fetchone()[0]
+        connection.commit()
+        return error_id
+    except Exception:
+        if connection:
+            connection.rollback()
+        logger.exception("Failed to write entry to control.etl_error | batch_id=%s", batch_id)
+        return None
+    finally:
+        if connection:
+            connection.close()
