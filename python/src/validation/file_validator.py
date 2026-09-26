@@ -75,6 +75,29 @@ def validate_file_exists(
     return errors
 
 
+# Validate File Accessibility (Lock check / Incomplete upload check)
+def validate_file_accessible(
+    file_path: Path,
+) -> list[str]:
+    """ 
+    Validate that the file is not currently locked or being written
+    by an external process (e.g. FTP/SFTP/in-progress copy).
+    """
+    try:
+        with open(file_path, "rb") as f:
+            f.seek(0, 2)  # seek to end of file
+    except (PermissionError, BlockingIOError) as exc:
+        return [
+            f"File is locked or currently being written by another process: {exc}"
+        ]
+    except Exception as exc:
+        return [
+            f"Cannot access file: {exc}"
+        ]
+
+    return []
+
+
 # Validate CSV Readability
 def validate_csv_readability(
     file_path: Path,
@@ -207,6 +230,18 @@ def validate_file(
     
     errors.extend(
         validate_file_exists(file_path)
+    )
+
+    if errors:
+        return FileValidationResult(
+            file_path=file_path,
+            is_valid=False,
+            source_name=source_name,
+            errors=errors,
+        )
+
+    errors.extend(
+        validate_file_accessible(file_path)
     )
 
     if errors:

@@ -143,3 +143,14 @@ def test_column_order_does_not_matter(tmp_path):
     )
 
     assert result.is_valid is True
+
+
+# Test File Accessibility
+def test_validate_file_accessible_success(tmp_path):
+    from src.validation.file_validator import validate_file_accessible
+
+    file_path = tmp_path / "customer_accessible.csv"
+    file_path.write_text("sample content\n", encoding="utf-8")
+
+    errors = validate_file_accessible(file_path)
+    assert errors == []
