@@ -9,10 +9,10 @@
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="16.0.5685.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="00_Load_Master"
+  DTS:ObjectName="01_Load_Master"
   DTS:PackageType="5"
-  DTS:VersionBuild="48"
-  DTS:VersionGUID="{1D378497-B953-4FF8-877D-8EAAB45030E7}">
+  DTS:VersionBuild="54"
+  DTS:VersionGUID="{43AF6637-AB2B-4486-BA8F-CDFEDDD77C28}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -71,27 +71,27 @@
           version="1">
           <components>
             <component
-              refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows"
+              refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Filters out blank or null rows from Excel source"
-              name="CSPL - Filter Valid Rows"
+              name="CSPL - Filter Missing Rows"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[acquisition_channel_code_clean]"
+                      refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[acquisition_channel_code_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
                       cachedName="acquisition_channel_code_clean"
                       lineageId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\DRV - Clean Acquisition Channel Strings.Outputs[Derived Column Output].Columns[acquisition_channel_code_clean]" />
                     <inputColumn
-                      refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[acquisition_channel_name_clean]"
+                      refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[acquisition_channel_name_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
@@ -103,13 +103,13 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Outputs[Invalid_Rows]"
+                  refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Blank or null rows"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="Invalid_Rows"
-                  synchronousInputId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  name="INVALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -131,11 +131,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Outputs[Valid_Rows]"
+                  refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]"
                   description="Valid non-blank rows"
                   exclusionGroup="1"
-                  name="Valid_Rows"
-                  synchronousInputId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  name="VALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -144,23 +144,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output]"
+                  refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -231,7 +231,7 @@
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(acquisition_channel_code))</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(acquisition_channel_code)</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -271,13 +271,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[ISNULL](#{Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\SRC - Master Acquisition Channel.Outputs[Excel Source Output].Columns[is_active]}) ? (DT_BOOL)1 : ((DT_I4)#{Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\SRC - Master Acquisition Channel.Outputs[Excel Source Output].Columns[is_active]} == 1 ? (DT_BOOL)1 : (DT_BOOL)0)</property>
+                          name="Expression">(DT_BOOL)((DT_I4)#{Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\SRC - Master Acquisition Channel.Outputs[Excel Source Output].Columns[is_active]} == 1)</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">ISNULL(is_active) ? (DT_BOOL)1 : ((DT_I4)is_active == 1 ? (DT_BOOL)1 : (DT_BOOL)0)</property>
+                          name="FriendlyExpression">(DT_BOOL)((DT_I4)is_active == 1)</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -819,7 +819,7 @@
           <paths>
             <path
               refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL.Paths[Derived Column Output]"
-              endId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+              endId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
               name="Derived Column Output"
               startId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\DRV - Clean Acquisition Channel Strings.Outputs[Derived Column Output]" />
             <path
@@ -836,7 +836,7 @@
               refId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL.Paths[Valid_Rows]"
               endId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\SORT - Acquisition Channel.Inputs[Sort Input]"
               name="Valid_Rows"
-              startId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows.Outputs[Valid_Rows]" />
+              startId="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -856,27 +856,27 @@
           version="1">
           <components>
             <component
-              refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows"
+              refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Filters out blank or null rows from Excel source"
-              name="CSPL - Filter Valid Rows"
+              name="CSPL - Filter Missing Rows"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[category_code_clean]"
+                      refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[category_code_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
                       cachedName="category_code_clean"
                       lineageId="Package\DFT - SRC CATEGORY to REF CATEGORY\DRV - Clean Category Strings.Outputs[Derived Column Output].Columns[category_code_clean]" />
                     <inputColumn
-                      refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[category_name_clean]"
+                      refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[category_name_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
@@ -888,13 +888,13 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Outputs[Invalid_Rows]"
+                  refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Blank or null rows"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="Invalid_Rows"
-                  synchronousInputId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  name="INVALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -916,11 +916,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Outputs[Valid_Rows]"
+                  refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]"
                   description="Valid non-blank rows"
                   exclusionGroup="1"
-                  name="Valid_Rows"
-                  synchronousInputId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  name="VALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -929,23 +929,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output]"
+                  refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1016,7 +1016,7 @@
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(category_code))</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(category_code)</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1056,13 +1056,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[ISNULL](#{Package\DFT - SRC CATEGORY to REF CATEGORY\SRC - Master Category.Outputs[Excel Source Output].Columns[is_active]}) ? (DT_BOOL)1 : ((DT_I4)#{Package\DFT - SRC CATEGORY to REF CATEGORY\SRC - Master Category.Outputs[Excel Source Output].Columns[is_active]} == 1 ? (DT_BOOL)1 : (DT_BOOL)0)</property>
+                          name="Expression">(DT_BOOL)((DT_I4)#{Package\DFT - SRC CATEGORY to REF CATEGORY\SRC - Master Category.Outputs[Excel Source Output].Columns[is_active]} == 1)</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">ISNULL(is_active) ? (DT_BOOL)1 : ((DT_I4)is_active == 1 ? (DT_BOOL)1 : (DT_BOOL)0)</property>
+                          name="FriendlyExpression">(DT_BOOL)((DT_I4)is_active == 1)</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1604,7 +1604,7 @@
           <paths>
             <path
               refId="Package\DFT - SRC CATEGORY to REF CATEGORY.Paths[Derived Column Output]"
-              endId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+              endId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
               name="Derived Column Output"
               startId="Package\DFT - SRC CATEGORY to REF CATEGORY\DRV - Clean Category Strings.Outputs[Derived Column Output]" />
             <path
@@ -1621,7 +1621,7 @@
               refId="Package\DFT - SRC CATEGORY to REF CATEGORY.Paths[Valid_Rows]"
               endId="Package\DFT - SRC CATEGORY to REF CATEGORY\SORT - Category.Inputs[Sort Input]"
               name="Valid_Rows"
-              startId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows.Outputs[Valid_Rows]" />
+              startId="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -1641,27 +1641,27 @@
           version="1">
           <components>
             <component
-              refId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows"
+              refId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Filters out blank or null rows from Excel source"
-              name="CSPL - Filter Valid Rows"
+              name="CSPL - Filter Missing Rows"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  refId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[city_code_clean]"
+                      refId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[city_code_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
                       cachedName="city_code_clean"
                       lineageId="Package\DFT - SRC City to REF City\DRV - Clean City Strings.Outputs[Derived Column Output].Columns[city_code_clean]" />
                     <inputColumn
-                      refId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[city_name_clean]"
+                      refId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[city_name_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
@@ -1673,13 +1673,13 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Outputs[Invalid_Rows]"
+                  refId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Blank or null rows"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="Invalid_Rows"
-                  synchronousInputId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  name="INVALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -1701,11 +1701,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Outputs[Valid_Rows]"
+                  refId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]"
                   description="Valid non-blank rows"
                   exclusionGroup="1"
-                  name="Valid_Rows"
-                  synchronousInputId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  name="VALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -1714,23 +1714,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output]"
+                  refId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1841,13 +1841,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[ISNULL](#{Package\DFT - SRC City to REF City\SRC - Master City.Outputs[Excel Source Output].Columns[is_active]}) ? (DT_BOOL)1 : ((DT_I4)#{Package\DFT - SRC City to REF City\SRC - Master City.Outputs[Excel Source Output].Columns[is_active]} == 1 ? (DT_BOOL)1 : (DT_BOOL)0)</property>
+                          name="Expression">(DT_BOOL)((DT_I4)#{Package\DFT - SRC City to REF City\SRC - Master City.Outputs[Excel Source Output].Columns[is_active]} == 1)</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">ISNULL(is_active) ? (DT_BOOL)1 : ((DT_I4)is_active == 1 ? (DT_BOOL)1 : (DT_BOOL)0)</property>
+                          name="FriendlyExpression">(DT_BOOL)((DT_I4)is_active == 1)</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -2389,7 +2389,7 @@
           <paths>
             <path
               refId="Package\DFT - SRC City to REF City.Paths[Derived Column Output]"
-              endId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+              endId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
               name="Derived Column Output"
               startId="Package\DFT - SRC City to REF City\DRV - Clean City Strings.Outputs[Derived Column Output]" />
             <path
@@ -2403,10 +2403,10 @@
               name="Sort Output"
               startId="Package\DFT - SRC City to REF City\SORT - City.Outputs[Sort Output]" />
             <path
-              refId="Package\DFT - SRC City to REF City.Paths[Valid_Rows]"
+              refId="Package\DFT - SRC City to REF City.Paths[VALID_REQUIRED_FIELD]"
               endId="Package\DFT - SRC City to REF City\SORT - City.Inputs[Sort Input]"
-              name="Valid_Rows"
-              startId="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows.Outputs[Valid_Rows]" />
+              name="VALID_REQUIRED_FIELD"
+              startId="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -2426,27 +2426,27 @@
           version="1">
           <components>
             <component
-              refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows"
+              refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Filters out blank or null rows from Excel source"
-              name="CSPL - Filter Valid Rows"
+              name="CSPL - Filter Missing Rows"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[cuisine_type_code_clean]"
+                      refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[cuisine_type_code_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
                       cachedName="cuisine_type_code_clean"
                       lineageId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\DRV - Clean Cuisine Type Strings.Outputs[Derived Column Output].Columns[cuisine_type_code_clean]" />
                     <inputColumn
-                      refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[cuisine_type_name_clean]"
+                      refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[cuisine_type_name_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
@@ -2458,13 +2458,13 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Outputs[Invalid_Rows]"
+                  refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Blank or null rows"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="Invalid_Rows"
-                  synchronousInputId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  name="INVALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -2486,11 +2486,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Outputs[Valid_Rows]"
+                  refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]"
                   description="Valid non-blank rows"
                   exclusionGroup="1"
-                  name="Valid_Rows"
-                  synchronousInputId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  name="VALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -2499,23 +2499,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output]"
+                  refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -2586,7 +2586,7 @@
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(cuisine_type_code))</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)TRIM(cuisine_type_code)</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2626,13 +2626,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[ISNULL](#{Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\SRC - Master Cuisine Type.Outputs[Excel Source Output].Columns[is_active]}) ? (DT_BOOL)1 : ((DT_I4)#{Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\SRC - Master Cuisine Type.Outputs[Excel Source Output].Columns[is_active]} == 1 ? (DT_BOOL)1 : (DT_BOOL)0)</property>
+                          name="Expression">(DT_BOOL)((DT_I4)#{Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\SRC - Master Cuisine Type.Outputs[Excel Source Output].Columns[is_active]} == 1)</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">ISNULL(is_active) ? (DT_BOOL)1 : ((DT_I4)is_active == 1 ? (DT_BOOL)1 : (DT_BOOL)0)</property>
+                          name="FriendlyExpression">(DT_BOOL)((DT_I4)is_active == 1)</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -3174,7 +3174,7 @@
           <paths>
             <path
               refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE.Paths[Derived Column Output]"
-              endId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+              endId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
               name="Derived Column Output"
               startId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\DRV - Clean Cuisine Type Strings.Outputs[Derived Column Output]" />
             <path
@@ -3191,7 +3191,7 @@
               refId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE.Paths[Valid_Rows]"
               endId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\SORT - Cuisine Type.Inputs[Sort Input]"
               name="Valid_Rows"
-              startId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows.Outputs[Valid_Rows]" />
+              startId="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -3211,27 +3211,27 @@
           version="1">
           <components>
             <component
-              refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows"
+              refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Filters out blank or null rows from Excel source"
-              name="CSPL - Filter Valid Rows"
+              name="CSPL - Filter Missing Rows"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[employment_type_code_clean]"
+                      refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[employment_type_code_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
                       cachedName="employment_type_code_clean"
                       lineageId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\DRV - Clean Employment Type Strings.Outputs[Derived Column Output].Columns[employment_type_code_clean]" />
                     <inputColumn
-                      refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[employment_type_name_clean]"
+                      refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[employment_type_name_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
@@ -3243,13 +3243,13 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Outputs[Invalid_Rows]"
+                  refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Blank or null rows"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="Invalid_Rows"
-                  synchronousInputId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  name="INVALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -3271,11 +3271,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Outputs[Valid_Rows]"
+                  refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]"
                   description="Valid non-blank rows"
                   exclusionGroup="1"
-                  name="Valid_Rows"
-                  synchronousInputId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  name="VALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -3284,23 +3284,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output]"
+                  refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -3959,7 +3959,7 @@
           <paths>
             <path
               refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE.Paths[Derived Column Output]"
-              endId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+              endId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
               name="Derived Column Output"
               startId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\DRV - Clean Employment Type Strings.Outputs[Derived Column Output]" />
             <path
@@ -3976,7 +3976,7 @@
               refId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE.Paths[Valid_Rows]"
               endId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\SORT - Employment Type.Inputs[Sort Input]"
               name="Valid_Rows"
-              startId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows.Outputs[Valid_Rows]" />
+              startId="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -3996,27 +3996,27 @@
           version="1">
           <components>
             <component
-              refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows"
+              refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Filters out blank or null rows from Excel source"
-              name="CSPL - Filter Valid Rows"
+              name="CSPL - Filter Missing Rows"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[partner_type_code_clean]"
+                      refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[partner_type_code_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
                       cachedName="partner_type_code_clean"
                       lineageId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\DRV - Clean Partner Type Strings.Outputs[Derived Column Output].Columns[partner_type_code_clean]" />
                     <inputColumn
-                      refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[partner_type_name_clean]"
+                      refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[partner_type_name_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
@@ -4028,13 +4028,13 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Outputs[Invalid_Rows]"
+                  refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Blank or null rows"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="Invalid_Rows"
-                  synchronousInputId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  name="INVALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -4056,11 +4056,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Outputs[Valid_Rows]"
+                  refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]"
                   description="Valid non-blank rows"
                   exclusionGroup="1"
-                  name="Valid_Rows"
-                  synchronousInputId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  name="VALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -4069,23 +4069,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output]"
+                  refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -4744,7 +4744,7 @@
           <paths>
             <path
               refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE.Paths[Derived Column Output]"
-              endId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+              endId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
               name="Derived Column Output"
               startId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\DRV - Clean Partner Type Strings.Outputs[Derived Column Output]" />
             <path
@@ -4761,7 +4761,7 @@
               refId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE.Paths[Valid_Rows]"
               endId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\SORT - Partner Type.Inputs[Sort Input]"
               name="Valid_Rows"
-              startId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows.Outputs[Valid_Rows]" />
+              startId="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -4781,27 +4781,27 @@
           version="1">
           <components>
             <component
-              refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows"
+              refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Filters out blank or null rows from Excel source"
-              name="CSPL - Filter Valid Rows"
+              name="CSPL - Filter Missing Rows"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[vehicle_type_code_clean]"
+                      refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[vehicle_type_code_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
                       cachedName="vehicle_type_code_clean"
                       lineageId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\DRV - Clean Vehicle Type Strings.Outputs[Derived Column Output].Columns[vehicle_type_code_clean]" />
                     <inputColumn
-                      refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input].Columns[vehicle_type_name_clean]"
+                      refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input].Columns[vehicle_type_name_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
@@ -4813,13 +4813,13 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Outputs[Invalid_Rows]"
+                  refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Blank or null rows"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="Invalid_Rows"
-                  synchronousInputId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+                  name="INVALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -4841,11 +4841,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Outputs[Valid_Rows]"
+                  refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]"
                   description="Valid non-blank rows"
                   exclusionGroup="1"
-                  name="Valid_Rows"
-                  synchronousInputId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  name="VALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -4854,23 +4854,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output]"
+                  refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -5529,7 +5529,7 @@
           <paths>
             <path
               refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE.Paths[Derived Column Output]"
-              endId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Inputs[Conditional Split Input]"
+              endId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Inputs[Conditional Split Input]"
               name="Derived Column Output"
               startId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\DRV - Clean Vehicle Type Strings.Outputs[Derived Column Output]" />
             <path
@@ -5546,7 +5546,7 @@
               refId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE.Paths[Valid_Rows]"
               endId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\SORT - Vehicle Type.Inputs[Sort Input]"
               name="Valid_Rows"
-              startId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows.Outputs[Valid_Rows]" />
+              startId="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows.Outputs[VALID_REQUIRED_FIELD]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -5838,10 +5838,6 @@
           Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\DST - REF Acquisition Channel"
           TopLeft="65,418.642857142857" />
         <NodeLayout
-          Size="194.5,42"
-          Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Valid Rows"
-          TopLeft="77.75,209.5" />
-        <NodeLayout
           Size="269,42"
           Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\DRV - Clean Acquisition Channel Strings"
           TopLeft="40.5,107.5" />
@@ -5849,6 +5845,60 @@
           Size="238,42"
           Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\SRC - Master Acquisition Channel"
           TopLeft="56,5.5" />
+        <NodeLayout
+          Size="210,42"
+          Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\SORT - Acquisition Channel"
+          TopLeft="74.0714285714286,312.357142857143" />
+        <NodeLayout
+          Size="206.5,42"
+          Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\CSPL - Filter Missing Rows"
+          TopLeft="77.75,209.5" />
+        <EdgeLayout
+          Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL.Paths[Valid_Rows]"
+          TopLeft="180.035714285714,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.857142857143"
+              Start="0,0"
+              End="0,53.357142857143">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,53.357142857143" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-57.10439453125,21.0106026785715,114.2087890625,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL.Paths[Sort Output]"
+          TopLeft="178.535714285714,354.357142857143">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,64.285714285714"
+              Start="0,0"
+              End="0,56.785714285714">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,56.785714285714" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL.Paths[Excel Source Output]"
           TopLeft="175,47.5">
@@ -5873,7 +5923,7 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL.Paths[Derived Column Output]"
-          TopLeft="175,149.5">
+          TopLeft="178,149.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -5885,56 +5935,6 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="210,42"
-          Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL\SORT - Acquisition Channel"
-          TopLeft="74.0714285714286,312.357142857143" />
-        <EdgeLayout
-          Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL.Paths[Valid_Rows]"
-          TopLeft="177.035714285714,251.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60.8571428571428"
-              Start="0,0"
-              End="0,53.3571428571428">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,53.3571428571428" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-26.08076171875,21.1473214285714,52.1615234375,11.0625"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - SRC ACQUISITION CHANNEL to REF ACQUISITION CHANNEL.Paths[Sort Output]"
-          TopLeft="178.535714285714,354.357142857143">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,64.2857142857143"
-              Start="0,0"
-              End="0,56.7857142857143">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,56.7857142857143" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -5969,10 +5969,6 @@
           Id="Package\DFT - SRC CATEGORY to REF CATEGORY\DST - REF Category"
           TopLeft="30.5,416" />
         <NodeLayout
-          Size="194.5,42"
-          Id="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Valid Rows"
-          TopLeft="17.5,209.5" />
-        <NodeLayout
           Size="218.5,42"
           Id="Package\DFT - SRC CATEGORY to REF CATEGORY\DRV - Clean Category Strings"
           TopLeft="5.50000000000001,107.5" />
@@ -5980,6 +5976,60 @@
           Size="187.5,42"
           Id="Package\DFT - SRC CATEGORY to REF CATEGORY\SRC - Master Category"
           TopLeft="21,5.5" />
+        <NodeLayout
+          Size="160,42"
+          Id="Package\DFT - SRC CATEGORY to REF CATEGORY\SORT - Category"
+          TopLeft="35,312" />
+        <NodeLayout
+          Size="206.5,42"
+          Id="Package\DFT - SRC CATEGORY to REF CATEGORY\CSPL - Filter Missing Rows"
+          TopLeft="17.5,209.5" />
+        <EdgeLayout
+          Id="Package\DFT - SRC CATEGORY to REF CATEGORY.Paths[Valid_Rows]"
+          TopLeft="117.875,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.5"
+              Start="0,0"
+              End="0,53">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,53" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-57.10439453125,20.83203125,114.2087890625,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - SRC CATEGORY to REF CATEGORY.Paths[Sort Output]"
+          TopLeft="116.625,354">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,62"
+              Start="0,0"
+              End="0,54.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC CATEGORY to REF CATEGORY.Paths[Excel Source Output]"
           TopLeft="114.75,47.5">
@@ -6004,7 +6054,7 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC CATEGORY to REF CATEGORY.Paths[Derived Column Output]"
-          TopLeft="114.75,149.5">
+          TopLeft="117.75,149.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -6016,56 +6066,6 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="160,42"
-          Id="Package\DFT - SRC CATEGORY to REF CATEGORY\SORT - Category"
-          TopLeft="35,312" />
-        <EdgeLayout
-          Id="Package\DFT - SRC CATEGORY to REF CATEGORY.Paths[Valid_Rows]"
-          TopLeft="114.875,251.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60.5"
-              Start="0,0"
-              End="0,53">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,53" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-26.08076171875,20.96875,52.1615234375,11.0625"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - SRC CATEGORY to REF CATEGORY.Paths[Sort Output]"
-          TopLeft="116.625,354">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,62"
-              Start="0,0"
-              End="0,54.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,54.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -6112,33 +6112,9 @@
           Id="Package\DFT - SRC City to REF City\SORT - City"
           TopLeft="38.3571428571428,310.374998458351" />
         <NodeLayout
-          Size="194.5,42"
-          Id="Package\DFT - SRC City to REF City\CSPL - Filter Valid Rows"
+          Size="206.5,42"
+          Id="Package\DFT - SRC City to REF City\CSPL - Filter Missing Rows"
           TopLeft="5.50000000000003,209.5" />
-        <EdgeLayout
-          Id="Package\DFT - SRC City to REF City.Paths[Valid_Rows]"
-          TopLeft="104.428571428571,251.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,58.8749984583508"
-              Start="0,0"
-              End="0,51.3749984583508">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,51.3749984583508" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-26.08076171875,20.1562492291754,52.1615234375,11.0625"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC City to REF City.Paths[Sort Output]"
           TopLeft="105.714285714286,352.374998458351">
@@ -6185,7 +6161,7 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC City to REF City.Paths[Derived Column Output]"
-          TopLeft="102.75,149.5">
+          TopLeft="105.75,149.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -6203,6 +6179,30 @@
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - SRC City to REF City.Paths[VALID_REQUIRED_FIELD]"
+          TopLeft="107.428571428571,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,58.874998458351"
+              Start="0,0"
+              End="0,51.374998458351">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.374998458351" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-57.10439453125,20.0195304791755,114.2087890625,11.3359375"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -6231,10 +6231,6 @@
           Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\DST - REF Cuisine Type"
           TopLeft="30.5833333333333,414.166666666667" />
         <NodeLayout
-          Size="194.5,42"
-          Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Valid Rows"
-          TopLeft="27,209.5" />
-        <NodeLayout
           Size="237.5,42"
           Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\DRV - Clean Cuisine Type Strings"
           TopLeft="5.50000000000001,107.5" />
@@ -6242,6 +6238,60 @@
           Size="206.5,42"
           Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\SRC - Master Cuisine Type"
           TopLeft="21,5.5" />
+        <NodeLayout
+          Size="178.5,42"
+          Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\SORT - Cuisine Type"
+          TopLeft="38.5,311.5" />
+        <NodeLayout
+          Size="206.5,42"
+          Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\CSPL - Filter Missing Rows"
+          TopLeft="27,209.5" />
+        <EdgeLayout
+          Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE.Paths[Valid_Rows]"
+          TopLeft="129,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-57.10439453125,20.58203125,114.2087890625,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE.Paths[Sort Output]"
+          TopLeft="127.666666666667,353.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.6666666666667"
+              Start="0,0"
+              End="0,53.1666666666667">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,53.1666666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE.Paths[Excel Source Output]"
           TopLeft="124.25,47.5">
@@ -6266,7 +6316,7 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE.Paths[Derived Column Output]"
-          TopLeft="124.25,149.5">
+          TopLeft="127.25,149.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -6278,56 +6328,6 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="178.5,42"
-          Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE\SORT - Cuisine Type"
-          TopLeft="38.5,311.5" />
-        <EdgeLayout
-          Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE.Paths[Valid_Rows]"
-          TopLeft="126,251.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60"
-              Start="0,0"
-              End="0,52.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-26.08076171875,20.71875,52.1615234375,11.0625"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - SRC CUISINE TYPE to REF CUISINE TYPE.Paths[Sort Output]"
-          TopLeft="127.666666666667,353.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60.6666666666667"
-              Start="0,0"
-              End="0,53.1666666666667">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,53.1666666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -6362,10 +6362,6 @@
           Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\DST - REF Employment Type"
           TopLeft="24.8666666666667,414.633333333333" />
         <NodeLayout
-          Size="194.5,42"
-          Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Valid Rows"
-          TopLeft="38.5,209.5" />
-        <NodeLayout
           Size="260.5,42"
           Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\DRV - Clean Employment Type Strings"
           TopLeft="5.50000000000003,107.5" />
@@ -6373,6 +6369,60 @@
           Size="229.5,42"
           Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\SRC - Master Employment Type"
           TopLeft="21,5.5" />
+        <NodeLayout
+          Size="202,42"
+          Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\SORT - Employment Type"
+          TopLeft="32.3,311.7" />
+        <NodeLayout
+          Size="206.5,42"
+          Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\CSPL - Filter Missing Rows"
+          TopLeft="32.5,209.5" />
+        <EdgeLayout
+          Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE.Paths[Valid_Rows]"
+          TopLeft="134.525,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.2"
+              Start="0,0"
+              End="0,52.7">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.7" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-57.10439453125,20.68203125,114.2087890625,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE.Paths[Sort Output]"
+          TopLeft="133.458333333333,353.7">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.9333333333333"
+              Start="0,0"
+              End="0,53.4333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,53.4333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE.Paths[Excel Source Output]"
           TopLeft="135.75,47.5">
@@ -6417,56 +6467,6 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="202,42"
-          Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE\SORT - Employment Type"
-          TopLeft="32.3,311.7" />
-        <EdgeLayout
-          Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE.Paths[Valid_Rows]"
-          TopLeft="134.525,251.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60.2"
-              Start="0,0"
-              End="0,52.7">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,52.7" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-26.08076171875,20.81875,52.1615234375,11.0625"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - SRC EMPLOYMENT TYPE to REF EMPLOYMENT TYPE.Paths[Sort Output]"
-          TopLeft="133.458333333333,353.7">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60.9333333333333"
-              Start="0,0"
-              End="0,53.4333333333333">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,53.4333333333333" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
@@ -6493,10 +6493,6 @@
           Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\DST - REF Partner Type"
           TopLeft="28.5,411.75" />
         <NodeLayout
-          Size="194.5,42"
-          Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Valid Rows"
-          TopLeft="26.5,209.5" />
-        <NodeLayout
           Size="236.5,42"
           Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\DRV - Clean Partner Type Strings"
           TopLeft="5.50000000000001,107.5" />
@@ -6504,6 +6500,60 @@
           Size="205.5,42"
           Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\SRC - Master Partner Type"
           TopLeft="21,5.5" />
+        <NodeLayout
+          Size="178,42"
+          Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\SORT - Partner Type"
+          TopLeft="34.5,310.5" />
+        <NodeLayout
+          Size="206.5,42"
+          Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\CSPL - Filter Missing Rows"
+          TopLeft="26.5,209.5" />
+        <EdgeLayout
+          Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE.Paths[Valid_Rows]"
+          TopLeft="126.625,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59"
+              Start="0,0"
+              End="0,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-57.10439453125,20.08203125,114.2087890625,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE.Paths[Sort Output]"
+          TopLeft="124.375,352.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59.25"
+              Start="0,0"
+              End="0,51.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE.Paths[Excel Source Output]"
           TopLeft="123.75,47.5">
@@ -6528,7 +6578,7 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE.Paths[Derived Column Output]"
-          TopLeft="123.75,149.5">
+          TopLeft="126.75,149.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -6540,56 +6590,6 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="178,42"
-          Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE\SORT - Partner Type"
-          TopLeft="34.5,310.5" />
-        <EdgeLayout
-          Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE.Paths[Valid_Rows]"
-          TopLeft="123.625,251.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,59"
-              Start="0,0"
-              End="0,51.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,51.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-26.08076171875,20.21875,52.1615234375,11.0625"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - SRC PARTNER TYPE to REF PARTNER TYPE.Paths[Sort Output]"
-          TopLeft="124.375,352.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,59.25"
-              Start="0,0"
-              End="0,51.75">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,51.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -6624,10 +6624,6 @@
           Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\DST - REF Vehicle Type"
           TopLeft="29.9166666666667,421.5" />
         <NodeLayout
-          Size="194.5,42"
-          Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Valid Rows"
-          TopLeft="26.75,209.5" />
-        <NodeLayout
           Size="237,42"
           Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\DRV - Clean Vehicle Type Strings"
           TopLeft="5.50000000000001,107.5" />
@@ -6635,6 +6631,60 @@
           Size="206,42"
           Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\SRC - Master Vehicle Type"
           TopLeft="21,5.5" />
+        <NodeLayout
+          Size="178,42"
+          Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\SORT - Vehicle Type"
+          TopLeft="36.8333333333334,313.5" />
+        <NodeLayout
+          Size="206.5,42"
+          Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\CSPL - Filter Missing Rows"
+          TopLeft="26.75,209.5" />
+        <EdgeLayout
+          Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE.Paths[Valid_Rows]"
+          TopLeft="127.916666666667,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,62"
+              Start="0,0"
+              End="0,54.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-57.10439453125,21.58203125,114.2087890625,11.3359375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE.Paths[Sort Output]"
+          TopLeft="126.25,355.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,66.0000000000001"
+              Start="0,0"
+              End="0,58.5000000000001">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,58.5000000000001" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE.Paths[Excel Source Output]"
           TopLeft="124,47.5">
@@ -6659,7 +6709,7 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE.Paths[Derived Column Output]"
-          TopLeft="124,149.5">
+          TopLeft="127,149.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -6671,56 +6721,6 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <NodeLayout
-          Size="178,42"
-          Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE\SORT - Vehicle Type"
-          TopLeft="36.8333333333334,313.5" />
-        <EdgeLayout
-          Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE.Paths[Valid_Rows]"
-          TopLeft="124.916666666667,251.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,61.9999999999999"
-              Start="0,0"
-              End="0,54.4999999999999">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,54.4999999999999" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-26.08076171875,21.71875,52.1615234375,11.0625"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - SRC VEHICLE TYPE to REF VEHICLE TYPE.Paths[Sort Output]"
-          TopLeft="126.25,355.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,66.0000000000001"
-              Start="0,0"
-              End="0,58.5000000000001">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,58.5000000000001" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
