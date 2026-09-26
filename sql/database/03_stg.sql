@@ -196,6 +196,19 @@ CREATE TABLE stg.stg_rating
 GO
 
 
+-- 2.9 CREATE CLUSTERED INDEXES ON STG TABLES
+
+CREATE CLUSTERED INDEX CIX_stg_customer ON stg.stg_customer (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_stg_restaurant ON stg.stg_restaurant (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_stg_menu_item ON stg.stg_menu_item (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_stg_delivery_partner ON stg.stg_delivery_partner (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_stg_order ON stg.stg_order (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_stg_order_item ON stg.stg_order_item (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_stg_delivery_performance ON stg.stg_delivery_performance (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_stg_rating ON stg.stg_rating (batch_id, source_row_number);
+GO
+
+
 -- 3. VALIDATE STAGING TABLES
 
 USE FoodDeliveryDW;

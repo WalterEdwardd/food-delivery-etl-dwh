@@ -215,6 +215,19 @@ CREATE TABLE raw.raw_rating
 GO
 
 
+-- 2.9 CREATE CLUSTERED INDEXES ON RAW TABLES
+
+CREATE CLUSTERED INDEX CIX_raw_customer ON raw.raw_customer (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_raw_restaurant ON raw.raw_restaurant (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_raw_menu_item ON raw.raw_menu_item (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_raw_delivery_partner ON raw.raw_delivery_partner (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_raw_order ON raw.raw_order (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_raw_order_item ON raw.raw_order_item (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_raw_delivery_performance ON raw.raw_delivery_performance (batch_id, source_row_number);
+CREATE CLUSTERED INDEX CIX_raw_rating ON raw.raw_rating (batch_id, source_row_number);
+GO
+
+
 -- 3. VALIDATE RAW TABLES
 
 USE FoodDeliveryDW;
