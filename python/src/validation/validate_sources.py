@@ -8,10 +8,8 @@ from src.validation.file_validator import (
 
 
 def main():
-
-    input_dir = Path(
-        "C:/Users/PC/Downloads/food-delivery-etl-dwh/data/incoming"
-    )
+    project_root = Path(__file__).resolve().parents[3]
+    input_dir = project_root / "data" / "incoming"
 
     results = validate_all_files(
         input_dir,
