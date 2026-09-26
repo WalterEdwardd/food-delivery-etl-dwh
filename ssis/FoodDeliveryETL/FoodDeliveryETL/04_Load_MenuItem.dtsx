@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/10/2026 8:34:09 AM"
@@ -9,10 +9,10 @@
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="16.0.5685.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="03_Load_MenuItem"
+  DTS:ObjectName="04_Load_MenuItem"
   DTS:PackageType="5"
-  DTS:VersionBuild="62"
-  DTS:VersionGUID="{2B11514B-FA34-465E-8BAA-CD6BE9201A14}">
+  DTS:VersionBuild="66"
+  DTS:VersionGUID="{05F2CC1D-CD0D-4648-9238-04CCCABBA8B6}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -228,20 +228,20 @@
               </outputs>
             </component>
             <component
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields"
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="CSPL - Validate Menu Item Required Fields"
+              name="CSPL - Validate Menu Item ID"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Inputs[Conditional Split Input]"
+                  refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Inputs[Conditional Split Input].Columns[menu_item_id_clean]"
+                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Inputs[Conditional Split Input].Columns[menu_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
@@ -253,13 +253,13 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Outputs[REJECT_MISSING_MENU_ITEM_ID]"
+                  refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Outputs[INVALID_REQUIRED_FIELD]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="REJECT_MISSING_MENU_ITEM_ID"
-                  synchronousInputId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Inputs[Conditional Split Input]"
+                  name="INVALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -281,11 +281,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Outputs[VALID_REQUIRED_FIELDS]"
+                  refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Outputs[VALID_REQUIRED_FIELD]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
-                  name="VALID_REQUIRED_FIELDS"
-                  synchronousInputId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Inputs[Conditional Split Input]">
+                  name="VALID_REQUIRED_FIELD"
+                  synchronousInputId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -294,23 +294,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Outputs[Conditional Split Error Output]"
+                  refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -946,13 +946,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"price could not be converted to NUMERIC"</property>
+                          name="Expression">(DT_STR,100,1252)"price could not be converted to numeric"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"price could not be converted to NUMERIC"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"price could not be converted to numeric"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1306,13 +1306,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"is_veg could not be converted to INT"</property>
+                          name="Expression">(DT_STR,100,1252)"is_veg could not be converted to int"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"is_veg could not be converted to INT"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"is_veg could not be converted to int"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1462,13 +1462,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"INVALID_PRICE_RANGE"</property>
+                          name="Expression">(DT_STR,50,1252)"INVALID_RANGE"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_PRICE_RANGE"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"INVALID_RANGE"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1486,13 +1486,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"price NOT in range 0-1000$"</property>
+                          name="Expression">(DT_STR,100,1252)"price not in range 0-1000"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"price NOT in range 0-1000$"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"price not in range 0-1000"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1760,14 +1760,14 @@
                   synchronousInputId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_table_name]"
+                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_table]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="50"
-                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_table_name]"
-                      name="error_table_name"
+                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_table]"
+                      name="error_table"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
@@ -1784,14 +1784,14 @@
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_column_name]"
+                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_column]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="50"
-                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_column_name]"
-                      name="error_column_name"
+                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_column]"
+                      name="error_column"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
@@ -1822,13 +1822,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                          name="Expression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"REQUIRED FIELD"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"MISSING_REQUIRED_FIELD"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1846,13 +1846,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)"menu_item_id is NULL or empty"</property>
+                          name="Expression">(DT_STR,100,1252)"menu_item_id is null or empty"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)"menu_item_id is NULL or empty"</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)"menu_item_id is null or empty"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3188,21 +3188,21 @@
                       externalMetadataColumnId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
                       lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_value]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID.Inputs[OLE DB Destination Input].Columns[error_table_name]"
+                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID.Inputs[OLE DB Destination Input].Columns[error_table]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
-                      cachedName="error_table_name"
+                      cachedName="error_table"
                       externalMetadataColumnId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
-                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_table_name]" />
+                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_table]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID.Inputs[OLE DB Destination Input].Columns[error_column_name]"
+                      refId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID.Inputs[OLE DB Destination Input].Columns[error_column]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
-                      cachedName="error_column_name"
+                      cachedName="error_column"
                       externalMetadataColumnId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
-                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_column_name]" />
+                      lineageId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output].Columns[error_column]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -3303,7 +3303,7 @@
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[ods].[ods_menu_item]</property>
+                  name="OpenRowset">[temp].[ods_menu_item]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -5692,7 +5692,8 @@ where [refTable].[restaurant_id] = ?</property>
 	batch_id,
 	source_file_name,
 	source_row_number
-FROM raw.raw_menu_item;</property>
+FROM raw.raw_menu_item
+WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_MENU_ITEM' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_menu_item));</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -5978,49 +5979,49 @@ FROM raw.raw_menu_item;</property>
               startId="Package\DFT - RAW Menu Item to ODS Menu Item\DC - Converted Price Format.Outputs[Data Conversion Output]" />
             <path
               refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output8]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid IsVegetable Status.Inputs[OLE DB Destination Input]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Price Range.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid IsVegetatble Status.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Price Range.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output7]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output6]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Convert Price Format.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Convert Price Format.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output4]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Item Name.Inputs[Sort Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Normalize Item Name.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output5]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Inputs[Conditional Split Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Clean Menu Item Strings.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output2]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Category.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Category.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output1]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid RestaurantID.Inputs[OLE DB Destination Input]"
-              name="Derived Column Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Restaurant ID.Outputs[Derived Column Output]" />
-            <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output]"
               endId="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - IsVegetable.Inputs[Sort Input]"
               name="Derived Column Output"
               startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Convert IsVegetable to Boolean.Outputs[Derived Column Output]" />
             <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output3]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Price Range.Inputs[OLE DB Destination Input]"
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output6]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid RestaurantID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Price Range.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Restaurant ID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output4]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Inputs[Conditional Split Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Clean Menu Item Strings.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output5]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Category.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Category.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output2]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Convert Price Format.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Convert Price Format.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output1]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid IsVegetable Status.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid IsVegetatble Status.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output3]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Item Name.Inputs[Sort Input]"
+              name="Derived Column Output"
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Normalize Item Name.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[INVALID_PRICE_RANGE]"
               endId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Price Range.Inputs[Derived Column Input]"
@@ -6038,29 +6039,29 @@ FROM raw.raw_menu_item;</property>
               startId="Package\DFT - RAW Menu Item to ODS Menu Item\LKP - Category.Outputs[Lookup Match Output]" />
             <path
               refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Lookup No Match Output1]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Category.Inputs[Derived Column Input]"
-              name="Lookup No Match Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\LKP - Category.Outputs[Lookup No Match Output]" />
-            <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Lookup No Match Output]"
               endId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Restaurant ID.Inputs[Derived Column Input]"
               name="Lookup No Match Output"
               startId="Package\DFT - RAW Menu Item to ODS Menu Item\LKP - Restaurant ID.Outputs[Lookup No Match Output]" />
             <path
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Lookup No Match Output]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Category.Inputs[Derived Column Input]"
+              name="Lookup No Match Output"
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\LKP - Category.Outputs[Lookup No Match Output]" />
+            <path
               refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output2]"
+              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DC - Final Data Type Mapping.Inputs[Data Conversion Input]"
+              name="Merge Join Output"
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output]"
               endId="Package\DFT - RAW Menu Item to ODS Menu Item\Multicast - Valid Reference.Inputs[Multicast Input 1]"
               name="Merge Join Output"
               startId="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output]" />
             <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output]"
+              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output1]"
               endId="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Left Input]"
               name="Merge Join Output"
               startId="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join Item Name &amp; Is Vegetable.Outputs[Merge Join Output]" />
-            <path
-              refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output1]"
-              endId="Package\DFT - RAW Menu Item to ODS Menu Item\DC - Final Data Type Mapping.Inputs[Data Conversion Input]"
-              name="Merge Join Output"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output]" />
             <path
               refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Multicast Output 1]"
               endId="Package\DFT - RAW Menu Item to ODS Menu Item\DC - Converted Price Format.Inputs[Data Conversion Input]"
@@ -6100,7 +6101,7 @@ FROM raw.raw_menu_item;</property>
               refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[REJECT_MISSING_MENU_ITEM_ID]"
               endId="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID.Inputs[Derived Column Input]"
               name="REJECT_MISSING_MENU_ITEM_ID"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Outputs[REJECT_MISSING_MENU_ITEM_ID]" />
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Outputs[INVALID_REQUIRED_FIELD]" />
             <path
               refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Sort Output]"
               endId="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Right Input]"
@@ -6140,39 +6141,155 @@ FROM raw.raw_menu_item;</property>
               refId="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[VALID_REQUIRED_FIELDS]"
               endId="Package\DFT - RAW Menu Item to ODS Menu Item\Multicast - Validation Menu Item Normalize.Inputs[Multicast Input 1]"
               name="VALID_REQUIRED_FIELDS"
-              startId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields.Outputs[VALID_REQUIRED_FIELDS]" />
+              startId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID.Outputs[VALID_REQUIRED_FIELD]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\SQL - Truncate ODS Menu Item"
+      DTS:refId="Package\SQL - Start ETL Log"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{ed3cc739-4b5c-4530-b682-055409ea399d}"
+      DTS:DTSID="{E3A0F2B3-4A5C-4E7B-9E31-10B5C98E3001}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="SQL - Truncate ODS Menu Item"
+      DTS:ObjectName="SQL - Start ETL Log"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE ods.ods_menu_item;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_MENU_ITEM';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Truncate Temp Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{D82D4146-E8D2-45D1-A611-0F8496A66503}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Truncate Temp Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE temp.ods_menu_item;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - Upsert ODS Menu Item"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{8493863B-3087-44F8-A379-CEBA42448096}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - Upsert ODS Menu Item"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}"
+          SQLTask:SqlStatementSource="EXEC ods.usp_upsert_ods_menu_item;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SQL - End ETL Log"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{E3A0F2B3-4A5C-4E7B-9E31-10B5C98E3002}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SQL - End ETL Log"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}"
+          SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_MENU_ITEM', @target_table = 'ods_menu_item', @raw_table = 'raw_menu_item';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
-      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
       DTS:CreationName=""
-      DTS:DTSID="{D8589F1E-E9B0-4393-B1FC-54CABBBEEF91}"
-      DTS:From="Package\SQL - Truncate ODS Menu Item"
+      DTS:DTSID="{AE717EE4-D8E1-4C2A-85AE-EB7955012BFC}"
+      DTS:From="Package\SQL - Start ETL Log"
       DTS:LogicalAnd="True"
-      DTS:ObjectName="Constraint"
+      DTS:ObjectName="Constraint_Start_To_Truncate"
+      DTS:To="Package\SQL - Truncate Temp Table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+      DTS:CreationName=""
+      DTS:DTSID="{A5AB517B-4978-4115-8814-ED2436A535AE}"
+      DTS:From="Package\SQL - Truncate Temp Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Truncate_To_DFT"
       DTS:To="Package\DFT - RAW Menu Item to ODS Menu Item" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+      DTS:CreationName=""
+      DTS:DTSID="{B1EB4FC2-96FE-4FBD-A2DC-A6418A2312E6}"
+      DTS:From="Package\DFT - RAW Menu Item to ODS Menu Item"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_DFT_To_Upsert"
+      DTS:To="Package\SQL - Upsert ODS Menu Item" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+      DTS:CreationName=""
+      DTS:DTSID="{22E12EC7-F07D-438F-9539-DF8BB2898381}"
+      DTS:From="Package\SQL - Upsert ODS Menu Item"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint_Upsert_To_End"
+      DTS:To="Package\SQL - End ETL Log" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{8C235BC3-2A62-4D3B-A790-2B34FF583001}"
+      DTS:EventID="0"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="OnError">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{D668FA63-8F4C-40FB-8BAE-F7C5FF683002}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\SQL - Log Package Failure"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{7C981442-8367-4DF8-B043-4BC812383003}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL - Log Package Failure"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}"
+              SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_MENU_ITEM', @status_override = 'FAILED', @error_message = 'Package execution encountered an error.';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
 <!--If you manually edit this section and make a mistake, you can delete it. -->
@@ -6184,29 +6301,107 @@ FROM raw.raw_menu_item;</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="274.5,42"
+          Size="200,42"
+          Id="Package\SQL - Start ETL Log"
+          TopLeft="181,20" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - Truncate Temp Table"
+          TopLeft="181,95" />
+        <NodeLayout
+          Size="326,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item"
-          TopLeft="89.5,169.541665824544" />
+          TopLeft="121.5,170" />
         <NodeLayout
-          Size="228.5,42"
-          Id="Package\SQL - Truncate ODS Menu Item"
-          TopLeft="112,62.1666666559047" />
+          Size="226,42"
+          Id="Package\SQL - Upsert ODS Menu Item"
+          TopLeft="168,245" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\SQL - End ETL Log"
+          TopLeft="181,320" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="226.5,104.166666655905">
+          Id="Package.PrecedenceConstraints[Constraint_Start_To_Truncate]"
+          TopLeft="281,62">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,65.374999168639"
+              EndConnector="0,33"
               Start="0,0"
-              End="0,57.874999168639">
+              End="0,25.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,57.874999168639" />
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Truncate_To_DFT]"
+          TopLeft="282.75,137">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_DFT_To_Upsert]"
+          TopLeft="282.75,212">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint_Upsert_To_End]"
+          TopLeft="281,287">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33"
+              Start="0,0"
+              End="0,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -6218,55 +6413,34 @@ FROM raw.raw_menu_item;</property>
       </GraphLayout>
     </LayoutInfo>
   </Package>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
   <TaskHost
     design-time-name="Package\DFT - RAW Menu Item to ODS Menu Item">
     <LayoutInfo>
       <GraphLayout
         Capacity="128" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="258.5,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Convert IsVegetable to Boolean"
-          TopLeft="1090,500.923610723233" />
-        <NodeLayout
           Size="257,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join Item Name &amp; Is Vegetable"
           TopLeft="936.25,729.895829707902" />
-        <NodeLayout
-          Size="131.5,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Price"
-          TopLeft="463.333333333333,727.916664164513" />
-        <NodeLayout
-          Size="248,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Price Range"
-          TopLeft="100.833333333333,724.291664689158" />
-        <NodeLayout
-          Size="217.5,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join All Valid Fields v1"
-          TopLeft="685.25,842.02082915097" />
         <NodeLayout
           Size="227.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Price Range"
           TopLeft="115,611.895831914101" />
         <NodeLayout
-          Size="204.5,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Multicast - Valid Reference"
-          TopLeft="692.5,953.333328598076" />
+          Size="150,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Category"
+          TopLeft="980.357142857143,1182.99106706133" />
         <NodeLayout
-          Size="172,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Restaurant ID"
-          TopLeft="445.416666666667,1186.63888551681" />
-        <NodeLayout
-          Size="187,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\SRC - RAW Menu Item"
-          TopLeft="128.285714285714,285.89682397676" />
+          Size="158.5,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Item Name"
+          TopLeft="789.166666666667,609.201387568309" />
         <NodeLayout
           Size="172.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\LKP - Restaurant ID"
           TopLeft="443.75,1059.5833287595" />
-        <NodeLayout
-          Size="233,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Category"
-          TopLeft="1203.71428571429,1180.86904330581" />
         <NodeLayout
           Size="257,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Convert Price Format"
@@ -6274,11 +6448,15 @@ FROM raw.raw_menu_item;</property>
         <NodeLayout
           Size="258.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Missing Menu Item ID"
-          TopLeft="1411.66666666667,285.019839854132" />
+          TopLeft="1411.66666666667,278.24900655443" />
         <NodeLayout
           Size="225.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Clean Menu Item Strings"
           TopLeft="411.142857142857,281.873014472938" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - IsVegetable"
+          TopLeft="1136.66666666667,606.423610400374" />
         <NodeLayout
           Size="260.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid IsVegetatble Status"
@@ -6288,9 +6466,13 @@ FROM raw.raw_menu_item;</property>
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Normalize Item Name"
           TopLeft="762.916666666667,502.222221433013" />
         <NodeLayout
-          Size="150,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Category"
-          TopLeft="980.357142857143,1182.99106706133" />
+          Size="131.5,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Price"
+          TopLeft="463.333333333333,727.916664164513" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Restaurant ID"
+          TopLeft="445.416666666667,1186.63888551681" />
         <NodeLayout
           Size="220.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DC - Final Data Type Mapping"
@@ -6300,9 +6482,17 @@ FROM raw.raw_menu_item;</property>
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid IsVegetable Status"
           TopLeft="1410.58333333334,499.048610252398" />
         <NodeLayout
+          Size="217.5,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join All Valid Fields v2"
+          TopLeft="693.571428571429,1321.49801257076" />
+        <NodeLayout
           Size="150.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\LKP - Category"
           TopLeft="973.630952380952,1060.02082926397" />
+        <NodeLayout
+          Size="248,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Price Range"
+          TopLeft="100.833333333333,724.291664689158" />
         <NodeLayout
           Size="214.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DC - Converted Price Format"
@@ -6318,31 +6508,23 @@ FROM raw.raw_menu_item;</property>
         <NodeLayout
           Size="237.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Missing Menu Item ID"
-          TopLeft="1092.5,285.858133500762" />
+          TopLeft="1092.5,277.733133541119" />
         <NodeLayout
-          Size="282,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item Required Fields"
-          TopLeft="724.642857142857,279.861109721026" />
+          Size="233,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Category"
+          TopLeft="1203.71428571429,1180.86904330581" />
         <NodeLayout
           Size="252.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid RestaurantID"
           TopLeft="100.916666666667,1184.39582946576" />
         <NodeLayout
-          Size="217.5,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join All Valid Fields v2"
-          TopLeft="693.571428571429,1321.49801257076" />
-        <NodeLayout
-          Size="163,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - IsVegetable"
-          TopLeft="1136.66666666667,606.423610400374" />
+          Size="219,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate Menu Item ID"
+          TopLeft="757.142857142857,279.861109721026" />
         <NodeLayout
           Size="244.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Validate IsVegetable Status"
           TopLeft="1093.72619047619,393.925595149885" />
-        <NodeLayout
-          Size="158.5,42"
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Sort - Item Name"
-          TopLeft="789.166666666667,609.201387568309" />
         <NodeLayout
           Size="236,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Convert Price Format"
@@ -6352,34 +6534,50 @@ FROM raw.raw_menu_item;</property>
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Error Invalid Restaurant ID"
           TopLeft="106.666666666667,1057.10416343136" />
         <NodeLayout
+          Size="204.5,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\Multicast - Valid Reference"
+          TopLeft="692.5,953.333328598076" />
+        <NodeLayout
           Size="184,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ODS Menu Item"
           TopLeft="710.47619047619,1518.60118659228" />
+        <NodeLayout
+          Size="187,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\SRC - RAW Menu Item"
+          TopLeft="128.285714285714,285.89682397676" />
+        <NodeLayout
+          Size="217.5,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\MRG - Join All Valid Fields v1"
+          TopLeft="685.25,842.02082915097" />
+        <NodeLayout
+          Size="258.5,42"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item\DRV - Convert IsVegetable to Boolean"
+          TopLeft="1090,500.923610723233" />
         <NodeLayout
           Size="199.5,42"
           Id="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Valid Price Range"
           TopLeft="431.666666666667,613.0902751837" />
         <EdgeLayout
           Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[VALID_REQUIRED_FIELDS]"
-          TopLeft="866.613095238095,321.861109721026">
+          TopLeft="867.113095238095,321.861109721026">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,70.8472216617039"
+              EndConnector="0,70.847221661704"
               Start="0,0"
-              End="0,63.3472216617039">
+              End="0,63.347221661704">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,63.3472216617039" />
+                    End="0,63.347221661704" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-59.9206640625,26.005642080852,119.841328125,11.3359375"
+              BoundingBox="-57.10439453125,26.005642080852,114.2087890625,11.3359375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -6603,25 +6801,25 @@ FROM raw.raw_menu_item;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[REJECT_MISSING_MENU_ITEM_ID]"
-          TopLeft="1006.64285714286,303.859621610894">
+          TopLeft="976.142857142857,299.797121631073">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="85.8571428571432,0"
+              EndConnector="116.357142857143,0"
               Start="0,0"
-              End="78.3571428571432,0">
+              End="108.857142857143,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="78.3571428571432,0" />
+                    End="108.857142857143,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-38.7426395089284,5,155.842421875,10.8671875"
+              BoundingBox="-7.62924107142827,5,124.115625,11.3359375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -6807,28 +7005,6 @@ FROM raw.raw_menu_item;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output2]"
-          TopLeft="794.375,884.02082915097">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,69.3124994471057"
-              Start="0,0"
-              End="0,61.8124994471057">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,61.8124994471057" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output1]"
           TopLeft="804.02380952381,1363.49801257076">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -6850,7 +7026,7 @@ FROM raw.raw_menu_item;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output]"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output1]"
           TopLeft="1064.75,771.895829707902">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -6884,31 +7060,29 @@ FROM raw.raw_menu_item;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Lookup No Match Output1]"
-          TopLeft="1124.13095238095,1078.79612689407">
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Merge Join Output]"
+          TopLeft="794.375,884.02082915097">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="86.0119047619116,0"
+              EndConnector="0,69.3124994471057"
               Start="0,0"
-              End="78.5119047619116,0">
+              End="0,61.8124994471057">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="78.5119047619116,0" />
+                    End="0,61.8124994471057" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-16.5504343377942,5,111.6127734375,11.609375"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Lookup No Match Output]"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Lookup No Match Output1]"
           TopLeft="443.75,1079.34374609543">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -6928,6 +7102,30 @@ FROM raw.raw_menu_item;</property>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
               BoundingBox="-103.348053385417,5,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Lookup No Match Output]"
+          TopLeft="1124.13095238095,1078.79612689407">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="86.0119047619116,0"
+              Start="0,0"
+              End="78.5119047619116,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="78.5119047619116,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-16.5504343377942,5,111.6127734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -7005,116 +7203,6 @@ FROM raw.raw_menu_item;</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output8]"
-          TopLeft="1547.41666666667,432.263888570514">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,66.7847216818839"
-              Start="0,0"
-              End="0,59.2847216818839">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,59.2847216818839" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output7]"
-          TopLeft="1330,306.438986677447">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="81.6666666666665,0"
-              Start="0,0"
-              End="74.1666666666665,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="74.1666666666665,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output6]"
-          TopLeft="212.625,436.791665819163">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,71.7499994349977"
-              Start="0,0"
-              End="0,64.2499994349977">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,64.2499994349977" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output5]"
-          TopLeft="636.642857142857,301.867062096982">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="88,0"
-              Start="0,0"
-              End="80.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="80.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output4]"
-          TopLeft="868.541666666667,544.222221433013">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,64.9791661352955"
-              Start="0,0"
-              End="0,57.4791661352955">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,57.4791661352955" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output3]"
           TopLeft="226.791666666667,653.895831914101">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -7136,19 +7224,19 @@ FROM raw.raw_menu_item;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output2]"
-          TopLeft="1318.17857142857,1097.57142452417">
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output7]"
+          TopLeft="1218.70833333333,542.923610723233">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,83.2976187816455"
+              EndConnector="0,63.4999996771409"
               Start="0,0"
-              End="0,75.7976187816455">
+              End="0,55.9999996771409">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,75.7976187816455" />
+                    End="0,55.9999996771409" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -7158,7 +7246,7 @@ FROM raw.raw_menu_item;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output1]"
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output6]"
           TopLeft="225.541666666667,1099.10416343136">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -7180,19 +7268,129 @@ FROM raw.raw_menu_item;</property>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output]"
-          TopLeft="1218.70833333333,542.923610723233">
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output5]"
+          TopLeft="1318.17857142857,1097.57142452417">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,63.4999996771409"
+              EndConnector="0,83.2976187816455"
               Start="0,0"
-              End="0,55.9999996771409">
+              End="0,75.7976187816455">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,55.9999996771409" />
+                    End="0,75.7976187816455" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output4]"
+          TopLeft="636.642857142857,301.867062096982">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="120.5,0"
+              Start="0,0"
+              End="113,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="113,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output3]"
+          TopLeft="868.541666666667,544.222221433013">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,64.9791661352955"
+              Start="0,0"
+              End="0,57.4791661352955">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,57.4791661352955" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output2]"
+          TopLeft="212.625,436.791665819163">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71.7499994349977"
+              Start="0,0"
+              End="0,64.2499994349977">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,64.2499994349977" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output1]"
+          TopLeft="1330,298.991070047775">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="81.6666666666695,0"
+              Start="0,0"
+              End="74.1666666666695,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="74.1666666666695,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\DFT - RAW Menu Item to ODS Menu Item.Paths[Derived Column Output]"
+          TopLeft="1547.41666666667,432.263888570514">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,66.7847216818839"
+              Start="0,0"
+              End="0,59.2847216818839">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,59.2847216818839" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -7273,33 +7471,12 @@ FROM raw.raw_menu_item;</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Price Range">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Menu Item to ODS Menu Item\SRC - RAW Menu Item">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
     design-time-name="Package\DFT - RAW Menu Item to ODS Menu Item\LKP - Restaurant ID">
     <Properties>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:boolean">false</Value>
+          type="q2:string">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -7309,23 +7486,10 @@ FROM raw.raw_menu_item;</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:int">0</Value>
+          type="q4:string">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Category">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -7374,7 +7538,7 @@ FROM raw.raw_menu_item;</property>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:boolean">false</Value>
+          type="q2:string">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -7384,10 +7548,36 @@ FROM raw.raw_menu_item;</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:int">0</Value>
+          type="q4:string">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Price Range">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Menu Item to ODS Menu Item\DST - ETL Error Invalid Category">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -7414,6 +7604,14 @@ FROM raw.raw_menu_item;</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\DFT - RAW Menu Item to ODS Menu Item\SRC - RAW Menu Item">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
