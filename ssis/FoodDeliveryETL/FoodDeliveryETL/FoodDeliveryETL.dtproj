@@ -30,24 +30,42 @@
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
-          <SSIS:Package SSIS:Name="01_Load_DeliveryPartner.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="02_Load_Restaurant.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="03_Load_MenuItem.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="04_Load_Customer.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="00_Load_Master.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="05_Load_Order.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="06_Load_OrderItem.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="07_Load_DeliveryPerformance.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="08_Load_Rating.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="00_Pipeline_Orchestrator.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="02_Load_DeliveryPartner.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="03_Load_Restaurant.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="04_Load_MenuItem.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="05_Load_Customer.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="01_Load_Master.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="06_Load_Order.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="07_Load_OrderItem.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="08_Load_DeliveryPerformance.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="09_Load_Rating.dtsx" SSIS:EntryPoint="1" />
         </SSIS:Packages>
         <SSIS:ConnectionManagers />
         <SSIS:DeploymentInfo>
           <SSIS:ProjectConnectionParameters />
           <SSIS:PackageInfo>
-            <SSIS:PackageMetaData SSIS:Name="01_Load_DeliveryPartner.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="00_Pipeline_Orchestrator.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{A8BB64C1-D5C0-462D-A364-880BF3B9FCCC}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">00_Pipeline_Orchestrator</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{004813C8-D4EB-4738-AA7D-5A9F28759765}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="02_Load_DeliveryPartner.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{D3F4FF87-C7D7-4127-9454-D9EF49BAB923}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">01_Load_DeliveryPartner</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">02_Load_DeliveryPartner</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">77</SSIS:Property>
@@ -210,10 +228,10 @@
                 </SSIS:Parameter>
               </SSIS:Parameters>
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="02_Load_Restaurant.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="03_Load_Restaurant.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{63299A02-D544-430C-9732-58628DBFE146}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">Load_Restaurant</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">03_Load_Restaurant</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">89</SSIS:Property>
@@ -376,10 +394,10 @@
                 </SSIS:Parameter>
               </SSIS:Parameters>
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="03_Load_MenuItem.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="04_Load_MenuItem.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{83962196-04E9-421B-8174-2550B96BBD4A}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">03_Load_MenuItem</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">04_Load_MenuItem</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">62</SSIS:Property>
@@ -542,10 +560,10 @@
                 </SSIS:Parameter>
               </SSIS:Parameters>
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="04_Load_Customer.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="05_Load_Customer.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{88AAE104-2306-462B-AC06-8295625A48E5}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">Load_Customer</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">05_Load_Customer</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">90</SSIS:Property>
@@ -707,10 +725,10 @@
                 </SSIS:Parameter>
               </SSIS:Parameters>
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="00_Load_Master.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="01_Load_Master.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{CFC05834-0F0C-444D-98F1-B48F17F8291F}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">00_Load_Master</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">01_Load_Master</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">48</SSIS:Property>
@@ -1004,10 +1022,10 @@
                 </SSIS:Parameter>
               </SSIS:Parameters>
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="05_Load_Order.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="06_Load_Order.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{C83DFF00-3E6C-45A3-B761-75A41A166B0E}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">05_Load_Order</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">06_Load_Order</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">87</SSIS:Property>
@@ -1170,10 +1188,10 @@
                 </SSIS:Parameter>
               </SSIS:Parameters>
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="06_Load_OrderItem.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="07_Load_OrderItem.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{122C7D59-EFAD-4BE1-A94A-5B1C649C4395}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">Package1</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">07_Load_OrderItem</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">63</SSIS:Property>
@@ -1336,10 +1354,10 @@
                 </SSIS:Parameter>
               </SSIS:Parameters>
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="07_Load_DeliveryPerformance.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="08_Load_DeliveryPerformance.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{1C111921-20CC-4C40-AAE9-8A7DFBC8FABD}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">07_Load_DeliveryPerformance</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">08_Load_DeliveryPerformance</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">50</SSIS:Property>
@@ -1502,10 +1520,10 @@
                 </SSIS:Parameter>
               </SSIS:Parameters>
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="08_Load_Rating.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="09_Load_Rating.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{6F2F777B-6531-4F1F-A03B-1FB678FFAE24}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">08_Load_Rating</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">09_Load_Rating</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">33</SSIS:Property>
