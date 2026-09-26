@@ -176,3 +176,35 @@ GO
 
 PRINT 'Compiled procedure control.usp_purge_etl_logs successfully.';
 GO
+
+
+/* ==============================================================================
+   PROCEDURE: stg.usp_truncate_stg_tables
+   Description:
+       Truncates all transient staging tables in schema 'stg' to prepare
+       for a fresh batch ingestion or reclaim disk space after RAW load.
+============================================================================== */
+CREATE OR ALTER PROCEDURE stg.usp_truncate_stg_tables
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    PRINT '==============================================================================';
+    PRINT 'TRUNCATING TRANSIENT STAGING TABLES (SCHEMA: stg)';
+    PRINT '==============================================================================';
+
+    TRUNCATE TABLE stg.stg_customer;
+    TRUNCATE TABLE stg.stg_restaurant;
+    TRUNCATE TABLE stg.stg_menu_item;
+    TRUNCATE TABLE stg.stg_delivery_partner;
+    TRUNCATE TABLE stg.stg_order;
+    TRUNCATE TABLE stg.stg_order_item;
+    TRUNCATE TABLE stg.stg_delivery_performance;
+    TRUNCATE TABLE stg.stg_rating;
+
+    PRINT '[SUCCESS] All 8 staging tables truncated successfully.';
+END;
+GO
+
+PRINT 'Compiled procedure stg.usp_truncate_stg_tables successfully.';
+GO

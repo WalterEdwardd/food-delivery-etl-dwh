@@ -53,7 +53,7 @@ PRINT 'Created Job: ' + @job_name;
 ============================================================================== */
 EXEC msdb.dbo.sp_add_jobstep
     @job_id          = @job_id,
-    @step_name       = N'01 - Pre-ETL Health Check & Batch Init',
+    @step_name       = N'01 - Pre-ETL Health Check & Schema Validation',
     @step_id         = 1,
     @cmdexec_success_code = 0,
     @on_success_action    = 3, -- Go to next step
@@ -63,24 +63,52 @@ EXEC msdb.dbo.sp_add_jobstep
 USE FoodDeliveryDW;
 SET NOCOUNT ON;
 
--- Verify schemas and crucial tables
+-- Verify all required schemas exist
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = ''control'')
+    THROW 50001, ''Schema control does not exist!'', 1;
+
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = ''stg'')
+    THROW 50002, ''Schema stg does not exist!'', 1;
+
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = ''raw'')
+    THROW 50003, ''Schema raw does not exist!'', 1;
+
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = ''temp'')
-    THROW 50001, ''Schema temp does not exist!'', 1;
+    THROW 50004, ''Schema temp does not exist!'', 1;
 
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = ''ods'')
-    THROW 50002, ''Schema ods does not exist!'', 1;
+    THROW 50005, ''Schema ods does not exist!'', 1;
 
-PRINT ''[HEALTH CHECK PASSED] Schemas and tables verified.'';
+PRINT ''[HEALTH CHECK PASSED] All 5 core schemas verified.'';
 ',
     @database_name   = N'FoodDeliveryDW';
 
 /* ==============================================================================
-   STEP 2: RUN REFERENCE & STAGE 1 ENTITIES (VIA T-SQL / SSIS CALL)
+   STEP 2: RUN INGESTION PIPELINE (PYTHON: CSV -> STG -> RAW)
+============================================================================== */
+EXEC msdb.dbo.sp_add_jobstep
+    @job_id               = @job_id,
+    @step_name            = N'02 - Ingest CSV to RAW (Python Pipeline)',
+    @step_id              = 2,
+    @cmdexec_success_code = 0,
+    @on_success_action    = 3, -- Go to next step
+    @on_fail_action       = 2, -- Quit with failure
+    @subsystem            = N'PowerShell',
+    @command              = N'
+Set-Location -Path "c:\Users\PC\Downloads\food-delivery-etl-dwh\python"
+& ".\.venv\Scripts\python.exe" -m src.ingestion.run_stg_loader
+if ($LASTEXITCODE -ne 0) {
+    throw "Python Ingestion Pipeline failed with exit code $LASTEXITCODE"
+}
+';
+
+/* ==============================================================================
+   STEP 3: RUN ODS INCREMENTAL UPSERT & SYNCHRONIZATION
 ============================================================================== */
 EXEC msdb.dbo.sp_add_jobstep
     @job_id          = @job_id,
-    @step_name       = N'02 - Execute ODS Upsert & Synchronization',
-    @step_id         = 2,
+    @step_name       = N'03 - Execute ODS Upsert & Synchronization',
+    @step_id         = 3,
     @cmdexec_success_code = 0,
     @on_success_action    = 3, -- Go to next step
     @on_fail_action       = 2, -- Quit with failure
@@ -110,12 +138,12 @@ PRINT ''[SUCCESS] All ODS Upsert procedures executed.'';
     @database_name   = N'FoodDeliveryDW';
 
 /* ==============================================================================
-   STEP 3: EXECUTE AUDIT LOG RETENTION & PURGE
+   STEP 4: EXECUTE AUDIT LOG RETENTION & PURGE
 ============================================================================== */
 EXEC msdb.dbo.sp_add_jobstep
     @job_id          = @job_id,
-    @step_name       = N'03 - Maintenance Log Purge (30 Days Retention)',
-    @step_id         = 3,
+    @step_name       = N'04 - Maintenance Log Purge (30 Days Retention)',
+    @step_id         = 4,
     @cmdexec_success_code = 0,
     @on_success_action    = 3, -- Go to next step
     @on_fail_action       = 2, -- Quit with failure
@@ -130,12 +158,12 @@ EXEC control.usp_purge_etl_logs @retention_days = 30, @dry_run = 0;
     @database_name   = N'FoodDeliveryDW';
 
 /* ==============================================================================
-   STEP 4: POST-ETL AUDIT SUMMARY & ALERTING CHECK
+   STEP 5: POST-ETL AUDIT SUMMARY & ALERTING CHECK
 ============================================================================== */
 EXEC msdb.dbo.sp_add_jobstep
     @job_id          = @job_id,
-    @step_name       = N'04 - Post-ETL Audit Verification',
-    @step_id         = 4,
+    @step_name       = N'05 - Post-ETL Audit Verification',
+    @step_id         = 5,
     @cmdexec_success_code = 0,
     @on_success_action    = 1, -- Quit with success
     @on_fail_action       = 2, -- Quit with failure
