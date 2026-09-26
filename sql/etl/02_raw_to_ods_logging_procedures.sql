@@ -166,10 +166,19 @@ BEGIN
     END;
 
     -- 2. Đếm số dòng hợp lệ đã ghi thành công vào bảng ODS
+    -- (Ưu tiên đếm từ bảng tạm temp.<target_table> nếu có vì chứa chính xác số dòng sạch của batch này)
     IF @target_table IS NOT NULL
     BEGIN
-        SET @sql = N'SELECT @cnt = COUNT_BIG(*) FROM ods.' + QUOTENAME(@target_table) + N' WHERE batch_id = @b;';
-        EXEC sp_executesql @sql, N'@b BIGINT, @cnt BIGINT OUTPUT', @b = @cur_batch_id, @cnt = @rows_inserted OUTPUT;
+        IF OBJECT_ID('temp.' + QUOTENAME(@target_table), 'U') IS NOT NULL
+        BEGIN
+            SET @sql = N'SELECT @cnt = COUNT_BIG(*) FROM temp.' + QUOTENAME(@target_table) + N';';
+            EXEC sp_executesql @sql, N'@cnt BIGINT OUTPUT', @cnt = @rows_inserted OUTPUT;
+        END
+        ELSE
+        BEGIN
+            SET @sql = N'SELECT @cnt = COUNT_BIG(*) FROM ods.' + QUOTENAME(@target_table) + N' WHERE batch_id = @b;';
+            EXEC sp_executesql @sql, N'@b BIGINT, @cnt BIGINT OUTPUT', @b = @cur_batch_id, @cnt = @rows_inserted OUTPUT;
+        END
     END;
 
     SET @rows_processed = COALESCE(@rows_processed, 0);
@@ -188,14 +197,14 @@ BEGIN
     ELSE
         SET @final_status = 'SUCCESS';
 
-    -- 5. Cập nhật bảng etl_log
+    -- 5. Cập nhật bảng etl_log (giữ lại message chi tiết từ bước Upsert nếu có)
     UPDATE control.etl_log
     SET end_time       = SYSDATETIME(),
         status         = @final_status,
         rows_processed = @rows_processed,
         rows_inserted  = @rows_inserted,
         rows_rejected  = @rows_rejected,
-        message        = @error_message
+        message        = COALESCE(message, @error_message)
     WHERE log_id = @log_id;
 END;
 GO
