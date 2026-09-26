@@ -21,9 +21,10 @@ The contract is used as the reference for:
 | File format | CSV |
 | Filename convention | `<entity>_YYYYMMDD.csv` |
 | Header row | Required |
-| Encoding | TBD |
-| Delimiter | TBD |
-| Quote character | TBD |
+| Encoding | UTF-8 (`utf-8-sig` supported) |
+| Delimiter | `,` (Comma) |
+| Quote character | `"` (Double Quote) |
+| Multi-language / Vietnamese Support | Requires `NVARCHAR` in database or UTF-8 Collation (`_UTF8`) for diacritics. |
 
 ## 3. Source Entities
 
