@@ -14,7 +14,8 @@ GO
 CREATE OR ALTER PROCEDURE control.usp_start_raw_to_ods_log
     @process_name   VARCHAR(100) = 'RAW_TO_ODS',
     @step_name      VARCHAR(200),
-    @batch_id       BIGINT = NULL
+    @batch_id       BIGINT = NULL,
+    @table_name     VARCHAR(200) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -49,6 +50,24 @@ BEGIN
         message  = 'Aborted: Superseded by a new execution run.'
     WHERE step_name = @step_name
       AND status    = 'RUNNING';
+
+    -- [IDEMPOTENCY] Xóa log lỗi cũ của chính bảng và batch này nếu chạy lại
+    DECLARE @clean_table VARCHAR(200) = @table_name;
+    IF @clean_table IS NULL AND @step_name LIKE '%CUSTOMER%' SET @clean_table = 'raw_customer';
+    IF @clean_table IS NULL AND @step_name LIKE '%RESTAURANT%' SET @clean_table = 'raw_restaurant';
+    IF @clean_table IS NULL AND @step_name LIKE '%MENU_ITEM%' SET @clean_table = 'raw_menu_item';
+    IF @clean_table IS NULL AND @step_name LIKE '%DELIVERY_PARTNER%' SET @clean_table = 'raw_delivery_partner';
+    IF @clean_table IS NULL AND @step_name LIKE '%ORDER_ITEM%' SET @clean_table = 'raw_order_item';
+    IF @clean_table IS NULL AND @step_name LIKE '%ORDER%' SET @clean_table = 'raw_order';
+    IF @clean_table IS NULL AND @step_name LIKE '%DELIVERY_PERFORMANCE%' SET @clean_table = 'raw_delivery_performance';
+    IF @clean_table IS NULL AND @step_name LIKE '%RATING%' SET @clean_table = 'raw_rating';
+
+    IF @clean_table IS NOT NULL
+    BEGIN
+        DELETE FROM control.etl_error
+        WHERE batch_id = @batch_id
+          AND table_name IN (@clean_table, REPLACE(@clean_table, 'raw_', 'ods_'), REPLACE(@clean_table, 'raw_', ''));
+    END;
 
     -- Ghi nhận log mới
     INSERT INTO control.etl_log

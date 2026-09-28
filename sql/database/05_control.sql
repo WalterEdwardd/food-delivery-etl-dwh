@@ -1,4 +1,4 @@
-﻿/* =========================================================
+/* =========================================================
    QUICKBITE DATA PLATFORM
    Food Delivery ETL & Data Warehouse
 
@@ -187,6 +187,22 @@ IF NOT EXISTS
 BEGIN
     CREATE INDEX IX_etl_error_batch_id
     ON control.etl_error(batch_id);
+END;
+GO
+
+-- 3.3 DEDUPLICATION INDEX ON ETL ERROR (IDEMPOTENT RERUNS)
+
+IF NOT EXISTS
+(
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'UX_etl_error_dedup'
+      AND object_id = OBJECT_ID(N'control.etl_error')
+)
+BEGIN
+    CREATE UNIQUE NONCLUSTERED INDEX UX_etl_error_dedup
+    ON control.etl_error (batch_id, table_name, source_row_number, column_name, error_type)
+    WITH (IGNORE_DUP_KEY = ON);
 END;
 GO
 

@@ -14,6 +14,7 @@ STAGING_CONFIG = {
         "table": "stg.stg_delivery_partner",
         "columns": [
             "delivery_partner_id",
+            "onboard_date",
             "partner_name",
             "city",
             "vehicle_type",
@@ -27,6 +28,9 @@ STAGING_CONFIG = {
         "columns": [
             "delivery_id",
             "order_id",
+            "prep_time",
+            "rider_wait_time",
+            "travel_time",
             "order_item",
             "expected_delivery_time_min",
             "actual_delivery_time_min",
@@ -91,6 +95,7 @@ STAGING_CONFIG = {
         "table": "stg.stg_restaurant",
         "columns": [
             "restaurant_id",
+            "onboards_date",
             "restaurant_name",
             "city",
             "cuisine_type",

@@ -33,6 +33,11 @@ SOURCE_SCHEMA = {
                 "required": True,
                 "business_key": True,
             },
+            "onboard_date": {
+                "source_type": "str",
+                "required": True,
+                "business_key": False,
+            },
             "partner_name": {
                 "source_type": "str",
                 "required": True,
@@ -78,6 +83,21 @@ SOURCE_SCHEMA = {
             "order_id": {
                 "source_type": "str",
                 "required": True,
+                "business_key": False,
+            },
+            "prep_time": {
+                "source_type": "int64",
+                "required": False,
+                "business_key": False,
+            },
+            "rider_wait_time": {
+                "source_type": "int64",
+                "required": False,
+                "business_key": False,
+            },
+            "travel_time": {
+                "source_type": "int64",
+                "required": False,
                 "business_key": False,
             },
             "order_item": {
@@ -304,6 +324,11 @@ SOURCE_SCHEMA = {
                 "source_type": "str",
                 "required": True,
                 "business_key": True,
+            },
+            "onboards_date": {
+                "source_type": "str",
+                "required": True,
+                "business_key": False,
             },
             "restaurant_name": {
                 "source_type": "str",

@@ -15,13 +15,13 @@ EXPECTED_ENTITIES = {
 
 EXPECTED_COLUMN_COUNTS = {
     "customer": 4,
-    "delivery_partner": 7,
-    "delivery_performance": 7,
+    "delivery_partner": 8,
+    "delivery_performance": 10,
     "menu_item": 6,
     "order": 11,
     "order_item": 8,
     "rating": 8,
-    "restaurant": 7,
+    "restaurant": 8,
 }
 
 
