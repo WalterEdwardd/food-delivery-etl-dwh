@@ -249,6 +249,7 @@ VALUES ('Fact Surrogate Keys Nullability', 'fact_order & fact_order_item', @batc
   9. ROW COUNT RECONCILIATION (ODS vs DWH - BATCH SCOPED)
 ==============================================================================*/
 
+-- 9.1 Customer Reconciliation
 DECLARE @ods_cust BIGINT, @dwh_cust BIGINT;
 SELECT @ods_cust = COUNT(*) FROM ods.ods_customer WHERE batch_id = @batch_id;
 SELECT @dwh_cust = COUNT(*) FROM dwh.dim_customer WHERE batch_id = @batch_id AND customer_key <> -1;
@@ -257,8 +258,245 @@ INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, act
 VALUES ('Customer Reconciliation', 'ods_customer -> dim_customer', @batch_id,
         CONCAT('ODS = ', @ods_cust),
         CONCAT('DWH = ', @dwh_cust),
-        CASE WHEN @dwh_cust = @ods_cust OR @dwh_cust = 0 THEN 'PASS' ELSE 'FAIL' END,
-        CASE WHEN @dwh_cust = @ods_cust OR @dwh_cust = 0 THEN NULL ELSE 'DWH customer count does not match ODS' END);
+        CASE WHEN @dwh_cust = @ods_cust THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @dwh_cust = @ods_cust THEN NULL ELSE 'DWH customer count does not match ODS' END);
+
+-- 9.2 Delivery Partner Reconciliation
+DECLARE @ods_dp BIGINT, @dwh_dp BIGINT;
+SELECT @ods_dp = COUNT(*) FROM ods.ods_delivery_partner WHERE batch_id = @batch_id;
+SELECT @dwh_dp = COUNT(*) FROM dwh.dim_delivery_partner WHERE batch_id = @batch_id AND delivery_partner_key <> -1;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Delivery Partner Reconciliation', 'ods_delivery_partner -> dim_delivery_partner', @batch_id,
+        CONCAT('ODS = ', @ods_dp),
+        CONCAT('DWH = ', @dwh_dp),
+        CASE WHEN @dwh_dp = @ods_dp THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @dwh_dp = @ods_dp THEN NULL ELSE 'DWH delivery partner count does not match ODS' END);
+
+-- 9.3 Restaurant Reconciliation
+DECLARE @ods_rest BIGINT, @dwh_rest BIGINT;
+SELECT @ods_rest = COUNT(*) FROM ods.ods_restaurant WHERE batch_id = @batch_id;
+SELECT @dwh_rest = COUNT(*) FROM dwh.dim_restaurant WHERE batch_id = @batch_id AND restaurant_key <> -1;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Restaurant Reconciliation', 'ods_restaurant -> dim_restaurant', @batch_id,
+        CONCAT('ODS = ', @ods_rest),
+        CONCAT('DWH = ', @dwh_rest),
+        CASE WHEN @dwh_rest = @ods_rest THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @dwh_rest = @ods_rest THEN NULL ELSE 'DWH restaurant count does not match ODS' END);
+
+-- 9.4 Menu Item Reconciliation
+DECLARE @ods_item BIGINT, @dwh_item BIGINT;
+SELECT @ods_item = COUNT(*) FROM ods.ods_menu_item WHERE batch_id = @batch_id;
+SELECT @dwh_item = COUNT(*) FROM dwh.dim_menu_item WHERE batch_id = @batch_id AND menu_item_key <> -1;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Menu Item Reconciliation', 'ods_menu_item -> dim_menu_item', @batch_id,
+        CONCAT('ODS = ', @ods_item),
+        CONCAT('DWH = ', @dwh_item),
+        CASE WHEN @dwh_item = @ods_item THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @dwh_item = @ods_item THEN NULL ELSE 'DWH menu item count does not match ODS' END);
+
+-- 9.5 Fact Order Reconciliation
+DECLARE @ods_ord BIGINT, @dwh_ord BIGINT;
+SELECT @ods_ord = COUNT(*) FROM ods.ods_order WHERE batch_id = @batch_id;
+SELECT @dwh_ord = COUNT(*) FROM dwh.fact_order WHERE batch_id = @batch_id;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Fact Order Reconciliation', 'ods_order -> fact_order', @batch_id,
+        CONCAT('ODS = ', @ods_ord),
+        CONCAT('DWH = ', @dwh_ord),
+        CASE WHEN @dwh_ord = @ods_ord THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @dwh_ord = @ods_ord THEN NULL ELSE 'DWH fact order count does not match ODS' END);
+
+-- 9.6 Fact Order Item Reconciliation
+DECLARE @ods_oi BIGINT, @dwh_oi BIGINT;
+SELECT @ods_oi = COUNT(*) FROM ods.ods_order_item WHERE batch_id = @batch_id;
+SELECT @dwh_oi = COUNT(*) FROM dwh.fact_order_item WHERE batch_id = @batch_id;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Fact Order Item Reconciliation', 'ods_order_item -> fact_order_item', @batch_id,
+        CONCAT('ODS = ', @ods_oi),
+        CONCAT('DWH = ', @dwh_oi),
+        CASE WHEN @dwh_oi = @ods_oi THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @dwh_oi = @ods_oi THEN NULL ELSE 'DWH fact order item count does not match ODS' END);
+
+-- 9.7 Fact Delivery Performance Reconciliation
+DECLARE @ods_deliv BIGINT, @dwh_deliv BIGINT;
+SELECT @ods_deliv = COUNT(*) FROM ods.ods_delivery_performance WHERE batch_id = @batch_id;
+SELECT @dwh_deliv = COUNT(*) FROM dwh.fact_delivery_performance WHERE batch_id = @batch_id;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Delivery Performance Reconciliation', 'ods_delivery_performance -> fact_delivery_performance', @batch_id,
+        CONCAT('ODS = ', @ods_deliv),
+        CONCAT('DWH = ', @dwh_deliv),
+        CASE WHEN @dwh_deliv = @ods_deliv THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @dwh_deliv = @ods_deliv THEN NULL ELSE 'DWH delivery performance count does not match ODS' END);
+
+-- 9.8 Cross-Table: Delivery Performance order_item vs Order Item quantity
+DECLARE @mismatched_item_quantities INT = 0;
+SELECT @mismatched_item_quantities = COUNT(*)
+FROM dwh.fact_delivery_performance dp
+JOIN (
+    SELECT order_id, SUM(quantity) AS sum_qty
+    FROM dwh.fact_order_item
+    GROUP BY order_id
+) oi ON dp.order_id = oi.order_id
+WHERE dp.order_item <> oi.sum_qty;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Cross-Table Item Quantity Check', 'delivery_performance.order_item vs sum(order_item.quantity)', @batch_id,
+        '0 mismatches',
+        CONCAT(@mismatched_item_quantities, ' mismatches'),
+        CASE WHEN @mismatched_item_quantities = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @mismatched_item_quantities = 0 THEN NULL ELSE 'Delivery performance order_item does not match sum of order items quantity' END);
+
+-- 9.9 Fact Rating Reconciliation
+DECLARE @ods_rat BIGINT, @dwh_rat BIGINT;
+SELECT @ods_rat = COUNT(*) FROM ods.ods_rating WHERE batch_id = @batch_id;
+SELECT @dwh_rat = COUNT(*) FROM dwh.fact_rating WHERE batch_id = @batch_id;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Fact Rating Reconciliation', 'ods_rating -> fact_rating', @batch_id,
+        CONCAT('ODS = ', @ods_rat),
+        CONCAT('DWH = ', @dwh_rat),
+        CASE WHEN @dwh_rat = @ods_rat THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @dwh_rat = @ods_rat THEN NULL ELSE 'DWH fact rating count does not match ODS' END);
+
+-- 9.10 Cross-Table: Order Subtotal vs Order Item Gross Sum
+DECLARE @mismatched_subtotals INT = 0;
+SELECT @mismatched_subtotals = COUNT(*)
+FROM dwh.fact_order fo
+JOIN (
+    SELECT order_id, SUM(gross_line_total) AS sum_gross
+    FROM dwh.fact_order_item
+    GROUP BY order_id
+) oi ON fo.order_id = oi.order_id
+WHERE fo.is_cancelled = 0
+  AND ABS(fo.subtotal_amount - oi.sum_gross) > 0.01;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Cross-Table Subtotal vs Gross Check', 'order.subtotal_amount vs sum(order_item.gross_line_total)', @batch_id,
+        '0 mismatches',
+        CONCAT(@mismatched_subtotals, ' mismatches'),
+        CASE WHEN @mismatched_subtotals = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @mismatched_subtotals = 0 THEN NULL ELSE 'Order subtotal does not match sum of gross line totals' END);
+
+-- 9.11 Cross-Table: Order Discount vs Order Item Discount Sum
+DECLARE @mismatched_discounts INT = 0;
+SELECT @mismatched_discounts = COUNT(*)
+FROM dwh.fact_order fo
+JOIN (
+    SELECT order_id, SUM(item_discount) AS sum_discount
+    FROM dwh.fact_order_item
+    GROUP BY order_id
+) oi ON fo.order_id = oi.order_id
+WHERE fo.is_cancelled = 0
+  AND ABS(fo.discount_amount - oi.sum_discount) > 0.01;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Cross-Table Discount Check', 'order.discount_amount vs sum(order_item.item_discount)', @batch_id,
+        '0 mismatches',
+        CONCAT(@mismatched_discounts, ' mismatches'),
+        CASE WHEN @mismatched_discounts = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @mismatched_discounts = 0 THEN NULL ELSE 'Order discount does not match sum of item discounts' END);
+
+-- 9.12 Cross-Table: Order Net Amount vs Order Item Net Sum
+DECLARE @mismatched_net_amounts INT = 0;
+SELECT @mismatched_net_amounts = COUNT(*)
+FROM dwh.fact_order fo
+JOIN (
+    SELECT order_id, SUM(net_line_total) AS sum_net
+    FROM dwh.fact_order_item
+    GROUP BY order_id
+) oi ON fo.order_id = oi.order_id
+WHERE fo.is_cancelled = 0
+  AND ABS((fo.subtotal_amount - fo.discount_amount) - oi.sum_net) > 0.01;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Cross-Table Net Amount Check', '(subtotal - discount) vs sum(order_item.net_line_total)', @batch_id,
+        '0 mismatches',
+        CONCAT(@mismatched_net_amounts, ' mismatches'),
+        CASE WHEN @mismatched_net_amounts = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @mismatched_net_amounts = 0 THEN NULL ELSE 'Order net amount does not match sum of net line totals' END);
+
+
+-- 9.13 Fact Review Aspect Row Count Check
+DECLARE @fra_count INT = 0;
+SELECT @fra_count = COUNT(*) FROM dwh.fact_review_aspect;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Fact Review Aspect Row Count', 'dwh.fact_review_aspect', @batch_id,
+        '> 0 rows',
+        CONCAT(@fra_count, ' rows'),
+        CASE WHEN @fra_count > 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @fra_count > 0 THEN NULL ELSE 'fact_review_aspect is empty' END);
+
+-- 9.14 Fact Review Aspect Referential Integrity (Rating Key)
+DECLARE @orphan_fra_ratings INT = 0;
+SELECT @orphan_fra_ratings = COUNT(*)
+FROM dwh.fact_review_aspect fra
+LEFT JOIN dwh.fact_rating fr ON fra.rating_key = fr.rating_key
+WHERE fr.rating_key IS NULL;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Review Aspect Rating FK Integrity', 'fra.rating_key -> fact_rating', @batch_id,
+        '0 orphaned rows',
+        CONCAT(@orphan_fra_ratings, ' orphaned rows'),
+        CASE WHEN @orphan_fra_ratings = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @orphan_fra_ratings = 0 THEN NULL ELSE 'fact_review_aspect has orphaned rating_key values' END);
+
+-- 9.15 Fact Review Aspect Referential Integrity (Aspect & Sentiment)
+DECLARE @invalid_fra_dimensions INT = 0;
+SELECT @invalid_fra_dimensions = COUNT(*)
+FROM dwh.fact_review_aspect fra
+LEFT JOIN dwh.dim_aspect da ON fra.aspect_id = da.aspect_id
+LEFT JOIN dwh.dim_sentiment_type ds ON fra.sentiment_type_id = ds.sentiment_type_id
+WHERE da.aspect_id IS NULL OR ds.sentiment_type_id IS NULL;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Review Aspect Dimension FK Integrity', 'fra.aspect_id & sentiment_type_id', @batch_id,
+        '0 invalid foreign keys',
+        CONCAT(@invalid_fra_dimensions, ' invalid foreign keys'),
+        CASE WHEN @invalid_fra_dimensions = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @invalid_fra_dimensions = 0 THEN NULL ELSE 'Invalid aspect_id or sentiment_type_id in fact_review_aspect' END);
+
+-- 9.16 Fact Review Aspect Uniqueness Check
+DECLARE @fra_duplicates INT = 0;
+SELECT @fra_duplicates = COUNT(*)
+FROM (
+    SELECT rating_id, aspect_id, sentiment_type_id, COUNT(*) AS dup_cnt
+    FROM dwh.fact_review_aspect
+    GROUP BY rating_id, aspect_id, sentiment_type_id
+    HAVING COUNT(*) > 1
+) d;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Review Aspect Uniqueness Check', 'rating_id + aspect_id + sentiment_type_id', @batch_id,
+        '0 duplicate records',
+        CONCAT(@fra_duplicates, ' duplicate records'),
+        CASE WHEN @fra_duplicates = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @fra_duplicates = 0 THEN NULL ELSE 'Duplicate aspect extractions found for same rating' END);
+
+-- 9.17 Fact Review Aspect Multi-Aspect Separation Check (Tasty but a bit late)
+DECLARE @multi_aspect_anomalies INT = 0;
+SELECT @multi_aspect_anomalies = COUNT(*)
+FROM (
+    SELECT fra.rating_id, COUNT(DISTINCT fra.aspect_id) AS distinct_aspects
+    FROM dwh.fact_review_aspect fra
+    JOIN dwh.fact_rating fr ON fra.rating_key = fr.rating_key
+    WHERE fr.review_text = 'Tasty but a bit late'
+    GROUP BY fra.rating_id
+    HAVING COUNT(DISTINCT fra.aspect_id) <> 2
+) a;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Multi-Aspect Separation Check', 'Tasty but a bit late -> 2 aspects', @batch_id,
+        '0 anomalies (all have 2 aspects)',
+        CONCAT(@multi_aspect_anomalies, ' anomalies'),
+        CASE WHEN @multi_aspect_anomalies = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @multi_aspect_anomalies = 0 THEN NULL ELSE 'Multi-aspect separation failed for Tasty but a bit late' END);
+
 
 
 /*==============================================================================
