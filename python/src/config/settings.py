@@ -31,3 +31,7 @@ try:
     DB_TIMEOUT = int(os.getenv("DB_TIMEOUT", "30"))
 except ValueError:
     DB_TIMEOUT = 30
+
+# Gemini AI Configuration
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
