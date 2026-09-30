@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/7/2026 9:28:36 AM"
@@ -80,8 +80,7 @@
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
-        <pipeline
-          version="1">
+        <pipeline version="1" defaultBufferMaxRows="500000" defaultBufferSize="104857600" autoAdjustBufferSize="true">
           <components>
             <component
               refId="Package\DFT - RAW Customer to ODS Customer\CSPL - Validate Customer Required Fields"
@@ -3566,7 +3565,7 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="SQL - Start ETL Log"
-      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; Â© 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -3583,7 +3582,7 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="SQL - Truncate Temp Table"
-      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; Â© 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -3600,7 +3599,7 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="SQL - Upsert ODS Customer"
-      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; Â© 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -3617,7 +3616,7 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="SQL - End ETL Log"
-      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; Â© 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -3691,7 +3690,7 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="SQL - Log Package Failure"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; Â© 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
