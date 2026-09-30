@@ -174,6 +174,7 @@ CREATE TABLE dwh.dim_restaurant
 (
     restaurant_key       BIGINT IDENTITY(1,1) NOT NULL,
     restaurant_id        VARCHAR(50)          NOT NULL,
+    onboard_date         DATE                 NULL,
     restaurant_name      VARCHAR(200)         NULL,
     city                 VARCHAR(100)         NULL,
     cuisine_type         VARCHAR(100)         NULL,
@@ -203,6 +204,7 @@ CREATE TABLE dwh.dim_delivery_partner
 (
     delivery_partner_key BIGINT IDENTITY(1,1) NOT NULL,
     delivery_partner_id  VARCHAR(50)          NOT NULL,
+    onboard_date         DATE                 NULL,
     partner_name         VARCHAR(200)         NULL,
     city                 VARCHAR(100)         NULL,
     vehicle_type         VARCHAR(100)         NULL,
@@ -426,10 +428,14 @@ CREATE TABLE dwh.fact_delivery_performance
     delivery_item              INT                  NULL,
     is_infull                  BIT                  NULL,
 
+    prep_time                  INT                  NULL,
+    rider_wait_time            INT                  NULL,
+    travel_time                INT                  NULL,
+
     expected_delivery_time_min INT                  NULL,
     actual_delivery_time_min   INT                  NULL,
     delivery_delay_min         INT                  NULL,
-    is_late                    BIT                  NULL,
+    is_ontime                  BIT                  NULL,
 
     distance_km                DECIMAL(10,2)        NULL,
 
@@ -517,12 +523,17 @@ GO
 CREATE TABLE dwh.fact_review_aspect
 (
     review_aspect_key    BIGINT IDENTITY(1,1) NOT NULL,
-    rating_id            VARCHAR(50)          NOT NULL,
     rating_key           BIGINT               NOT NULL,
+    rating_id            VARCHAR(50)          NOT NULL,
+    order_id             VARCHAR(50)          NOT NULL,
+
     aspect_id            TINYINT              NOT NULL,
-    sentiment_id         TINYINT              NOT NULL,
-    matched_word         VARCHAR(100)         NULL,
+    sentiment_type_id    TINYINT              NOT NULL,
+    matched_phrase       VARCHAR(200)         NULL,
+
     review_date_key      INT                  NOT NULL,
+    customer_key         BIGINT               NOT NULL,
+    restaurant_key       BIGINT               NOT NULL,
 
     batch_id             BIGINT               NOT NULL,
     load_timestamp       DATETIME2(3)         NOT NULL
@@ -539,11 +550,27 @@ CREATE TABLE dwh.fact_review_aspect
         FOREIGN KEY (aspect_id) REFERENCES dwh.dim_aspect(aspect_id),
 
     CONSTRAINT FK_fact_review_aspect_sentiment
-        FOREIGN KEY (sentiment_id) REFERENCES dwh.dim_sentiment_type(sentiment_type_id),
+        FOREIGN KEY (sentiment_type_id) REFERENCES dwh.dim_sentiment_type(sentiment_type_id),
 
     CONSTRAINT FK_fact_review_aspect_date
-        FOREIGN KEY (review_date_key) REFERENCES dwh.dim_date(date_key)
+        FOREIGN KEY (review_date_key) REFERENCES dwh.dim_date(date_key),
+
+    CONSTRAINT FK_fact_review_aspect_customer
+        FOREIGN KEY (customer_key) REFERENCES dwh.dim_customer(customer_key),
+
+    CONSTRAINT FK_fact_review_aspect_restaurant
+        FOREIGN KEY (restaurant_key) REFERENCES dwh.dim_restaurant(restaurant_key)
 );
+GO
+
+CREATE NONCLUSTERED INDEX IX_fact_review_aspect_rating_key
+    ON dwh.fact_review_aspect (rating_key);
+
+CREATE NONCLUSTERED INDEX IX_fact_review_aspect_aspect_id
+    ON dwh.fact_review_aspect (aspect_id);
+
+CREATE NONCLUSTERED INDEX IX_fact_review_aspect_sentiment_type_id
+    ON dwh.fact_review_aspect (sentiment_type_id);
 GO
 
 
