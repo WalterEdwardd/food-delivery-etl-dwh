@@ -50,6 +50,7 @@ DROP TABLE IF EXISTS stg.stg_restaurant;
 CREATE TABLE stg.stg_restaurant
     (
         restaurant_id          VARCHAR(100),
+        onboard_date           VARCHAR(50),
         restaurant_name        VARCHAR(200),
         city                   VARCHAR(100),
         cuisine_type           VARCHAR(100),
@@ -91,6 +92,7 @@ DROP TABLE IF EXISTS stg.stg_delivery_partner;
 CREATE TABLE stg.stg_delivery_partner
     (
         delivery_partner_id    VARCHAR(100),
+        onboard_date           VARCHAR(50),
         partner_name           VARCHAR(200),
         city                   VARCHAR(100),
         vehicle_type           VARCHAR(100),
@@ -160,10 +162,13 @@ CREATE TABLE stg.stg_delivery_performance
     (
         delivery_id                    VARCHAR(100),
         order_id                       VARCHAR(100),
+        prep_time                      VARCHAR(50),
+        rider_wait_time                VARCHAR(50),
+        travel_time                    VARCHAR(50),
         order_item                     VARCHAR(100),
-        delivery_item                  VARCHAR(100),
         expected_delivery_time_min     VARCHAR(100),
         actual_delivery_time_min       VARCHAR(100),
+        delivery_item                  VARCHAR(100),
         distance_km                    VARCHAR(100),
 
         batch_id                       BIGINT,
