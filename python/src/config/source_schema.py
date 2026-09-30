@@ -325,7 +325,7 @@ SOURCE_SCHEMA = {
                 "required": True,
                 "business_key": True,
             },
-            "onboards_date": {
+            "onboard_date": {
                 "source_type": "str",
                 "required": True,
                 "business_key": False,
