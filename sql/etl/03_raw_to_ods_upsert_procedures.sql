@@ -158,7 +158,8 @@ BEGIN
         USING temp.ods_restaurant AS source
         ON target.restaurant_id = source.restaurant_id
         WHEN MATCHED AND (
-            ISNULL(target.restaurant_name, '')   <> ISNULL(source.restaurant_name, '')
+            ISNULL(target.onboard_date, '1900-01-01')    <> ISNULL(source.onboard_date, '1900-01-01')
+            OR ISNULL(target.restaurant_name, '')   <> ISNULL(source.restaurant_name, '')
             OR ISNULL(target.city, '')           <> ISNULL(source.city, '')
             OR ISNULL(target.cuisine_type, '')   <> ISNULL(source.cuisine_type, '')
             OR ISNULL(target.partner_type, '')   <> ISNULL(source.partner_type, '')
@@ -166,6 +167,7 @@ BEGIN
             OR ISNULL(target.is_active, 2)       <> ISNULL(source.is_active, 2)
         )
         THEN UPDATE SET
+            target.onboard_date      = source.onboard_date,
             target.restaurant_name   = source.restaurant_name,
             target.city              = source.city,
             target.cuisine_type      = source.cuisine_type,
@@ -180,6 +182,7 @@ BEGIN
             INSERT
             (
                 restaurant_id,
+                onboard_date,
                 restaurant_name,
                 city,
                 cuisine_type,
@@ -194,6 +197,7 @@ BEGIN
             VALUES
             (
                 source.restaurant_id,
+                source.onboard_date,
                 source.restaurant_name,
                 source.city,
                 source.cuisine_type,
@@ -374,14 +378,16 @@ BEGIN
         USING temp.ods_delivery_partner AS source
         ON target.delivery_partner_id = source.delivery_partner_id
         WHEN MATCHED AND (
-            ISNULL(target.partner_name, '')       <> ISNULL(source.partner_name, '')
-            OR ISNULL(target.city, '')            <> ISNULL(source.city, '')
-            OR ISNULL(target.vehicle_type, '')    <> ISNULL(source.vehicle_type, '')
-            OR ISNULL(target.employment_type, '') <> ISNULL(source.employment_type, '')
-            OR ISNULL(target.avg_rating, -1)      <> ISNULL(source.avg_rating, -1)
-            OR ISNULL(target.is_active, 2)        <> ISNULL(source.is_active, 2)
+            ISNULL(target.onboard_date, '1900-01-01')    <> ISNULL(source.onboard_date, '1900-01-01')
+            OR ISNULL(target.partner_name, '')           <> ISNULL(source.partner_name, '')
+            OR ISNULL(target.city, '')                   <> ISNULL(source.city, '')
+            OR ISNULL(target.vehicle_type, '')           <> ISNULL(source.vehicle_type, '')
+            OR ISNULL(target.employment_type, '')        <> ISNULL(source.employment_type, '')
+            OR ISNULL(target.avg_rating, -1)             <> ISNULL(source.avg_rating, -1)
+            OR ISNULL(target.is_active, 2)               <> ISNULL(source.is_active, 2)
         )
         THEN UPDATE SET
+            target.onboard_date      = source.onboard_date,
             target.partner_name      = source.partner_name,
             target.city              = source.city,
             target.vehicle_type      = source.vehicle_type,
@@ -396,6 +402,7 @@ BEGIN
             INSERT
             (
                 delivery_partner_id,
+                onboard_date,
                 partner_name,
                 city,
                 vehicle_type,
@@ -410,6 +417,7 @@ BEGIN
             VALUES
             (
                 source.delivery_partner_id,
+                source.onboard_date,
                 source.partner_name,
                 source.city,
                 source.vehicle_type,
@@ -721,6 +729,9 @@ BEGIN
         ON target.delivery_id = source.delivery_id
         WHEN MATCHED AND (
             ISNULL(target.order_id, '')                   <> ISNULL(source.order_id, '')
+            OR ISNULL(target.prep_time, -1)               <> ISNULL(source.prep_time, -1)
+            OR ISNULL(target.rider_wait_time, -1)         <> ISNULL(source.rider_wait_time, -1)
+            OR ISNULL(target.travel_time, -1)             <> ISNULL(source.travel_time, -1)
             OR ISNULL(target.order_item, -1)              <> ISNULL(source.order_item, -1)
             OR ISNULL(target.expected_delivery_time_min, -1) <> ISNULL(source.expected_delivery_time_min, -1)
             OR ISNULL(target.actual_delivery_time_min, -1)   <> ISNULL(source.actual_delivery_time_min, -1)
@@ -729,6 +740,9 @@ BEGIN
         )
         THEN UPDATE SET
             target.order_id                   = source.order_id,
+            target.prep_time                  = source.prep_time,
+            target.rider_wait_time            = source.rider_wait_time,
+            target.travel_time                = source.travel_time,
             target.order_item                 = source.order_item,
             target.expected_delivery_time_min = source.expected_delivery_time_min,
             target.actual_delivery_time_min   = source.actual_delivery_time_min,
@@ -743,6 +757,9 @@ BEGIN
             (
                 delivery_id,
                 order_id,
+                prep_time,
+                rider_wait_time,
+                travel_time,
                 order_item,
                 expected_delivery_time_min,
                 actual_delivery_time_min,
@@ -757,6 +774,9 @@ BEGIN
             (
                 source.delivery_id,
                 source.order_id,
+                source.prep_time,
+                source.rider_wait_time,
+                source.travel_time,
                 source.order_item,
                 source.expected_delivery_time_min,
                 source.actual_delivery_time_min,
@@ -966,10 +986,11 @@ BEGIN
     TRUNCATE TABLE temp.ods_restaurant;
 
     INSERT INTO temp.ods_restaurant (
-        restaurant_id, restaurant_name, city, cuisine_type, partner_type, avg_prep_time_min, is_active, batch_id, source_file_name, source_row_number, load_timestamp
+        restaurant_id, onboard_date, restaurant_name, city, cuisine_type, partner_type, avg_prep_time_min, is_active, batch_id, source_file_name, source_row_number, load_timestamp
     )
     SELECT 
         LTRIM(RTRIM(restaurant_id)),
+        TRY_CONVERT(DATE, LTRIM(RTRIM(onboard_date)), 101),
         LTRIM(RTRIM(restaurant_name)),
         LTRIM(RTRIM(city)),
         LTRIM(RTRIM(cuisine_type)),
@@ -993,10 +1014,11 @@ BEGIN
     TRUNCATE TABLE temp.ods_delivery_partner;
 
     INSERT INTO temp.ods_delivery_partner (
-        delivery_partner_id, partner_name, city, vehicle_type, employment_type, avg_rating, is_active, batch_id, source_file_name, source_row_number, load_timestamp
+        delivery_partner_id, onboard_date, partner_name, city, vehicle_type, employment_type, avg_rating, is_active, batch_id, source_file_name, source_row_number, load_timestamp
     )
     SELECT 
         LTRIM(RTRIM(delivery_partner_id)),
+        TRY_CONVERT(DATE, LTRIM(RTRIM(onboard_date)), 101),
         LTRIM(RTRIM(partner_name)),
         LTRIM(RTRIM(city)),
         LTRIM(RTRIM(vehicle_type)),
@@ -1245,12 +1267,16 @@ BEGIN
 
     -- Insert clean delivery performance to temp
     INSERT INTO temp.ods_delivery_performance (
-        delivery_id, order_id, order_item, expected_delivery_time_min, actual_delivery_time_min,
+        delivery_id, order_id, prep_time, rider_wait_time, travel_time,
+        order_item, expected_delivery_time_min, actual_delivery_time_min,
         delivery_item, distance_km, batch_id, source_file_name, source_row_number, load_timestamp
     )
     SELECT 
         LTRIM(RTRIM(dp.delivery_id)),
         LTRIM(RTRIM(dp.order_id)),
+        TRY_CAST(dp.prep_time AS INT),
+        TRY_CAST(dp.rider_wait_time AS INT),
+        TRY_CAST(dp.travel_time AS INT),
         TRY_CAST(dp.order_item AS INT),
         TRY_CAST(dp.expected_delivery_time_min AS INT),
         TRY_CAST(dp.actual_delivery_time_min AS INT),
