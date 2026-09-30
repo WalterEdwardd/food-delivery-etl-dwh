@@ -288,6 +288,7 @@ BEGIN
             INSERT INTO raw.raw_restaurant
             (
                 restaurant_id,
+                onboard_date,
                 restaurant_name,
                 city,
                 cuisine_type,
@@ -301,6 +302,7 @@ BEGIN
             )
             SELECT
                 restaurant_id,
+                onboard_date,
                 restaurant_name,
                 city,
                 cuisine_type,
@@ -598,6 +600,7 @@ BEGIN
             INSERT INTO raw.raw_delivery_partner
             (
                 delivery_partner_id,
+                onboard_date,
                 partner_name,
                 city,
                 vehicle_type,
@@ -611,6 +614,7 @@ BEGIN
             )
             SELECT
                 delivery_partner_id,
+                onboard_date,
                 partner_name,
                 city,
                 vehicle_type,
@@ -1077,6 +1081,9 @@ BEGIN
             (
                 delivery_id,
                 order_id,
+                prep_time,
+                rider_wait_time,
+                travel_time,
                 order_item,
                 expected_delivery_time_min,
                 actual_delivery_time_min,
@@ -1090,6 +1097,9 @@ BEGIN
             SELECT
                 delivery_id,
                 order_id,
+                prep_time,
+                rider_wait_time,
+                travel_time,
                 order_item,
                 expected_delivery_time_min,
                 actual_delivery_time_min,
