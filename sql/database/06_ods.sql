@@ -1,4 +1,4 @@
-﻿/*
+/*
 ============================================================
 PART 12.5 - ODS LAYER
 Database : FoodDeliveryDW
@@ -81,6 +81,7 @@ GO
 CREATE TABLE ods.ods_restaurant
 (
     restaurant_id		VARCHAR(50)    NOT NULL,
+    onboard_date		DATE           NULL,
     restaurant_name		VARCHAR(200)  NULL,
     city				VARCHAR(100)  NULL,
     cuisine_type		VARCHAR(100)  NULL,
@@ -134,6 +135,7 @@ GO
 CREATE TABLE ods.ods_delivery_partner
 (
     delivery_partner_id	VARCHAR(50)     NOT NULL,
+    onboard_date		DATE            NULL,
     partner_name		VARCHAR(200)   NULL,
     city				VARCHAR(100)   NULL,
     vehicle_type		VARCHAR(100)   NULL,
@@ -226,6 +228,9 @@ CREATE TABLE ods.ods_delivery_performance
     delivery_id						VARCHAR(50)    NOT NULL,
     order_id						VARCHAR(50)    NOT NULL,
 
+    prep_time						INT            NULL,
+    rider_wait_time					INT            NULL,
+    travel_time						INT            NULL,
     order_item						INT            NULL,
     expected_delivery_time_min		INT            NULL,
     actual_delivery_time_min		INT            NULL,
