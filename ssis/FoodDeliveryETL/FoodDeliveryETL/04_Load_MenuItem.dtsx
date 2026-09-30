@@ -43,7 +43,10 @@
       <DTS:Variables />
       <DTS:ObjectData>
         <pipeline
-          version="1">
+          version="1"
+          defaultBufferMaxRows="500000"
+          defaultBufferSize="104857600"
+          autoAdjustBufferSize="true">
           <components>
             <component
               refId="Package\DFT - RAW Menu Item to ODS Menu Item\CSPL - Valid Price Range"
