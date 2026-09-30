@@ -211,6 +211,34 @@ CREATE TABLE ref.ref_partner_type
 GO
 
 
+/* ---------------------------------------------------------
+   3.8 REFERENCE REVIEW ASPECT CACHE (AI ABSA CACHE)
+   --------------------------------------------------------- */
+
+DROP TABLE IF EXISTS ref.ref_review_aspect_cache;
+GO
+
+CREATE TABLE ref.ref_review_aspect_cache
+(
+    review_hash          CHAR(64)             NOT NULL,
+    review_text          VARCHAR(2000)        NOT NULL,
+    aspect_id            TINYINT              NOT NULL,
+    sentiment_type_id    TINYINT              NOT NULL,
+    matched_phrase       VARCHAR(200)         NULL,
+    ai_model             VARCHAR(50)          NOT NULL,
+    created_at           DATETIME2(3)         NOT NULL
+        CONSTRAINT DF_ref_review_aspect_cache_created_at DEFAULT SYSUTCDATETIME(),
+
+    CONSTRAINT PK_ref_review_aspect_cache
+        PRIMARY KEY CLUSTERED (review_hash, aspect_id, sentiment_type_id)
+);
+GO
+
+CREATE NONCLUSTERED INDEX IX_ref_review_aspect_cache_hash
+    ON ref.ref_review_aspect_cache (review_hash);
+GO
+
+
 /* =========================================================
    4. VERIFY REFERENCE TABLES
    ========================================================= */
