@@ -55,6 +55,7 @@ DROP TABLE IF EXISTS raw.raw_restaurant;
 CREATE TABLE raw.raw_restaurant
     (
         restaurant_id        VARCHAR(100) NULL,
+        onboard_date        VARCHAR(50) NULL,
         restaurant_name      VARCHAR(200) NULL,
         city                 VARCHAR(100) NULL,
         cuisine_type         VARCHAR(100) NULL,
@@ -100,6 +101,7 @@ DROP TABLE IF EXISTS raw.raw_delivery_partner;
 CREATE TABLE raw.raw_delivery_partner
     (
         delivery_partner_id   VARCHAR(100) NULL,
+        onboard_date          VARCHAR(50) NULL,
         partner_name          VARCHAR(200) NULL,
         city                  VARCHAR(100) NULL,
         vehicle_type          VARCHAR(100) NULL,
@@ -175,6 +177,9 @@ CREATE TABLE raw.raw_delivery_performance
     (
         delivery_id                    VARCHAR(100) NULL,
         order_id                       VARCHAR(100) NULL,
+        prep_time                      VARCHAR(50) NULL,
+        rider_wait_time                VARCHAR(50) NULL,
+        travel_time                    VARCHAR(50) NULL,
         order_item                     VARCHAR(100) NULL,
         expected_delivery_time_min     VARCHAR(100) NULL,
         actual_delivery_time_min       VARCHAR(100) NULL,
