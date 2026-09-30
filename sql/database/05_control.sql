@@ -37,7 +37,9 @@ GO
 
 -- 2.1 CONTROL ETL BATCH
 
-DROP TABLE IF EXISTS control.etl_batch
+DROP TABLE IF EXISTS control.etl_error;
+DROP TABLE IF EXISTS control.etl_log;
+DROP TABLE IF EXISTS control.etl_batch;
 CREATE TABLE control.etl_batch
     (
         batch_id            BIGINT IDENTITY(1,1) NOT NULL,
