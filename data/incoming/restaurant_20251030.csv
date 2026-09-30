@@ -1,4 +1,4 @@
-restaurant_id,onboards_date,restaurant_name,city,cuisine_type,partner_type,avg_prep_time_min,is_active
+restaurant_id,onboard_date,restaurant_name,city,cuisine_type,partner_type,avg_prep_time_min,is_active
 REST12962,12/25/2024,Flavours of Sweets Palace,Bengaluru,Chinese,Restaurant,26-40,N
 REST14069,12/21/2024,Royal Biryani Darbar,Ahmedabad,Fast Food,Restaurant,16-25,Y
 REST08622,12/31/2024,Spicy Wraps Point,Mumbai,North Indian,Restaurant,16-25,Y
