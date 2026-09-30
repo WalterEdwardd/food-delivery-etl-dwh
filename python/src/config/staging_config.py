@@ -95,7 +95,7 @@ STAGING_CONFIG = {
         "table": "stg.stg_restaurant",
         "columns": [
             "restaurant_id",
-            "onboards_date",
+            "onboard_date",
             "restaurant_name",
             "city",
             "cuisine_type",
