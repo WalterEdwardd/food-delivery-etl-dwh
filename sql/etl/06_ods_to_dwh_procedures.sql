@@ -431,11 +431,16 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        SELECT @rows_read = COUNT(*) FROM ods.ods_customer;
+        SELECT @rows_read = COUNT(*) FROM ods.ods_customer
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
         -- 2.3 Set-based MERGE (SCD Type 1)
         MERGE dwh.dim_customer AS target
-        USING ods.ods_customer AS source
+        USING (
+            SELECT customer_id, signup_date, city, acquisition_channel, batch_id
+            FROM ods.ods_customer
+            WHERE (@batch_id = -1 OR batch_id = @batch_id)
+        ) AS source
         ON target.customer_id = source.customer_id
 
         -- When changed, update profile and timestamps
@@ -571,11 +576,16 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        SELECT @rows_read = COUNT(*) FROM ods.ods_delivery_partner;
+        SELECT @rows_read = COUNT(*) FROM ods.ods_delivery_partner
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
         -- 3.3 Set-based MERGE (SCD Type 1)
         MERGE dwh.dim_delivery_partner AS target
-        USING ods.ods_delivery_partner AS source
+        USING (
+            SELECT delivery_partner_id, onboard_date, partner_name, city, vehicle_type, employment_type, avg_rating, is_active, batch_id
+            FROM ods.ods_delivery_partner
+            WHERE (@batch_id = -1 OR batch_id = @batch_id)
+        ) AS source
         ON target.delivery_partner_id = source.delivery_partner_id
 
         -- When changed, update attributes and timestamps
@@ -727,11 +737,16 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        SELECT @rows_read = COUNT(*) FROM ods.ods_restaurant;
+        SELECT @rows_read = COUNT(*) FROM ods.ods_restaurant
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
         -- 4.3 Set-based MERGE (SCD Type 1)
         MERGE dwh.dim_restaurant AS target
-        USING ods.ods_restaurant AS source
+        USING (
+            SELECT restaurant_id, onboard_date, restaurant_name, city, cuisine_type, partner_type, avg_prep_time_min, is_active, batch_id
+            FROM ods.ods_restaurant
+            WHERE (@batch_id = -1 OR batch_id = @batch_id)
+        ) AS source
         ON target.restaurant_id = source.restaurant_id
 
         -- When changed, update attributes and timestamps
@@ -884,7 +899,8 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        SELECT @rows_read = COUNT(*) FROM ods.ods_menu_item;
+        SELECT @rows_read = COUNT(*) FROM ods.ods_menu_item
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
         -- 5.3 Set-based MERGE (SCD Type 1) with Restaurant Key resolution
         MERGE dwh.dim_menu_item AS target
@@ -901,6 +917,7 @@ BEGIN
             FROM ods.ods_menu_item m
             LEFT JOIN dwh.dim_restaurant r
                 ON m.restaurant_id = r.restaurant_id
+            WHERE (@batch_id = -1 OR m.batch_id = @batch_id)
         ) AS source
         ON target.menu_item_id = source.menu_item_id
 
@@ -1060,7 +1077,8 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        SELECT @rows_read = COUNT(*) FROM ods.ods_order;
+        SELECT @rows_read = COUNT(*) FROM ods.ods_order
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
         -- 6.3 Set-based MERGE for Fact Order with Dimensional Lookups
         MERGE dwh.fact_order AS target
@@ -1093,6 +1111,7 @@ BEGIN
                 ON o.restaurant_id = r.restaurant_id
             LEFT JOIN dwh.dim_delivery_partner dp
                 ON NULLIF(LTRIM(RTRIM(o.delivery_partner_id)), '') = dp.delivery_partner_id
+            WHERE (@batch_id = -1 OR o.batch_id = @batch_id)
         ) AS source
         ON target.order_id = source.order_id
 
@@ -1286,7 +1305,8 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        SELECT @rows_read = COUNT(*) FROM ods.ods_order_item;
+        SELECT @rows_read = COUNT(*) FROM ods.ods_order_item
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
         -- 7.3 Set-based MERGE for Fact Order Item with Dimensional Lookups
         MERGE dwh.fact_order_item AS target
@@ -1310,6 +1330,7 @@ BEGIN
                 ON oi.order_id = fo.order_id
             LEFT JOIN dwh.dim_menu_item mi
                 ON oi.menu_item_id = mi.menu_item_id
+            WHERE (@batch_id = -1 OR oi.batch_id = @batch_id)
         ) AS source
         ON target.order_line_id = source.order_line_id
 
@@ -1497,7 +1518,8 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        SELECT @rows_read = COUNT(*) FROM ods.ods_delivery_performance;
+        SELECT @rows_read = COUNT(*) FROM ods.ods_delivery_performance
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
         -- 8.3 Set-based MERGE for Fact Delivery Performance
         MERGE dwh.fact_delivery_performance AS target
@@ -1523,6 +1545,7 @@ BEGIN
             FROM ods.ods_delivery_performance dp
             LEFT JOIN dwh.fact_order fo
                 ON dp.order_id = fo.order_id
+            WHERE (@batch_id = -1 OR dp.batch_id = @batch_id)
         ) AS source
         ON target.delivery_id = source.delivery_id
 
@@ -1720,7 +1743,8 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        SELECT @rows_read = COUNT(*) FROM ods.ods_rating;
+        SELECT @rows_read = COUNT(*) FROM ods.ods_rating
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
         -- 9.3 Set-based MERGE for Fact Rating with Dimensional Lookups
         MERGE dwh.fact_rating AS target
@@ -1751,6 +1775,7 @@ BEGIN
                 ON r.rating BETWEEN rt.min_score AND rt.max_score AND rt.rating_type_id <> 0
             LEFT JOIN dwh.dim_sentiment_type st
                 ON r.sentiment_score BETWEEN st.min_score AND st.max_score AND st.sentiment_type_id <> 0
+            WHERE (@batch_id = -1 OR r.batch_id = @batch_id)
         ) AS source
         ON target.rating_id = source.rating_id
 
@@ -1875,11 +1900,20 @@ GO
 ============================================================================== */
 
 CREATE OR ALTER PROCEDURE dwh.usp_load_fact_review_aspect
-    @batch_id BIGINT = 1
+    @batch_id BIGINT = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
+
+    -- 10.0 Determine Active Batch ID
+    IF @batch_id IS NULL OR @batch_id <= 0
+    BEGIN
+        SELECT @batch_id = MAX(batch_id) FROM dwh.fact_rating;
+
+        IF @batch_id IS NULL
+            SELECT @batch_id = 1;
+    END;
 
     DECLARE @process_name   VARCHAR(100) = 'DWH_FACT_REVIEW_ASPECT',
             @step_name      VARCHAR(100) = 'usp_load_fact_review_aspect',
@@ -1908,7 +1942,8 @@ BEGIN
         SELECT @rows_read = COUNT(*) 
         FROM dwh.fact_rating r
         JOIN ref.ref_review_aspect_cache c
-            ON HASHBYTES('SHA2_256', LOWER(LTRIM(RTRIM(r.review_text)))) = CONVERT(VARBINARY(64), c.review_hash, 2);
+            ON HASHBYTES('SHA2_256', LOWER(LTRIM(RTRIM(r.review_text)))) = CONVERT(VARBINARY(64), c.review_hash, 2)
+        WHERE (@batch_id = -1 OR r.batch_id = @batch_id);
 
         -- 10.2 Set-based MERGE into fact_review_aspect
         MERGE dwh.fact_review_aspect AS target
@@ -1927,6 +1962,7 @@ BEGIN
             FROM dwh.fact_rating r
             JOIN ref.ref_review_aspect_cache c
                 ON HASHBYTES('SHA2_256', LOWER(LTRIM(RTRIM(r.review_text)))) = CONVERT(VARBINARY(64), c.review_hash, 2)
+            WHERE (@batch_id = -1 OR r.batch_id = @batch_id)
         ) AS source
         ON target.rating_key = source.rating_key
            AND target.aspect_id = source.aspect_id

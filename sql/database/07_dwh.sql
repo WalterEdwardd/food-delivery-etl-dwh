@@ -571,6 +571,48 @@ CREATE NONCLUSTERED INDEX IX_fact_review_aspect_aspect_id
 
 CREATE NONCLUSTERED INDEX IX_fact_review_aspect_sentiment_type_id
     ON dwh.fact_review_aspect (sentiment_type_id);
+
+CREATE NONCLUSTERED INDEX IX_fact_review_aspect_customer_key
+    ON dwh.fact_review_aspect (customer_key);
+
+CREATE NONCLUSTERED INDEX IX_fact_review_aspect_restaurant_key
+    ON dwh.fact_review_aspect (restaurant_key);
+
+CREATE NONCLUSTERED INDEX IX_fact_review_aspect_review_date_key
+    ON dwh.fact_review_aspect (review_date_key);
+GO
+
+/* Fact Order Indexes */
+CREATE NONCLUSTERED INDEX IX_fact_order_order_date_key ON dwh.fact_order (order_date_key);
+CREATE NONCLUSTERED INDEX IX_fact_order_order_time_key ON dwh.fact_order (order_time_key);
+CREATE NONCLUSTERED INDEX IX_fact_order_customer_key ON dwh.fact_order (customer_key);
+CREATE NONCLUSTERED INDEX IX_fact_order_restaurant_key ON dwh.fact_order (restaurant_key);
+CREATE NONCLUSTERED INDEX IX_fact_order_delivery_partner_key ON dwh.fact_order (delivery_partner_key);
+GO
+
+/* Fact Order Item Indexes */
+CREATE NONCLUSTERED INDEX IX_fact_order_item_order_date_key ON dwh.fact_order_item (order_date_key);
+CREATE NONCLUSTERED INDEX IX_fact_order_item_customer_key ON dwh.fact_order_item (customer_key);
+CREATE NONCLUSTERED INDEX IX_fact_order_item_restaurant_key ON dwh.fact_order_item (restaurant_key);
+CREATE NONCLUSTERED INDEX IX_fact_order_item_menu_item_key ON dwh.fact_order_item (menu_item_key);
+CREATE NONCLUSTERED INDEX IX_fact_order_item_order_id ON dwh.fact_order_item (order_id);
+GO
+
+/* Fact Delivery Performance Indexes */
+CREATE NONCLUSTERED INDEX IX_fact_delivery_performance_delivery_date_key ON dwh.fact_delivery_performance (delivery_date_key);
+CREATE NONCLUSTERED INDEX IX_fact_delivery_performance_restaurant_key ON dwh.fact_delivery_performance (restaurant_key);
+CREATE NONCLUSTERED INDEX IX_fact_delivery_performance_delivery_partner_key ON dwh.fact_delivery_performance (delivery_partner_key);
+CREATE NONCLUSTERED INDEX IX_fact_delivery_performance_order_id ON dwh.fact_delivery_performance (order_id);
+GO
+
+/* Fact Rating Indexes */
+CREATE NONCLUSTERED INDEX IX_fact_rating_rating_date_key ON dwh.fact_rating (rating_date_key);
+CREATE NONCLUSTERED INDEX IX_fact_rating_rating_time_key ON dwh.fact_rating (rating_time_key);
+CREATE NONCLUSTERED INDEX IX_fact_rating_customer_key ON dwh.fact_rating (customer_key);
+CREATE NONCLUSTERED INDEX IX_fact_rating_restaurant_key ON dwh.fact_rating (restaurant_key);
+CREATE NONCLUSTERED INDEX IX_fact_rating_rating_type_id ON dwh.fact_rating (rating_type_id);
+CREATE NONCLUSTERED INDEX IX_fact_rating_sentiment_type_id ON dwh.fact_rating (sentiment_type_id);
+CREATE NONCLUSTERED INDEX IX_fact_rating_order_id ON dwh.fact_rating (order_id);
 GO
 
 

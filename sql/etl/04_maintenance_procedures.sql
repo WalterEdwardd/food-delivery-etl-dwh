@@ -208,3 +208,182 @@ GO
 
 PRINT 'Compiled procedure stg.usp_truncate_stg_tables successfully.';
 GO
+
+
+/* ==============================================================================
+   PROCEDURE: dwh.usp_maintain_dwh_indexes_and_stats
+   Description:
+       Performs automated index maintenance (Reorganize / Rebuild) and
+       Statistics updates across all Dimension and Fact tables in schema 'dwh'.
+       - Fragmentation >= 30%: ALTER INDEX ... REBUILD
+       - Fragmentation between 10% and 30%: ALTER INDEX ... REORGANIZE
+       - Update statistics with FULLSCAN on all DWH tables
+       - Logs audit details to control.etl_log
+   Parameters:
+       @rebuild_threshold    FLOAT = 30.0
+       @reorganize_threshold FLOAT = 10.0
+       @update_stats         BIT   = 1
+       @batch_id             BIGINT = NULL
+============================================================================== */
+CREATE OR ALTER PROCEDURE dwh.usp_maintain_dwh_indexes_and_stats
+    @rebuild_threshold    FLOAT = 30.0,
+    @reorganize_threshold FLOAT = 10.0,
+    @update_stats         BIT   = 1,
+    @batch_id             BIGINT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    IF @batch_id IS NULL OR @batch_id <= 0
+    BEGIN
+        SELECT @batch_id = MAX(batch_id) FROM dwh.fact_order;
+        IF @batch_id IS NULL SELECT @batch_id = 1;
+    END;
+
+    DECLARE @process_name   VARCHAR(100) = 'DWH_MAINTENANCE',
+            @step_name      VARCHAR(200) = 'INDEX_STATS_MAINTENANCE',
+            @start_time     DATETIME2(3) = SYSUTCDATETIME(),
+            @rebuild_count  INT = 0,
+            @reorg_count    INT = 0,
+            @stats_count    INT = 0;
+
+    INSERT INTO control.etl_log
+    (
+        batch_id, process_name, step_name, start_time,
+        status, message, created_at
+    )
+    VALUES
+    (
+        @batch_id, @process_name, @step_name, @start_time,
+        'RUNNING', 'Started DWH Index and Statistics maintenance', SYSUTCDATETIME()
+    );
+
+    BEGIN TRY
+        PRINT '==============================================================================';
+        PRINT 'DWH LAYER INDEX AND STATISTICS MAINTENANCE';
+        PRINT '==============================================================================';
+
+        -- 1. Index Rebuild / Reorganize based on fragmentation
+        DECLARE @table_name NVARCHAR(128),
+                @index_name NVARCHAR(128),
+                @avg_frag   FLOAT,
+                @sql        NVARCHAR(MAX);
+
+        DECLARE index_cursor CURSOR LOCAL FAST_FORWARD FOR
+        SELECT 
+            t.name AS table_name,
+            i.name AS index_name,
+            ps.avg_fragmentation_in_percent
+        FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, 'LIMITED') ps
+        JOIN sys.tables t ON ps.object_id = t.object_id
+        JOIN sys.schemas s ON t.schema_id = s.schema_id
+        JOIN sys.indexes i ON ps.object_id = i.object_id AND ps.index_id = i.index_id
+        WHERE s.name = 'dwh'
+          AND i.name IS NOT NULL
+          AND ps.page_count > 8; -- Only fragment-test indexes spanning more than 8 pages (64KB)
+
+        OPEN index_cursor;
+        FETCH NEXT FROM index_cursor INTO @table_name, @index_name, @avg_frag;
+
+        WHILE @@FETCH_STATUS = 0
+        BEGIN
+            IF @avg_frag >= @rebuild_threshold
+            BEGIN
+                SET @sql = CONCAT('ALTER INDEX [', @index_name, '] ON dwh.[', @table_name, '] REBUILD;');
+                EXEC sp_executesql @sql;
+                SET @rebuild_count += 1;
+                PRINT CONCAT('  - REBUILT: [', @table_name, '].[', @index_name, '] (Frag: ', CAST(ROUND(@avg_frag, 2) AS VARCHAR), '%)');
+            END
+            ELSE IF @avg_frag >= @reorganize_threshold
+            BEGIN
+                SET @sql = CONCAT('ALTER INDEX [', @index_name, '] ON dwh.[', @table_name, '] REORGANIZE;');
+                EXEC sp_executesql @sql;
+                SET @reorg_count += 1;
+                PRINT CONCAT('  - REORGANIZED: [', @table_name, '].[', @index_name, '] (Frag: ', CAST(ROUND(@avg_frag, 2) AS VARCHAR), '%)');
+            END;
+
+            FETCH NEXT FROM index_cursor INTO @table_name, @index_name, @avg_frag;
+        END;
+
+        CLOSE index_cursor;
+        DEALLOCATE index_cursor;
+
+        -- 2. Update Statistics for all DWH tables
+        IF @update_stats = 1
+        BEGIN
+            PRINT '------------------------------------------------------------------------------';
+            PRINT 'UPDATING STATISTICS ON DWH TABLES (WITH FULLSCAN)';
+            PRINT '------------------------------------------------------------------------------';
+
+            DECLARE table_cursor CURSOR LOCAL FAST_FORWARD FOR
+            SELECT t.name
+            FROM sys.tables t
+            JOIN sys.schemas s ON t.schema_id = s.schema_id
+            WHERE s.name = 'dwh';
+
+            OPEN table_cursor;
+            FETCH NEXT FROM table_cursor INTO @table_name;
+
+            WHILE @@FETCH_STATUS = 0
+            BEGIN
+                SET @sql = CONCAT('UPDATE STATISTICS dwh.[', @table_name, '] WITH FULLSCAN;');
+                EXEC sp_executesql @sql;
+                SET @stats_count += 1;
+                PRINT CONCAT('  - UPDATED STATS: dwh.[', @table_name, ']');
+
+                FETCH NEXT FROM table_cursor INTO @table_name;
+            END;
+
+            CLOSE table_cursor;
+            DEALLOCATE table_cursor;
+        END;
+
+        -- 3. Log Success
+        UPDATE control.etl_log
+        SET end_time       = SYSUTCDATETIME(),
+            status         = 'SUCCESS',
+            rows_processed = @stats_count,
+            message        = CONCAT('Maintenance Completed: Rebuilt=', @rebuild_count, 
+                                   ', Reorganized=', @reorg_count, 
+                                   ', Stats Updated=', @stats_count)
+        WHERE batch_id  = @batch_id
+          AND step_name = @step_name
+          AND status    = 'RUNNING';
+
+        PRINT '==============================================================================';
+        PRINT CONCAT('[SUCCESS] DWH Maintenance Completed: Rebuilt=', @rebuild_count, 
+                     ', Reorganized=', @reorg_count, ', Stats Updated=', @stats_count);
+        PRINT '==============================================================================';
+
+    END TRY
+    BEGIN CATCH
+        IF CURSOR_STATUS('local', 'index_cursor') >= 0
+        BEGIN
+            CLOSE index_cursor;
+            DEALLOCATE index_cursor;
+        END;
+        IF CURSOR_STATUS('local', 'table_cursor') >= 0
+        BEGIN
+            CLOSE table_cursor;
+            DEALLOCATE table_cursor;
+        END;
+
+        DECLARE @error_msg NVARCHAR(4000) = ERROR_MESSAGE();
+
+        UPDATE control.etl_log
+        SET end_time       = SYSUTCDATETIME(),
+            status         = 'FAILED',
+            message        = CONCAT('FAILED: ', @error_msg)
+        WHERE batch_id  = @batch_id
+          AND step_name = @step_name
+          AND status    = 'RUNNING';
+
+        PRINT '*** [ERROR] DWH Maintenance failed: ' + @error_msg;
+        THROW;
+    END CATCH;
+END;
+GO
+
+PRINT 'Compiled procedure dwh.usp_maintain_dwh_indexes_and_stats successfully.';
+GO
