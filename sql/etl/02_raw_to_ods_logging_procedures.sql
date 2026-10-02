@@ -9,7 +9,7 @@ GO
 
 /* ==============================================================================
    1. PROCEDURE: control.usp_start_raw_to_ods_log
-   PURPOSE  : Ghi nhận bắt đầu thực thi một bước ETL RAW -> ODS (status = 'RUNNING').
+   PURPOSE  : Register start of an ETL step execution RAW -> ODS (status = 'RUNNING').
    ============================================================================== */
 CREATE OR ALTER PROCEDURE control.usp_start_raw_to_ods_log
     @process_name   VARCHAR(100) = 'RAW_TO_ODS',
@@ -20,18 +20,18 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Chuẩn hóa UPPER CASE đồng bộ với tầng STG
+    -- Standardize to uppercase for consistency with STG layer
     SET @process_name = UPPER(LTRIM(RTRIM(@process_name)));
     SET @step_name    = UPPER(LTRIM(RTRIM(@step_name)));
 
-    -- Nếu không truyền batch_id, tự động lấy batch mới nhất từ control.etl_batch
+    -- If batch_id is not provided, fetch the latest batch from control.etl_batch
     IF @batch_id IS NULL OR @batch_id <= 0
     BEGIN
         SELECT TOP 1 @batch_id = batch_id
         FROM control.etl_batch
         ORDER BY batch_id DESC;
 
-        -- Fallback lấy max batch_id từ raw_delivery_partner nếu control.etl_batch trống
+        -- Fallback to max batch_id from raw_delivery_partner if control.etl_batch is empty
         IF @batch_id IS NULL
         BEGIN
             SELECT @batch_id = MAX(batch_id) FROM raw.raw_delivery_partner;
@@ -43,7 +43,7 @@ BEGIN
         THROW 50010, 'Cannot determine batch_id for ETL logging.', 1;
     END;
 
-    -- Đóng các log cũ bị treo ở RUNNING (nếu có do phiên trước bị crash)
+    -- Close stale logs stuck in RUNNING state (e.g. from previous crashes)
     UPDATE control.etl_log
     SET status   = 'FAILED',
         end_time = SYSDATETIME(),
@@ -51,7 +51,7 @@ BEGIN
     WHERE step_name = @step_name
       AND status    = 'RUNNING';
 
-    -- [IDEMPOTENCY] Xóa log lỗi cũ của chính bảng và batch này nếu chạy lại
+    -- [IDEMPOTENCY] Clear old error logs for this table and batch upon rerun
     DECLARE @clean_table VARCHAR(200) = @table_name;
     IF @clean_table IS NULL AND @step_name LIKE '%CUSTOMER%' SET @clean_table = 'raw_customer';
     IF @clean_table IS NULL AND @step_name LIKE '%RESTAURANT%' SET @clean_table = 'raw_restaurant';
@@ -69,7 +69,7 @@ BEGIN
           AND table_name IN (@clean_table, REPLACE(@clean_table, 'raw_', 'ods_'), REPLACE(@clean_table, 'raw_', ''));
     END;
 
-    -- Ghi nhận log mới
+    -- Register new log entry
     INSERT INTO control.etl_log
     (
         batch_id,
@@ -103,22 +103,22 @@ GO
 
 /* ==============================================================================
    2. PROCEDURE: control.usp_end_raw_to_ods_log
-   PURPOSE  : Cập nhật kết thúc bước ETL RAW -> ODS (tính toán số dòng, status, end_time).
-              Đối soát: rows_rejected = rows_processed (từ RAW) - rows_inserted (vào ODS).
+   PURPOSE  : Update completion of an ETL step RAW -> ODS (calculate row counts, status, end_time).
+              Reconciliation: rows_rejected = rows_processed (from RAW) - rows_inserted (into ODS).
    ============================================================================== */
 CREATE OR ALTER PROCEDURE control.usp_end_raw_to_ods_log
     @step_name          VARCHAR(200),
-    @target_table       VARCHAR(200) = NULL,   -- Ví dụ: 'ods_delivery_partner'
-    @raw_table          VARCHAR(200) = NULL,   -- Ví dụ: 'raw_delivery_partner'
-    @error_table_name   VARCHAR(200) = NULL,   -- Tương thích ngược nếu truyền error_table_name
+    @target_table       VARCHAR(200) = NULL,   -- e.g. 'ods_delivery_partner'
+    @raw_table          VARCHAR(200) = NULL,   -- e.g. 'raw_delivery_partner'
+    @error_table_name   VARCHAR(200) = NULL,   -- Backward compatibility for error_table_name
     @batch_id           BIGINT = NULL,
-    @status_override    VARCHAR(20) = NULL,    -- Ví dụ: 'FAILED'
+    @status_override    VARCHAR(20) = NULL,    -- e.g. 'FAILED'
     @error_message      VARCHAR(4000) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Chuẩn hóa UPPER CASE đồng bộ với tầng STG
+    -- Standardize to uppercase for consistency with STG layer
     SET @step_name = UPPER(LTRIM(RTRIM(@step_name)));
 
     DECLARE 
@@ -130,7 +130,7 @@ BEGIN
         @final_status   VARCHAR(20),
         @sql            NVARCHAR(MAX);
 
-    -- Tìm log_id mới nhất đang ở trạng thái RUNNING của step_name này
+    -- Find the latest log_id in RUNNING state for this step_name
     SELECT TOP 1
         @log_id       = log_id,
         @cur_batch_id = batch_id
@@ -139,7 +139,7 @@ BEGIN
       AND status = 'RUNNING'
     ORDER BY log_id DESC;
 
-    -- Nếu không tìm thấy RUNNING, tìm log_id gần nhất của step_name
+    -- If no RUNNING log is found, search for the most recent log_id
     IF @log_id IS NULL
     BEGIN
         SELECT TOP 1
@@ -155,11 +155,11 @@ BEGIN
         RETURN;
     END;
 
-    -- Ưu tiên batch_id truyền vào nếu có
+    -- Prioritize provided batch_id if available
     IF @batch_id IS NOT NULL AND @batch_id > 0
         SET @cur_batch_id = @batch_id;
 
-    -- Xử lý trường hợp FAILED do hệ thống
+    -- Handle system failure override
     IF @status_override = 'FAILED'
     BEGIN
         UPDATE control.etl_log
@@ -170,22 +170,22 @@ BEGIN
         RETURN;
     END;
 
-    -- Nhận diện tên bảng RAW (từ @raw_table hoặc @error_table_name hoặc suy ra từ @target_table)
+    -- Identify RAW table name
     IF @raw_table IS NULL AND @error_table_name IS NOT NULL
         SET @raw_table = @error_table_name;
 
     IF @raw_table IS NULL AND @target_table LIKE 'ods[_]%'
         SET @raw_table = 'raw_' + SUBSTRING(@target_table, 5, LEN(@target_table));
 
-    -- 1. Đếm tổng số dòng nguồn được xử lý từ bảng RAW
+    -- 1. Count total source rows processed from RAW table
     IF @raw_table IS NOT NULL
     BEGIN
         SET @sql = N'SELECT @cnt = COUNT_BIG(*) FROM raw.' + QUOTENAME(@raw_table) + N' WHERE batch_id = @b;';
         EXEC sp_executesql @sql, N'@b BIGINT, @cnt BIGINT OUTPUT', @b = @cur_batch_id, @cnt = @rows_processed OUTPUT;
     END;
 
-    -- 2. Đếm số dòng hợp lệ đã ghi thành công vào bảng ODS
-    -- (Ưu tiên đếm từ bảng tạm temp.<target_table> nếu có vì chứa chính xác số dòng sạch của batch này)
+    -- 2. Count valid rows successfully written to ODS table
+    -- (Prefer counting from temp.<target_table> if present as it contains clean batch rows)
     IF @target_table IS NOT NULL
     BEGIN
         IF OBJECT_ID('temp.' + QUOTENAME(@target_table), 'U') IS NOT NULL
@@ -203,20 +203,19 @@ BEGIN
     SET @rows_processed = COALESCE(@rows_processed, 0);
     SET @rows_inserted  = COALESCE(@rows_inserted, 0);
 
-    -- 3. Số dòng bị reject = Tổng số dòng RAW - Số dòng thành công ODS
-    -- (Đảm bảo chuẩn xác kể cả khi 1 row lỗi bị ghi nhiều lần vào etl_error do vi phạm nhiều rule)
+    -- 3. Rejected rows = Total RAW rows - Successful ODS rows
     IF @rows_processed >= @rows_inserted
         SET @rows_rejected = @rows_processed - @rows_inserted;
     ELSE
         SET @rows_rejected = 0;
 
-    -- 4. Xác định trạng thái
+    -- 4. Determine final status
     IF @rows_rejected > 0
         SET @final_status = 'PARTIAL';
     ELSE
         SET @final_status = 'SUCCESS';
 
-    -- 5. Cập nhật bảng etl_log (giữ lại message chi tiết từ bước Upsert nếu có)
+    -- 5. Update etl_log table (preserve detailed message from Upsert step if exists)
     UPDATE control.etl_log
     SET end_time       = SYSDATETIME(),
         status         = @final_status,
