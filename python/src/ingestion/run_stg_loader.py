@@ -89,7 +89,7 @@ def run_staging_ingestion(
     processed_dir.mkdir(parents=True, exist_ok=True)
     rejected_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1. Validate tất cả các file trong thư mục incoming
+    # 1. Validate all files in the incoming directory
     logger.info("Scanning and validating incoming files in %s", incoming_dir)
     validation_results = validate_all_files(incoming_dir, SOURCE_SCHEMA)
 
@@ -97,30 +97,30 @@ def run_staging_ingestion(
         logger.info("No files found in incoming directory. Ingestion skipped.")
         return
 
-    # 2. Khởi tạo Batch trong bảng control.etl_batch
+    # 2. Initialize Batch in control.etl_batch
     batch_id = start_batch(
         pipeline_name=pipeline_name,
         source_system=source_system,
         source_file_count=len(validation_results),
     )
 
-    rows_loaded = 0         # tổng số rows load thành công vào DB
-    files_ok = 0            # số file load DB thành công
-    files_rejected = 0      # số file bị reject (validation fail hoặc DB fail)
+    rows_loaded = 0         # Total rows successfully loaded into DB
+    files_ok = 0            # Number of successfully loaded files
+    files_rejected = 0      # Number of rejected files (validation fail or DB fail)
     has_critical_failure = False
     files_to_archive: list[tuple[Path, Path]] = []
 
     loader = StagingLoader()
 
     try:
-        # 3. Truncate staging tables để chuẩn bị nạp batch mới
+        # 3. Truncate staging tables before loading new batch
         truncate_staging_tables()
 
-        # 4. Lặp qua các file và thực hiện nạp dữ liệu vào STG
+        # 4. Iterate through files and load data into STG
         for result in validation_results:
             file_path = result.file_path
 
-            # Nếu file không hợp lệ theo schema/cấu trúc
+            # If file failed schema/structure validation
             if not result.is_valid or not result.source_name:
                 err_msg = "; ".join(result.errors) if result.errors else "Unknown validation error"
                 logger.warning(
@@ -142,7 +142,7 @@ def run_staging_ingestion(
                 files_rejected += 1
                 continue
 
-            # Nếu file hợp lệ -> Nạp vào STG
+            # If file is valid -> Load into STG
             try:
                 load_result = loader.load_file(
                     file_path=file_path,
@@ -152,7 +152,7 @@ def run_staging_ingestion(
                 rows_loaded += load_result.rows_loaded
                 files_ok += 1
 
-                # Ghi nhận file cần lưu trữ sau khi toàn bộ quy trình STG -> RAW hoàn tất (2-phase commit)
+                # Track file for archival after entire STG -> RAW process completes (2-phase commit)
                 target_archive_path = processed_dir / f"{file_path.stem}_batch{batch_id}{file_path.suffix}"
                 files_to_archive.append((file_path, target_archive_path))
 
@@ -172,17 +172,17 @@ def run_staging_ingestion(
                     dst=rejected_dir / f"{file_path.stem}_batch{batch_id}{file_path.suffix}",
                 )
 
-        # 5. Nếu nạp STG thành công cho các file hợp lệ -> Kích hoạt STG -> RAW
+        # 5. If STG load succeeded for valid files -> Trigger STG -> RAW
         if not has_critical_failure and files_ok > 0:
             try:
                 load_stg_to_raw(batch_id=batch_id)
 
-                # Nạp RAW thành công -> Thực hiện archive các file hợp lệ sang processed
+                # RAW load succeeded -> Move valid files to processed directory
                 for src_file, dst_file in files_to_archive:
                     _safe_move(src=src_file, dst=dst_file)
                     logger.info("Archived %s to processed directory", src_file.name)
 
-                # Dọn dẹp STG sau khi đã lưu an toàn vào RAW
+                # Clean up STG after safe persistence into RAW
                 truncate_staging_tables()
 
             except Exception as raw_exc:
@@ -205,7 +205,7 @@ def run_staging_ingestion(
         )
         raise
 
-    # 6. Đóng Batch trong bảng control.etl_batch
+    # 6. Close Batch in control.etl_batch
     logger.info(
         "Ingestion summary | batch_id=%s | files_ok=%d | files_rejected=%d | rows_loaded=%d",
         batch_id,
