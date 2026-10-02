@@ -34,8 +34,8 @@ GO
   0. BATCH CONFIGURATION
 ==============================================================================*/
 
--- NULL: Tự động lấy batch_id mới nhất thực tế từ ODS (hoặc RAW nếu ODS rỗng)
--- Hoặc chỉ định một số cụ thể (ví dụ: 1) để audit lại đợt chạy trong quá khứ
+-- NULL: Automatically fetch the latest active batch_id from ODS (or RAW if ODS is empty)
+-- Or specify an explicit batch_id (e.g., 1) to audit a past execution run
 DECLARE @batch_id BIGINT = NULL;
 
 IF @batch_id IS NULL
