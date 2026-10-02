@@ -138,12 +138,33 @@ PRINT ''[SUCCESS] All ODS Upsert procedures executed.'';
     @database_name   = N'FoodDeliveryDW';
 
 /* ==============================================================================
-   STEP 4: EXECUTE AUDIT LOG RETENTION & PURGE
+   STEP 4: RUN DWH DIMENSIONAL PIPELINE (ODS -> DWH SINGLE SOURCE OF TRUTH)
 ============================================================================== */
 EXEC msdb.dbo.sp_add_jobstep
     @job_id          = @job_id,
-    @step_name       = N'04 - Maintenance Log Purge (30 Days Retention)',
+    @step_name       = N'04 - Execute DWH Dimensional Pipeline',
     @step_id         = 4,
+    @cmdexec_success_code = 0,
+    @on_success_action    = 3, -- Go to next step
+    @on_fail_action       = 2, -- Quit with failure
+    @subsystem       = N'TSQL',
+    @command         = N'
+USE FoodDeliveryDW;
+SET NOCOUNT ON;
+
+PRINT ''Executing ODS to DWH Dimensional Pipeline (100% Star Schema SSOT)...'';
+EXEC dwh.usp_run_ods_to_dwh_pipeline;
+PRINT ''[SUCCESS] DWH Dimensional Pipeline completed.'';
+',
+    @database_name   = N'FoodDeliveryDW';
+
+/* ==============================================================================
+   STEP 5: EXECUTE AUDIT LOG RETENTION & PURGE
+============================================================================== */
+EXEC msdb.dbo.sp_add_jobstep
+    @job_id          = @job_id,
+    @step_name       = N'05 - Maintenance Log Purge (30 Days Retention)',
+    @step_id         = 5,
     @cmdexec_success_code = 0,
     @on_success_action    = 3, -- Go to next step
     @on_fail_action       = 2, -- Quit with failure
@@ -158,12 +179,12 @@ EXEC control.usp_purge_etl_logs @retention_days = 30, @dry_run = 0;
     @database_name   = N'FoodDeliveryDW';
 
 /* ==============================================================================
-   STEP 5: POST-ETL AUDIT SUMMARY & ALERTING CHECK
+   STEP 6: POST-ETL AUDIT SUMMARY & ALERTING CHECK
 ============================================================================== */
 EXEC msdb.dbo.sp_add_jobstep
     @job_id          = @job_id,
-    @step_name       = N'05 - Post-ETL Audit Verification',
-    @step_id         = 5,
+    @step_name       = N'06 - Post-ETL Audit Verification',
+    @step_id         = 6,
     @cmdexec_success_code = 0,
     @on_success_action    = 1, -- Quit with success
     @on_fail_action       = 2, -- Quit with failure
