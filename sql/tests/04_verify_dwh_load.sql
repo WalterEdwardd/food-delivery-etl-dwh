@@ -35,8 +35,8 @@ GO
   0. BATCH CONFIGURATION
 ==============================================================================*/
 
--- NULL: Tự động lấy batch_id mới nhất thực tế từ ODS (hoặc RAW nếu ODS rỗng)
--- Hoặc chỉ định một số cụ thể (ví dụ: 1) để audit lại đợt chạy trong quá khứ
+-- NULL: Automatically fetch the latest active batch_id from ODS (or RAW if ODS is empty)
+-- Or specify an explicit batch_id (e.g., 1) to audit a past execution run
 DECLARE @batch_id BIGINT = NULL;
 
 IF @batch_id IS NULL
@@ -106,6 +106,7 @@ DECLARE @dwh_expected_tables TABLE (tbl VARCHAR(100), role_type VARCHAR(20));
 INSERT INTO @dwh_expected_tables VALUES
     ('dim_date',                   'Dimension'),
     ('dim_time',                   'Dimension'),
+    ('dim_life_cycles',            'Dimension'),
     ('dim_customer',               'Dimension'),
     ('dim_restaurant',             'Dimension'),
     ('dim_delivery_partner',       'Dimension'),
@@ -129,8 +130,8 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
-VALUES ('DWH tables completeness', '14 Core Tables', @batch_id, '14 tables present', 
-        CAST(14 - @missing_dwh_tables AS VARCHAR) + ' tables present',
+VALUES ('DWH tables completeness', '15 Core Tables', @batch_id, '15 tables present', 
+        CAST(15 - @missing_dwh_tables AS VARCHAR) + ' tables present',
         CASE WHEN @missing_dwh_tables = 0 THEN 'PASS' ELSE 'FAIL' END,
         CASE WHEN @missing_dwh_tables = 0 THEN NULL ELSE 'One or more DWH tables missing' END);
 
