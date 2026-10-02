@@ -13,9 +13,9 @@ Architecture:
       ↓
     ODS
       ↓
-    DWH
+    DWH (Single Source of Truth)
       ↓
-    DATA MART
+    Power BI Reporting / Serving Layer (Direct Connect)
 
 DWH responsibilities:
     - Dimensional modeling (Star Schema)
@@ -26,9 +26,8 @@ DWH responsibilities:
     - Preserve audit and lineage metadata (batch_id, load_timestamp)
 
 IMPORTANT:
-    DWH tables strictly follow dimensional modeling principles.
-    All data insertion and transformation will be executed
-    via dedicated ETL procedures / pipelines.
+    DWH is the Single Source of Truth for Power BI reporting.
+    No separate physical Data Mart layer is required.
 ============================================================
 */
 
@@ -61,13 +60,15 @@ DROP TABLE IF EXISTS dwh.fact_delivery_performance;
 DROP TABLE IF EXISTS dwh.fact_order_item;
 DROP TABLE IF EXISTS dwh.fact_order;
 
+DROP TABLE IF EXISTS dwh.dim_customer;
+DROP TABLE IF EXISTS dwh.dim_restaurant;
+DROP TABLE IF EXISTS dwh.dim_delivery_partner;
+DROP TABLE IF EXISTS dwh.dim_menu_item;
+DROP TABLE IF EXISTS dwh.dim_life_cycles;
+DROP TABLE IF EXISTS dwh.dim_city;
 DROP TABLE IF EXISTS dwh.dim_aspect;
 DROP TABLE IF EXISTS dwh.dim_sentiment_type;
 DROP TABLE IF EXISTS dwh.dim_rating_type;
-DROP TABLE IF EXISTS dwh.dim_menu_item;
-DROP TABLE IF EXISTS dwh.dim_delivery_partner;
-DROP TABLE IF EXISTS dwh.dim_restaurant;
-DROP TABLE IF EXISTS dwh.dim_customer;
 DROP TABLE IF EXISTS dwh.dim_time;
 DROP TABLE IF EXISTS dwh.dim_date;
 GO
@@ -141,19 +142,65 @@ GO
 
 
 /* =========================================================
+   3.1 DWH DIM LIFE CYCLES
+   ========================================================= */
+
+CREATE TABLE dwh.dim_life_cycles
+(
+    lc_id        TINYINT       NOT NULL,
+    life_cycle   VARCHAR(50)   NOT NULL,
+    description  VARCHAR(255)  NOT NULL,
+
+    CONSTRAINT PK_dim_life_cycles
+        PRIMARY KEY CLUSTERED (lc_id)
+);
+GO
+
+
+/* =========================================================
+   3.2 DWH DIM CITY
+   ========================================================= */
+
+CREATE TABLE dwh.dim_city
+(
+    city_id    INT          NOT NULL,
+    city_code  VARCHAR(10)  NOT NULL,
+    city_name  VARCHAR(100) NOT NULL,
+
+    CONSTRAINT PK_dim_city
+        PRIMARY KEY CLUSTERED (city_id),
+
+    CONSTRAINT UQ_dim_city_code
+        UNIQUE (city_code),
+
+    CONSTRAINT UQ_dim_city_name
+        UNIQUE (city_name)
+);
+GO
+
+
+/* =========================================================
    4. DWH DIM CUSTOMER
    ========================================================= */
 
 CREATE TABLE dwh.dim_customer
 (
-    customer_key         BIGINT IDENTITY(1,1) NOT NULL,
-    customer_id          VARCHAR(50)          NOT NULL,
-    signup_date          DATE                 NULL,
-    city                 VARCHAR(100)         NULL,
-    acquisition_channel  VARCHAR(100)         NULL,
+    customer_key            BIGINT IDENTITY(1,1) NOT NULL,
+    customer_id             VARCHAR(50)          NOT NULL,
+    signup_date             DATE                 NULL,
+    city                    VARCHAR(100)         NULL,
+    acquisition_channel     VARCHAR(100)         NULL,
 
-    batch_id             BIGINT               NOT NULL,
-    load_timestamp       DATETIME2(3)         NOT NULL
+    last_active             DATE                 NULL,
+    days_since_last_active  INT                  NULL,
+    churn_risk              VARCHAR(20)          NULL,
+    life_cycle_id           TINYINT              NULL,
+    last_status_id          TINYINT              NULL,
+    is_churned              BIT                  NULL,
+    churned_date            DATE                 NULL,
+
+    batch_id                BIGINT               NOT NULL,
+    load_timestamp          DATETIME2(3)         NOT NULL
         CONSTRAINT DF_dim_customer_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
@@ -161,7 +208,13 @@ CREATE TABLE dwh.dim_customer
         PRIMARY KEY CLUSTERED (customer_key),
 
     CONSTRAINT UQ_dim_customer_customer_id
-        UNIQUE (customer_id)
+        UNIQUE (customer_id),
+
+    CONSTRAINT FK_dim_customer_life_cycle
+        FOREIGN KEY (life_cycle_id) REFERENCES dwh.dim_life_cycles(lc_id),
+
+    CONSTRAINT FK_dim_customer_last_status
+        FOREIGN KEY (last_status_id) REFERENCES dwh.dim_life_cycles(lc_id)
 );
 GO
 
@@ -172,18 +225,30 @@ GO
 
 CREATE TABLE dwh.dim_restaurant
 (
-    restaurant_key       BIGINT IDENTITY(1,1) NOT NULL,
-    restaurant_id        VARCHAR(50)          NOT NULL,
-    onboard_date         DATE                 NULL,
-    restaurant_name      VARCHAR(200)         NULL,
-    city                 VARCHAR(100)         NULL,
-    cuisine_type         VARCHAR(100)         NULL,
-    partner_type         VARCHAR(100)         NULL,
-    avg_prep_time_min    VARCHAR(50)          NULL,
-    is_active            BIT                  NULL,
+    restaurant_key          BIGINT IDENTITY(1,1) NOT NULL,
+    restaurant_id           VARCHAR(50)          NOT NULL,
+    onboard_date            DATE                 NULL,
+    restaurant_name         VARCHAR(200)         NULL,
+    city                    VARCHAR(100)         NULL,
+    cuisine_type            VARCHAR(100)         NULL,
+    partner_type            VARCHAR(100)         NULL,
+    avg_prep_time_min       VARCHAR(50)          NULL,
+    is_active               BIT                  NULL,
 
-    batch_id             BIGINT               NOT NULL,
-    load_timestamp       DATETIME2(3)         NOT NULL
+    min_prep_min            INT                  NULL,
+    max_prep_min            INT                  NULL,
+    prep_time_group         VARCHAR(50)          NULL,
+    prep_time_index         TINYINT              NULL,
+    last_active             DATE                 NULL,
+    days_since_last_active  INT                  NULL,
+    churn_risk              VARCHAR(20)          NULL,
+    life_cycle_id           TINYINT              NULL,
+    last_status_id          TINYINT              NULL,
+    is_churned              BIT                  NULL,
+    churned_date            DATE                 NULL,
+
+    batch_id                BIGINT               NOT NULL,
+    load_timestamp          DATETIME2(3)         NOT NULL
         CONSTRAINT DF_dim_restaurant_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
@@ -191,7 +256,13 @@ CREATE TABLE dwh.dim_restaurant
         PRIMARY KEY CLUSTERED (restaurant_key),
 
     CONSTRAINT UQ_dim_restaurant_restaurant_id
-        UNIQUE (restaurant_id)
+        UNIQUE (restaurant_id),
+
+    CONSTRAINT FK_dim_restaurant_life_cycle
+        FOREIGN KEY (life_cycle_id) REFERENCES dwh.dim_life_cycles(lc_id),
+
+    CONSTRAINT FK_dim_restaurant_last_status
+        FOREIGN KEY (last_status_id) REFERENCES dwh.dim_life_cycles(lc_id)
 );
 GO
 
@@ -202,18 +273,28 @@ GO
 
 CREATE TABLE dwh.dim_delivery_partner
 (
-    delivery_partner_key BIGINT IDENTITY(1,1) NOT NULL,
-    delivery_partner_id  VARCHAR(50)          NOT NULL,
-    onboard_date         DATE                 NULL,
-    partner_name         VARCHAR(200)         NULL,
-    city                 VARCHAR(100)         NULL,
-    vehicle_type         VARCHAR(100)         NULL,
-    employment_type      VARCHAR(100)         NULL,
-    avg_rating           DECIMAL(5,2)         NULL,
-    is_active            BIT                  NULL,
+    delivery_partner_key    BIGINT IDENTITY(1,1) NOT NULL,
+    delivery_partner_id     VARCHAR(50)          NOT NULL,
+    onboard_date            DATE                 NULL,
+    partner_name            VARCHAR(200)         NULL,
+    city                    VARCHAR(100)         NULL,
+    vehicle_type            VARCHAR(100)         NULL,
+    employment_type         VARCHAR(100)         NULL,
+    avg_rating              DECIMAL(5,2)         NULL,
+    is_active               BIT                  NULL,
 
-    batch_id             BIGINT               NOT NULL,
-    load_timestamp       DATETIME2(3)         NOT NULL
+    last_active             DATE                 NULL,
+    days_since_last_active  INT                  NULL,
+    churn_risk              VARCHAR(20)          NULL,
+    life_cycle_id           TINYINT              NULL,
+    last_status_id          TINYINT              NULL,
+    is_churned              BIT                  NULL,
+    churned_date            DATE                 NULL,
+    rating_type_id          TINYINT              NULL,
+    rating_type             VARCHAR(50)          NULL,
+
+    batch_id                BIGINT               NOT NULL,
+    load_timestamp          DATETIME2(3)         NOT NULL
         CONSTRAINT DF_dim_delivery_partner_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
@@ -221,7 +302,13 @@ CREATE TABLE dwh.dim_delivery_partner
         PRIMARY KEY CLUSTERED (delivery_partner_key),
 
     CONSTRAINT UQ_dim_delivery_partner_id
-        UNIQUE (delivery_partner_id)
+        UNIQUE (delivery_partner_id),
+
+    CONSTRAINT FK_dim_delivery_partner_life_cycle
+        FOREIGN KEY (life_cycle_id) REFERENCES dwh.dim_life_cycles(lc_id),
+
+    CONSTRAINT FK_dim_delivery_partner_last_status
+        FOREIGN KEY (last_status_id) REFERENCES dwh.dim_life_cycles(lc_id)
 );
 GO
 
@@ -328,9 +415,14 @@ CREATE TABLE dwh.fact_order
     discount_amount      DECIMAL(18,2)        NULL,
     delivery_fee         DECIMAL(18,2)        NULL,
     total_amount         DECIMAL(18,2)        NULL,
+    net_order_value      DECIMAL(18,2)        NULL,
 
     is_cod               BIT                  NULL,
     is_cancelled         BIT                  NULL,
+
+    cust_lc_id           TINYINT              NULL,
+    rest_lc_id           TINYINT              NULL,
+    driver_lc_id         TINYINT              NULL,
 
     batch_id             BIGINT               NOT NULL,
     load_timestamp       DATETIME2(3)         NOT NULL
@@ -437,7 +529,16 @@ CREATE TABLE dwh.fact_delivery_performance
     delivery_delay_min         INT                  NULL,
     is_ontime                  BIT                  NULL,
 
+    late_time                  INT                  NULL,
+    prep_late_time             INT                  NULL,
+    late_reason                VARCHAR(30)          NULL,
+    is_otif                    BIT                  NULL,
+
     distance_km                DECIMAL(10,2)        NULL,
+    distance_bins              VARCHAR(30)          NULL,
+    travel_bins                VARCHAR(30)          NULL,
+    prep_time_bins             VARCHAR(30)          NULL,
+    actual_bins                VARCHAR(30)          NULL,
 
     batch_id                   BIGINT               NOT NULL,
     load_timestamp             DATETIME2(3)         NOT NULL
