@@ -228,7 +228,7 @@ SOURCE_SCHEMA = {
     "order_item": {
         "file_pattern": r"^order_item_\d{8}\.csv$",
         "columns": {
-            "order_line_id": {
+            "order_item_id": {
                 "source_type": "str",
                 "required": True,
                 "business_key": True,

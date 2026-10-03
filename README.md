@@ -4,7 +4,7 @@
 
 This project implements a real-world end-to-end ETL pipeline for a food delivery platform.
 
-The project demonstrates a Microsoft Data Platform architecture covering source ingestion, data transformation, operational data storage, dimensional data warehousing, data marts, and BI consumption.
+The project demonstrates a Microsoft Data Platform architecture covering source ingestion, data transformation, operational data storage, dimensional data warehousing, and BI consumption.
 
 ## Architecture
 
@@ -21,9 +21,7 @@ SSIS
  ↓
 ODS
  ↓
-DWH
- ↓
-DATA MART
+DWH (Single Source of Truth)
  ↓
 POWER BI
 ```
@@ -88,14 +86,9 @@ Dimensional Data Warehouse containing:
 * Business keys
 * Dimensional relationships
 
-### Data Mart
+### DWH Serving & BI Consumption
 
-Business-oriented analytical layer.
-
-Planned marts include:
-
-* Sales Mart
-* Customer Mart
+The Dimensional Data Warehouse serves as the Single Source of Truth directly feeding Power BI. Physical Data Mart tables are retired in favor of DWH Serving Views and Star Schema models to ensure consistency, eliminate synchronization lag, and save storage.
 
 ### Control
 
@@ -196,11 +189,10 @@ The pipeline is designed with production-oriented principles:
 * [ ] SCD
 * [ ] DWH ETL
 
-### Phase 3 — Data Mart
+### Phase 3 — Serving Views & Metrics
 
-* [ ] Sales Mart
-* [ ] Customer Mart
-* [ ] Business metrics
+* [ ] Serving Views (Sales & Customer)
+* [ ] Business KPIs & Aggregations
 
 ### Phase 4 — Power BI
 

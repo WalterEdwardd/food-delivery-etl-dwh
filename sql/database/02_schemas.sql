@@ -65,13 +65,14 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS (
+-- Clean up deprecated mart schema if it exists
+IF EXISTS (
     SELECT 1
     FROM sys.schemas
     WHERE name = N'mart'
 )
 BEGIN
-    EXEC(N'CREATE SCHEMA mart');
+    EXEC(N'DROP SCHEMA mart');
 END;
 GO
 
@@ -120,7 +121,6 @@ WHERE name IN
     N'raw',
     N'ods',
     N'dwh',
-    N'mart',
     N'control',
 	N'ref',
     N'temp'
@@ -147,7 +147,6 @@ WHERE s.name IN
     N'raw',
     N'ods',
     N'dwh',
-    N'mart',
     N'control',
 	N'ref',
     N'temp'

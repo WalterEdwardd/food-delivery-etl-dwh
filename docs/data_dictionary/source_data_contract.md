@@ -173,7 +173,7 @@ Uniqueness should be verified through data profiling.
 
 | Column | Source Type | Required | Business Key |
 |---|---|---:|---:|
-| order_line_id | str | Yes | Yes |
+| order_item_id | str | Yes | Yes |
 | order_id | str | Yes | No |
 | menu_item_id | str | Yes | No |
 | restaurant_id | str | Yes | No |
@@ -250,7 +250,7 @@ The following rules are identified from the current source specification.
 
 ### Order Item
 
-- `order_line_id` should not be null or empty.
+- `order_item_id` should not be null or empty.
 - `quantity` should be validated as greater than zero.
 - Monetary values should be validated as numeric.
 

@@ -319,21 +319,11 @@ This includes:
 
 ---
 
-### 3.7. Data Mart Transformation
+### 3.7. DWH Serving and Analytics
 
-The Data Mart layer is built from the DWH.
+Downstream analytics and BI reports consume data directly from the DWH layer (Star Schema tables and Serving Views).
 
-Example:
-
-```text
-DWH
- │
- ├── Sales Mart
- │
- └── Customer Mart
-```
-
-Data Mart logic should not be implemented inside the source ingestion Python layer.
+No separate physical Data Mart layer is maintained. Source ingestion Python scripts remain focused on raw landing and should not implement downstream business serving logic.
 
 ---
 
@@ -587,16 +577,10 @@ SSIS
 ODS
     │
     ▼
-DWH
+DWH (Single Source of Truth)
     │
     ├── Dimensions
     └── Facts
-    │
-    ▼
-DATA MART
-    │
-    ├── Sales Mart
-    └── Customer Mart
     │
     ▼
 Power BI
@@ -623,13 +607,10 @@ SQL Server
     → Data storage and database processing
 
 DWH
-    → Dimensional modeling
-
-Data Mart
-    → BI-oriented business datasets
+    → Dimensional modeling and single source of truth
 
 Power BI
-    → Analytics and visualization
+    → Analytics, semantic models, and visualization
 ```
 
 ---
@@ -1273,9 +1254,6 @@ The most important architectural boundary is:
                        │
                        ▼
                       DWH
-                       │
-                       ▼
-                  DATA MART
                        │
                        ▼
                     POWER BI

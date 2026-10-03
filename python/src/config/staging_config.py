@@ -68,7 +68,7 @@ STAGING_CONFIG = {
     "order_item": {
         "table": "stg.stg_order_item",
         "columns": [
-            "order_line_id",
+            "order_item_id",
             "order_id",
             "menu_item_id",
             "restaurant_id",

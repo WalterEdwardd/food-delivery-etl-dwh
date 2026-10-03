@@ -15,9 +15,7 @@ SSIS
  ↓
 ODS
  ↓
-DWH
- ↓
-DATA MART
+DWH (Single Source of Truth)
  ↓
 POWER BI
 ```

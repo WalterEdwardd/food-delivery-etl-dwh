@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/26/2026 10:00:00 AM"
@@ -15,23 +15,36 @@
   DTS:VersionGUID="{1469494E-7E12-4512-A410-DEA393EAC3F4}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{6317833F-CB1B-468C-AE48-DE1048AF5E91}"
+      DTS:ObjectName="CM_FoodDeliveryDW">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=FoodDeliveryDW;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
       DTS:refId="Package\EP - 01 Load Master"
-      DTS:CreationName="Microsoft.ExecutePackageTask"
-      DTS:Description="Execute Package Task"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Seed &amp; Synchronize reference tables via Stored Procedure"
       DTS:DTSID="{AD8A7CFD-BD1C-44AB-93A4-F3A7327A4B7A}"
-      DTS:ExecutableType="Microsoft.ExecutePackageTask"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="EP - 01 Load Master"
-      DTS:TaskContact="Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
-        <ExecutePackageTask>
-          <UseProjectReference>True</UseProjectReference>
-          <PackageName>01_Load_Master.dtsx</PackageName>
-        </ExecutePackageTask>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}"
+          SQLTask:SqlStatementSource="EXEC ref.usp_seed_reference_data;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
