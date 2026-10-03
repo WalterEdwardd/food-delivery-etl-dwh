@@ -451,12 +451,12 @@
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Inputs[Conditional Split Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Inputs[Conditional Split Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_line_id_clean]" />
+                      cachedName="order_item_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_item_id_clean]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -476,13 +476,13 @@
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_line_id_clean]}) || [LEN](#{Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_line_id_clean]}) == 0</property>
+                      name="Expression">[ISNULL](#{Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_item_id_clean]}) || [LEN](#{Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_item_id_clean]}) == 0</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(order_line_id_clean) || LEN(order_line_id_clean) == 0</property>
+                      name="FriendlyExpression">ISNULL(order_item_id_clean) || LEN(order_item_id_clean) == 0</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -855,13 +855,13 @@
                   name="Data Conversion Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Inputs[Data Conversion Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Inputs[Data Conversion Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
+                      cachedName="order_item_id_clean"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output].Columns[order_line_id_clean]" />
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output].Columns[order_item_id_clean]" />
                     <inputColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Inputs[Data Conversion Input].Columns[order_id_clean]"
                       cachedCodepage="1252"
@@ -888,21 +888,21 @@
                   synchronousInputId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Inputs[Data Conversion Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Outputs[Data Conversion Output].Columns[order_line_id_final]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Outputs[Data Conversion Output].Columns[order_item_id_final]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
                       length="50"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Outputs[Data Conversion Output].Columns[order_line_id_final]"
-                      name="order_line_id_final"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Outputs[Data Conversion Output].Columns[order_item_id_final]"
+                      name="order_item_id_final"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the input column used as the source of data for the conversion."
-                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output].Columns[order_line_id_clean]}</property>
+                          name="SourceInputColumnLineageID">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output].Columns[order_item_id_clean]}</property>
                         <property
                           dataType="System.Boolean"
                           description="Indicates whether the column uses the faster, locale-neutral parsing routines."
@@ -994,12 +994,12 @@
                   name="Derived Column Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Inputs[Derived Column Input].Columns[order_line_id]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Inputs[Derived Column Input].Columns[order_item_id]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_line_id]" />
+                      cachedName="order_item_id"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_item_id]" />
                     <inputColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Inputs[Derived Column Input].Columns[order_id]"
                       cachedCodepage="1252"
@@ -1055,27 +1055,27 @@
                   synchronousInputId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_item_id_clean]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_line_id_clean]"
-                      name="order_line_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_item_id_clean]"
+                      name="order_item_id_clean"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)[UPPER]([TRIM](#{Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_line_id]}))</property>
+                          name="Expression">(DT_STR,100,1252)[UPPER]([TRIM](#{Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_item_id]}))</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(order_line_id))</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)UPPER(TRIM(order_item_id))</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3051,45 +3051,45 @@
               </outputs>
             </component>
             <component
-              refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID"
+              refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID"
               componentClassID="Microsoft.DerivedColumn"
               contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
-              name="DRV - Error Missing Order Line ID"
+              name="DRV - Error Missing Order Item ID"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Inputs[Derived Column Input]"
+                  refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Inputs[Derived Column Input]"
                   description="Input to the Derived Column Transformation"
                   name="Derived Column Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Inputs[Derived Column Input].Columns[order_line_id]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Inputs[Derived Column Input].Columns[order_item_id]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_line_id]" />
+                      cachedName="order_item_id"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_item_id]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output]"
+                  refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output]"
                   description="Default Output of the Derived Column Transformation"
                   exclusionGroup="1"
                   name="Derived Column Output"
-                  synchronousInputId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Inputs[Derived Column Input]">
+                  synchronousInputId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_table]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_table]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="50"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_table]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_table]"
                       name="error_table"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -3107,13 +3107,13 @@
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_column]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_column]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="50"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_column]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_column]"
                       name="error_column"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -3121,23 +3121,23 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"order_line_id"</property>
+                          name="Expression">(DT_STR,50,1252)"order_item_id"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"order_line_id"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"order_item_id"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_type]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_type]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="50"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_type]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_type]"
                       name="error_type"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -3155,13 +3155,13 @@
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_message]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_message]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="50"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_message]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_message]"
                       name="error_message"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -3169,23 +3169,23 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,50,1252)"order_line_id is null or empty"</property>
+                          name="Expression">(DT_STR,50,1252)"order_item_id is null or empty"</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,50,1252)"order_line_id is null or empty"</property>
+                          name="FriendlyExpression">(DT_STR,50,1252)"order_item_id is null or empty"</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_value]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_value]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_value]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_value]"
                       name="error_value"
                       truncationRowDisposition="FailComponent">
                       <properties>
@@ -3193,36 +3193,36 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">(DT_STR,100,1252)#{Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_line_id]}</property>
+                          name="Expression">(DT_STR,100,1252)#{Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_item_id]}</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">(DT_STR,100,1252)order_line_id</property>
+                          name="FriendlyExpression">(DT_STR,100,1252)order_item_id</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Error Output]"
+                  refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Error Output]"
                   description="Error Output of the Derived Column Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Derived Column Error Output"
-                  synchronousInputId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Inputs[Derived Column Input]">
+                  synchronousInputId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Inputs[Derived Column Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -5391,11 +5391,11 @@
               </outputs>
             </component>
             <component
-              refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID"
+              refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
-              name="DST - ETL Error Missing Order Line ID"
+              name="DST - ETL Error Missing Order Item ID"
               usesDispositions="true"
               version="4">
               <properties>
@@ -5448,7 +5448,7 @@
               </properties>
               <connections>
                 <connection
-                  refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Connections[OleDbConnection]"
+                  refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Connections[OleDbConnection]"
                   connectionManagerID="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   connectionManagerRefId="Package.ConnectionManagers[CM_FoodDeliveryDW]"
                   description="The OLE DB runtime connection used to access the database."
@@ -5456,125 +5456,125 @@
               </connections>
               <inputs>
                 <input
-                  refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input]"
+                  refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].Columns[batch_id]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].Columns[batch_id]"
                       cachedDataType="i8"
                       cachedName="batch_id"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
                       lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[batch_id]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].Columns[source_file_name]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].Columns[source_file_name]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="200"
                       cachedName="source_file_name"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
                       lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[source_file_name]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].Columns[source_row_number]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].Columns[source_row_number]"
                       cachedDataType="i4"
                       cachedName="source_row_number"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
                       lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[source_row_number]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].Columns[error_type]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].Columns[error_type]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="error_type"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_type]" />
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_type]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].Columns[error_message]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].Columns[error_message]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="error_message"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_message]" />
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_message]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].Columns[error_table]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].Columns[error_table]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="error_table"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_table]" />
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_table]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].Columns[error_column]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].Columns[error_column]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
                       cachedName="error_column"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_column]" />
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_column]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].Columns[error_value]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].Columns[error_value]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
                       cachedName="error_value"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output].Columns[error_value]" />
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output].Columns[error_value]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[error_id]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[error_id]"
                       dataType="i8"
                       name="error_id" />
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[batch_id]"
                       dataType="i8"
                       name="batch_id" />
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[source_file_name]"
                       codePage="1252"
                       dataType="str"
                       length="500"
                       name="source_file_name" />
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[source_row_number]"
                       dataType="i8"
                       name="source_row_number" />
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[table_name]"
                       codePage="1252"
                       dataType="str"
                       length="200"
                       name="table_name" />
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[column_name]"
                       codePage="1252"
                       dataType="str"
                       length="200"
                       name="column_name" />
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[error_type]"
                       codePage="1252"
                       dataType="str"
                       length="100"
                       name="error_type" />
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[error_message]"
                       codePage="1252"
                       dataType="str"
                       length="4000"
                       name="error_message" />
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[raw_value]"
                       codePage="1252"
                       dataType="str"
                       length="4000"
                       name="raw_value" />
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input].ExternalColumns[error_timestamp]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input].ExternalColumns[error_timestamp]"
                       dataType="dbTimeStamp2"
                       name="error_timestamp"
                       scale="3" />
@@ -5583,22 +5583,22 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -5713,13 +5713,13 @@
                       externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item.Inputs[OLE DB Destination Input].ExternalColumns[unit_price]"
                       lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output].Columns[unit_price_final]" />
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item.Inputs[OLE DB Destination Input].Columns[order_line_id_final]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item.Inputs[OLE DB Destination Input].Columns[order_item_id_final]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="50"
-                      cachedName="order_line_id_final"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item.Inputs[OLE DB Destination Input].ExternalColumns[order_line_id]"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Outputs[Data Conversion Output].Columns[order_line_id_final]" />
+                      cachedName="order_item_id_final"
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item.Inputs[OLE DB Destination Input].ExternalColumns[order_item_id]"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DC - Final Data Type Mapping.Outputs[Data Conversion Output].Columns[order_item_id_final]" />
                     <inputColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item.Inputs[OLE DB Destination Input].Columns[order_id_final]"
                       cachedCodepage="1252"
@@ -5756,11 +5756,11 @@
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item.Inputs[OLE DB Destination Input].ExternalColumns[order_line_id]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item.Inputs[OLE DB Destination Input].ExternalColumns[order_item_id]"
                       codePage="1252"
                       dataType="str"
                       length="50"
-                      name="order_line_id" />
+                      name="order_item_id" />
                     <externalMetadataColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\DST - ODS Order Item.Inputs[OLE DB Destination Input].ExternalColumns[order_id]"
                       codePage="1252"
@@ -6177,13 +6177,13 @@ where [refTable].[order_id] = ?</property>
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Left Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Left Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
+                      cachedName="order_item_id_clean"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID.Outputs[Sort Output].Columns[order_line_id_clean]" />
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID.Outputs[Sort Output].Columns[order_item_id_clean]" />
                     <inputColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Left Input].Columns[quantity]"
                       cachedCodepage="1252"
@@ -6273,13 +6273,13 @@ where [refTable].[order_id] = ?</property>
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Right Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Right Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
+                      cachedName="order_item_id_clean"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID.Outputs[Sort Output].Columns[order_line_id_clean]" />
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID.Outputs[Sort Output].Columns[order_item_id_clean]" />
                     <inputColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Right Input].Columns[menu_item_id_clean]"
                       cachedCodepage="1252"
@@ -6399,19 +6399,19 @@ where [refTable].[order_id] = ?</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_item_id_clean]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_line_id_clean]"
-                      name="order_line_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_item_id_clean]"
+                      name="order_item_id_clean"
                       sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Left Input].Columns[order_line_id_clean]}</property>
+                          name="InputColumnID">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Inputs[Merge Join Left Input].Columns[order_item_id_clean]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -6542,13 +6542,13 @@ where [refTable].[order_id] = ?</property>
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Inputs[Merge Join Left Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Inputs[Merge Join Left Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
+                      cachedName="order_item_id_clean"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity.Outputs[Sort Output].Columns[order_line_id_clean]" />
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity.Outputs[Sort Output].Columns[order_item_id_clean]" />
                     <inputColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Inputs[Merge Join Left Input].Columns[batch_id]"
                       cachedDataType="i8"
@@ -6622,13 +6622,13 @@ where [refTable].[order_id] = ?</property>
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Inputs[Merge Join Right Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Inputs[Merge Join Right Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
+                      cachedName="order_item_id_clean"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price.Outputs[Sort Output].Columns[order_line_id_clean]" />
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price.Outputs[Sort Output].Columns[order_item_id_clean]" />
                     <inputColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Inputs[Merge Join Right Input].Columns[unit_price_typed]"
                       cachedDataType="numeric"
@@ -6688,19 +6688,19 @@ where [refTable].[order_id] = ?</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output].Columns[order_item_id_clean]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output].Columns[order_line_id_clean]"
-                      name="order_line_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Outputs[Merge Join Output].Columns[order_item_id_clean]"
+                      name="order_item_id_clean"
                       sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Inputs[Merge Join Left Input].Columns[order_line_id_clean]}</property>
+                          name="InputColumnID">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v2.Inputs[Merge Join Left Input].Columns[order_item_id_clean]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -6926,12 +6926,12 @@ where [refTable].[order_id] = ?</property>
                   name="Sort Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID.Inputs[Sort Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID.Inputs[Sort Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_line_id_clean]">
+                      cachedName="order_item_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_item_id_clean]">
                       <properties>
                         <property
                           dataType="System.Int32"
@@ -6972,19 +6972,19 @@ where [refTable].[order_id] = ?</property>
                   name="Sort Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID.Outputs[Sort Output].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID.Outputs[Sort Output].Columns[order_item_id_clean]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID.Outputs[Sort Output].Columns[order_line_id_clean]"
-                      name="order_line_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Menu Item ID.Outputs[Sort Output].Columns[order_item_id_clean]"
+                      name="order_item_id_clean"
                       sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_line_id_clean]}</property>
+                          name="SortColumnId">#{Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_item_id_clean]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -7153,12 +7153,12 @@ where [refTable].[order_id] = ?</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID.Inputs[Sort Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID.Inputs[Sort Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_line_id_clean]">
+                      cachedName="order_item_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_item_id_clean]">
                       <properties>
                         <property
                           dataType="System.Int32"
@@ -7372,19 +7372,19 @@ where [refTable].[order_id] = ?</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID.Outputs[Sort Output].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID.Outputs[Sort Output].Columns[order_item_id_clean]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID.Outputs[Sort Output].Columns[order_line_id_clean]"
-                      name="order_line_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Order ID.Outputs[Sort Output].Columns[order_item_id_clean]"
+                      name="order_item_id_clean"
                       sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_line_id_clean]}</property>
+                          name="SortColumnId">#{Package\DFT - RAW Order Item to ODS Order Item\DRC - Clean Order Item Strings.Outputs[Derived Column Output].Columns[order_item_id_clean]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -7541,13 +7541,13 @@ where [refTable].[order_id] = ?</property>
                       </properties>
                     </inputColumn>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity.Inputs[Sort Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity.Inputs[Sort Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
+                      cachedName="order_item_id_clean"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_line_id_clean]">
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_item_id_clean]">
                       <properties>
                         <property
                           dataType="System.Int32"
@@ -7735,19 +7735,19 @@ where [refTable].[order_id] = ?</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity.Outputs[Sort Output].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity.Outputs[Sort Output].Columns[order_item_id_clean]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity.Outputs[Sort Output].Columns[order_line_id_clean]"
-                      name="order_line_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Quantity.Outputs[Sort Output].Columns[order_item_id_clean]"
+                      name="order_item_id_clean"
                       sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_line_id_clean]}</property>
+                          name="SortColumnId">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_item_id_clean]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -7882,13 +7882,13 @@ where [refTable].[order_id] = ?</property>
                   name="Sort Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price.Inputs[Sort Input].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price.Inputs[Sort Input].Columns[order_item_id_clean]"
                       cachedCodepage="1252"
                       cachedDataType="str"
                       cachedLength="100"
-                      cachedName="order_line_id_clean"
+                      cachedName="order_item_id_clean"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_line_id_clean]">
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_item_id_clean]">
                       <properties>
                         <property
                           dataType="System.Int32"
@@ -7929,19 +7929,19 @@ where [refTable].[order_id] = ?</property>
                   name="Sort Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price.Outputs[Sort Output].Columns[order_line_id_clean]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price.Outputs[Sort Output].Columns[order_item_id_clean]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price.Outputs[Sort Output].Columns[order_line_id_clean]"
-                      name="order_line_id_clean"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\Sort - Unit Price.Outputs[Sort Output].Columns[order_item_id_clean]"
+                      name="order_item_id_clean"
                       sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="Specifies the lineage identifier of the input column that is associated with this output column."
-                          name="SortColumnId">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_line_id_clean]}</property>
+                          name="SortColumnId">#{Package\DFT - RAW Order Item to ODS Order Item\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[order_item_id_clean]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -7990,7 +7990,7 @@ where [refTable].[order_id] = ?</property>
                   description="The SQL command to be executed."
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
-	order_line_id,
+	order_item_id,
 	order_id,
 	menu_item_id,
 	quantity,
@@ -8038,15 +8038,15 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_line_id]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_item_id]"
                       codePage="1252"
                       dataType="str"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].ExternalColumns[order_line_id]"
+                      externalMetadataColumnId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].ExternalColumns[order_item_id]"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_line_id]"
-                      name="order_line_id"
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_item_id]"
+                      name="order_item_id"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].Columns[order_id]"
@@ -8147,11 +8147,11 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].ExternalColumns[order_line_id]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].ExternalColumns[order_item_id]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      name="order_line_id" />
+                      name="order_item_id" />
                     <externalMetadataColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output].ExternalColumns[order_id]"
                       codePage="1252"
@@ -8210,12 +8210,12 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Error Output].Columns[order_line_id]"
+                      refId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Error Output].Columns[order_item_id]"
                       codePage="1252"
                       dataType="str"
                       length="100"
-                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Error Output].Columns[order_line_id]"
-                      name="order_line_id" />
+                      lineageId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Error Output].Columns[order_item_id]"
+                      name="order_item_id" />
                     <outputColumn
                       refId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Error Output].Columns[order_id]"
                       codePage="1252"
@@ -8366,9 +8366,9 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
               startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Invalid UnitPrice Range.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output1]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID.Inputs[OLE DB Destination Input]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID.Inputs[OLE DB Destination Input]"
               name="Derived Column Output"
-              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Outputs[Derived Column Output]" />
+              startId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Outputs[Derived Column Output]" />
             <path
               refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[Derived Column Output4]"
               endId="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Invalid Quantity Range.Inputs[OLE DB Destination Input]"
@@ -8476,7 +8476,7 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
               startId="Package\DFT - RAW Order Item to ODS Order Item\SRC - RAW Order Item.Outputs[OLE DB Source Output]" />
             <path
               refId="Package\DFT - RAW Order Item to ODS Order Item.Paths[REJECT_MISSING_ORDER_LINE_ID]"
-              endId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID.Inputs[Derived Column Input]"
+              endId="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID.Inputs[Derived Column Input]"
               name="REJECT_MISSING_ORDER_LINE_ID"
               startId="Package\DFT - RAW Order Item to ODS Order Item\CSPL - Validate Order Required Field.Outputs[INVALID_REQUIRED_FIELD]" />
             <path
@@ -8909,7 +8909,7 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
           TopLeft="349.666666666667,1676.68055197093" />
         <NodeLayout
           Size="258.5,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID"
           TopLeft="25,398.916664767183" />
         <NodeLayout
           Size="226.5,42"
@@ -8941,7 +8941,7 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
           TopLeft="921.5,391.763890948908" />
         <NodeLayout
           Size="237.5,42"
-          Id="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Line ID"
+          Id="Package\DFT - RAW Order Item to ODS Order Item\DRV - Error Missing Order Item ID"
           TopLeft="38.5,290.208331963875" />
         <NodeLayout
           Size="242.5,42"
@@ -10180,7 +10180,7 @@ WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Line ID">
+    design-time-name="Package\DFT - RAW Order Item to ODS Order Item\DST - ETL Error Missing Order Item ID">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
