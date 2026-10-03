@@ -30,7 +30,7 @@
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
-          <SSIS:Package SSIS:Name="00_Pipeline_Orchestrator.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="01_Pipeline_Orchestrator.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="02_Load_DeliveryPartner.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="03_Load_Restaurant.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="04_Load_MenuItem.dtsx" SSIS:EntryPoint="1" />
@@ -44,10 +44,10 @@
         <SSIS:DeploymentInfo>
           <SSIS:ProjectConnectionParameters />
           <SSIS:PackageInfo>
-            <SSIS:PackageMetaData SSIS:Name="00_Pipeline_Orchestrator.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="01_Pipeline_Orchestrator.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{A8BB64C1-D5C0-462D-A364-880BF3B9FCCC}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">00_Pipeline_Orchestrator</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">01_Pipeline_Orchestrator</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionBuild">1</SSIS:Property>

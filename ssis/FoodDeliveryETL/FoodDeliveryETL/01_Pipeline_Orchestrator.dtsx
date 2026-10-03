@@ -9,7 +9,7 @@
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="16.0.5685.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="00_Pipeline_Orchestrator"
+  DTS:ObjectName="01_Pipeline_Orchestrator"
   DTS:PackageType="5"
   DTS:VersionBuild="2"
   DTS:VersionGUID="{1469494E-7E12-4512-A410-DEA393EAC3F4}">
@@ -32,13 +32,13 @@
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\EP - 01 Load Master"
+      DTS:refId="Package\EST - 01 Seed Reference Data"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Seed &amp; Synchronize reference tables via Stored Procedure"
       DTS:DTSID="{AD8A7CFD-BD1C-44AB-93A4-F3A7327A4B7A}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="EP - 01 Load Master"
+      DTS:ObjectName="EST - 01 Seed Reference Data"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -189,7 +189,7 @@
       DTS:refId="Package.PrecedenceConstraints[Constraint_01_to_02]"
       DTS:CreationName=""
       DTS:DTSID="{46D497C9-CF4A-4C12-A747-D81186A18C5F}"
-      DTS:From="Package\EP - 01 Load Master"
+      DTS:From="Package\EST - 01 Seed Reference Data"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint_01_to_02"
       DTS:To="Package\EP - 02 Load DeliveryPartner" />
@@ -197,7 +197,7 @@
       DTS:refId="Package.PrecedenceConstraints[Constraint_01_to_03]"
       DTS:CreationName=""
       DTS:DTSID="{4AE3AD13-35AD-4610-8C22-64E4A835BBCA}"
-      DTS:From="Package\EP - 01 Load Master"
+      DTS:From="Package\EST - 01 Seed Reference Data"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint_01_to_03"
       DTS:To="Package\EP - 03 Load Restaurant" />
@@ -205,7 +205,7 @@
       DTS:refId="Package.PrecedenceConstraints[Constraint_01_to_04]"
       DTS:CreationName=""
       DTS:DTSID="{885DB84A-C1C5-48ED-95C6-44E96C243888}"
-      DTS:From="Package\EP - 01 Load Master"
+      DTS:From="Package\EST - 01 Seed Reference Data"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint_01_to_04"
       DTS:To="Package\EP - 04 Load MenuItem" />
@@ -213,7 +213,7 @@
       DTS:refId="Package.PrecedenceConstraints[Constraint_01_to_05]"
       DTS:CreationName=""
       DTS:DTSID="{73443A26-A694-4182-9CAB-3345F29F4478}"
-      DTS:From="Package\EP - 01 Load Master"
+      DTS:From="Package\EST - 01 Seed Reference Data"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint_01_to_05"
       DTS:To="Package\EP - 05 Load Customer" />
@@ -288,7 +288,7 @@
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="200,42"
-          Id="Package\EP - 01 Load Master"
+          Id="Package\EST - 01 Seed Reference Data"
           TopLeft="376.875,30.5208333804169" />
         <NodeLayout
           Size="210,42"
