@@ -1111,10 +1111,7 @@ BEGIN
         o.source_row_number,
         SYSUTCDATETIME()
     FROM raw.raw_order o
-    WHERE o.batch_id = @batch_id
-      AND EXISTS (
-          SELECT 1 FROM ods.ods_customer c WHERE c.customer_id = o.customer_id
-      );
+    WHERE o.batch_id = @batch_id;
 
     EXEC ods.usp_upsert_ods_order @batch_id = @batch_id;
     EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ORDER', @target_table = 'ods_order', @raw_table = 'raw_order', @batch_id = @batch_id;

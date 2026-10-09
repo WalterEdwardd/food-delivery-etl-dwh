@@ -349,8 +349,8 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM dwh.dim_customer WHERE customer_key = -1)
         BEGIN
             SET IDENTITY_INSERT dwh.dim_customer ON;
-            INSERT INTO dwh.dim_customer (customer_key, customer_id, signup_date, city, acquisition_channel, last_active, days_since_last_active, churn_risk, life_cycle_id, last_status_id, is_churned, churned_date, batch_id)
-            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown', 'Unknown', '1900-01-01', 0, 'Unknown', 0, 0, 0, NULL, 0);
+            INSERT INTO dwh.dim_customer (customer_key, customer_id, signup_date, city, acquisition_channel, last_active, days_since_last_active, churn_risk, life_cycle_id, last_status_id, is_churned, churned_date, valid_from, valid_to, is_current, batch_id)
+            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown', 'Unknown', '1900-01-01', 0, 'Unknown', 0, 0, 0, NULL, '1900-01-01', '9999-12-31', 1, 0);
             SET IDENTITY_INSERT dwh.dim_customer OFF;
             PRINT '    - Seeded dwh.dim_customer Unknown Member (-1)';
         END;
@@ -359,8 +359,8 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM dwh.dim_restaurant WHERE restaurant_key = -1)
         BEGIN
             SET IDENTITY_INSERT dwh.dim_restaurant ON;
-            INSERT INTO dwh.dim_restaurant (restaurant_key, restaurant_id, onboard_date, restaurant_name, city, cuisine_type, partner_type, avg_prep_time_min, is_active, min_prep_min, max_prep_min, prep_time_group, prep_time_index, last_active, days_since_last_active, churn_risk, life_cycle_id, last_status_id, is_churned, churned_date, batch_id)
-            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown Restaurant', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 0, 0, 0, 'Unknown', 0, '1900-01-01', 0, 'Unknown', 0, 0, 0, NULL, 0);
+            INSERT INTO dwh.dim_restaurant (restaurant_key, restaurant_id, onboard_date, restaurant_name, city, cuisine_type, partner_type, avg_prep_time_min, is_active, min_prep_min, max_prep_min, prep_time_group, prep_time_index, last_active, days_since_last_active, churn_risk, life_cycle_id, last_status_id, is_churned, churned_date, valid_from, valid_to, is_current, batch_id)
+            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown Restaurant', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 0, 0, 0, 'Unknown', 0, '1900-01-01', 0, 'Unknown', 0, 0, 0, NULL, '1900-01-01', '9999-12-31', 1, 0);
             SET IDENTITY_INSERT dwh.dim_restaurant OFF;
             PRINT '    - Seeded dwh.dim_restaurant Unknown Member (-1)';
         END;
@@ -369,8 +369,8 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM dwh.dim_delivery_partner WHERE delivery_partner_key = -1)
         BEGIN
             SET IDENTITY_INSERT dwh.dim_delivery_partner ON;
-            INSERT INTO dwh.dim_delivery_partner (delivery_partner_key, delivery_partner_id, onboard_date, partner_name, city, vehicle_type, employment_type, avg_rating, is_active, last_active, days_since_last_active, churn_risk, life_cycle_id, last_status_id, is_churned, churned_date, rating_type_id, rating_type, batch_id)
-            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown Driver', 'Unknown', 'Unknown', 'Unknown', NULL, 0, '1900-01-01', 0, 'Unknown', 0, 0, 0, NULL, 0, 'Unknown', 0);
+            INSERT INTO dwh.dim_delivery_partner (delivery_partner_key, delivery_partner_id, onboard_date, partner_name, city, vehicle_type, employment_type, avg_rating, is_active, last_active, days_since_last_active, churn_risk, life_cycle_id, last_status_id, is_churned, churned_date, rating_type_id, rating_type, valid_from, valid_to, is_current, batch_id)
+            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown Driver', 'Unknown', 'Unknown', 'Unknown', NULL, 0, '1900-01-01', 0, 'Unknown', 0, 0, 0, NULL, 0, 'Unknown', '1900-01-01', '9999-12-31', 1, 0);
             SET IDENTITY_INSERT dwh.dim_delivery_partner OFF;
             PRINT '    - Seeded dwh.dim_delivery_partner Unknown Member (-1)';
         END;
@@ -449,200 +449,161 @@ BEGIN
         SELECT @rows_read = COUNT(*) FROM ods.ods_customer
         WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
-        -- 2.3 Set-based MERGE (SCD Type 1) with Lifecycle & Churn Risk calculation
+        -- 2.3 Set-based ETL: Base Profile Load with Semantic Defaults
         DECLARE @max_order_date DATE;
-        SELECT @max_order_date = ISNULL(MAX(CAST(order_timestamp AS DATE)), '2025-09-30')
+        SELECT @max_order_date = MAX(CAST(order_timestamp AS DATE))
         FROM ods.ods_order
         WHERE order_timestamp IS NOT NULL;
 
-        WITH CustomerOrders AS
-        (
-            SELECT 
-                o.customer_id,
-                CAST(o.order_timestamp AS DATE) AS order_date,
-                CASE 
-                    WHEN CAST(o.order_timestamp AS DATE) < '2025-06-01' THEN 1
-                    WHEN CAST(o.order_timestamp AS DATE) BETWEEN '2025-06-01' AND '2025-07-31' THEN 2
-                    WHEN CAST(o.order_timestamp AS DATE) BETWEEN '2025-08-01' AND '2025-09-30' THEN 3
-                    ELSE 4
-                END AS period_id
-            FROM ods.ods_order o
-            WHERE o.order_timestamp IS NOT NULL
-        ),
-        CustomerActivity AS
-        (
-            SELECT 
-                customer_id,
-                MAX(order_date) AS last_order_date
-            FROM CustomerOrders
-            GROUP BY customer_id
-        ),
-        CustomerPeriods AS
-        (
-            SELECT 
-                co.customer_id,
-                MAX(CASE WHEN co.order_date = ca.last_order_date THEN co.period_id END) AS this_period,
-                MAX(CASE WHEN co.order_date < ca.last_order_date THEN co.period_id END) AS last_period
-            FROM CustomerOrders co
-            INNER JOIN CustomerActivity ca ON co.customer_id = ca.customer_id
-            GROUP BY co.customer_id
-        ),
-        CustomerMetrics AS
-        (
-            SELECT 
-                c.customer_id,
-                c.signup_date,
-                c.city,
-                c.acquisition_channel,
-                c.batch_id,
-                COALESCE(ca.last_order_date, c.signup_date) AS last_active,
-                DATEDIFF(DAY, COALESCE(ca.last_order_date, c.signup_date), @max_order_date) AS days_since_last_active,
-                CASE 
-                    WHEN ca.last_order_date IS NULL THEN 0 -- Unknown (no transaction history)
-                    WHEN cp.last_period IS NULL THEN 1    -- New (no prior order before last active date)
-                    WHEN cp.last_period = cp.this_period THEN 2 -- Retained (same period)
-                    WHEN cp.last_period + 1 = cp.this_period THEN 2 -- Retained (consecutive period)
-                    WHEN cp.last_period + 2 <= cp.this_period THEN 3 -- Reactivated (skipped 1 or more periods)
-                    ELSE 0
-                END AS life_cycle_id
-            FROM ods.ods_customer c
-            LEFT JOIN CustomerActivity ca ON c.customer_id = ca.customer_id
-            LEFT JOIN CustomerPeriods cp ON c.customer_id = cp.customer_id
-            WHERE (@batch_id = -1 OR c.batch_id = @batch_id)
-        ),
-        CustomerFinal AS
-        (
-            SELECT 
-                cm.customer_id,
-                cm.signup_date,
-                cm.city,
-                cm.acquisition_channel,
-                cm.last_active,
-                cm.days_since_last_active,
-                cm.life_cycle_id,
-                -- is_churned
-                CASE 
-                    WHEN cm.last_active IS NULL THEN 0
-                    WHEN DATEADD(DAY, 60, cm.last_active) >= '2025-08-01' THEN 0
-                    WHEN DATEADD(DAY, 60, cm.last_active) < '2025-08-01' AND cm.life_cycle_id IN (0, 1, 2) THEN 1
-                    ELSE 0
-                END AS is_churned,
-                -- churned_date
-                CASE 
-                    WHEN (
-                        CASE 
-                            WHEN cm.last_active IS NULL THEN 0
-                            WHEN DATEADD(DAY, 60, cm.last_active) >= '2025-08-01' THEN 0
-                            WHEN DATEADD(DAY, 60, cm.last_active) < '2025-08-01' AND cm.life_cycle_id IN (0, 1, 2) THEN 1
-                            ELSE 0
-                        END
-                    ) = 1 THEN DATEADD(DAY, 60, cm.last_active)
-                    ELSE NULL
-                END AS churned_date,
-                -- last_status_id: SWITCH(TRUE(), is_churned = 1, 4, life_cycle)
-                CASE 
-                    WHEN (
-                        CASE 
-                            WHEN cm.last_active IS NULL THEN 0
-                            WHEN DATEADD(DAY, 60, cm.last_active) >= '2025-08-01' THEN 0
-                            WHEN DATEADD(DAY, 60, cm.last_active) < '2025-08-01' AND cm.life_cycle_id IN (0, 1, 2) THEN 1
-                            ELSE 0
-                        END
-                    ) = 1 THEN 4
-                    ELSE cm.life_cycle_id
-                END AS last_status_id,
-                -- churn_risk
-                CASE 
-                    WHEN (
-                        CASE 
-                            WHEN cm.last_active IS NULL THEN 0
-                            WHEN DATEADD(DAY, 60, cm.last_active) >= '2025-08-01' THEN 0
-                            WHEN DATEADD(DAY, 60, cm.last_active) < '2025-08-01' AND cm.life_cycle_id IN (0, 1, 2) THEN 1
-                            ELSE 0
-                        END
-                    ) = 1 THEN 'Churned'
-                    WHEN cm.life_cycle_id = 2 AND cm.days_since_last_active > 45 THEN 'High'
-                    WHEN cm.life_cycle_id <> 2 AND cm.days_since_last_active > 30 THEN 'High'
-                    WHEN cm.life_cycle_id = 2 AND cm.days_since_last_active BETWEEN 20 AND 45 THEN 'Medium'
-                    WHEN cm.life_cycle_id <> 2 AND cm.days_since_last_active BETWEEN 10 AND 30 THEN 'Medium'
-                    WHEN cm.life_cycle_id = 2 AND cm.days_since_last_active < 20 THEN 'Low'
-                    WHEN cm.life_cycle_id <> 2 AND cm.days_since_last_active < 10 THEN 'Low'
-                    ELSE 'Undefined'
-                END AS churn_risk,
-                cm.batch_id
-            FROM CustomerMetrics cm
-        )
-        MERGE dwh.dim_customer AS target
-        USING CustomerFinal AS source
-        ON target.customer_id = source.customer_id
+        IF @max_order_date IS NULL
+            SET @max_order_date = CAST(SYSUTCDATETIME() AS DATE);
 
-        -- When changed, update profile and timestamps
-        WHEN MATCHED AND (
-            ISNULL(target.signup_date, '1900-01-01')          <> ISNULL(source.signup_date, '1900-01-01')
-            OR ISNULL(target.city, '')                        <> ISNULL(source.city, '')
-            OR ISNULL(target.acquisition_channel, '')         <> ISNULL(source.acquisition_channel, '')
-            OR ISNULL(target.last_active, '1900-01-01')       <> ISNULL(source.last_active, '1900-01-01')
-            OR ISNULL(target.days_since_last_active, -1)      <> ISNULL(source.days_since_last_active, -1)
-            OR ISNULL(target.churn_risk, '')                  <> ISNULL(source.churn_risk, '')
-            OR ISNULL(target.life_cycle_id, 255)              <> ISNULL(source.life_cycle_id, 255)
-            OR ISNULL(target.last_status_id, 255)             <> ISNULL(source.last_status_id, 255)
-            OR ISNULL(target.is_churned, 2)                   <> ISNULL(source.is_churned, 2)
-            OR ISNULL(target.churned_date, '1900-01-01')      <> ISNULL(source.churned_date, '1900-01-01')
-        )
-        THEN UPDATE SET
-            target.signup_date            = source.signup_date,
-            target.city                   = source.city,
-            target.acquisition_channel    = source.acquisition_channel,
-            target.last_active            = source.last_active,
-            target.days_since_last_active = source.days_since_last_active,
-            target.churn_risk             = source.churn_risk,
-            target.life_cycle_id          = source.life_cycle_id,
-            target.last_status_id         = source.last_status_id,
-            target.is_churned             = source.is_churned,
-            target.churned_date           = source.churned_date,
-            target.batch_id               = source.batch_id,
-            target.load_timestamp         = SYSUTCDATETIME()
-
-        -- When new, insert and auto-allocate surrogate key
-        WHEN NOT MATCHED BY TARGET THEN
-            INSERT
-            (
-                customer_id,
-                signup_date,
-                city,
-                acquisition_channel,
-                last_active,
-                days_since_last_active,
-                churn_risk,
-                life_cycle_id,
-                last_status_id,
-                is_churned,
-                churned_date,
-                batch_id,
-                load_timestamp
-            )
-            VALUES
-            (
-                source.customer_id,
-                source.signup_date,
-                source.city,
-                source.acquisition_channel,
-                source.last_active,
-                source.days_since_last_active,
-                source.churn_risk,
-                source.life_cycle_id,
-                source.last_status_id,
-                source.is_churned,
-                source.churned_date,
-                source.batch_id,
-                SYSUTCDATETIME()
-            )
-        OUTPUT $action INTO @merge_actions;
+        IF OBJECT_ID('tempdb..#CustomerPrepared') IS NOT NULL DROP TABLE #CustomerPrepared;
 
         SELECT 
-            @rows_inserted = COUNT(CASE WHEN action_type = 'INSERT' THEN 1 END),
-            @rows_updated  = COUNT(CASE WHEN action_type = 'UPDATE' THEN 1 END)
-        FROM @merge_actions;
+            c.customer_id,
+            c.signup_date,
+            c.city,
+            c.acquisition_channel,
+            c.signup_date                                               AS last_active,
+            DATEDIFF(DAY, c.signup_date, @max_order_date)               AS days_since_last_active,
+            CAST(0 AS TINYINT)                                          AS life_cycle_id,  -- 0: Unknown (chưa phát sinh giao dịch)
+            CAST(0 AS TINYINT)                                          AS last_status_id, -- 0: Unknown
+            CAST(0 AS BIT)                                              AS is_churned,
+            CAST(NULL AS DATE)                                          AS churned_date,
+            CAST('Undefined' AS VARCHAR(20))                            AS churn_risk,
+            c.batch_id
+        INTO #CustomerPrepared
+        FROM ods.ods_customer c
+        WHERE (@batch_id = -1 OR c.batch_id = @batch_id);
+
+        DECLARE @effective_date DATE = CAST(SYSUTCDATETIME() AS DATE);
+        DECLARE @yesterday DATE = DATEADD(DAY, -1, @effective_date);
+
+        -- Step A: Insert Brand New Customers (never seen before in dim_customer)
+        INSERT INTO dwh.dim_customer
+        (
+            customer_id, signup_date, city, acquisition_channel,
+            last_active, days_since_last_active, churn_risk,
+            life_cycle_id, last_status_id, is_churned, churned_date,
+            valid_from, valid_to, is_current,
+            batch_id, load_timestamp
+        )
+        SELECT 
+            src.customer_id, src.signup_date, src.city, src.acquisition_channel,
+            src.last_active, src.days_since_last_active, src.churn_risk,
+            src.life_cycle_id, src.last_status_id, src.is_churned, src.churned_date,
+            '1900-01-01', '9999-12-31', 1,
+            src.batch_id, SYSUTCDATETIME()
+        FROM #CustomerPrepared src
+        WHERE NOT EXISTS (
+            SELECT 1 FROM dwh.dim_customer d WHERE d.customer_id = src.customer_id
+        );
+
+        SET @rows_inserted = @@ROWCOUNT;
+
+        -- Step B: Handle SCD Type 2 Changes (City changes on existing active record)
+        IF OBJECT_ID('tempdb..#Customer_SCD2') IS NOT NULL DROP TABLE #Customer_SCD2;
+        SELECT 
+            src.customer_id, src.signup_date, src.city, src.acquisition_channel,
+            COALESCE(tgt.last_active, src.last_active)                       AS last_active,
+            COALESCE(tgt.days_since_last_active, src.days_since_last_active) AS days_since_last_active,
+            COALESCE(tgt.churn_risk, src.churn_risk)                         AS churn_risk,
+            COALESCE(tgt.life_cycle_id, src.life_cycle_id)                   AS life_cycle_id,
+            COALESCE(tgt.last_status_id, src.last_status_id)                 AS last_status_id,
+            COALESCE(tgt.is_churned, src.is_churned)                         AS is_churned,
+            tgt.churned_date                                                 AS churned_date,
+            src.batch_id
+        INTO #Customer_SCD2
+        FROM #CustomerPrepared src
+        INNER JOIN dwh.dim_customer tgt
+            ON src.customer_id = tgt.customer_id
+           AND tgt.is_current = 1
+        WHERE ISNULL(tgt.city, '') <> ISNULL(src.city, '');
+
+        IF EXISTS (SELECT 1 FROM #Customer_SCD2)
+        BEGIN
+            -- B.0 Log detailed SCD2 field changes
+            INSERT INTO control.dim_change_log
+            (
+                batch_id, dimension_name, business_id,
+                surrogate_key_old, surrogate_key_new,
+                change_type, column_name, old_value, new_value,
+                effective_date, logged_at
+            )
+            SELECT 
+                @batch_id, 'dim_customer', chg.customer_id,
+                tgt.customer_key, NULL,
+                'SCD2_VERSION', delta.col_name, delta.old_val, delta.new_val,
+                @effective_date, SYSUTCDATETIME()
+            FROM #Customer_SCD2 chg
+            INNER JOIN dwh.dim_customer tgt
+                ON chg.customer_id = tgt.customer_id
+               AND tgt.is_current = 1
+            CROSS APPLY (
+                SELECT 'city' AS col_name, tgt.city AS old_val, chg.city AS new_val
+                WHERE ISNULL(tgt.city, '') <> ISNULL(chg.city, '')
+            ) delta;
+
+            -- B.1 Expire current version
+            UPDATE tgt
+            SET tgt.valid_to       = @yesterday,
+                tgt.is_current     = 0,
+                tgt.load_timestamp = SYSUTCDATETIME()
+            FROM dwh.dim_customer tgt
+            INNER JOIN #Customer_SCD2 chg ON tgt.customer_id = chg.customer_id
+            WHERE tgt.is_current = 1;
+
+            SET @rows_updated = @rows_updated + @@ROWCOUNT;
+
+            -- B.2 Insert new active version with new Surrogate Key
+            INSERT INTO dwh.dim_customer
+            (
+                customer_id, signup_date, city, acquisition_channel,
+                last_active, days_since_last_active, churn_risk,
+                life_cycle_id, last_status_id, is_churned, churned_date,
+                valid_from, valid_to, is_current,
+                batch_id, load_timestamp
+            )
+            SELECT 
+                chg.customer_id, chg.signup_date, chg.city, chg.acquisition_channel,
+                chg.last_active, chg.days_since_last_active, chg.churn_risk,
+                chg.life_cycle_id, chg.last_status_id, chg.is_churned, chg.churned_date,
+                @effective_date, '9999-12-31', 1,
+                chg.batch_id, SYSUTCDATETIME()
+            FROM #Customer_SCD2 chg;
+
+            SET @rows_inserted = @rows_inserted + @@ROWCOUNT;
+
+            -- B.3 Update new surrogate key in change log
+            UPDATE l
+            SET l.surrogate_key_new = tgt.customer_key
+            FROM control.dim_change_log l
+            INNER JOIN dwh.dim_customer tgt
+                ON l.business_id = tgt.customer_id
+               AND tgt.is_current = 1
+            WHERE l.batch_id = @batch_id
+              AND l.dimension_name = 'dim_customer'
+              AND l.surrogate_key_new IS NULL;
+        END;
+
+        -- Step C: Handle SCD Type 1 in-place updates (Demographics only; behavioral metrics are enriched post-fact)
+        UPDATE tgt
+        SET tgt.signup_date            = src.signup_date,
+            tgt.acquisition_channel    = src.acquisition_channel,
+            tgt.batch_id               = src.batch_id,
+            tgt.load_timestamp         = SYSUTCDATETIME()
+        FROM dwh.dim_customer tgt
+        INNER JOIN #CustomerPrepared src
+            ON tgt.customer_id = src.customer_id
+           AND tgt.is_current = 1
+        WHERE NOT EXISTS (SELECT 1 FROM #Customer_SCD2 scd WHERE scd.customer_id = tgt.customer_id)
+          AND (
+            ISNULL(tgt.signup_date, '1900-01-01')          <> ISNULL(src.signup_date, '1900-01-01')
+            OR ISNULL(tgt.acquisition_channel, '')         <> ISNULL(src.acquisition_channel, '')
+          );
+
+        SET @rows_updated = @rows_updated + @@ROWCOUNT;
 
         COMMIT TRANSACTION;
 
@@ -740,240 +701,202 @@ BEGIN
         SELECT @rows_read = COUNT(*) FROM ods.ods_delivery_partner
         WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
-        -- 3.3 Set-based MERGE (SCD Type 1) with Lifecycle & Churn Risk calculation
+        -- 3.3 Set-based ETL: Base Profile Load with Semantic Defaults
         DECLARE @max_order_date DATE;
-        SELECT @max_order_date = ISNULL(MAX(CAST(order_timestamp AS DATE)), '2025-09-30')
+        SELECT @max_order_date = MAX(CAST(order_timestamp AS DATE))
         FROM ods.ods_order
         WHERE order_timestamp IS NOT NULL;
 
-        WITH DriverOrders AS
-        (
-            SELECT 
-                o.delivery_partner_id,
-                CAST(o.order_timestamp AS DATE) AS order_date,
-                CASE 
-                    WHEN CAST(o.order_timestamp AS DATE) < '2025-06-01' THEN 1
-                    WHEN CAST(o.order_timestamp AS DATE) BETWEEN '2025-06-01' AND '2025-07-31' THEN 2
-                    WHEN CAST(o.order_timestamp AS DATE) BETWEEN '2025-08-01' AND '2025-09-30' THEN 3
-                    ELSE 4
-                END AS period_id
-            FROM ods.ods_order o
-            WHERE o.order_timestamp IS NOT NULL AND o.delivery_partner_id IS NOT NULL
-        ),
-        DriverActivity AS
-        (
-            SELECT 
-                delivery_partner_id,
-                MAX(order_date) AS last_order_date
-            FROM DriverOrders
-            GROUP BY delivery_partner_id
-        ),
-        DriverPeriods AS
-        (
-            SELECT 
-                dro.delivery_partner_id,
-                MAX(CASE WHEN dro.order_date = da.last_order_date THEN dro.period_id END) AS this_period,
-                MAX(CASE WHEN dro.order_date < da.last_order_date THEN dro.period_id END) AS last_period
-            FROM DriverOrders dro
-            INNER JOIN DriverActivity da ON dro.delivery_partner_id = da.delivery_partner_id
-            GROUP BY dro.delivery_partner_id
-        ),
-        DriverMetrics AS
-        (
-            SELECT 
-                dp.delivery_partner_id,
-                dp.onboard_date,
-                dp.partner_name,
-                dp.city,
-                dp.vehicle_type,
-                dp.employment_type,
-                dp.avg_rating,
-                dp.is_active,
-                dp.batch_id,
-                rt.rating_type_id,
-                rt.rating_type,
-                COALESCE(da.last_order_date, dp.onboard_date) AS last_active,
-                DATEDIFF(DAY, COALESCE(da.last_order_date, dp.onboard_date), @max_order_date) AS days_since_last_active,
-                CASE 
-                    WHEN da.last_order_date IS NULL THEN 0 -- Unknown (no transaction history)
-                    WHEN drp.last_period IS NULL THEN 1    -- New (no prior order before last active date)
-                    WHEN drp.last_period = drp.this_period THEN 2 -- Retained (same period)
-                    WHEN drp.last_period + 1 = drp.this_period THEN 2 -- Retained (consecutive period)
-                    WHEN drp.last_period + 2 <= drp.this_period THEN 3 -- Reactivated (skipped 1 or more periods)
-                    ELSE 0
-                END AS life_cycle_id
-            FROM ods.ods_delivery_partner dp
-            LEFT JOIN DriverActivity da ON dp.delivery_partner_id = da.delivery_partner_id
-            LEFT JOIN DriverPeriods drp ON dp.delivery_partner_id = drp.delivery_partner_id
-            LEFT JOIN dwh.dim_rating_type rt 
-                ON dp.avg_rating >= rt.min_score 
-               AND dp.avg_rating <= rt.max_score 
-               AND rt.rating_type_id <> 0
-            WHERE (@batch_id = -1 OR dp.batch_id = @batch_id)
-        ),
-        DriverFinal AS
-        (
-            SELECT 
-                dm.delivery_partner_id,
-                dm.onboard_date,
-                dm.partner_name,
-                dm.city,
-                dm.vehicle_type,
-                dm.employment_type,
-                dm.avg_rating,
-                dm.is_active,
-                dm.rating_type_id,
-                dm.rating_type,
-                dm.last_active,
-                dm.days_since_last_active,
-                dm.life_cycle_id,
-                -- is_churned (30 days buffer)
-                CASE 
-                    WHEN dm.last_active IS NULL THEN 0
-                    WHEN DATEADD(DAY, 30, dm.last_active) >= '2025-08-01' THEN 0
-                    WHEN DATEADD(DAY, 30, dm.last_active) < '2025-08-01' AND dm.life_cycle_id IN (0, 1, 2) THEN 1
-                    ELSE 0
-                END AS is_churned,
-                -- churned_date (30 days)
-                CASE 
-                    WHEN (
-                        CASE 
-                            WHEN dm.last_active IS NULL THEN 0
-                            WHEN DATEADD(DAY, 30, dm.last_active) >= '2025-08-01' THEN 0
-                            WHEN DATEADD(DAY, 30, dm.last_active) < '2025-08-01' AND dm.life_cycle_id IN (0, 1, 2) THEN 1
-                            ELSE 0
-                        END
-                    ) = 1 THEN DATEADD(DAY, 30, dm.last_active)
-                    ELSE NULL
-                END AS churned_date,
-                -- last_status_id: SWITCH(TRUE(), is_churned = 1, 4, life_cycle)
-                CASE 
-                    WHEN (
-                        CASE 
-                            WHEN dm.last_active IS NULL THEN 0
-                            WHEN DATEADD(DAY, 30, dm.last_active) >= '2025-08-01' THEN 0
-                            WHEN DATEADD(DAY, 30, dm.last_active) < '2025-08-01' AND dm.life_cycle_id IN (0, 1, 2) THEN 1
-                            ELSE 0
-                        END
-                    ) = 1 THEN 4
-                    ELSE dm.life_cycle_id
-                END AS last_status_id,
-                -- churn_risk
-                CASE 
-                    WHEN (
-                        CASE 
-                            WHEN dm.last_active IS NULL THEN 0
-                            WHEN DATEADD(DAY, 30, dm.last_active) >= '2025-08-01' THEN 0
-                            WHEN DATEADD(DAY, 30, dm.last_active) < '2025-08-01' AND dm.life_cycle_id IN (0, 1, 2) THEN 1
-                            ELSE 0
-                        END
-                    ) = 1 THEN 'Churned'
-                    WHEN dm.life_cycle_id = 2 AND dm.days_since_last_active > 30 THEN 'High'
-                    WHEN dm.life_cycle_id = 2 AND dm.days_since_last_active BETWEEN 15 AND 30 THEN 'Medium'
-                    WHEN dm.life_cycle_id = 2 AND dm.days_since_last_active < 15 THEN 'Low'
-                    WHEN dm.life_cycle_id <> 2 AND dm.days_since_last_active > 15 THEN 'High'
-                    WHEN dm.life_cycle_id <> 2 AND dm.days_since_last_active BETWEEN 7 AND 15 THEN 'Medium'
-                    WHEN dm.life_cycle_id <> 2 AND dm.days_since_last_active < 7 THEN 'Low'
-                    ELSE 'Undefined'
-                END AS churn_risk,
-                dm.batch_id
-            FROM DriverMetrics dm
-        )
-        MERGE dwh.dim_delivery_partner AS target
-        USING DriverFinal AS source
-        ON target.delivery_partner_id = source.delivery_partner_id
+        IF @max_order_date IS NULL
+            SET @max_order_date = CAST(SYSUTCDATETIME() AS DATE);
 
-        -- When changed, update attributes and timestamps
-        WHEN MATCHED AND (
-            ISNULL(target.onboard_date, '1900-01-01')          <> ISNULL(source.onboard_date, '1900-01-01')
-            OR ISNULL(target.partner_name, '')                 <> ISNULL(source.partner_name, '')
-            OR ISNULL(target.city, '')                         <> ISNULL(source.city, '')
-            OR ISNULL(target.vehicle_type, '')                 <> ISNULL(source.vehicle_type, '')
-            OR ISNULL(target.employment_type, '')              <> ISNULL(source.employment_type, '')
-            OR ISNULL(target.avg_rating, -1)                   <> ISNULL(source.avg_rating, -1)
-            OR ISNULL(target.is_active, 2)                     <> ISNULL(source.is_active, 2)
-            OR ISNULL(target.last_active, '1900-01-01')        <> ISNULL(source.last_active, '1900-01-01')
-            OR ISNULL(target.days_since_last_active, -1)       <> ISNULL(source.days_since_last_active, -1)
-            OR ISNULL(target.churn_risk, '')                   <> ISNULL(source.churn_risk, '')
-            OR ISNULL(target.life_cycle_id, 255)               <> ISNULL(source.life_cycle_id, 255)
-            OR ISNULL(target.last_status_id, 255)              <> ISNULL(source.last_status_id, 255)
-            OR ISNULL(target.is_churned, 2)                    <> ISNULL(source.is_churned, 2)
-            OR ISNULL(target.churned_date, '1900-01-01')      <> ISNULL(source.churned_date, '1900-01-01')
-            OR ISNULL(target.rating_type_id, 255)              <> ISNULL(source.rating_type_id, 255)
-            OR ISNULL(target.rating_type, '')                  <> ISNULL(source.rating_type, '')
-        )
-        THEN UPDATE SET
-            target.onboard_date           = source.onboard_date,
-            target.partner_name           = source.partner_name,
-            target.city                   = source.city,
-            target.vehicle_type           = source.vehicle_type,
-            target.employment_type        = source.employment_type,
-            target.avg_rating             = source.avg_rating,
-            target.is_active              = source.is_active,
-            target.last_active            = source.last_active,
-            target.days_since_last_active = source.days_since_last_active,
-            target.churn_risk             = source.churn_risk,
-            target.life_cycle_id          = source.life_cycle_id,
-            target.last_status_id         = source.last_status_id,
-            target.is_churned             = source.is_churned,
-            target.churned_date           = source.churned_date,
-            target.rating_type_id         = source.rating_type_id,
-            target.rating_type            = source.rating_type,
-            target.batch_id               = source.batch_id,
-            target.load_timestamp         = SYSUTCDATETIME()
-
-        -- When new, insert and auto-allocate surrogate key
-        WHEN NOT MATCHED BY TARGET THEN
-            INSERT
-            (
-                delivery_partner_id,
-                onboard_date,
-                partner_name,
-                city,
-                vehicle_type,
-                employment_type,
-                avg_rating,
-                is_active,
-                last_active,
-                days_since_last_active,
-                churn_risk,
-                life_cycle_id,
-                last_status_id,
-                is_churned,
-                churned_date,
-                rating_type_id,
-                rating_type,
-                batch_id,
-                load_timestamp
-            )
-            VALUES
-            (
-                source.delivery_partner_id,
-                source.onboard_date,
-                source.partner_name,
-                source.city,
-                source.vehicle_type,
-                source.employment_type,
-                source.avg_rating,
-                source.is_active,
-                source.last_active,
-                source.days_since_last_active,
-                source.churn_risk,
-                source.life_cycle_id,
-                source.last_status_id,
-                source.is_churned,
-                source.churned_date,
-                source.rating_type_id,
-                source.rating_type,
-                source.batch_id,
-                SYSUTCDATETIME()
-            )
-        OUTPUT $action INTO @merge_actions;
+        IF OBJECT_ID('tempdb..#DriverPrepared') IS NOT NULL DROP TABLE #DriverPrepared;
 
         SELECT 
-            @rows_inserted = COUNT(CASE WHEN action_type = 'INSERT' THEN 1 END),
-            @rows_updated  = COUNT(CASE WHEN action_type = 'UPDATE' THEN 1 END)
-        FROM @merge_actions;
+            dp.delivery_partner_id,
+            dp.onboard_date,
+            dp.partner_name,
+            dp.city,
+            dp.vehicle_type,
+            dp.employment_type,
+            dp.avg_rating,
+            dp.is_active,
+            rt.rating_type_id,
+            rt.rating_type,
+            -- Behavioral Defaults (to be enriched post-fact by usp_enrich_dimensions_behavioral_metrics)
+            dp.onboard_date                                             AS last_active,
+            DATEDIFF(DAY, dp.onboard_date, @max_order_date)             AS days_since_last_active,
+            CAST(0 AS TINYINT)                                          AS life_cycle_id,  -- 0: Unknown (chưa phát sinh giao dịch)
+            CAST(0 AS TINYINT)                                          AS last_status_id, -- 0: Unknown
+            CAST(0 AS BIT)                                              AS is_churned,
+            CAST(NULL AS DATE)                                          AS churned_date,
+            CAST('Undefined' AS VARCHAR(20))                            AS churn_risk,
+            dp.batch_id
+        INTO #DriverPrepared
+        FROM ods.ods_delivery_partner dp
+        LEFT JOIN dwh.dim_rating_type rt 
+            ON dp.avg_rating >= rt.min_score 
+           AND dp.avg_rating <= rt.max_score 
+           AND rt.rating_type_id <> 0
+        WHERE (@batch_id = -1 OR dp.batch_id = @batch_id);
+
+        DECLARE @effective_date DATE = CAST(SYSUTCDATETIME() AS DATE);
+        DECLARE @yesterday DATE = DATEADD(DAY, -1, @effective_date);
+
+        -- Step A: Insert Brand New Delivery Partners
+        INSERT INTO dwh.dim_delivery_partner
+        (
+            delivery_partner_id, onboard_date, partner_name, city,
+            vehicle_type, employment_type, avg_rating, is_active,
+            last_active, days_since_last_active, churn_risk,
+            life_cycle_id, last_status_id, is_churned, churned_date,
+            rating_type_id, rating_type,
+            valid_from, valid_to, is_current,
+            batch_id, load_timestamp
+        )
+        SELECT 
+            src.delivery_partner_id, src.onboard_date, src.partner_name, src.city,
+            src.vehicle_type, src.employment_type, src.avg_rating, src.is_active,
+            src.last_active, src.days_since_last_active, src.churn_risk,
+            src.life_cycle_id, src.last_status_id, src.is_churned, src.churned_date,
+            src.rating_type_id, src.rating_type,
+            '1900-01-01', '9999-12-31', 1,
+            src.batch_id, SYSUTCDATETIME()
+        FROM #DriverPrepared src
+        WHERE NOT EXISTS (
+            SELECT 1 FROM dwh.dim_delivery_partner d WHERE d.delivery_partner_id = src.delivery_partner_id
+        );
+
+        SET @rows_inserted = @@ROWCOUNT;
+
+        -- Step B: Handle SCD Type 2 Changes (partner_name, city, vehicle_type, employment_type, is_active)
+        IF OBJECT_ID('tempdb..#Driver_SCD2') IS NOT NULL DROP TABLE #Driver_SCD2;
+        SELECT 
+            src.delivery_partner_id, src.onboard_date, src.partner_name, src.city,
+            src.vehicle_type, src.employment_type, src.avg_rating, src.is_active,
+            src.rating_type_id, src.rating_type,
+            COALESCE(tgt.last_active, src.last_active)                       AS last_active,
+            COALESCE(tgt.days_since_last_active, src.days_since_last_active) AS days_since_last_active,
+            COALESCE(tgt.churn_risk, src.churn_risk)                         AS churn_risk,
+            COALESCE(tgt.life_cycle_id, src.life_cycle_id)                   AS life_cycle_id,
+            COALESCE(tgt.last_status_id, src.last_status_id)                 AS last_status_id,
+            COALESCE(tgt.is_churned, src.is_churned)                         AS is_churned,
+            tgt.churned_date                                                 AS churned_date,
+            src.batch_id
+        INTO #Driver_SCD2
+        FROM #DriverPrepared src
+        INNER JOIN dwh.dim_delivery_partner tgt
+            ON src.delivery_partner_id = tgt.delivery_partner_id
+           AND tgt.is_current = 1
+        WHERE ISNULL(tgt.partner_name, '')     <> ISNULL(src.partner_name, '')
+           OR ISNULL(tgt.city, '')             <> ISNULL(src.city, '')
+           OR ISNULL(tgt.vehicle_type, '')     <> ISNULL(src.vehicle_type, '')
+           OR ISNULL(tgt.employment_type, '')  <> ISNULL(src.employment_type, '')
+           OR ISNULL(tgt.is_active, 2)         <> ISNULL(src.is_active, 2);
+
+        IF EXISTS (SELECT 1 FROM #Driver_SCD2)
+        BEGIN
+            -- B.0 Log detailed SCD2 field changes
+            INSERT INTO control.dim_change_log
+            (
+                batch_id, dimension_name, business_id,
+                surrogate_key_old, surrogate_key_new,
+                change_type, column_name, old_value, new_value,
+                effective_date, logged_at
+            )
+            SELECT 
+                @batch_id, 'dim_delivery_partner', chg.delivery_partner_id,
+                tgt.delivery_partner_key, NULL,
+                'SCD2_VERSION', delta.col_name, delta.old_val, delta.new_val,
+                @effective_date, SYSUTCDATETIME()
+            FROM #Driver_SCD2 chg
+            INNER JOIN dwh.dim_delivery_partner tgt
+                ON chg.delivery_partner_id = tgt.delivery_partner_id
+               AND tgt.is_current = 1
+            CROSS APPLY (
+                SELECT 'partner_name' AS col_name, tgt.partner_name AS old_val, chg.partner_name AS new_val
+                WHERE ISNULL(tgt.partner_name, '')     <> ISNULL(chg.partner_name, '')
+                UNION ALL
+                SELECT 'city', tgt.city, chg.city
+                WHERE ISNULL(tgt.city, '')             <> ISNULL(chg.city, '')
+                UNION ALL
+                SELECT 'vehicle_type', tgt.vehicle_type, chg.vehicle_type
+                WHERE ISNULL(tgt.vehicle_type, '')     <> ISNULL(chg.vehicle_type, '')
+                UNION ALL
+                SELECT 'employment_type', tgt.employment_type, chg.employment_type
+                WHERE ISNULL(tgt.employment_type, '')  <> ISNULL(chg.employment_type, '')
+                UNION ALL
+                SELECT 'is_active', CAST(tgt.is_active AS VARCHAR(10)), CAST(chg.is_active AS VARCHAR(10))
+                WHERE ISNULL(tgt.is_active, 2)         <> ISNULL(chg.is_active, 2)
+            ) delta;
+
+            -- B.1 Expire current version
+            UPDATE tgt
+            SET tgt.valid_to       = @yesterday,
+                tgt.is_current     = 0,
+                tgt.load_timestamp = SYSUTCDATETIME()
+            FROM dwh.dim_delivery_partner tgt
+            INNER JOIN #Driver_SCD2 chg ON tgt.delivery_partner_id = chg.delivery_partner_id
+            WHERE tgt.is_current = 1;
+
+            SET @rows_updated = @rows_updated + @@ROWCOUNT;
+
+            -- B.2 Insert new active version with new Surrogate Key
+            INSERT INTO dwh.dim_delivery_partner
+            (
+                delivery_partner_id, onboard_date, partner_name, city,
+                vehicle_type, employment_type, avg_rating, is_active,
+                last_active, days_since_last_active, churn_risk,
+                life_cycle_id, last_status_id, is_churned, churned_date,
+                rating_type_id, rating_type,
+                valid_from, valid_to, is_current,
+                batch_id, load_timestamp
+            )
+            SELECT 
+                chg.delivery_partner_id, chg.onboard_date, chg.partner_name, chg.city,
+                chg.vehicle_type, chg.employment_type, chg.avg_rating, chg.is_active,
+                chg.last_active, chg.days_since_last_active, chg.churn_risk,
+                chg.life_cycle_id, chg.last_status_id, chg.is_churned, chg.churned_date,
+                chg.rating_type_id, chg.rating_type,
+                @effective_date, '9999-12-31', 1,
+                chg.batch_id, SYSUTCDATETIME()
+            FROM #Driver_SCD2 chg;
+
+            SET @rows_inserted = @rows_inserted + @@ROWCOUNT;
+
+            -- B.3 Update new surrogate key in change log
+            UPDATE l
+            SET l.surrogate_key_new = tgt.delivery_partner_key
+            FROM control.dim_change_log l
+            INNER JOIN dwh.dim_delivery_partner tgt
+                ON l.business_id = tgt.delivery_partner_id
+               AND tgt.is_current = 1
+            WHERE l.batch_id = @batch_id
+              AND l.dimension_name = 'dim_delivery_partner'
+              AND l.surrogate_key_new IS NULL;
+        END;
+
+        -- Step C: Handle SCD Type 1 in-place updates (Demographics/Ratings only; behavioral metrics are enriched post-fact)
+        UPDATE tgt
+        SET tgt.onboard_date           = src.onboard_date,
+            tgt.avg_rating             = src.avg_rating,
+            tgt.rating_type_id         = src.rating_type_id,
+            tgt.rating_type            = src.rating_type,
+            tgt.batch_id               = src.batch_id,
+            tgt.load_timestamp         = SYSUTCDATETIME()
+        FROM dwh.dim_delivery_partner tgt
+        INNER JOIN #DriverPrepared src
+            ON tgt.delivery_partner_id = src.delivery_partner_id
+           AND tgt.is_current = 1
+        WHERE NOT EXISTS (SELECT 1 FROM #Driver_SCD2 scd WHERE scd.delivery_partner_id = tgt.delivery_partner_id)
+          AND (
+            ISNULL(tgt.onboard_date, '1900-01-01')          <> ISNULL(src.onboard_date, '1900-01-01')
+            OR ISNULL(tgt.avg_rating, -1)                   <> ISNULL(src.avg_rating, -1)
+            OR ISNULL(tgt.rating_type_id, 255)              <> ISNULL(src.rating_type_id, 255)
+            OR ISNULL(tgt.rating_type, '')                  <> ISNULL(src.rating_type, '')
+          );
+
+        SET @rows_updated = @rows_updated + @@ROWCOUNT;
 
         COMMIT TRANSACTION;
 
@@ -1071,270 +994,226 @@ BEGIN
         SELECT @rows_read = COUNT(*) FROM ods.ods_restaurant
         WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
-        -- 4.3 Set-based MERGE (SCD Type 1) with Prep Times, Lifecycle & Churn Risk
+
+        -- 4.3 Set-based ETL: Base Profile Load with Semantic Defaults
         DECLARE @max_order_date DATE;
-        SELECT @max_order_date = ISNULL(MAX(CAST(order_timestamp AS DATE)), '2025-09-30')
+        SELECT @max_order_date = MAX(CAST(order_timestamp AS DATE))
         FROM ods.ods_order
         WHERE order_timestamp IS NOT NULL;
 
-        WITH RestOrders AS
-        (
-            SELECT 
-                o.restaurant_id,
-                CAST(o.order_timestamp AS DATE) AS order_date,
-                CASE 
-                    WHEN CAST(o.order_timestamp AS DATE) < '2025-06-01' THEN 1
-                    WHEN CAST(o.order_timestamp AS DATE) BETWEEN '2025-06-01' AND '2025-07-31' THEN 2
-                    WHEN CAST(o.order_timestamp AS DATE) BETWEEN '2025-08-01' AND '2025-09-30' THEN 3
-                    ELSE 4
-                END AS period_id
-            FROM ods.ods_order o
-            WHERE o.order_timestamp IS NOT NULL
-        ),
-        RestActivity AS
-        (
-            SELECT 
-                restaurant_id,
-                MAX(order_date) AS last_order_date
-            FROM RestOrders
-            GROUP BY restaurant_id
-        ),
-        RestPeriods AS
-        (
-            SELECT 
-                ro.restaurant_id,
-                MAX(CASE WHEN ro.order_date = ra.last_order_date THEN ro.period_id END) AS this_period,
-                MAX(CASE WHEN ro.order_date < ra.last_order_date THEN ro.period_id END) AS last_period
-            FROM RestOrders ro
-            INNER JOIN RestActivity ra ON ro.restaurant_id = ra.restaurant_id
-            GROUP BY ro.restaurant_id
-        ),
-        RestMetrics AS
-        (
-            SELECT 
-                r.restaurant_id,
-                r.onboard_date,
-                r.restaurant_name,
-                r.city,
-                r.cuisine_type,
-                r.partner_type,
-                r.avg_prep_time_min,
-                r.is_active,
-                r.batch_id,
-                -- Prep time attributes (no ELSE)
-                CASE 
-                    WHEN r.avg_prep_time_min = '<=15' THEN 0
-                    WHEN r.avg_prep_time_min = '16-25' THEN 16
-                    WHEN r.avg_prep_time_min = '26-40' THEN 26
-                    WHEN r.avg_prep_time_min = '>40'  THEN 41
-                END AS min_prep_min,
-                CASE 
-                    WHEN r.avg_prep_time_min = '<=15' THEN 15
-                    WHEN r.avg_prep_time_min = '16-25' THEN 25
-                    WHEN r.avg_prep_time_min = '26-40' THEN 40
-                    WHEN r.avg_prep_time_min = '>40'  THEN 60
-                END AS max_prep_min,
-                CASE 
-                    WHEN r.avg_prep_time_min = '<=15' THEN 'Fast'
-                    WHEN r.avg_prep_time_min = '16-25' THEN 'Moderate'
-                    WHEN r.avg_prep_time_min = '26-40' THEN 'Slow'
-                    WHEN r.avg_prep_time_min = '>40'  THEN 'Very Slow'
-                END AS prep_time_group,
-                CASE 
-                    WHEN r.avg_prep_time_min = '<=15' THEN 1
-                    WHEN r.avg_prep_time_min = '16-25' THEN 2
-                    WHEN r.avg_prep_time_min = '26-40' THEN 3
-                    WHEN r.avg_prep_time_min = '>40'  THEN 4
-                END AS prep_time_index,
-                -- Activity dates & lifecycle
-                COALESCE(ra.last_order_date, r.onboard_date) AS last_active,
-                DATEDIFF(DAY, COALESCE(ra.last_order_date, r.onboard_date), @max_order_date) AS days_since_last_active,
-                CASE 
-                    WHEN ra.last_order_date IS NULL THEN 0 -- Unknown (no transaction history)
-                    WHEN rp.last_period IS NULL THEN 1    -- New (no prior order before last active date)
-                    WHEN rp.last_period = rp.this_period THEN 2 -- Retained (same period)
-                    WHEN rp.last_period + 1 = rp.this_period THEN 2 -- Retained (consecutive period)
-                    WHEN rp.last_period + 2 <= rp.this_period THEN 3 -- Reactivated (skipped 1 or more periods)
-                    ELSE 0
-                END AS life_cycle_id
-            FROM ods.ods_restaurant r
-            LEFT JOIN RestActivity ra ON r.restaurant_id = ra.restaurant_id
-            LEFT JOIN RestPeriods rp ON r.restaurant_id = rp.restaurant_id
-            WHERE (@batch_id = -1 OR r.batch_id = @batch_id)
-        ),
-        RestFinal AS
-        (
-            SELECT 
-                rm.restaurant_id,
-                rm.onboard_date,
-                rm.restaurant_name,
-                rm.city,
-                rm.cuisine_type,
-                rm.partner_type,
-                rm.avg_prep_time_min,
-                rm.is_active,
-                rm.min_prep_min,
-                rm.max_prep_min,
-                rm.prep_time_group,
-                rm.prep_time_index,
-                rm.last_active,
-                rm.days_since_last_active,
-                rm.life_cycle_id,
-                -- is_churned
-                CASE 
-                    WHEN rm.last_active IS NULL THEN 0
-                    WHEN DATEADD(DAY, 60, rm.last_active) >= '2025-08-01' THEN 0
-                    WHEN DATEADD(DAY, 60, rm.last_active) < '2025-08-01' AND rm.life_cycle_id IN (0, 1, 2) THEN 1
-                    ELSE 0
-                END AS is_churned,
-                -- churned_date
-                CASE 
-                    WHEN (
-                        CASE 
-                            WHEN rm.last_active IS NULL THEN 0
-                            WHEN DATEADD(DAY, 60, rm.last_active) >= '2025-08-01' THEN 0
-                            WHEN DATEADD(DAY, 60, rm.last_active) < '2025-08-01' AND rm.life_cycle_id IN (0, 1, 2) THEN 1
-                            ELSE 0
-                        END
-                    ) = 1 THEN DATEADD(DAY, 60, rm.last_active)
-                    ELSE NULL
-                END AS churned_date,
-                -- last_status_id: SWITCH(TRUE(), is_churned = 1, 4, life_cycle)
-                CASE 
-                    WHEN (
-                        CASE 
-                            WHEN rm.last_active IS NULL THEN 0
-                            WHEN DATEADD(DAY, 60, rm.last_active) >= '2025-08-01' THEN 0
-                            WHEN DATEADD(DAY, 60, rm.last_active) < '2025-08-01' AND rm.life_cycle_id IN (0, 1, 2) THEN 1
-                            ELSE 0
-                        END
-                    ) = 1 THEN 4
-                    ELSE rm.life_cycle_id
-                END AS last_status_id,
-                -- churn_risk
-                CASE 
-                    WHEN (
-                        CASE 
-                            WHEN rm.last_active IS NULL THEN 0
-                            WHEN DATEADD(DAY, 60, rm.last_active) >= '2025-08-01' THEN 0
-                            WHEN DATEADD(DAY, 60, rm.last_active) < '2025-08-01' AND rm.life_cycle_id IN (0, 1, 2) THEN 1
-                            ELSE 0
-                        END
-                    ) = 1 THEN 'Churned'
-                    WHEN rm.life_cycle_id = 2 AND rm.days_since_last_active > 45 THEN 'High'
-                    WHEN rm.life_cycle_id <> 2 AND rm.days_since_last_active > 21 THEN 'High'
-                    WHEN rm.life_cycle_id = 2 AND rm.days_since_last_active BETWEEN 15 AND 45 THEN 'Medium'
-                    WHEN rm.life_cycle_id <> 2 AND rm.days_since_last_active BETWEEN 8 AND 21 THEN 'Medium'
-                    WHEN rm.life_cycle_id = 2 AND rm.days_since_last_active < 15 THEN 'Low'
-                    WHEN rm.life_cycle_id <> 2 AND rm.days_since_last_active <= 7 THEN 'Low'
-                    ELSE 'Undefined'
-                END AS churn_risk,
-                rm.batch_id
-            FROM RestMetrics rm
-        )
-        MERGE dwh.dim_restaurant AS target
-        USING RestFinal AS source
-        ON target.restaurant_id = source.restaurant_id
+        IF @max_order_date IS NULL
+            SET @max_order_date = CAST(SYSUTCDATETIME() AS DATE);
 
-        -- When changed, update attributes and timestamps
-        WHEN MATCHED AND (
-            ISNULL(target.onboard_date, '1900-01-01')          <> ISNULL(source.onboard_date, '1900-01-01')
-            OR ISNULL(target.restaurant_name, '')              <> ISNULL(source.restaurant_name, '')
-            OR ISNULL(target.city, '')                         <> ISNULL(source.city, '')
-            OR ISNULL(target.cuisine_type, '')                 <> ISNULL(source.cuisine_type, '')
-            OR ISNULL(target.partner_type, '')                 <> ISNULL(source.partner_type, '')
-            OR ISNULL(target.avg_prep_time_min, '')            <> ISNULL(source.avg_prep_time_min, '')
-            OR ISNULL(target.is_active, 2)                     <> ISNULL(source.is_active, 2)
-            OR ISNULL(target.min_prep_min, -1)                 <> ISNULL(source.min_prep_min, -1)
-            OR ISNULL(target.max_prep_min, -1)                 <> ISNULL(source.max_prep_min, -1)
-            OR ISNULL(target.prep_time_group, '')              <> ISNULL(source.prep_time_group, '')
-            OR ISNULL(target.prep_time_index, 0)               <> ISNULL(source.prep_time_index, 0)
-            OR ISNULL(target.last_active, '1900-01-01')        <> ISNULL(source.last_active, '1900-01-01')
-            OR ISNULL(target.days_since_last_active, -1)       <> ISNULL(source.days_since_last_active, -1)
-            OR ISNULL(target.churn_risk, '')                   <> ISNULL(source.churn_risk, '')
-            OR ISNULL(target.life_cycle_id, 255)               <> ISNULL(source.life_cycle_id, 255)
-            OR ISNULL(target.last_status_id, 255)              <> ISNULL(source.last_status_id, 255)
-            OR ISNULL(target.is_churned, 2)                    <> ISNULL(source.is_churned, 2)
-            OR ISNULL(target.churned_date, '1900-01-01')       <> ISNULL(source.churned_date, '1900-01-01')
-        )
-        THEN UPDATE SET
-            target.onboard_date           = source.onboard_date,
-            target.restaurant_name        = source.restaurant_name,
-            target.city                   = source.city,
-            target.cuisine_type           = source.cuisine_type,
-            target.partner_type           = source.partner_type,
-            target.avg_prep_time_min      = source.avg_prep_time_min,
-            target.is_active              = source.is_active,
-            target.min_prep_min           = source.min_prep_min,
-            target.max_prep_min           = source.max_prep_min,
-            target.prep_time_group        = source.prep_time_group,
-            target.prep_time_index        = source.prep_time_index,
-            target.last_active            = source.last_active,
-            target.days_since_last_active = source.days_since_last_active,
-            target.churn_risk             = source.churn_risk,
-            target.life_cycle_id          = source.life_cycle_id,
-            target.last_status_id         = source.last_status_id,
-            target.is_churned             = source.is_churned,
-            target.churned_date           = source.churned_date,
-            target.batch_id               = source.batch_id,
-            target.load_timestamp         = SYSUTCDATETIME()
-
-        -- When new, insert and auto-allocate surrogate key
-        WHEN NOT MATCHED BY TARGET THEN
-            INSERT
-            (
-                restaurant_id,
-                onboard_date,
-                restaurant_name,
-                city,
-                cuisine_type,
-                partner_type,
-                avg_prep_time_min,
-                is_active,
-                min_prep_min,
-                max_prep_min,
-                prep_time_group,
-                prep_time_index,
-                last_active,
-                days_since_last_active,
-                churn_risk,
-                life_cycle_id,
-                last_status_id,
-                is_churned,
-                churned_date,
-                batch_id,
-                load_timestamp
-            )
-            VALUES
-            (
-                source.restaurant_id,
-                source.onboard_date,
-                source.restaurant_name,
-                source.city,
-                source.cuisine_type,
-                source.partner_type,
-                source.avg_prep_time_min,
-                source.is_active,
-                source.min_prep_min,
-                source.max_prep_min,
-                source.prep_time_group,
-                source.prep_time_index,
-                source.last_active,
-                source.days_since_last_active,
-                source.churn_risk,
-                source.life_cycle_id,
-                source.last_status_id,
-                source.is_churned,
-                source.churned_date,
-                source.batch_id,
-                SYSUTCDATETIME()
-            )
-        OUTPUT $action INTO @merge_actions;
+        IF OBJECT_ID('tempdb..#RestPrepared') IS NOT NULL DROP TABLE #RestPrepared;
 
         SELECT 
-            @rows_inserted = COUNT(CASE WHEN action_type = 'INSERT' THEN 1 END),
-            @rows_updated  = COUNT(CASE WHEN action_type = 'UPDATE' THEN 1 END)
-        FROM @merge_actions;
+            r.restaurant_id,
+            r.onboard_date,
+            r.restaurant_name,
+            r.city,
+            r.cuisine_type,
+            r.partner_type,
+            r.avg_prep_time_min,
+            r.is_active,
+            -- Prep time attributes (static profile derivation)
+            CASE 
+                WHEN r.avg_prep_time_min = '<=15' THEN 0
+                WHEN r.avg_prep_time_min = '16-25' THEN 16
+                WHEN r.avg_prep_time_min = '26-40' THEN 26
+                WHEN r.avg_prep_time_min = '>40'  THEN 41
+            END AS min_prep_min,
+            CASE 
+                WHEN r.avg_prep_time_min = '<=15' THEN 15
+                WHEN r.avg_prep_time_min = '16-25' THEN 25
+                WHEN r.avg_prep_time_min = '26-40' THEN 40
+                WHEN r.avg_prep_time_min = '>40'  THEN 60
+            END AS max_prep_min,
+            CASE 
+                WHEN r.avg_prep_time_min = '<=15' THEN 'Fast'
+                WHEN r.avg_prep_time_min = '16-25' THEN 'Moderate'
+                WHEN r.avg_prep_time_min = '26-40' THEN 'Slow'
+                WHEN r.avg_prep_time_min = '>40'  THEN 'Very Slow'
+            END AS prep_time_group,
+            CASE 
+                WHEN r.avg_prep_time_min = '<=15' THEN 1
+                WHEN r.avg_prep_time_min = '16-25' THEN 2
+                WHEN r.avg_prep_time_min = '26-40' THEN 3
+                WHEN r.avg_prep_time_min = '>40'  THEN 4
+            END AS prep_time_index,
+            -- Behavioral Defaults (to be enriched post-fact by usp_enrich_dimensions_behavioral_metrics)
+            r.onboard_date                                              AS last_active,
+            DATEDIFF(DAY, r.onboard_date, @max_order_date)              AS days_since_last_active,
+            CAST(0 AS TINYINT)                                          AS life_cycle_id,  -- 0: Unknown (chưa phát sinh giao dịch)
+            CAST(0 AS TINYINT)                                          AS last_status_id, -- 0: Unknown
+            CAST(0 AS BIT)                                              AS is_churned,
+            CAST(NULL AS DATE)                                          AS churned_date,
+            CAST('Undefined' AS VARCHAR(20))                            AS churn_risk,
+            r.batch_id
+        INTO #RestPrepared
+        FROM ods.ods_restaurant r
+        WHERE (@batch_id = -1 OR r.batch_id = @batch_id);
+
+        DECLARE @effective_date DATE = CAST(SYSUTCDATETIME() AS DATE);
+        DECLARE @yesterday DATE = DATEADD(DAY, -1, @effective_date);
+
+        -- Step A: Insert Brand New Restaurants
+        INSERT INTO dwh.dim_restaurant
+        (
+            restaurant_id, onboard_date, restaurant_name, city,
+            cuisine_type, partner_type, avg_prep_time_min, is_active,
+            min_prep_min, max_prep_min, prep_time_group, prep_time_index,
+            last_active, days_since_last_active, churn_risk,
+            life_cycle_id, last_status_id, is_churned, churned_date,
+            valid_from, valid_to, is_current,
+            batch_id, load_timestamp
+        )
+        SELECT 
+            src.restaurant_id, src.onboard_date, src.restaurant_name, src.city,
+            src.cuisine_type, src.partner_type, src.avg_prep_time_min, src.is_active,
+            src.min_prep_min, src.max_prep_min, src.prep_time_group, src.prep_time_index,
+            src.last_active, src.days_since_last_active, src.churn_risk,
+            src.life_cycle_id, src.last_status_id, src.is_churned, src.churned_date,
+            '1900-01-01', '9999-12-31', 1,
+            src.batch_id, SYSUTCDATETIME()
+        FROM #RestPrepared src
+        WHERE NOT EXISTS (
+            SELECT 1 FROM dwh.dim_restaurant d WHERE d.restaurant_id = src.restaurant_id
+        );
+
+        SET @rows_inserted = @@ROWCOUNT;
+
+        -- Step B: Handle SCD Type 2 Changes (restaurant_name, city, cuisine_type, partner_type, is_active)
+        IF OBJECT_ID('tempdb..#Rest_SCD2') IS NOT NULL DROP TABLE #Rest_SCD2;
+        SELECT 
+            src.restaurant_id, src.onboard_date, src.restaurant_name, src.city,
+            src.cuisine_type, src.partner_type, src.avg_prep_time_min, src.is_active,
+            src.min_prep_min, src.max_prep_min, src.prep_time_group, src.prep_time_index,
+            COALESCE(tgt.last_active, src.last_active)                       AS last_active,
+            COALESCE(tgt.days_since_last_active, src.days_since_last_active) AS days_since_last_active,
+            COALESCE(tgt.churn_risk, src.churn_risk)                         AS churn_risk,
+            COALESCE(tgt.life_cycle_id, src.life_cycle_id)                   AS life_cycle_id,
+            COALESCE(tgt.last_status_id, src.last_status_id)                 AS last_status_id,
+            COALESCE(tgt.is_churned, src.is_churned)                         AS is_churned,
+            tgt.churned_date                                                 AS churned_date,
+            src.batch_id
+        INTO #Rest_SCD2
+        FROM #RestPrepared src
+        INNER JOIN dwh.dim_restaurant tgt
+            ON src.restaurant_id = tgt.restaurant_id
+           AND tgt.is_current = 1
+        WHERE ISNULL(tgt.restaurant_name, '') <> ISNULL(src.restaurant_name, '')
+           OR ISNULL(tgt.city, '')            <> ISNULL(src.city, '')
+           OR ISNULL(tgt.cuisine_type, '')    <> ISNULL(src.cuisine_type, '')
+           OR ISNULL(tgt.partner_type, '')    <> ISNULL(src.partner_type, '')
+           OR ISNULL(tgt.is_active, 2)        <> ISNULL(src.is_active, 2);
+
+        IF EXISTS (SELECT 1 FROM #Rest_SCD2)
+        BEGIN
+            -- B.0 Log detailed SCD2 field changes
+            INSERT INTO control.dim_change_log
+            (
+                batch_id, dimension_name, business_id,
+                surrogate_key_old, surrogate_key_new,
+                change_type, column_name, old_value, new_value,
+                effective_date, logged_at
+            )
+            SELECT 
+                @batch_id, 'dim_restaurant', chg.restaurant_id,
+                tgt.restaurant_key, NULL,
+                'SCD2_VERSION', delta.col_name, delta.old_val, delta.new_val,
+                @effective_date, SYSUTCDATETIME()
+            FROM #Rest_SCD2 chg
+            INNER JOIN dwh.dim_restaurant tgt
+                ON chg.restaurant_id = tgt.restaurant_id
+               AND tgt.is_current = 1
+            CROSS APPLY (
+                SELECT 'restaurant_name' AS col_name, tgt.restaurant_name AS old_val, chg.restaurant_name AS new_val
+                WHERE ISNULL(tgt.restaurant_name, '') <> ISNULL(chg.restaurant_name, '')
+                UNION ALL
+                SELECT 'city', tgt.city, chg.city
+                WHERE ISNULL(tgt.city, '')            <> ISNULL(chg.city, '')
+                UNION ALL
+                SELECT 'cuisine_type', tgt.cuisine_type, chg.cuisine_type
+                WHERE ISNULL(tgt.cuisine_type, '')    <> ISNULL(chg.cuisine_type, '')
+                UNION ALL
+                SELECT 'partner_type', tgt.partner_type, chg.partner_type
+                WHERE ISNULL(tgt.partner_type, '')    <> ISNULL(chg.partner_type, '')
+                UNION ALL
+                SELECT 'is_active', CAST(tgt.is_active AS VARCHAR(10)), CAST(chg.is_active AS VARCHAR(10))
+                WHERE ISNULL(tgt.is_active, 2)        <> ISNULL(chg.is_active, 2)
+            ) delta;
+
+            -- B.1 Expire current version
+            UPDATE tgt
+            SET tgt.valid_to       = @yesterday,
+                tgt.is_current     = 0,
+                tgt.load_timestamp = SYSUTCDATETIME()
+            FROM dwh.dim_restaurant tgt
+            INNER JOIN #Rest_SCD2 chg ON tgt.restaurant_id = chg.restaurant_id
+            WHERE tgt.is_current = 1;
+
+            SET @rows_updated = @rows_updated + @@ROWCOUNT;
+
+            -- B.2 Insert new active version with new Surrogate Key
+            INSERT INTO dwh.dim_restaurant
+            (
+                restaurant_id, onboard_date, restaurant_name, city,
+                cuisine_type, partner_type, avg_prep_time_min, is_active,
+                min_prep_min, max_prep_min, prep_time_group, prep_time_index,
+                last_active, days_since_last_active, churn_risk,
+                life_cycle_id, last_status_id, is_churned, churned_date,
+                valid_from, valid_to, is_current,
+                batch_id, load_timestamp
+            )
+            SELECT 
+                chg.restaurant_id, chg.onboard_date, chg.restaurant_name, chg.city,
+                chg.cuisine_type, chg.partner_type, chg.avg_prep_time_min, chg.is_active,
+                chg.min_prep_min, chg.max_prep_min, chg.prep_time_group, chg.prep_time_index,
+                chg.last_active, chg.days_since_last_active, chg.churn_risk,
+                chg.life_cycle_id, chg.last_status_id, chg.is_churned, chg.churned_date,
+                @effective_date, '9999-12-31', 1,
+                chg.batch_id, SYSUTCDATETIME()
+            FROM #Rest_SCD2 chg;
+
+            SET @rows_inserted = @rows_inserted + @@ROWCOUNT;
+
+            -- B.3 Update new surrogate key in change log
+            UPDATE l
+            SET l.surrogate_key_new = tgt.restaurant_key
+            FROM control.dim_change_log l
+            INNER JOIN dwh.dim_restaurant tgt
+                ON l.business_id = tgt.restaurant_id
+               AND tgt.is_current = 1
+            WHERE l.batch_id = @batch_id
+              AND l.dimension_name = 'dim_restaurant'
+              AND l.surrogate_key_new IS NULL;
+        END;
+
+        -- Step C: Handle SCD Type 1 in-place updates (Demographics/Prep times only; behavioral metrics are enriched post-fact)
+        UPDATE tgt
+        SET tgt.onboard_date           = src.onboard_date,
+            tgt.avg_prep_time_min      = src.avg_prep_time_min,
+            tgt.min_prep_min           = src.min_prep_min,
+            tgt.max_prep_min           = src.max_prep_min,
+            tgt.prep_time_group        = src.prep_time_group,
+            tgt.prep_time_index        = src.prep_time_index,
+            tgt.batch_id               = src.batch_id,
+            tgt.load_timestamp         = SYSUTCDATETIME()
+        FROM dwh.dim_restaurant tgt
+        INNER JOIN #RestPrepared src
+            ON tgt.restaurant_id = src.restaurant_id
+           AND tgt.is_current = 1
+        WHERE NOT EXISTS (SELECT 1 FROM #Rest_SCD2 scd WHERE scd.restaurant_id = tgt.restaurant_id)
+          AND (
+            ISNULL(tgt.onboard_date, '1900-01-01')          <> ISNULL(src.onboard_date, '1900-01-01')
+            OR ISNULL(tgt.avg_prep_time_min, '')            <> ISNULL(src.avg_prep_time_min, '')
+            OR ISNULL(tgt.min_prep_min, -1)                 <> ISNULL(src.min_prep_min, -1)
+            OR ISNULL(tgt.max_prep_min, -1)                 <> ISNULL(src.max_prep_min, -1)
+            OR ISNULL(tgt.prep_time_group, '')              <> ISNULL(src.prep_time_group, '')
+            OR ISNULL(tgt.prep_time_index, 0)               <> ISNULL(src.prep_time_index, 0)
+          );
+
+        SET @rows_updated = @rows_updated + @@ROWCOUNT;
 
         COMMIT TRANSACTION;
 
@@ -1597,15 +1476,13 @@ BEGIN
         'RUNNING', 'Started loading fact_order from ODS', SYSUTCDATETIME()
     );
 
-    DECLARE @merge_actions TABLE (action_type VARCHAR(10));
-
     BEGIN TRY
-        BEGIN TRANSACTION;
-
         SELECT @rows_read = COUNT(*) FROM ods.ods_order
         WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
-        -- 6.3 Set-based MERGE for Fact Order with Dimensional Lookups and Order Lifecycle
+        -- 6.3 Stage and Transform Source Orders with Incremental Dimensional Lookups
+        IF OBJECT_ID('tempdb..#StageOrder') IS NOT NULL DROP TABLE #StageOrder;
+
         ;WITH OrderBase AS (
             SELECT 
                 o.order_id,
@@ -1620,107 +1497,124 @@ BEGIN
                 o.total_amount,
                 o.is_cod,
                 o.is_cancelled,
-                o.batch_id,
-                CASE 
-                    WHEN o.order_timestamp < '2025-06-01' THEN 1
-                    WHEN o.order_timestamp < '2025-08-01' THEN 2
-                    WHEN o.order_timestamp < '2025-10-01' THEN 3
-                    ELSE 4
-                END AS this_period
-            FROM ods.ods_order o
-        ),
-        CustLag AS (
-            SELECT customer_id, order_date, this_period,
-                   LAG(this_period) OVER (PARTITION BY customer_id ORDER BY order_date) AS last_period
-            FROM (SELECT DISTINCT customer_id, order_date, this_period FROM OrderBase) d
-        ),
-        RestLag AS (
-            SELECT restaurant_id, order_date, this_period,
-                   LAG(this_period) OVER (PARTITION BY restaurant_id ORDER BY order_date) AS last_period
-            FROM (SELECT DISTINCT restaurant_id, order_date, this_period FROM OrderBase) d
-        ),
-        DriverLag AS (
-            SELECT delivery_partner_id, order_date, this_period,
-                   LAG(this_period) OVER (PARTITION BY delivery_partner_id ORDER BY order_date) AS last_period
-            FROM (SELECT DISTINCT delivery_partner_id, order_date, this_period FROM OrderBase WHERE delivery_partner_id IS NOT NULL) d
-        ),
-        SourceOrders AS (
-            SELECT 
-                o.order_id,
-                ISNULL(d.date_key, -1)                          AS order_date_key,
-                ISNULL(t.time_key, -1)                          AS order_time_key,
-                ISNULL(c.customer_key, -1)                      AS customer_key,
-                ISNULL(r.restaurant_key, -1)                    AS restaurant_key,
-                ISNULL(dp.delivery_partner_key, -1)             AS delivery_partner_key,
-                o.subtotal_amount,
-                o.discount_amount,
-                o.delivery_fee,
-                o.total_amount,
-                (ISNULL(o.subtotal_amount, 0) - ISNULL(o.discount_amount, 0)) AS net_order_value,
-                o.is_cod,
-                o.is_cancelled,
-                CASE 
-                    WHEN cl.last_period IS NULL THEN 1
-                    WHEN cl.last_period = cl.this_period OR cl.last_period + 1 = cl.this_period THEN 2
-                    WHEN cl.last_period + 2 <= cl.this_period THEN 3
-                    ELSE 0
-                END AS cust_lc_id,
-                CASE 
-                    WHEN rl.last_period IS NULL THEN 1
-                    WHEN rl.last_period = rl.this_period OR rl.last_period + 1 = rl.this_period THEN 2
-                    WHEN rl.last_period + 2 <= rl.this_period THEN 3
-                    ELSE 0
-                END AS rest_lc_id,
-                CASE 
-                    WHEN o.delivery_partner_id IS NULL THEN NULL
-                    WHEN dl.last_period IS NULL THEN 1
-                    WHEN dl.last_period = dl.this_period OR dl.last_period + 1 = dl.this_period THEN 2
-                    WHEN dl.last_period + 2 <= dl.this_period THEN 3
-                    ELSE 0
-                END AS driver_lc_id,
                 o.batch_id
-            FROM OrderBase o
-            LEFT JOIN dwh.dim_date d
-                ON d.date_key = CAST(CONVERT(VARCHAR(8), o.order_timestamp, 112) AS INT)
-            LEFT JOIN dwh.dim_time t
-                ON t.time_key = (DATEPART(HOUR, o.order_timestamp) * 100) + DATEPART(MINUTE, o.order_timestamp)
-            LEFT JOIN dwh.dim_customer c
-                ON o.customer_id = c.customer_id
-            LEFT JOIN dwh.dim_restaurant r
-                ON o.restaurant_id = r.restaurant_id
-            LEFT JOIN dwh.dim_delivery_partner dp
-                ON o.delivery_partner_id = dp.delivery_partner_id
-            LEFT JOIN CustLag cl
-                ON o.customer_id = cl.customer_id AND o.order_date = cl.order_date
-            LEFT JOIN RestLag rl
-                ON o.restaurant_id = rl.restaurant_id AND o.order_date = rl.order_date
-            LEFT JOIN DriverLag dl
-                ON o.delivery_partner_id = dl.delivery_partner_id AND o.order_date = dl.order_date
+            FROM ods.ods_order o
             WHERE (@batch_id = -1 OR o.batch_id = @batch_id)
+        ),
+        CustHistLastOrder AS (
+            SELECT c.customer_id, MAX(d.full_date) AS hist_last_order_date
+            FROM dwh.fact_order fo
+            JOIN dwh.dim_date d ON fo.order_date_key = d.date_key
+            JOIN dwh.dim_customer c ON fo.customer_key = c.customer_key
+            WHERE (@batch_id = -1 OR fo.batch_id <> @batch_id)
+              AND EXISTS (SELECT 1 FROM OrderBase ob WHERE ob.customer_id = c.customer_id)
+            GROUP BY c.customer_id
+        ),
+        CustIntraLag AS (
+            SELECT customer_id, order_date,
+                   LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS intra_last_order_date
+            FROM (SELECT DISTINCT customer_id, order_date FROM OrderBase) d
+        ),
+        RestHistLastOrder AS (
+            SELECT r.restaurant_id, MAX(d.full_date) AS hist_last_order_date
+            FROM dwh.fact_order fo
+            JOIN dwh.dim_date d ON fo.order_date_key = d.date_key
+            JOIN dwh.dim_restaurant r ON fo.restaurant_key = r.restaurant_key
+            WHERE (@batch_id = -1 OR fo.batch_id <> @batch_id)
+              AND EXISTS (SELECT 1 FROM OrderBase ob WHERE ob.restaurant_id = r.restaurant_id)
+            GROUP BY r.restaurant_id
+        ),
+        RestIntraLag AS (
+            SELECT restaurant_id, order_date,
+                   LAG(order_date) OVER (PARTITION BY restaurant_id ORDER BY order_date) AS intra_last_order_date
+            FROM (SELECT DISTINCT restaurant_id, order_date FROM OrderBase) d
+        ),
+        DriverHistLastOrder AS (
+            SELECT dp.delivery_partner_id, MAX(d.full_date) AS hist_last_order_date
+            FROM dwh.fact_order fo
+            JOIN dwh.dim_date d ON fo.order_date_key = d.date_key
+            JOIN dwh.dim_delivery_partner dp ON fo.delivery_partner_key = dp.delivery_partner_key
+            WHERE (@batch_id = -1 OR fo.batch_id <> @batch_id)
+              AND EXISTS (SELECT 1 FROM OrderBase ob WHERE ob.delivery_partner_id = dp.delivery_partner_id)
+            GROUP BY dp.delivery_partner_id
+        ),
+        DriverIntraLag AS (
+            SELECT delivery_partner_id, order_date,
+                   LAG(order_date) OVER (PARTITION BY delivery_partner_id ORDER BY order_date) AS intra_last_order_date
+            FROM (SELECT DISTINCT delivery_partner_id, order_date FROM OrderBase WHERE delivery_partner_id IS NOT NULL) d
         )
-        MERGE dwh.fact_order AS target
-        USING SourceOrders AS source
-        ON target.order_id = source.order_id
+        SELECT 
+            o.order_id,
+            ISNULL(d.date_key, -1)                          AS order_date_key,
+            ISNULL(t.time_key, -1)                          AS order_time_key,
+            ISNULL(c.customer_key, -1)                      AS customer_key,
+            ISNULL(r.restaurant_key, -1)                    AS restaurant_key,
+            ISNULL(dp.delivery_partner_key, -1)             AS delivery_partner_key,
+            o.subtotal_amount,
+            o.discount_amount,
+            o.delivery_fee,
+            o.total_amount,
+            (ISNULL(o.subtotal_amount, 0) - ISNULL(o.discount_amount, 0)) AS net_order_value,
+            o.is_cod,
+            o.is_cancelled,
+            CASE 
+                WHEN COALESCE(cl.intra_last_order_date, chl.hist_last_order_date) IS NULL THEN 1
+                WHEN DATEDIFF(DAY, COALESCE(cl.intra_last_order_date, chl.hist_last_order_date), o.order_date) <= 60 THEN 2
+                WHEN DATEDIFF(DAY, COALESCE(cl.intra_last_order_date, chl.hist_last_order_date), o.order_date) > 60 THEN 3
+                ELSE 0
+            END AS cust_lc_id,
+            CASE 
+                WHEN COALESCE(rl.intra_last_order_date, rhl.hist_last_order_date) IS NULL THEN 1
+                WHEN DATEDIFF(DAY, COALESCE(rl.intra_last_order_date, rhl.hist_last_order_date), o.order_date) <= 60 THEN 2
+                WHEN DATEDIFF(DAY, COALESCE(rl.intra_last_order_date, rhl.hist_last_order_date), o.order_date) > 60 THEN 3
+                ELSE 0
+            END AS rest_lc_id,
+            CASE 
+                WHEN o.delivery_partner_id IS NULL THEN NULL
+                WHEN COALESCE(dl.intra_last_order_date, dhl.hist_last_order_date) IS NULL THEN 1
+                WHEN DATEDIFF(DAY, COALESCE(dl.intra_last_order_date, dhl.hist_last_order_date), o.order_date) <= 30 THEN 2
+                WHEN DATEDIFF(DAY, COALESCE(dl.intra_last_order_date, dhl.hist_last_order_date), o.order_date) > 30 THEN 3
+                ELSE 0
+            END AS driver_lc_id,
+            o.batch_id
+        INTO #StageOrder
+        FROM OrderBase o
+        LEFT JOIN dwh.dim_date d
+            ON d.date_key = CAST(CONVERT(VARCHAR(8), o.order_timestamp, 112) AS INT)
+        LEFT JOIN dwh.dim_time t
+            ON t.time_key = (DATEPART(HOUR, o.order_timestamp) * 100) + DATEPART(MINUTE, o.order_timestamp)
+        LEFT JOIN dwh.dim_customer c
+            ON o.customer_id = c.customer_id
+           AND o.order_date >= c.valid_from
+           AND o.order_date <= c.valid_to
+        LEFT JOIN dwh.dim_restaurant r
+            ON o.restaurant_id = r.restaurant_id
+           AND o.order_date >= r.valid_from
+           AND o.order_date <= r.valid_to
+        LEFT JOIN dwh.dim_delivery_partner dp
+            ON o.delivery_partner_id = dp.delivery_partner_id
+           AND o.order_date >= dp.valid_from
+           AND o.order_date <= dp.valid_to
+        LEFT JOIN CustIntraLag cl
+            ON o.customer_id = cl.customer_id AND o.order_date = cl.order_date
+        LEFT JOIN CustHistLastOrder chl
+            ON o.customer_id = chl.customer_id
+        LEFT JOIN RestIntraLag rl
+            ON o.restaurant_id = rl.restaurant_id AND o.order_date = rl.order_date
+        LEFT JOIN RestHistLastOrder rhl
+            ON o.restaurant_id = rhl.restaurant_id
+        LEFT JOIN DriverIntraLag dl
+            ON o.delivery_partner_id = dl.delivery_partner_id AND o.order_date = dl.order_date
+        LEFT JOIN DriverHistLastOrder dhl
+            ON o.delivery_partner_id = dhl.delivery_partner_id;
 
-        -- When order status or financial amounts change, update fact record
-        WHEN MATCHED AND (
-            target.order_date_key                               <> source.order_date_key
-            OR target.order_time_key                            <> source.order_time_key
-            OR target.customer_key                              <> source.customer_key
-            OR target.restaurant_key                            <> source.restaurant_key
-            OR target.delivery_partner_key                      <> source.delivery_partner_key
-            OR ISNULL(target.subtotal_amount, -1)               <> ISNULL(source.subtotal_amount, -1)
-            OR ISNULL(target.discount_amount, -1)               <> ISNULL(source.discount_amount, -1)
-            OR ISNULL(target.delivery_fee, -1)                  <> ISNULL(source.delivery_fee, -1)
-            OR ISNULL(target.total_amount, -1)                  <> ISNULL(source.total_amount, -1)
-            OR ISNULL(target.net_order_value, -1)              <> ISNULL(source.net_order_value, -1)
-            OR ISNULL(target.is_cod, 2)                         <> ISNULL(source.is_cod, 2)
-            OR ISNULL(target.is_cancelled, 2)                   <> ISNULL(source.is_cancelled, 2)
-            OR ISNULL(target.cust_lc_id, 255)                   <> ISNULL(source.cust_lc_id, 255)
-            OR ISNULL(target.rest_lc_id, 255)                   <> ISNULL(source.rest_lc_id, 255)
-            OR ISNULL(target.driver_lc_id, 255)                 <> ISNULL(source.driver_lc_id, 255)
-        )
-        THEN UPDATE SET
+        CREATE CLUSTERED INDEX CIX_StageOrder_id ON #StageOrder(order_id);
+
+        BEGIN TRANSACTION;
+
+        -- 6.4 Targeted UPDATE on Modified Orders
+        UPDATE target
+        SET 
             target.order_date_key       = source.order_date_key,
             target.order_time_key       = source.order_time_key,
             target.customer_key         = source.customer_key,
@@ -1738,59 +1632,82 @@ BEGIN
             target.driver_lc_id         = source.driver_lc_id,
             target.batch_id             = source.batch_id,
             target.load_timestamp       = SYSUTCDATETIME()
+        FROM dwh.fact_order target
+        INNER JOIN #StageOrder source
+            ON target.order_id = source.order_id
+        WHERE (
+            target.order_date_key                               <> source.order_date_key
+            OR target.order_time_key                            <> source.order_time_key
+            OR target.customer_key                              <> source.customer_key
+            OR target.restaurant_key                            <> source.restaurant_key
+            OR target.delivery_partner_key                      <> source.delivery_partner_key
+            OR ISNULL(target.subtotal_amount, -1)               <> ISNULL(source.subtotal_amount, -1)
+            OR ISNULL(target.discount_amount, -1)               <> ISNULL(source.discount_amount, -1)
+            OR ISNULL(target.delivery_fee, -1)                  <> ISNULL(source.delivery_fee, -1)
+            OR ISNULL(target.total_amount, -1)                  <> ISNULL(source.total_amount, -1)
+            OR ISNULL(target.net_order_value, -1)              <> ISNULL(source.net_order_value, -1)
+            OR ISNULL(target.is_cod, 2)                         <> ISNULL(source.is_cod, 2)
+            OR ISNULL(target.is_cancelled, 2)                   <> ISNULL(source.is_cancelled, 2)
+            OR ISNULL(target.cust_lc_id, 255)                   <> ISNULL(source.cust_lc_id, 255)
+            OR ISNULL(target.rest_lc_id, 255)                   <> ISNULL(source.rest_lc_id, 255)
+            OR ISNULL(target.driver_lc_id, 255)                 <> ISNULL(source.driver_lc_id, 255)
+        );
 
-        -- When new order, insert fact record
-        WHEN NOT MATCHED BY TARGET THEN
-            INSERT
-            (
-                order_id,
-                order_date_key,
-                order_time_key,
-                customer_key,
-                restaurant_key,
-                delivery_partner_key,
-                subtotal_amount,
-                discount_amount,
-                delivery_fee,
-                total_amount,
-                net_order_value,
-                is_cod,
-                is_cancelled,
-                cust_lc_id,
-                rest_lc_id,
-                driver_lc_id,
-                batch_id,
-                load_timestamp
-            )
-            VALUES
-            (
-                source.order_id,
-                source.order_date_key,
-                source.order_time_key,
-                source.customer_key,
-                source.restaurant_key,
-                source.delivery_partner_key,
-                source.subtotal_amount,
-                source.discount_amount,
-                source.delivery_fee,
-                source.total_amount,
-                source.net_order_value,
-                source.is_cod,
-                source.is_cancelled,
-                source.cust_lc_id,
-                source.rest_lc_id,
-                source.driver_lc_id,
-                source.batch_id,
-                SYSUTCDATETIME()
-            )
-        OUTPUT $action INTO @merge_actions;
+        SET @rows_updated = @@ROWCOUNT;
 
+        -- 6.5 Fast Bulk INSERT for Brand New Orders (Minimal Logging / Direct Path Insert)
+        INSERT INTO dwh.fact_order WITH (TABLOCK)
+        (
+            order_id,
+            order_date_key,
+            order_time_key,
+            customer_key,
+            restaurant_key,
+            delivery_partner_key,
+            subtotal_amount,
+            discount_amount,
+            delivery_fee,
+            total_amount,
+            net_order_value,
+            is_cod,
+            is_cancelled,
+            cust_lc_id,
+            rest_lc_id,
+            driver_lc_id,
+            batch_id,
+            load_timestamp
+        )
         SELECT 
-            @rows_inserted = COUNT(CASE WHEN action_type = 'INSERT' THEN 1 END),
-            @rows_updated  = COUNT(CASE WHEN action_type = 'UPDATE' THEN 1 END)
-        FROM @merge_actions;
+            source.order_id,
+            source.order_date_key,
+            source.order_time_key,
+            source.customer_key,
+            source.restaurant_key,
+            source.delivery_partner_key,
+            source.subtotal_amount,
+            source.discount_amount,
+            source.delivery_fee,
+            source.total_amount,
+            source.net_order_value,
+            source.is_cod,
+            source.is_cancelled,
+            source.cust_lc_id,
+            source.rest_lc_id,
+            source.driver_lc_id,
+            source.batch_id,
+            SYSUTCDATETIME()
+        FROM #StageOrder source
+        WHERE NOT EXISTS (
+            SELECT 1 
+            FROM dwh.fact_order target
+            WHERE target.order_id = source.order_id
+        );
+
+        SET @rows_inserted = @@ROWCOUNT;
 
         COMMIT TRANSACTION;
+
+        IF OBJECT_ID('tempdb..#StageOrder') IS NOT NULL DROP TABLE #StageOrder;
 
         -- 6.4 Update Successful Log
         UPDATE control.etl_log
@@ -1813,6 +1730,7 @@ BEGIN
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        IF OBJECT_ID('tempdb..#StageOrder') IS NOT NULL DROP TABLE #StageOrder;
 
         DECLARE @ErrorMsg NVARCHAR(4000) = ERROR_MESSAGE();
 
@@ -1891,53 +1809,41 @@ BEGIN
         'RUNNING', 'Started loading fact_order_item from ODS', SYSUTCDATETIME()
     );
 
-    DECLARE @merge_actions TABLE (action_type VARCHAR(10));
-
     BEGIN TRY
-        BEGIN TRANSACTION;
-
         SELECT @rows_read = COUNT(*) FROM ods.ods_order_item
         WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
-        -- 7.3 Set-based MERGE for Fact Order Item with Dimensional Lookups
-        MERGE dwh.fact_order_item AS target
-        USING (
-            SELECT 
-                oi.order_item_id,
-                oi.order_id,
-                ISNULL(fo.order_date_key, -1)                  AS order_date_key,
-                ISNULL(fo.customer_key, -1)                    AS customer_key,
-                ISNULL(fo.restaurant_key, -1)                  AS restaurant_key,
-                ISNULL(mi.menu_item_key, -1)                   AS menu_item_key,
-                oi.quantity,
-                oi.unit_price,
-                CAST(oi.quantity * oi.unit_price AS DECIMAL(18,2)) AS gross_line_total,
-                oi.item_discount,
-                CAST((oi.quantity * oi.unit_price) - oi.item_discount AS DECIMAL(18,2)) AS net_line_total,
-                oi.batch_id
-            FROM ods.ods_order_item oi
-            LEFT JOIN dwh.fact_order fo
-                ON oi.order_id = fo.order_id
-            LEFT JOIN dwh.dim_menu_item mi
-                ON oi.menu_item_id = mi.menu_item_id
-            WHERE (@batch_id = -1 OR oi.batch_id = @batch_id)
-        ) AS source
-        ON target.order_item_id = source.order_item_id
+        -- 7.3 Stage and Transform Source Order Items with Dimensional Lookups
+        IF OBJECT_ID('tempdb..#StageOrderItem') IS NOT NULL DROP TABLE #StageOrderItem;
 
-        -- When line item measures or dimensions change, update fact record
-        WHEN MATCHED AND (
-            target.order_id                                     <> source.order_id
-            OR target.order_date_key                            <> source.order_date_key
-            OR target.customer_key                              <> source.customer_key
-            OR target.restaurant_key                            <> source.restaurant_key
-            OR target.menu_item_key                             <> source.menu_item_key
-            OR ISNULL(target.quantity, -1)                      <> ISNULL(source.quantity, -1)
-            OR ISNULL(target.unit_price, -1)                    <> ISNULL(source.unit_price, -1)
-            OR ISNULL(target.gross_line_total, -1)              <> ISNULL(source.gross_line_total, -1)
-            OR ISNULL(target.item_discount, -1)                 <> ISNULL(source.item_discount, -1)
-            OR ISNULL(target.net_line_total, -1)                <> ISNULL(source.net_line_total, -1)
-        )
-        THEN UPDATE SET
+        SELECT 
+            oi.order_item_id,
+            oi.order_id,
+            ISNULL(fo.order_date_key, -1)                  AS order_date_key,
+            ISNULL(fo.customer_key, -1)                    AS customer_key,
+            ISNULL(fo.restaurant_key, -1)                  AS restaurant_key,
+            ISNULL(mi.menu_item_key, -1)                   AS menu_item_key,
+            oi.quantity,
+            oi.unit_price,
+            CAST(oi.quantity * oi.unit_price AS DECIMAL(18,2)) AS gross_line_total,
+            oi.item_discount,
+            CAST((oi.quantity * oi.unit_price) - oi.item_discount AS DECIMAL(18,2)) AS net_line_total,
+            oi.batch_id
+        INTO #StageOrderItem
+        FROM ods.ods_order_item oi
+        LEFT JOIN dwh.fact_order fo
+            ON oi.order_id = fo.order_id
+        LEFT JOIN dwh.dim_menu_item mi
+            ON oi.menu_item_id = mi.menu_item_id
+        WHERE (@batch_id = -1 OR oi.batch_id = @batch_id);
+
+        CREATE CLUSTERED INDEX CIX_StageOrderItem_id ON #StageOrderItem(order_item_id);
+
+        BEGIN TRANSACTION;
+
+        -- 7.4 Targeted UPDATE on Modified Line Items
+        UPDATE target
+        SET 
             target.order_id          = source.order_id,
             target.order_date_key    = source.order_date_key,
             target.customer_key      = source.customer_key,
@@ -1950,49 +1856,67 @@ BEGIN
             target.net_line_total    = source.net_line_total,
             target.batch_id          = source.batch_id,
             target.load_timestamp    = SYSUTCDATETIME()
+        FROM dwh.fact_order_item target
+        INNER JOIN #StageOrderItem source
+            ON target.order_item_id = source.order_item_id
+        WHERE (
+            target.order_id                                     <> source.order_id
+            OR target.order_date_key                            <> source.order_date_key
+            OR target.customer_key                              <> source.customer_key
+            OR target.restaurant_key                            <> source.restaurant_key
+            OR target.menu_item_key                             <> source.menu_item_key
+            OR ISNULL(target.quantity, -1)                      <> ISNULL(source.quantity, -1)
+            OR ISNULL(target.unit_price, -1)                    <> ISNULL(source.unit_price, -1)
+            OR ISNULL(target.gross_line_total, -1)              <> ISNULL(source.gross_line_total, -1)
+            OR ISNULL(target.item_discount, -1)                 <> ISNULL(source.item_discount, -1)
+            OR ISNULL(target.net_line_total, -1)                <> ISNULL(source.net_line_total, -1)
+        );
 
-        -- When new line item, insert fact record
-        WHEN NOT MATCHED BY TARGET THEN
-            INSERT
-            (
-                order_item_id,
-                order_id,
-                order_date_key,
-                customer_key,
-                restaurant_key,
-                menu_item_key,
-                quantity,
-                unit_price,
-                gross_line_total,
-                item_discount,
-                net_line_total,
-                batch_id,
-                load_timestamp
-            )
-            VALUES
-            (
-                source.order_item_id,
-                source.order_id,
-                source.order_date_key,
-                source.customer_key,
-                source.restaurant_key,
-                source.menu_item_key,
-                source.quantity,
-                source.unit_price,
-                source.gross_line_total,
-                source.item_discount,
-                source.net_line_total,
-                source.batch_id,
-                SYSUTCDATETIME()
-            )
-        OUTPUT $action INTO @merge_actions;
+        SET @rows_updated = @@ROWCOUNT;
 
+        -- 7.5 Fast Bulk INSERT for Brand New Line Items (Minimal Logging / Direct Path Insert)
+        INSERT INTO dwh.fact_order_item WITH (TABLOCK)
+        (
+            order_item_id,
+            order_id,
+            order_date_key,
+            customer_key,
+            restaurant_key,
+            menu_item_key,
+            quantity,
+            unit_price,
+            gross_line_total,
+            item_discount,
+            net_line_total,
+            batch_id,
+            load_timestamp
+        )
         SELECT 
-            @rows_inserted = COUNT(CASE WHEN action_type = 'INSERT' THEN 1 END),
-            @rows_updated  = COUNT(CASE WHEN action_type = 'UPDATE' THEN 1 END)
-        FROM @merge_actions;
+            source.order_item_id,
+            source.order_id,
+            source.order_date_key,
+            source.customer_key,
+            source.restaurant_key,
+            source.menu_item_key,
+            source.quantity,
+            source.unit_price,
+            source.gross_line_total,
+            source.item_discount,
+            source.net_line_total,
+            source.batch_id,
+            SYSUTCDATETIME()
+        FROM #StageOrderItem source
+        WHERE NOT EXISTS (
+            SELECT 1 
+            FROM dwh.fact_order_item target
+            WHERE target.order_item_id = source.order_item_id
+        );
+
+        SET @rows_inserted = @@ROWCOUNT;
 
         COMMIT TRANSACTION;
+
+        IF OBJECT_ID('tempdb..#StageOrderItem') IS NOT NULL DROP TABLE #StageOrderItem;
 
         -- 7.4 Update Successful Log
         UPDATE control.etl_log
@@ -2015,6 +1939,7 @@ BEGIN
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        IF OBJECT_ID('tempdb..#StageOrderItem') IS NOT NULL DROP TABLE #StageOrderItem;
 
         DECLARE @ErrorMsg NVARCHAR(4000) = ERROR_MESSAGE();
 
@@ -2099,128 +2024,102 @@ BEGIN
         'RUNNING', 'Started loading fact_delivery_performance from ODS', SYSUTCDATETIME()
     );
 
-    DECLARE @merge_actions TABLE (action_type VARCHAR(10));
-
     BEGIN TRY
-        BEGIN TRANSACTION;
-
         SELECT @rows_read = COUNT(*) FROM ods.ods_delivery_performance
         WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
-        -- 8.3 Set-based MERGE for Fact Delivery Performance
-        MERGE dwh.fact_delivery_performance AS target
-        USING (
-            SELECT 
-                dp.delivery_id,
-                dp.order_id,
-                ISNULL(fo.order_date_key, -1)                          AS delivery_date_key,
-                ISNULL(fo.customer_key, -1)                            AS customer_key,
-                ISNULL(fo.restaurant_key, -1)                          AS restaurant_key,
-                ISNULL(fo.delivery_partner_key, -1)                    AS delivery_partner_key,
-                dp.order_item,
-                dp.delivery_item,
-                CAST(CASE WHEN dp.delivery_item >= dp.order_item THEN 1 ELSE 0 END AS BIT) AS is_infull,
-                dp.prep_time,
-                dp.rider_wait_time,
-                dp.travel_time,
-                dp.expected_delivery_time_min,
-                dp.actual_delivery_time_min,
-                (dp.actual_delivery_time_min - dp.expected_delivery_time_min) AS delivery_delay_min,
-                CAST(CASE WHEN dp.actual_delivery_time_min <= dp.expected_delivery_time_min THEN 1 ELSE 0 END AS BIT) AS is_ontime,
-                CASE 
-                    WHEN dp.actual_delivery_time_min > dp.expected_delivery_time_min 
-                    THEN (dp.actual_delivery_time_min - dp.expected_delivery_time_min) 
-                    ELSE NULL 
-                END AS late_time,
-                CASE 
-                    WHEN dp.prep_time > dr.max_prep_min 
-                    THEN (dp.prep_time - dr.max_prep_min) 
-                    ELSE NULL 
-                END AS prep_late_time,
-                CASE 
-                    WHEN dp.actual_delivery_time_min > dp.expected_delivery_time_min 
-                         AND (dp.prep_time - dr.max_prep_min) > 0 
-                         AND (dp.prep_time - dr.max_prep_min) >= (dp.actual_delivery_time_min - dp.expected_delivery_time_min)
-                        THEN 'Prep-Time'
-                    WHEN dp.actual_delivery_time_min > dp.expected_delivery_time_min 
-                         AND (dp.prep_time - dr.max_prep_min) > 0 
-                         AND (dp.prep_time - dr.max_prep_min) < (dp.actual_delivery_time_min - dp.expected_delivery_time_min)
-                        THEN 'Both'
-                    WHEN dp.actual_delivery_time_min > dp.expected_delivery_time_min 
-                         AND (dp.prep_time <= dr.max_prep_min OR dr.max_prep_min IS NULL) 
-                         AND (dp.actual_delivery_time_min - dp.expected_delivery_time_min) > 0
-                        THEN 'Travel-Time'
-                    ELSE NULL
-                END AS late_reason,
-                CAST(CASE WHEN dp.actual_delivery_time_min <= dp.expected_delivery_time_min AND dp.delivery_item >= dp.order_item THEN 1 ELSE 0 END AS BIT) AS is_otif,
-                dp.distance_km,
-                CASE 
-                    WHEN dp.distance_km <= 3.0 THEN '< 3 km'
-                    WHEN dp.distance_km <= 5.0 THEN '3 - 5 km'
-                    WHEN dp.distance_km > 5.0  THEN '> 5 km'
-                    ELSE NULL
-                END AS distance_bins,
-                CASE 
-                    WHEN dp.travel_time <= 15 THEN '< 15 mins'
-                    WHEN dp.travel_time <= 30 THEN '15 - 30 mins'
-                    WHEN dp.travel_time <= 45 THEN '30 - 45 mins'
-                    WHEN dp.travel_time > 45  THEN '> 45 mins'
-                    ELSE NULL
-                END AS travel_bins,
-                CASE 
-                    WHEN dp.prep_time <= 15 THEN '< 15 mins'
-                    WHEN dp.prep_time <= 30 THEN '15 - 30 mins'
-                    WHEN dp.prep_time <= 45 THEN '30 - 45 mins'
-                    WHEN dp.prep_time <= 60 THEN '45 - 60 mins'
-                    WHEN dp.prep_time > 60  THEN '> 60 mins'
-                    ELSE NULL
-                END AS prep_time_bins,
-                CASE 
-                    WHEN dp.actual_delivery_time_min <= 30 THEN '< 30 mins'
-                    WHEN dp.actual_delivery_time_min <= 45 THEN '30 - 45 mins'
-                    WHEN dp.actual_delivery_time_min <= 55 THEN '45 - 55 mins'
-                    WHEN dp.actual_delivery_time_min <= 65 THEN '55 - 65 mins'
-                    WHEN dp.actual_delivery_time_min > 65  THEN '> 65 mins'
-                    ELSE NULL
-                END AS actual_bins,
-                dp.batch_id
-            FROM ods.ods_delivery_performance dp
-            LEFT JOIN dwh.fact_order fo
-                ON dp.order_id = fo.order_id
-            LEFT JOIN dwh.dim_restaurant dr
-                ON fo.restaurant_key = dr.restaurant_key
-            WHERE (@batch_id = -1 OR dp.batch_id = @batch_id)
-        ) AS source
-        ON target.delivery_id = source.delivery_id
+        -- 8.3 Stage and Transform Source Delivery Performance
+        IF OBJECT_ID('tempdb..#StageDelivPerf') IS NOT NULL DROP TABLE #StageDelivPerf;
 
-        -- When operational metrics or dimensions change, update fact record
-        WHEN MATCHED AND (
-            target.order_id                                            <> source.order_id
-            OR target.delivery_date_key                                <> source.delivery_date_key
-            OR target.customer_key                                     <> source.customer_key
-            OR target.restaurant_key                                   <> source.restaurant_key
-            OR target.delivery_partner_key                             <> source.delivery_partner_key
-            OR ISNULL(target.order_item, -1)                           <> ISNULL(source.order_item, -1)
-            OR ISNULL(target.delivery_item, -1)                        <> ISNULL(source.delivery_item, -1)
-            OR ISNULL(target.is_infull, 2)                             <> ISNULL(source.is_infull, 2)
-            OR ISNULL(target.prep_time, -1)                            <> ISNULL(source.prep_time, -1)
-            OR ISNULL(target.rider_wait_time, -1)                      <> ISNULL(source.rider_wait_time, -1)
-            OR ISNULL(target.travel_time, -1)                          <> ISNULL(source.travel_time, -1)
-            OR ISNULL(target.expected_delivery_time_min, -1)           <> ISNULL(source.expected_delivery_time_min, -1)
-            OR ISNULL(target.actual_delivery_time_min, -1)             <> ISNULL(source.actual_delivery_time_min, -1)
-            OR ISNULL(target.delivery_delay_min, -9999)                <> ISNULL(source.delivery_delay_min, -9999)
-            OR ISNULL(target.is_ontime, 2)                             <> ISNULL(source.is_ontime, 2)
-            OR ISNULL(target.late_time, -1)                            <> ISNULL(source.late_time, -1)
-            OR ISNULL(target.prep_late_time, -1)                       <> ISNULL(source.prep_late_time, -1)
-            OR ISNULL(target.late_reason, '')                          <> ISNULL(source.late_reason, '')
-            OR ISNULL(target.is_otif, 2)                               <> ISNULL(source.is_otif, 2)
-            OR ISNULL(target.distance_km, -1)                          <> ISNULL(source.distance_km, -1)
-            OR ISNULL(target.distance_bins, '')                        <> ISNULL(source.distance_bins, '')
-            OR ISNULL(target.travel_bins, '')                          <> ISNULL(source.travel_bins, '')
-            OR ISNULL(target.prep_time_bins, '')                       <> ISNULL(source.prep_time_bins, '')
-            OR ISNULL(target.actual_bins, '')                          <> ISNULL(source.actual_bins, '')
-        )
-        THEN UPDATE SET
+        SELECT 
+            dp.delivery_id,
+            dp.order_id,
+            ISNULL(fo.order_date_key, -1)                          AS delivery_date_key,
+            ISNULL(fo.customer_key, -1)                            AS customer_key,
+            ISNULL(fo.restaurant_key, -1)                          AS restaurant_key,
+            ISNULL(fo.delivery_partner_key, -1)                    AS delivery_partner_key,
+            dp.order_item,
+            dp.delivery_item,
+            CAST(CASE WHEN dp.delivery_item >= dp.order_item THEN 1 ELSE 0 END AS BIT) AS is_infull,
+            dp.prep_time,
+            dp.rider_wait_time,
+            dp.travel_time,
+            dp.expected_delivery_time_min,
+            dp.actual_delivery_time_min,
+            (dp.actual_delivery_time_min - dp.expected_delivery_time_min) AS delivery_delay_min,
+            CAST(CASE WHEN dp.actual_delivery_time_min <= dp.expected_delivery_time_min THEN 1 ELSE 0 END AS BIT) AS is_ontime,
+            CASE 
+                WHEN dp.actual_delivery_time_min > dp.expected_delivery_time_min 
+                THEN (dp.actual_delivery_time_min - dp.expected_delivery_time_min) 
+                ELSE NULL 
+            END AS late_time,
+            CASE 
+                WHEN dp.prep_time > dr.max_prep_min 
+                THEN (dp.prep_time - dr.max_prep_min) 
+                ELSE NULL 
+            END AS prep_late_time,
+            CASE 
+                WHEN dp.actual_delivery_time_min > dp.expected_delivery_time_min 
+                     AND (dp.prep_time - dr.max_prep_min) > 0 
+                     AND (dp.prep_time - dr.max_prep_min) >= (dp.actual_delivery_time_min - dp.expected_delivery_time_min)
+                    THEN 'Prep-Time'
+                WHEN dp.actual_delivery_time_min > dp.expected_delivery_time_min 
+                     AND (dp.prep_time - dr.max_prep_min) > 0 
+                     AND (dp.prep_time - dr.max_prep_min) < (dp.actual_delivery_time_min - dp.expected_delivery_time_min)
+                    THEN 'Both'
+                WHEN dp.actual_delivery_time_min > dp.expected_delivery_time_min 
+                     AND (dp.prep_time <= dr.max_prep_min OR dr.max_prep_min IS NULL) 
+                     AND (dp.actual_delivery_time_min - dp.expected_delivery_time_min) > 0
+                    THEN 'Travel-Time'
+                ELSE NULL 
+            END AS late_reason,
+            CAST(CASE WHEN dp.actual_delivery_time_min <= dp.expected_delivery_time_min AND dp.delivery_item >= dp.order_item THEN 1 ELSE 0 END AS BIT) AS is_otif,
+            dp.distance_km,
+            CASE 
+                WHEN dp.distance_km <= 3.0 THEN '< 3 km'
+                WHEN dp.distance_km <= 5.0 THEN '3 - 5 km'
+                WHEN dp.distance_km > 5.0  THEN '> 5 km'
+                ELSE NULL
+            END AS distance_bins,
+            CASE 
+                WHEN dp.travel_time <= 15 THEN '< 15 mins'
+                WHEN dp.travel_time <= 30 THEN '15 - 30 mins'
+                WHEN dp.travel_time <= 45 THEN '30 - 45 mins'
+                WHEN dp.travel_time > 45  THEN '> 45 mins'
+                ELSE NULL
+            END AS travel_bins,
+            CASE 
+                WHEN dp.prep_time <= 15 THEN '< 15 mins'
+                WHEN dp.prep_time <= 30 THEN '15 - 30 mins'
+                WHEN dp.prep_time <= 45 THEN '30 - 45 mins'
+                WHEN dp.prep_time <= 60 THEN '45 - 60 mins'
+                WHEN dp.prep_time > 60  THEN '> 60 mins'
+                ELSE NULL
+            END AS prep_time_bins,
+            CASE 
+                WHEN dp.actual_delivery_time_min <= 30 THEN '< 30 mins'
+                WHEN dp.actual_delivery_time_min <= 45 THEN '30 - 45 mins'
+                WHEN dp.actual_delivery_time_min <= 55 THEN '45 - 55 mins'
+                WHEN dp.actual_delivery_time_min <= 65 THEN '55 - 65 mins'
+                WHEN dp.actual_delivery_time_min > 65  THEN '> 65 mins'
+                ELSE NULL
+            END AS actual_bins,
+            dp.batch_id
+        INTO #StageDelivPerf
+        FROM ods.ods_delivery_performance dp
+        LEFT JOIN dwh.fact_order fo
+            ON dp.order_id = fo.order_id
+        LEFT JOIN dwh.dim_restaurant dr
+            ON fo.restaurant_key = dr.restaurant_key
+        WHERE (@batch_id = -1 OR dp.batch_id = @batch_id);
+
+        CREATE CLUSTERED INDEX CIX_StageDelivPerf_id ON #StageDelivPerf(delivery_id);
+
+        BEGIN TRANSACTION;
+
+        -- 8.4 Targeted UPDATE on Modified Delivery Performance
+        UPDATE target
+        SET 
             target.order_id                   = source.order_id,
             target.delivery_date_key          = source.delivery_date_key,
             target.customer_key               = source.customer_key,
@@ -2247,77 +2146,109 @@ BEGIN
             target.actual_bins                = source.actual_bins,
             target.batch_id                   = source.batch_id,
             target.load_timestamp             = SYSUTCDATETIME()
+        FROM dwh.fact_delivery_performance target
+        INNER JOIN #StageDelivPerf source
+            ON target.delivery_id = source.delivery_id
+        WHERE (
+            target.order_id                                            <> source.order_id
+            OR target.delivery_date_key                                <> source.delivery_date_key
+            OR target.customer_key                                     <> source.customer_key
+            OR target.restaurant_key                                   <> source.restaurant_key
+            OR target.delivery_partner_key                             <> source.delivery_partner_key
+            OR ISNULL(target.order_item, -1)                           <> ISNULL(source.order_item, -1)
+            OR ISNULL(target.delivery_item, -1)                        <> ISNULL(source.delivery_item, -1)
+            OR ISNULL(target.is_infull, 2)                             <> ISNULL(source.is_infull, 2)
+            OR ISNULL(target.prep_time, -1)                            <> ISNULL(source.prep_time, -1)
+            OR ISNULL(target.rider_wait_time, -1)                      <> ISNULL(source.rider_wait_time, -1)
+            OR ISNULL(target.travel_time, -1)                          <> ISNULL(source.travel_time, -1)
+            OR ISNULL(target.expected_delivery_time_min, -1)           <> ISNULL(source.expected_delivery_time_min, -1)
+            OR ISNULL(target.actual_delivery_time_min, -1)             <> ISNULL(source.actual_delivery_time_min, -1)
+            OR ISNULL(target.delivery_delay_min, -9999)                <> ISNULL(source.delivery_delay_min, -9999)
+            OR ISNULL(target.is_ontime, 2)                             <> ISNULL(source.is_ontime, 2)
+            OR ISNULL(target.late_time, -1)                            <> ISNULL(source.late_time, -1)
+            OR ISNULL(target.prep_late_time, -1)                       <> ISNULL(source.prep_late_time, -1)
+            OR ISNULL(target.late_reason, '')                          <> ISNULL(source.late_reason, '')
+            OR ISNULL(target.is_otif, 2)                               <> ISNULL(source.is_otif, 2)
+            OR ISNULL(target.distance_km, -1)                          <> ISNULL(source.distance_km, -1)
+            OR ISNULL(target.distance_bins, '')                        <> ISNULL(source.distance_bins, '')
+            OR ISNULL(target.travel_bins, '')                          <> ISNULL(source.travel_bins, '')
+            OR ISNULL(target.prep_time_bins, '')                       <> ISNULL(source.prep_time_bins, '')
+            OR ISNULL(target.actual_bins, '')                          <> ISNULL(source.actual_bins, '')
+        );
 
-        -- When new delivery record, insert fact record
-        WHEN NOT MATCHED BY TARGET THEN
-            INSERT
-            (
-                delivery_id,
-                order_id,
-                delivery_date_key,
-                customer_key,
-                restaurant_key,
-                delivery_partner_key,
-                order_item,
-                delivery_item,
-                is_infull,
-                prep_time,
-                rider_wait_time,
-                travel_time,
-                expected_delivery_time_min,
-                actual_delivery_time_min,
-                delivery_delay_min,
-                is_ontime,
-                late_time,
-                prep_late_time,
-                late_reason,
-                is_otif,
-                distance_km,
-                distance_bins,
-                travel_bins,
-                prep_time_bins,
-                actual_bins,
-                batch_id,
-                load_timestamp
-            )
-            VALUES
-            (
-                source.delivery_id,
-                source.order_id,
-                source.delivery_date_key,
-                source.customer_key,
-                source.restaurant_key,
-                source.delivery_partner_key,
-                source.order_item,
-                source.delivery_item,
-                source.is_infull,
-                source.prep_time,
-                source.rider_wait_time,
-                source.travel_time,
-                source.expected_delivery_time_min,
-                source.actual_delivery_time_min,
-                source.delivery_delay_min,
-                source.is_ontime,
-                source.late_time,
-                source.prep_late_time,
-                source.late_reason,
-                source.is_otif,
-                source.distance_km,
-                source.distance_bins,
-                source.travel_bins,
-                source.prep_time_bins,
-                source.actual_bins,
-                source.batch_id,
-                SYSUTCDATETIME()
-            )
-        OUTPUT $action INTO @merge_actions;
+        SET @rows_updated = @@ROWCOUNT;
 
+        -- 8.5 Fast Bulk INSERT for Brand New Delivery Records (Minimal Logging / Direct Path Insert)
+        INSERT INTO dwh.fact_delivery_performance WITH (TABLOCK)
+        (
+            delivery_id,
+            order_id,
+            delivery_date_key,
+            customer_key,
+            restaurant_key,
+            delivery_partner_key,
+            order_item,
+            delivery_item,
+            is_infull,
+            prep_time,
+            rider_wait_time,
+            travel_time,
+            expected_delivery_time_min,
+            actual_delivery_time_min,
+            delivery_delay_min,
+            is_ontime,
+            late_time,
+            prep_late_time,
+            late_reason,
+            is_otif,
+            distance_km,
+            distance_bins,
+            travel_bins,
+            prep_time_bins,
+            actual_bins,
+            batch_id,
+            load_timestamp
+        )
         SELECT 
-            @rows_inserted = COUNT(CASE WHEN action_type = 'INSERT' THEN 1 END),
-            @rows_updated  = COUNT(CASE WHEN action_type = 'UPDATE' THEN 1 END)
-        FROM @merge_actions;
+            source.delivery_id,
+            source.order_id,
+            source.delivery_date_key,
+            source.customer_key,
+            source.restaurant_key,
+            source.delivery_partner_key,
+            source.order_item,
+            source.delivery_item,
+            source.is_infull,
+            source.prep_time,
+            source.rider_wait_time,
+            source.travel_time,
+            source.expected_delivery_time_min,
+            source.actual_delivery_time_min,
+            source.delivery_delay_min,
+            source.is_ontime,
+            source.late_time,
+            source.prep_late_time,
+            source.late_reason,
+            source.is_otif,
+            source.distance_km,
+            source.distance_bins,
+            source.travel_bins,
+            source.prep_time_bins,
+            source.actual_bins,
+            source.batch_id,
+            SYSUTCDATETIME()
+        FROM #StageDelivPerf source
+        WHERE NOT EXISTS (
+            SELECT 1 
+            FROM dwh.fact_delivery_performance target
+            WHERE target.delivery_id = source.delivery_id
+        );
+
+        SET @rows_inserted = @@ROWCOUNT;
 
         COMMIT TRANSACTION;
+
+        IF OBJECT_ID('tempdb..#StageDelivPerf') IS NOT NULL DROP TABLE #StageDelivPerf;
 
         -- 8.4 Update Successful Log
         UPDATE control.etl_log
@@ -2340,6 +2271,7 @@ BEGIN
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        IF OBJECT_ID('tempdb..#StageDelivPerf') IS NOT NULL DROP TABLE #StageDelivPerf;
 
         DECLARE @ErrorMsg NVARCHAR(4000) = ERROR_MESSAGE();
 
@@ -2419,65 +2351,56 @@ BEGIN
         'RUNNING', 'Started loading fact_rating from ODS', SYSUTCDATETIME()
     );
 
-    DECLARE @merge_actions TABLE (action_type VARCHAR(10));
-
     BEGIN TRY
-        BEGIN TRANSACTION;
-
         SELECT @rows_read = COUNT(*) FROM ods.ods_rating
         WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
-        -- 9.3 Set-based MERGE for Fact Rating with Dimensional Lookups
-        MERGE dwh.fact_rating AS target
-        USING (
-            SELECT 
-                r.rating_id,
-                r.order_id,
-                ISNULL(d.date_key, -1)                  AS rating_date_key,
-                ISNULL(t.time_key, -1)                  AS rating_time_key,
-                ISNULL(c.customer_key, -1)              AS customer_key,
-                ISNULL(res.restaurant_key, -1)          AS restaurant_key,
-                ISNULL(fo.delivery_partner_key, -1)     AS delivery_partner_key,
-                r.rating,
-                ISNULL(rt.rating_type_id, 0)            AS rating_type_id,
-                r.sentiment_score,
-                ISNULL(st.sentiment_type_id, 0)         AS sentiment_type_id,
-                r.review_text,
-                r.batch_id
-            FROM ods.ods_rating r
-            LEFT JOIN dwh.fact_order fo
-                ON r.order_id = fo.order_id
-            LEFT JOIN dwh.dim_date d
-                ON d.date_key = CAST(CONVERT(VARCHAR(8), r.review_timestamp, 112) AS INT)
-            LEFT JOIN dwh.dim_time t
-                ON t.time_key = (DATEPART(HOUR, r.review_timestamp) * 100) + DATEPART(MINUTE, r.review_timestamp)
-            LEFT JOIN dwh.dim_customer c
-                ON r.customer_id = c.customer_id
-            LEFT JOIN dwh.dim_restaurant res
-                ON r.restaurant_id = res.restaurant_id
-            LEFT JOIN dwh.dim_rating_type rt
-                ON r.rating BETWEEN rt.min_score AND rt.max_score AND rt.rating_type_id <> 0
-            LEFT JOIN dwh.dim_sentiment_type st
-                ON r.sentiment_score BETWEEN st.min_score AND st.max_score AND st.sentiment_type_id <> 0
-            WHERE (@batch_id = -1 OR r.batch_id = @batch_id)
-        ) AS source
-        ON target.rating_id = source.rating_id
+        -- 9.3 Stage and Transform Source Rating with Dimensional Lookups
+        IF OBJECT_ID('tempdb..#StageRating') IS NOT NULL DROP TABLE #StageRating;
 
-        -- When rating attributes change, update fact record
-        WHEN MATCHED AND (
-            target.order_id                                       <> source.order_id
-            OR target.rating_date_key                             <> source.rating_date_key
-            OR target.rating_time_key                             <> source.rating_time_key
-            OR target.customer_key                                <> source.customer_key
-            OR target.restaurant_key                              <> source.restaurant_key
-            OR target.delivery_partner_key                        <> source.delivery_partner_key
-            OR ISNULL(target.rating, -1)                          <> ISNULL(source.rating, -1)
-            OR ISNULL(target.rating_type_id, 255)                 <> ISNULL(source.rating_type_id, 255)
-            OR ISNULL(target.sentiment_score, -99)                <> ISNULL(source.sentiment_score, -99)
-            OR ISNULL(target.sentiment_type_id, 255)              <> ISNULL(source.sentiment_type_id, 255)
-            OR ISNULL(target.review_text, '')                     <> ISNULL(source.review_text, '')
-        )
-        THEN UPDATE SET
+        SELECT 
+            r.rating_id,
+            r.order_id,
+            ISNULL(d.date_key, -1)                  AS rating_date_key,
+            ISNULL(t.time_key, -1)                  AS rating_time_key,
+            ISNULL(fo.customer_key, ISNULL(c.customer_key, -1))          AS customer_key,
+            ISNULL(fo.restaurant_key, ISNULL(res.restaurant_key, -1))      AS restaurant_key,
+            ISNULL(fo.delivery_partner_key, -1) AS delivery_partner_key,
+            r.rating,
+            ISNULL(rt.rating_type_id, 0)        AS rating_type_id,
+            r.sentiment_score,
+            ISNULL(st.sentiment_type_id, 0)     AS sentiment_type_id,
+            r.review_text,
+            r.batch_id
+        INTO #StageRating
+        FROM ods.ods_rating r
+        LEFT JOIN dwh.fact_order fo
+            ON r.order_id = fo.order_id
+        LEFT JOIN dwh.dim_date d
+            ON d.date_key = CAST(CONVERT(VARCHAR(8), r.review_timestamp, 112) AS INT)
+        LEFT JOIN dwh.dim_time t
+            ON t.time_key = (DATEPART(HOUR, r.review_timestamp) * 100) + DATEPART(MINUTE, r.review_timestamp)
+        LEFT JOIN dwh.dim_customer c
+            ON r.customer_id = c.customer_id
+           AND CAST(r.review_timestamp AS DATE) >= c.valid_from
+           AND CAST(r.review_timestamp AS DATE) <= c.valid_to
+        LEFT JOIN dwh.dim_restaurant res
+            ON r.restaurant_id = res.restaurant_id
+           AND CAST(r.review_timestamp AS DATE) >= res.valid_from
+           AND CAST(r.review_timestamp AS DATE) <= res.valid_to
+        LEFT JOIN dwh.dim_rating_type rt
+            ON r.rating BETWEEN rt.min_score AND rt.max_score AND rt.rating_type_id <> 0
+        LEFT JOIN dwh.dim_sentiment_type st
+            ON r.sentiment_score BETWEEN st.min_score AND st.max_score AND st.sentiment_type_id <> 0
+        WHERE (@batch_id = -1 OR r.batch_id = @batch_id);
+
+        CREATE CLUSTERED INDEX CIX_StageRating_id ON #StageRating(rating_id);
+
+        BEGIN TRANSACTION;
+
+        -- 9.4 Targeted UPDATE on Modified Ratings
+        UPDATE target
+        SET 
             target.order_id              = source.order_id,
             target.rating_date_key       = source.rating_date_key,
             target.rating_time_key       = source.rating_time_key,
@@ -2491,51 +2414,70 @@ BEGIN
             target.review_text           = source.review_text,
             target.batch_id              = source.batch_id,
             target.load_timestamp        = SYSUTCDATETIME()
+        FROM dwh.fact_rating target
+        INNER JOIN #StageRating source
+            ON target.rating_id = source.rating_id
+        WHERE (
+            target.order_id                                       <> source.order_id
+            OR target.rating_date_key                             <> source.rating_date_key
+            OR target.rating_time_key                             <> source.rating_time_key
+            OR target.customer_key                                <> source.customer_key
+            OR target.restaurant_key                              <> source.restaurant_key
+            OR target.delivery_partner_key                        <> source.delivery_partner_key
+            OR ISNULL(target.rating, -1)                          <> ISNULL(source.rating, -1)
+            OR ISNULL(target.rating_type_id, 255)                 <> ISNULL(source.rating_type_id, 255)
+            OR ISNULL(target.sentiment_score, -99)                <> ISNULL(source.sentiment_score, -99)
+            OR ISNULL(target.sentiment_type_id, 255)              <> ISNULL(source.sentiment_type_id, 255)
+            OR ISNULL(target.review_text, '')                     <> ISNULL(source.review_text, '')
+        );
 
-        -- When new rating record, insert fact record
-        WHEN NOT MATCHED BY TARGET THEN
-            INSERT
-            (
-                rating_id,
-                order_id,
-                rating_date_key,
-                rating_time_key,
-                customer_key,
-                restaurant_key,
-                delivery_partner_key,
-                rating,
-                rating_type_id,
-                sentiment_score,
-                sentiment_type_id,
-                review_text,
-                batch_id,
-                load_timestamp
-            )
-            VALUES
-            (
-                source.rating_id,
-                source.order_id,
-                source.rating_date_key,
-                source.rating_time_key,
-                source.customer_key,
-                source.restaurant_key,
-                source.delivery_partner_key,
-                source.rating,
-                source.rating_type_id,
-                source.sentiment_score,
-                source.sentiment_type_id,
-                source.review_text,
-                source.batch_id,
-                SYSUTCDATETIME()
-            )
-        OUTPUT $action INTO @merge_actions;
+        SET @rows_updated = @@ROWCOUNT;
 
+        -- 9.5 Fast Bulk INSERT for Brand New Ratings (Minimal Logging / Direct Path Insert)
+        INSERT INTO dwh.fact_rating WITH (TABLOCK)
+        (
+            rating_id,
+            order_id,
+            rating_date_key,
+            rating_time_key,
+            customer_key,
+            restaurant_key,
+            delivery_partner_key,
+            rating,
+            rating_type_id,
+            sentiment_score,
+            sentiment_type_id,
+            review_text,
+            batch_id,
+            load_timestamp
+        )
         SELECT 
-            @rows_inserted = COUNT(CASE WHEN action_type = 'INSERT' THEN 1 END),
-            @rows_updated  = COUNT(CASE WHEN action_type = 'UPDATE' THEN 1 END)
-        FROM @merge_actions;
+            source.rating_id,
+            source.order_id,
+            source.rating_date_key,
+            source.rating_time_key,
+            source.customer_key,
+            source.restaurant_key,
+            source.delivery_partner_key,
+            source.rating,
+            source.rating_type_id,
+            source.sentiment_score,
+            source.sentiment_type_id,
+            source.review_text,
+            source.batch_id,
+            SYSUTCDATETIME()
+        FROM #StageRating source
+        WHERE NOT EXISTS (
+            SELECT 1 
+            FROM dwh.fact_rating target
+            WHERE target.rating_id = source.rating_id
+        );
+
+        SET @rows_inserted = @@ROWCOUNT;
 
         COMMIT TRANSACTION;
+
+        IF OBJECT_ID('tempdb..#StageRating') IS NOT NULL DROP TABLE #StageRating;
 
         -- 9.4 Update Successful Log
         UPDATE control.etl_log
@@ -2558,6 +2500,7 @@ BEGIN
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        IF OBJECT_ID('tempdb..#StageRating') IS NOT NULL DROP TABLE #StageRating;
 
         DECLARE @ErrorMsg NVARCHAR(4000) = ERROR_MESSAGE();
 
@@ -2622,74 +2565,80 @@ BEGIN
         'RUNNING', 'Started loading fact_review_aspect from fact_rating and AI cache', SYSUTCDATETIME()
     );
 
-    DECLARE @merge_actions TABLE (action_type VARCHAR(10));
-
     BEGIN TRY
-        BEGIN TRANSACTION;
-
         SELECT @rows_read = COUNT(*) 
         FROM dwh.fact_rating r
         JOIN ref.ref_review_aspect_cache c
             ON HASHBYTES('SHA2_256', LOWER(LTRIM(RTRIM(r.review_text)))) = CONVERT(VARBINARY(64), c.review_hash, 2)
         WHERE (@batch_id = -1 OR r.batch_id = @batch_id);
 
-        -- 10.2 Set-based MERGE into fact_review_aspect
-        MERGE dwh.fact_review_aspect AS target
-        USING (
-            SELECT 
-                r.rating_key,
-                c.aspect_id,
-                c.sentiment_type_id,
-                c.matched_phrase,
-                r.batch_id
-            FROM dwh.fact_rating r
-            JOIN ref.ref_review_aspect_cache c
-                ON HASHBYTES('SHA2_256', LOWER(LTRIM(RTRIM(r.review_text)))) = CONVERT(VARBINARY(64), c.review_hash, 2)
-            WHERE (@batch_id = -1 OR r.batch_id = @batch_id)
-        ) AS source
-        ON target.rating_key = source.rating_key
-           AND target.aspect_id = source.aspect_id
-           AND target.sentiment_type_id = source.sentiment_type_id
+        -- 10.2 Stage and Transform Source Review Aspects from AI Cache
+        IF OBJECT_ID('tempdb..#StageReviewAspect') IS NOT NULL DROP TABLE #StageReviewAspect;
 
-        -- When attributes change, update
-        WHEN MATCHED AND (
-            ISNULL(target.matched_phrase, '') <> ISNULL(source.matched_phrase, '')
-        )
-        THEN UPDATE SET
+        SELECT 
+            r.rating_key,
+            c.aspect_id,
+            c.sentiment_type_id,
+            c.matched_phrase,
+            r.batch_id
+        INTO #StageReviewAspect
+        FROM dwh.fact_rating r
+        JOIN ref.ref_review_aspect_cache c
+            ON HASHBYTES('SHA2_256', LOWER(LTRIM(RTRIM(r.review_text)))) = CONVERT(VARBINARY(64), c.review_hash, 2)
+        WHERE (@batch_id = -1 OR r.batch_id = @batch_id);
+
+        CREATE CLUSTERED INDEX CIX_StageReviewAspect ON #StageReviewAspect(rating_key, aspect_id, sentiment_type_id);
+
+        BEGIN TRANSACTION;
+
+        -- 10.3 Targeted UPDATE on Modified Review Aspects
+        UPDATE target
+        SET 
             target.matched_phrase    = source.matched_phrase,
             target.batch_id          = source.batch_id,
             target.load_timestamp    = SYSUTCDATETIME()
+        FROM dwh.fact_review_aspect target
+        INNER JOIN #StageReviewAspect source
+            ON target.rating_key = source.rating_key
+           AND target.aspect_id = source.aspect_id
+           AND target.sentiment_type_id = source.sentiment_type_id
+        WHERE ISNULL(target.matched_phrase, '') <> ISNULL(source.matched_phrase, '');
 
-        -- When new aspect extraction, insert
-        WHEN NOT MATCHED BY TARGET THEN
-            INSERT
-            (
-                rating_key,
-                aspect_id,
-                sentiment_type_id,
-                matched_phrase,
-                batch_id,
-                load_timestamp
-            )
-            VALUES
-            (
-                source.rating_key,
-                source.aspect_id,
-                source.sentiment_type_id,
-                source.matched_phrase,
-                source.batch_id,
-                SYSUTCDATETIME()
-            )
-        OUTPUT $action INTO @merge_actions;
+        SET @rows_updated = @@ROWCOUNT;
 
+        -- 10.4 Fast Bulk INSERT for Brand New Review Aspects (Minimal Logging / Direct Path Insert)
+        INSERT INTO dwh.fact_review_aspect WITH (TABLOCK)
+        (
+            rating_key,
+            aspect_id,
+            sentiment_type_id,
+            matched_phrase,
+            batch_id,
+            load_timestamp
+        )
         SELECT 
-            @rows_inserted = COUNT(CASE WHEN action_type = 'INSERT' THEN 1 END),
-            @rows_updated  = COUNT(CASE WHEN action_type = 'UPDATE' THEN 1 END)
-        FROM @merge_actions;
+            source.rating_key,
+            source.aspect_id,
+            source.sentiment_type_id,
+            source.matched_phrase,
+            source.batch_id,
+            SYSUTCDATETIME()
+        FROM #StageReviewAspect source
+        WHERE NOT EXISTS (
+            SELECT 1 
+            FROM dwh.fact_review_aspect target
+            WHERE target.rating_key = source.rating_key
+              AND target.aspect_id = source.aspect_id
+              AND target.sentiment_type_id = source.sentiment_type_id
+        );
+
+        SET @rows_inserted = @@ROWCOUNT;
 
         COMMIT TRANSACTION;
 
-        -- 10.3 Update Successful Log
+        IF OBJECT_ID('tempdb..#StageReviewAspect') IS NOT NULL DROP TABLE #StageReviewAspect;
+
+        -- 10.5 Update Successful Log
         UPDATE control.etl_log
         SET end_time       = SYSUTCDATETIME(),
             status         = 'SUCCESS',
@@ -2710,6 +2659,7 @@ BEGIN
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        IF OBJECT_ID('tempdb..#StageReviewAspect') IS NOT NULL DROP TABLE #StageReviewAspect;
 
         DECLARE @ErrorMsg NVARCHAR(4000) = ERROR_MESSAGE();
 
@@ -2776,7 +2726,29 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- 1. Determine System-wide Reference Max Order Date
+        -- 1.0 Determine Active Entity Keys in Current Batch (Incremental Isolation)
+        IF OBJECT_ID('tempdb..#ActiveCustKeys') IS NOT NULL DROP TABLE #ActiveCustKeys;
+        SELECT DISTINCT customer_key 
+        INTO #ActiveCustKeys 
+        FROM dwh.fact_order 
+        WHERE customer_key <> -1 AND (@batch_id = -1 OR batch_id = @batch_id);
+        CREATE CLUSTERED INDEX CIX_ActiveCustKeys ON #ActiveCustKeys(customer_key);
+
+        IF OBJECT_ID('tempdb..#ActiveRestKeys') IS NOT NULL DROP TABLE #ActiveRestKeys;
+        SELECT DISTINCT restaurant_key 
+        INTO #ActiveRestKeys 
+        FROM dwh.fact_order 
+        WHERE restaurant_key <> -1 AND (@batch_id = -1 OR batch_id = @batch_id);
+        CREATE CLUSTERED INDEX CIX_ActiveRestKeys ON #ActiveRestKeys(restaurant_key);
+
+        IF OBJECT_ID('tempdb..#ActiveDriverKeys') IS NOT NULL DROP TABLE #ActiveDriverKeys;
+        SELECT DISTINCT delivery_partner_key 
+        INTO #ActiveDriverKeys 
+        FROM dwh.fact_order 
+        WHERE delivery_partner_key <> -1 AND (@batch_id = -1 OR batch_id = @batch_id);
+        CREATE CLUSTERED INDEX CIX_ActiveDriverKeys ON #ActiveDriverKeys(delivery_partner_key);
+
+        -- 1.1 Determine System-wide Reference Max Order Date
         DECLARE @max_order_date DATE;
         SELECT @max_order_date = MAX(d.full_date)
         FROM dwh.fact_order fo
@@ -2786,7 +2758,7 @@ BEGIN
             SELECT @max_order_date = CAST(GETDATE() AS DATE);
 
         /* ----------------------------------------------------------------------
-           1.1 Enrich Customer Behavioral Metrics
+           1.2 Enrich Customer Behavioral Metrics (Targeted Active Batch)
         ---------------------------------------------------------------------- */
         ;WITH LastOrdersCust AS (
             SELECT 
@@ -2794,6 +2766,7 @@ BEGIN
                 MAX(d.full_date) AS last_order_date
             FROM dwh.fact_order fo
             JOIN dwh.dim_date d ON fo.order_date_key = d.date_key
+            INNER JOIN #ActiveCustKeys ak ON fo.customer_key = ak.customer_key
             GROUP BY fo.customer_key
         ),
         LastLifecycleCust AS (
@@ -2812,35 +2785,29 @@ BEGIN
             c.life_cycle_id          = ISNULL(ll.last_cust_lc_id, 0),
             c.is_churned             = CASE 
                                          WHEN COALESCE(ll.last_order_date, c.signup_date) IS NULL THEN 0
-                                         WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date)) >= '2025-08-01' THEN 0
-                                         WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date)) < '2025-08-01' AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2) THEN 1
+                                         WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) <= 60 THEN 0
+                                         WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 60 AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2, 3) THEN 1
                                          ELSE 0
                                        END,
             c.churned_date           = CASE 
-                                         WHEN (CASE 
-                                                 WHEN COALESCE(ll.last_order_date, c.signup_date) IS NULL THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date)) >= '2025-08-01' THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date)) < '2025-08-01' AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2) THEN 1
-                                                 ELSE 0
-                                               END) = 1 THEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date))
+                                         WHEN COALESCE(ll.last_order_date, c.signup_date) IS NOT NULL 
+                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 60 
+                                              AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2, 3)
+                                         THEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date))
                                          ELSE NULL
                                        END,
             c.last_status_id         = CASE 
-                                         WHEN (CASE 
-                                                 WHEN COALESCE(ll.last_order_date, c.signup_date) IS NULL THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date)) >= '2025-08-01' THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date)) < '2025-08-01' AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2) THEN 1
-                                                 ELSE 0
-                                               END) = 1 THEN 4
+                                         WHEN COALESCE(ll.last_order_date, c.signup_date) IS NOT NULL 
+                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 60 
+                                              AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2, 3)
+                                         THEN 4
                                          ELSE ISNULL(ll.last_cust_lc_id, 0)
                                        END,
             c.churn_risk             = CASE 
-                                         WHEN (CASE 
-                                                 WHEN COALESCE(ll.last_order_date, c.signup_date) IS NULL THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date)) >= '2025-08-01' THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date)) < '2025-08-01' AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2) THEN 1
-                                                 ELSE 0
-                                               END) = 1 THEN 'Churned'
+                                         WHEN COALESCE(ll.last_order_date, c.signup_date) IS NOT NULL 
+                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 60 
+                                              AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2, 3)
+                                         THEN 'Churned'
                                          WHEN ISNULL(ll.last_cust_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 45 THEN 'High'
                                          WHEN ISNULL(ll.last_cust_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 30 THEN 'High'
                                          WHEN ISNULL(ll.last_cust_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) BETWEEN 20 AND 45 THEN 'Medium'
@@ -2850,13 +2817,28 @@ BEGIN
                                          ELSE 'Undefined'
                                        END
         FROM dwh.dim_customer c
+        INNER JOIN #ActiveCustKeys ak ON c.customer_key = ak.customer_key
         LEFT JOIN LastLifecycleCust ll ON c.customer_key = ll.customer_key
-        WHERE c.customer_key <> -1;
+        WHERE c.customer_key <> -1 AND c.is_current = 1;
+
+        -- 1.2b Time-Aging Churn Sweep for Customers (> 60 days without order)
+        UPDATE c
+        SET c.days_since_last_active = DATEDIFF(DAY, c.last_active, @max_order_date),
+            c.is_churned             = 1,
+            c.churned_date           = DATEADD(DAY, 60, c.last_active),
+            c.last_status_id         = 4,
+            c.churn_risk             = 'Churned'
+        FROM dwh.dim_customer c
+        WHERE c.customer_key <> -1 
+          AND c.is_current = 1
+          AND c.is_churned = 0
+          AND c.last_active IS NOT NULL
+          AND DATEDIFF(DAY, c.last_active, @max_order_date) > 60;
 
         PRINT '    - Enriched dim_customer behavioral metrics from fact_order';
 
         /* ----------------------------------------------------------------------
-           1.2 Enrich Restaurant Behavioral Metrics
+           1.3 Enrich Restaurant Behavioral Metrics (Targeted Active Batch)
         ---------------------------------------------------------------------- */
         ;WITH LastOrdersRest AS (
             SELECT 
@@ -2864,6 +2846,7 @@ BEGIN
                 MAX(d.full_date) AS last_order_date
             FROM dwh.fact_order fo
             JOIN dwh.dim_date d ON fo.order_date_key = d.date_key
+            INNER JOIN #ActiveRestKeys ak ON fo.restaurant_key = ak.restaurant_key
             GROUP BY fo.restaurant_key
         ),
         LastLifecycleRest AS (
@@ -2882,35 +2865,29 @@ BEGIN
             r.life_cycle_id          = ISNULL(ll.last_rest_lc_id, 0),
             r.is_churned             = CASE 
                                          WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NULL THEN 0
-                                         WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date)) >= '2025-08-01' THEN 0
-                                         WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date)) < '2025-08-01' AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2) THEN 1
+                                         WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) <= 60 THEN 0
+                                         WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 60 AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2, 3) THEN 1
                                          ELSE 0
                                        END,
             r.churned_date           = CASE 
-                                         WHEN (CASE 
-                                                 WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NULL THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date)) >= '2025-08-01' THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date)) < '2025-08-01' AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2) THEN 1
-                                                 ELSE 0
-                                               END) = 1 THEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date))
+                                         WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NOT NULL 
+                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 60 
+                                              AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2, 3)
+                                         THEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date))
                                          ELSE NULL
                                        END,
             r.last_status_id         = CASE 
-                                         WHEN (CASE 
-                                                 WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NULL THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date)) >= '2025-08-01' THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date)) < '2025-08-01' AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2) THEN 1
-                                                 ELSE 0
-                                               END) = 1 THEN 4
+                                         WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NOT NULL 
+                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 60 
+                                              AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2, 3)
+                                         THEN 4
                                          ELSE ISNULL(ll.last_rest_lc_id, 0)
                                        END,
             r.churn_risk             = CASE 
-                                         WHEN (CASE 
-                                                 WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NULL THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date)) >= '2025-08-01' THEN 0
-                                                 WHEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date)) < '2025-08-01' AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2) THEN 1
-                                                 ELSE 0
-                                               END) = 1 THEN 'Churned'
+                                         WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NOT NULL 
+                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 60 
+                                              AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2, 3)
+                                         THEN 'Churned'
                                          WHEN ISNULL(ll.last_rest_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 45 THEN 'High'
                                          WHEN ISNULL(ll.last_rest_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 21 THEN 'High'
                                          WHEN ISNULL(ll.last_rest_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) BETWEEN 15 AND 45 THEN 'Medium'
@@ -2920,13 +2897,28 @@ BEGIN
                                          ELSE 'Undefined'
                                        END
         FROM dwh.dim_restaurant r
+        INNER JOIN #ActiveRestKeys ak ON r.restaurant_key = ak.restaurant_key
         LEFT JOIN LastLifecycleRest ll ON r.restaurant_key = ll.restaurant_key
-        WHERE r.restaurant_key <> -1;
+        WHERE r.restaurant_key <> -1 AND r.is_current = 1;
+
+        -- 1.3b Time-Aging Churn Sweep for Restaurants (> 60 days without order)
+        UPDATE r
+        SET r.days_since_last_active = DATEDIFF(DAY, r.last_active, @max_order_date),
+            r.is_churned             = 1,
+            r.churned_date           = DATEADD(DAY, 60, r.last_active),
+            r.last_status_id         = 4,
+            r.churn_risk             = 'Churned'
+        FROM dwh.dim_restaurant r
+        WHERE r.restaurant_key <> -1 
+          AND r.is_current = 1
+          AND r.is_churned = 0
+          AND r.last_active IS NOT NULL
+          AND DATEDIFF(DAY, r.last_active, @max_order_date) > 60;
 
         PRINT '    - Enriched dim_restaurant behavioral metrics from fact_order';
 
         /* ----------------------------------------------------------------------
-           1.3 Enrich Delivery Partner Behavioral Metrics
+           1.4 Enrich Delivery Partner Behavioral Metrics (Targeted Active Batch)
         ---------------------------------------------------------------------- */
         ;WITH LastOrdersDriver AS (
             SELECT 
@@ -2934,6 +2926,7 @@ BEGIN
                 MAX(d.full_date) AS last_order_date
             FROM dwh.fact_order fo
             JOIN dwh.dim_date d ON fo.order_date_key = d.date_key
+            INNER JOIN #ActiveDriverKeys ak ON fo.delivery_partner_key = ak.delivery_partner_key
             WHERE fo.delivery_partner_key <> -1
             GROUP BY fo.delivery_partner_key
         ),
@@ -2953,35 +2946,29 @@ BEGIN
             dp.life_cycle_id          = ISNULL(ll.last_driver_lc_id, 0),
             dp.is_churned             = CASE 
                                           WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NULL THEN 0
-                                          WHEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date)) >= '2025-08-01' THEN 0
-                                          WHEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date)) < '2025-08-01' AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2) THEN 1
+                                          WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) <= 30 THEN 0
+                                          WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2, 3) THEN 1
                                           ELSE 0
                                         END,
             dp.churned_date           = CASE 
-                                          WHEN (CASE 
-                                                  WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NULL THEN 0
-                                                  WHEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date)) >= '2025-08-01' THEN 0
-                                                  WHEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date)) < '2025-08-01' AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2) THEN 1
-                                                  ELSE 0
-                                                END) = 1 THEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date))
+                                          WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NOT NULL 
+                                                AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 
+                                                AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2, 3)
+                                          THEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date))
                                           ELSE NULL
                                         END,
             dp.last_status_id         = CASE 
-                                          WHEN (CASE 
-                                                  WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NULL THEN 0
-                                                  WHEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date)) >= '2025-08-01' THEN 0
-                                                  WHEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date)) < '2025-08-01' AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2) THEN 1
-                                                  ELSE 0
-                                                END) = 1 THEN 4
-                                         ELSE ISNULL(ll.last_driver_lc_id, 0)
-                                       END,
+                                          WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NOT NULL 
+                                                AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 
+                                                AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2, 3)
+                                          THEN 4
+                                          ELSE ISNULL(ll.last_driver_lc_id, 0)
+                                        END,
             dp.churn_risk             = CASE 
-                                         WHEN (CASE 
-                                                 WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NULL THEN 0
-                                                 WHEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date)) >= '2025-08-01' THEN 0
-                                                 WHEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date)) < '2025-08-01' AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2) THEN 1
-                                                 ELSE 0
-                                               END) = 1 THEN 'Churned'
+                                          WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NOT NULL 
+                                                AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 
+                                                AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2, 3)
+                                          THEN 'Churned'
                                          WHEN ISNULL(ll.last_driver_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 THEN 'High'
                                          WHEN ISNULL(ll.last_driver_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 15 THEN 'High'
                                          WHEN ISNULL(ll.last_driver_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) BETWEEN 15 AND 30 THEN 'Medium'
@@ -2991,8 +2978,23 @@ BEGIN
                                          ELSE 'Undefined'
                                        END
         FROM dwh.dim_delivery_partner dp
+        INNER JOIN #ActiveDriverKeys ak ON dp.delivery_partner_key = ak.delivery_partner_key
         LEFT JOIN LastLifecycleDriver ll ON dp.delivery_partner_key = ll.delivery_partner_key
-        WHERE dp.delivery_partner_key <> -1;
+        WHERE dp.delivery_partner_key <> -1 AND dp.is_current = 1;
+
+        -- 1.4b Time-Aging Churn Sweep for Delivery Partners (> 30 days without order)
+        UPDATE dp
+        SET dp.days_since_last_active = DATEDIFF(DAY, dp.last_active, @max_order_date),
+            dp.is_churned             = 1,
+            dp.churned_date           = DATEADD(DAY, 30, dp.last_active),
+            dp.last_status_id         = 4,
+            dp.churn_risk             = 'Churned'
+        FROM dwh.dim_delivery_partner dp
+        WHERE dp.delivery_partner_key <> -1 
+          AND dp.is_current = 1
+          AND dp.is_churned = 0
+          AND dp.last_active IS NOT NULL
+          AND DATEDIFF(DAY, dp.last_active, @max_order_date) > 30;
 
         PRINT '    - Enriched dim_delivery_partner behavioral metrics from fact_order';
 
@@ -3038,8 +3040,21 @@ BEGIN
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
 
-    IF @batch_id IS NULL OR @batch_id <= 0
-        SET @batch_id = -1;
+    -- Auto-resolve active batch_id for incremental load if not explicitly specified
+    -- Explicitly passing @batch_id = -1 remains supported for full pipeline backfills
+    IF @batch_id IS NULL OR @batch_id = 0
+    BEGIN
+        SELECT TOP 1 @batch_id = batch_id 
+        FROM control.etl_batch 
+        WHERE status IN ('COMPLETED', 'SUCCESS') 
+        ORDER BY batch_id DESC;
+
+        IF @batch_id IS NULL OR @batch_id <= 0
+            SELECT @batch_id = MAX(batch_id) FROM ods.ods_order;
+
+        IF @batch_id IS NULL OR @batch_id <= 0
+            SET @batch_id = -1;
+    END;
 
     PRINT '==============================================================================';
     PRINT 'STARTING END-TO-END ODS -> DWH PIPELINE EXECUTION (BATCH: ' + CAST(@batch_id AS VARCHAR(10)) + ')';

@@ -117,23 +117,41 @@ EXEC msdb.dbo.sp_add_jobstep
 USE FoodDeliveryDW;
 SET NOCOUNT ON;
 
-PRINT ''Executing Incremental Upsert Procedures in Dependency Order...'';
+DECLARE @current_batch_id BIGINT;
 
--- Stage 1: Dimensions / Catalogs (02_Load_DeliveryPartner, 03_Load_Restaurant, 04_Load_MenuItem, 05_Load_Customer)
-EXEC ods.usp_upsert_ods_delivery_partner;
-EXEC ods.usp_upsert_ods_restaurant;
-EXEC ods.usp_upsert_ods_menu_item;
-EXEC ods.usp_upsert_ods_customer;
+-- 1. Identify active completed batch from Step 2 (Python Ingestion)
+SELECT TOP 1 @current_batch_id = batch_id
+FROM control.etl_batch
+WHERE status = ''COMPLETED''
+ORDER BY batch_id DESC;
 
--- Stage 2: Core Fact (06_Load_Order)
-EXEC ods.usp_upsert_ods_order;
+-- Fallback to raw.raw_order if control.etl_batch has no completed entries
+IF @current_batch_id IS NULL OR @current_batch_id <= 0
+BEGIN
+    SELECT @current_batch_id = MAX(batch_id) FROM raw.raw_order;
+END;
 
--- Stage 3: Downstream Transactions (07_Load_OrderItem, 08_Load_DeliveryPerformance, 09_Load_Rating)
-EXEC ods.usp_upsert_ods_order_item;
-EXEC ods.usp_upsert_ods_delivery_performance;
-EXEC ods.usp_upsert_ods_rating;
+IF @current_batch_id IS NULL OR @current_batch_id <= 0
+BEGIN
+    THROW 50050, ''No active batch_id found to load into ODS. Ingestion pipeline aborted.'', 1;
+END;
 
-PRINT ''[SUCCESS] All ODS Upsert procedures executed.'';
+PRINT ''Starting RAW to ODS Master Ingestion & Validation for BATCH_ID = '' + CAST(@current_batch_id AS VARCHAR(20));
+
+-- 2. Execute RAW -> ODS Master Ingestion & Cleansing
+EXEC ods.usp_load_raw_to_ods_batch @batch_id = @current_batch_id;
+
+-- 3. Production Guardrail: Verify data reconciliation between RAW and ODS
+DECLARE @raw_orders_count INT, @ods_orders_count INT;
+SELECT @raw_orders_count = COUNT(*) FROM raw.raw_order WHERE batch_id = @current_batch_id;
+SELECT @ods_orders_count = COUNT(*) FROM ods.ods_order WHERE batch_id = @current_batch_id;
+
+IF @raw_orders_count > 0 AND @ods_orders_count = 0
+BEGIN
+    THROW 50051, ''Data Reconciliation Guardrail Failed: raw_order has records but ods_order has 0 records!'', 1;
+END;
+
+PRINT ''[SUCCESS] ODS Master Ingestion completed successfully for BATCH_ID = '' + CAST(@current_batch_id AS VARCHAR(20));
 ',
     @database_name   = N'FoodDeliveryDW';
 
@@ -152,8 +170,20 @@ EXEC msdb.dbo.sp_add_jobstep
 USE FoodDeliveryDW;
 SET NOCOUNT ON;
 
-PRINT ''Executing ODS to DWH Dimensional Pipeline (100% Star Schema SSOT)...'';
-EXEC dwh.usp_run_ods_to_dwh_pipeline;
+DECLARE @current_batch_id BIGINT;
+
+SELECT TOP 1 @current_batch_id = batch_id
+FROM control.etl_batch
+WHERE status = ''COMPLETED''
+ORDER BY batch_id DESC;
+
+IF @current_batch_id IS NULL OR @current_batch_id <= 0
+BEGIN
+    SELECT @current_batch_id = MAX(batch_id) FROM ods.ods_order;
+END;
+
+PRINT ''Executing ODS to DWH Dimensional Pipeline for BATCH_ID = '' + CAST(ISNULL(@current_batch_id, -1) AS VARCHAR(20));
+EXEC dwh.usp_run_ods_to_dwh_pipeline @batch_id = @current_batch_id;
 PRINT ''[SUCCESS] DWH Dimensional Pipeline completed.'';
 ',
     @database_name   = N'FoodDeliveryDW';

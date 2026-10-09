@@ -37,6 +37,7 @@ GO
 
 -- 2.1 CONTROL ETL BATCH
 
+DROP TABLE IF EXISTS control.dim_change_log;
 DROP TABLE IF EXISTS control.etl_error;
 DROP TABLE IF EXISTS control.etl_log;
 DROP TABLE IF EXISTS control.etl_batch;
@@ -159,6 +160,36 @@ CREATE TABLE control.etl_error
 GO
 
 
+-- 2.4 CONTROL DIM CHANGE LOG (SCD & Entity Audit Trail)
+
+DROP TABLE IF EXISTS control.dim_change_log;
+CREATE TABLE control.dim_change_log
+    (
+        change_log_id        BIGINT IDENTITY(1,1) NOT NULL,
+        batch_id             BIGINT               NOT NULL,
+        dimension_name       VARCHAR(100)         NOT NULL,
+        business_id          VARCHAR(100)         NOT NULL,
+        surrogate_key_old    BIGINT               NULL,
+        surrogate_key_new    BIGINT               NULL,
+        change_type          VARCHAR(20)          NOT NULL,
+        column_name          VARCHAR(100)         NOT NULL,
+        old_value            NVARCHAR(1000)       NULL,
+        new_value            NVARCHAR(1000)       NULL,
+        effective_date       DATE                 NOT NULL,
+        logged_at            DATETIME2(3)         NOT NULL
+            CONSTRAINT DF_dim_change_log_logged_at
+            DEFAULT SYSUTCDATETIME(),
+
+        CONSTRAINT PK_dim_change_log
+            PRIMARY KEY CLUSTERED (change_log_id),
+
+        CONSTRAINT FK_dim_change_log_batch
+            FOREIGN KEY (batch_id)
+            REFERENCES control.etl_batch(batch_id)
+    );
+GO
+
+
 -- 3. CREATE INDEXES
 
 -- 3.1 INDEX ON ETL LOG
@@ -205,6 +236,34 @@ BEGIN
     CREATE UNIQUE NONCLUSTERED INDEX UX_etl_error_dedup
     ON control.etl_error (batch_id, table_name, source_row_number, column_name, error_type)
     WITH (IGNORE_DUP_KEY = ON);
+END;
+GO
+
+-- 3.4 INDEXES ON DIM CHANGE LOG
+
+IF NOT EXISTS
+(
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'IX_dim_change_log_lookup'
+      AND object_id = OBJECT_ID(N'control.dim_change_log')
+)
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_dim_change_log_lookup
+    ON control.dim_change_log (dimension_name, business_id, logged_at);
+END;
+GO
+
+IF NOT EXISTS
+(
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'IX_dim_change_log_batch_id'
+      AND object_id = OBJECT_ID(N'control.dim_change_log')
+)
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_dim_change_log_batch_id
+    ON control.dim_change_log (batch_id);
 END;
 GO
 
@@ -385,7 +444,8 @@ WHERE s.name = N'control'
   (
       N'etl_batch',
       N'etl_log',
-      N'etl_error'
+      N'etl_error',
+      N'dim_change_log'
   )
 ORDER BY
     t.name;
@@ -435,9 +495,9 @@ GO
 SELECT
     'CONTROL TABLE COUNT' AS validation_name,
     COUNT(*) AS actual_count,
-    3 AS expected_count,
+    4 AS expected_count,
     CASE
-        WHEN COUNT(*) = 3 THEN 'PASS'
+        WHEN COUNT(*) = 4 THEN 'PASS'
         ELSE 'FAIL'
     END AS validation_status
 FROM sys.tables AS t
@@ -448,6 +508,7 @@ WHERE s.name = N'control'
   (
       N'etl_batch',
       N'etl_log',
-      N'etl_error'
+      N'etl_error',
+      N'dim_change_log'
   );
 GO

@@ -208,22 +208,41 @@ VALUES ('Unknown Member (-1) Integrity', 'All Dimensions', @batch_id, '6 Unknown
 
 
 /*==============================================================================
-  7. STAR SCHEMA FOREIGN KEY INTEGRITY
+  7. STAR SCHEMA LOGICAL REFERENTIAL INTEGRITY (ORPHAN KEY CHECK)
 ==============================================================================*/
 
-DECLARE @expected_fk_count INT = 16;
-DECLARE @actual_fk_count INT;
-
-SELECT @actual_fk_count = COUNT(*)
+-- 7.1 Dimension Physical FKs Check (Dimension hierarchies retain physical FKs: 7 FKs)
+DECLARE @actual_dim_fk_count INT;
+SELECT @actual_dim_fk_count = COUNT(*)
 FROM sys.foreign_keys
 WHERE schema_id = SCHEMA_ID('dwh');
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
-VALUES ('Star Schema FK Constraints', 'Fact to Dim relationships', @batch_id,
-        CONCAT('>=', @expected_fk_count, ' FKs'), 
-        CAST(@actual_fk_count AS VARCHAR) + ' FKs active',
-        CASE WHEN @actual_fk_count >= @expected_fk_count THEN 'PASS' ELSE 'FAIL' END,
-        CASE WHEN @actual_fk_count >= @expected_fk_count THEN NULL ELSE 'Missing Foreign Key constraints in DWH' END);
+VALUES ('Dimension Physical FKs', 'Dimension hierarchies', @batch_id,
+        '>=7 FKs', 
+        CAST(@actual_dim_fk_count AS VARCHAR) + ' FKs active',
+        CASE WHEN @actual_dim_fk_count >= 7 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @actual_dim_fk_count >= 7 THEN NULL ELSE 'Missing Dimension Foreign Key constraints in DWH' END);
+
+-- 7.2 Fact-to-Dimension Logical Referential Integrity (Zero Orphan Records)
+DECLARE @orphan_records INT = 0;
+
+IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'fact_order' AND schema_id = SCHEMA_ID('dwh'))
+BEGIN
+    SELECT @orphan_records = 
+        (SELECT COUNT(*) FROM dwh.fact_order f LEFT JOIN dwh.dim_customer c ON f.customer_key = c.customer_key WHERE c.customer_key IS NULL) +
+        (SELECT COUNT(*) FROM dwh.fact_order f LEFT JOIN dwh.dim_restaurant r ON f.restaurant_key = r.restaurant_key WHERE r.restaurant_key IS NULL) +
+        (SELECT COUNT(*) FROM dwh.fact_order f LEFT JOIN dwh.dim_delivery_partner dp ON f.delivery_partner_key = dp.delivery_partner_key WHERE dp.delivery_partner_key IS NULL) +
+        (SELECT COUNT(*) FROM dwh.fact_order f LEFT JOIN dwh.dim_date d ON f.order_date_key = d.date_key WHERE d.date_key IS NULL) +
+        (SELECT COUNT(*) FROM dwh.fact_order_item oi LEFT JOIN dwh.dim_menu_item m ON oi.menu_item_key = m.menu_item_key WHERE m.menu_item_key IS NULL);
+END;
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Fact Logical Integrity (No Orphans)', 'Fact to Dim relationships', @batch_id,
+        '0 orphan records',
+        CONCAT(@orphan_records, ' orphan records'),
+        CASE WHEN @orphan_records = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @orphan_records = 0 THEN NULL ELSE 'Orphan keys detected between Fact and Dimension tables' END);
 
 
 /*==============================================================================
@@ -253,7 +272,7 @@ VALUES ('Fact Surrogate Keys Nullability', 'fact_order & fact_order_item', @batc
 -- 9.1 Customer Reconciliation
 DECLARE @ods_cust BIGINT, @dwh_cust BIGINT;
 SELECT @ods_cust = COUNT(*) FROM ods.ods_customer WHERE batch_id = @batch_id;
-SELECT @dwh_cust = COUNT(*) FROM dwh.dim_customer WHERE batch_id = @batch_id AND customer_key <> -1;
+SELECT @dwh_cust = COUNT(DISTINCT customer_id) FROM dwh.dim_customer WHERE customer_key <> -1;
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Customer Reconciliation', 'ods_customer -> dim_customer', @batch_id,
@@ -265,7 +284,7 @@ VALUES ('Customer Reconciliation', 'ods_customer -> dim_customer', @batch_id,
 -- 9.2 Delivery Partner Reconciliation
 DECLARE @ods_dp BIGINT, @dwh_dp BIGINT;
 SELECT @ods_dp = COUNT(*) FROM ods.ods_delivery_partner WHERE batch_id = @batch_id;
-SELECT @dwh_dp = COUNT(*) FROM dwh.dim_delivery_partner WHERE batch_id = @batch_id AND delivery_partner_key <> -1;
+SELECT @dwh_dp = COUNT(DISTINCT delivery_partner_id) FROM dwh.dim_delivery_partner WHERE delivery_partner_key <> -1;
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Delivery Partner Reconciliation', 'ods_delivery_partner -> dim_delivery_partner', @batch_id,
@@ -277,7 +296,7 @@ VALUES ('Delivery Partner Reconciliation', 'ods_delivery_partner -> dim_delivery
 -- 9.3 Restaurant Reconciliation
 DECLARE @ods_rest BIGINT, @dwh_rest BIGINT;
 SELECT @ods_rest = COUNT(*) FROM ods.ods_restaurant WHERE batch_id = @batch_id;
-SELECT @dwh_rest = COUNT(*) FROM dwh.dim_restaurant WHERE batch_id = @batch_id AND restaurant_key <> -1;
+SELECT @dwh_rest = COUNT(DISTINCT restaurant_id) FROM dwh.dim_restaurant WHERE restaurant_key <> -1;
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Restaurant Reconciliation', 'ods_restaurant -> dim_restaurant', @batch_id,

@@ -83,13 +83,13 @@
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\DFT - RAW Order to ODS Order\DC - Convert Delivery Fee Format.Outputs[Data Conversion Output].Columns[delivery_fee_typed]} &gt;= 0 &amp;&amp; #{Package\DFT - RAW Order to ODS Order\DC - Convert Delivery Fee Format.Outputs[Data Conversion Output].Columns[delivery_fee_typed]} &lt;= 1000</property>
+                      name="Expression">#{Package\DFT - RAW Order to ODS Order\DC - Convert Delivery Fee Format.Outputs[Data Conversion Output].Columns[delivery_fee_typed]} &gt;= 0</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">delivery_fee_typed &gt;= 0 &amp;&amp; delivery_fee_typed &lt;= 1000</property>
+                      name="FriendlyExpression">delivery_fee_typed &gt;= 0</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -263,13 +263,13 @@
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\DFT - RAW Order to ODS Order\MRG - Join All Valid Fields v1.Outputs[Merge Join Output].Columns[is_cancelled_final]} ==  TRUE </property>
+                      name="Expression">TRUE</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">is_cancelled_final ==  TRUE </property>
+                      name="FriendlyExpression">TRUE</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -354,13 +354,13 @@
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\DFT - RAW Order to ODS Order\DC - Convert Discount Amount Format.Outputs[Data Conversion Output].Columns[discount_amount_typed]} &gt;= 0 &amp;&amp; #{Package\DFT - RAW Order to ODS Order\DC - Convert Discount Amount Format.Outputs[Data Conversion Output].Columns[discount_amount_typed]} &lt;= 2500</property>
+                      name="Expression">#{Package\DFT - RAW Order to ODS Order\DC - Convert Discount Amount Format.Outputs[Data Conversion Output].Columns[discount_amount_typed]} &gt;= 0</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">discount_amount_typed &gt;= 0 &amp;&amp; discount_amount_typed &lt;= 2500</property>
+                      name="FriendlyExpression">discount_amount_typed &gt;= 0</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -445,13 +445,13 @@
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\DFT - RAW Order to ODS Order\DC - Convert SubTotal Amount Format.Outputs[Data Conversion Output].Columns[subtotal_amount_typed]} &gt;= 0 &amp;&amp; #{Package\DFT - RAW Order to ODS Order\DC - Convert SubTotal Amount Format.Outputs[Data Conversion Output].Columns[subtotal_amount_typed]} &lt;= 5000</property>
+                      name="Expression">#{Package\DFT - RAW Order to ODS Order\DC - Convert SubTotal Amount Format.Outputs[Data Conversion Output].Columns[subtotal_amount_typed]} &gt;= 0</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">subtotal_amount_typed &gt;= 0 &amp;&amp; subtotal_amount_typed &lt;= 5000</property>
+                      name="FriendlyExpression">subtotal_amount_typed &gt;= 0</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -536,13 +536,13 @@
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\DFT - RAW Order to ODS Order\DC - Convert Total Amount Format.Outputs[Data Conversion Output].Columns[total_amount_typed]} &gt;= 0 &amp;&amp; #{Package\DFT - RAW Order to ODS Order\DC - Convert Total Amount Format.Outputs[Data Conversion Output].Columns[total_amount_typed]} &lt;= 5000</property>
+                      name="Expression">#{Package\DFT - RAW Order to ODS Order\DC - Convert Total Amount Format.Outputs[Data Conversion Output].Columns[total_amount_typed]} &gt;= 0</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">total_amount_typed &gt;= 0 &amp;&amp; total_amount_typed &lt;= 5000</property>
+                      name="FriendlyExpression">total_amount_typed &gt;= 0</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -8614,17 +8614,13 @@
                   description="Specifies the SQL statement that generates the lookup table."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
-	customer_id
-FROM ods.ods_customer;</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT customer_id FROM ods.ods_customer UNION SELECT customer_id FROM raw.raw_order;</property>
                 <property
                   dataType="System.String"
                   description="Specifies a SQL statement that uses parameters to generate the lookup table."
                   expressionType="Notify"
                   name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT
-	customer_id
-FROM ods.ods_customer;) [refTable]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT customer_id FROM ods.ods_customer UNION SELECT customer_id FROM raw.raw_order;) [refTable]
 where [refTable].[customer_id] = ?</property>
                 <property
                   dataType="System.Int32"
@@ -8761,17 +8757,13 @@ where [refTable].[customer_id] = ?</property>
                   description="Specifies the SQL statement that generates the lookup table."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
-	delivery_partner_id
-FROM ods.ods_delivery_partner;</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT delivery_partner_id FROM ods.ods_delivery_partner UNION SELECT delivery_partner_id FROM raw.raw_order WHERE delivery_partner_id IS NOT NULL;</property>
                 <property
                   dataType="System.String"
                   description="Specifies a SQL statement that uses parameters to generate the lookup table."
                   expressionType="Notify"
                   name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT 
-	delivery_partner_id
-FROM ods.ods_delivery_partner;) [refTable]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT delivery_partner_id FROM ods.ods_delivery_partner UNION SELECT delivery_partner_id FROM raw.raw_order WHERE delivery_partner_id IS NOT NULL;) [refTable]
 where [refTable].[delivery_partner_id] = ?</property>
                 <property
                   dataType="System.Int32"
@@ -8908,17 +8900,13 @@ where [refTable].[delivery_partner_id] = ?</property>
                   description="Specifies the SQL statement that generates the lookup table."
                   expressionType="Notify"
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
-	restaurant_id
-FROM ods.ods_restaurant;</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT restaurant_id FROM ods.ods_restaurant UNION SELECT restaurant_id FROM raw.raw_order;</property>
                 <property
                   dataType="System.String"
                   description="Specifies a SQL statement that uses parameters to generate the lookup table."
                   expressionType="Notify"
                   name="SqlCommandParam"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT
-	restaurant_id
-FROM ods.ods_restaurant;) [refTable]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT restaurant_id FROM ods.ods_restaurant UNION SELECT restaurant_id FROM raw.raw_order;) [refTable]
 where [refTable].[restaurant_id] = ?</property>
                 <property
                   dataType="System.Int32"
