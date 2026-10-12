@@ -66,7 +66,7 @@ CREATE TABLE temp.ods_customer
         CONSTRAINT DF_temp_ods_customer_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
-    CONSTRAINT PK_temp_ods_customer PRIMARY KEY CLUSTERED (customer_id)
+    CONSTRAINT PK_temp_ods_customer PRIMARY KEY CLUSTERED (batch_id, customer_id)
 );
 GO
 
@@ -120,7 +120,7 @@ CREATE TABLE temp.ods_restaurant
         CONSTRAINT DF_temp_ods_restaurant_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
-    CONSTRAINT PK_temp_ods_restaurant PRIMARY KEY CLUSTERED (restaurant_id)
+    CONSTRAINT PK_temp_ods_restaurant PRIMARY KEY CLUSTERED (batch_id, restaurant_id)
 );
 GO
 
@@ -172,7 +172,7 @@ CREATE TABLE temp.ods_menu_item
         CONSTRAINT DF_temp_ods_menu_item_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
-    CONSTRAINT PK_temp_ods_menu_item PRIMARY KEY CLUSTERED (menu_item_id)
+    CONSTRAINT PK_temp_ods_menu_item PRIMARY KEY CLUSTERED (batch_id, menu_item_id)
 );
 GO
 
@@ -226,7 +226,7 @@ CREATE TABLE temp.ods_delivery_partner
         CONSTRAINT DF_temp_ods_delivery_partner_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
-    CONSTRAINT PK_temp_ods_delivery_partner PRIMARY KEY CLUSTERED (delivery_partner_id)
+    CONSTRAINT PK_temp_ods_delivery_partner PRIMARY KEY CLUSTERED (batch_id, delivery_partner_id)
 );
 GO
 
@@ -286,7 +286,7 @@ CREATE TABLE temp.ods_order
         CONSTRAINT DF_temp_ods_order_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
-    CONSTRAINT PK_temp_ods_order PRIMARY KEY CLUSTERED (order_id)
+    CONSTRAINT PK_temp_ods_order PRIMARY KEY CLUSTERED (batch_id, order_id)
 );
 GO
 
@@ -341,7 +341,7 @@ CREATE TABLE temp.ods_order_item
         CONSTRAINT DF_temp_ods_order_item_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
-    CONSTRAINT PK_temp_ods_order_item PRIMARY KEY CLUSTERED (order_item_id)
+    CONSTRAINT PK_temp_ods_order_item PRIMARY KEY CLUSTERED (batch_id, order_item_id)
 );
 GO
 
@@ -399,7 +399,7 @@ CREATE TABLE temp.ods_delivery_performance
         CONSTRAINT DF_temp_ods_delivery_performance_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
-    CONSTRAINT PK_temp_ods_delivery_performance PRIMARY KEY CLUSTERED (delivery_id)
+    CONSTRAINT PK_temp_ods_delivery_performance PRIMARY KEY CLUSTERED (batch_id, delivery_id)
 );
 GO
 
@@ -454,7 +454,7 @@ CREATE TABLE temp.ods_rating
         CONSTRAINT DF_temp_ods_rating_load_timestamp
         DEFAULT SYSUTCDATETIME(),
 
-    CONSTRAINT PK_temp_ods_rating PRIMARY KEY CLUSTERED (rating_id)
+    CONSTRAINT PK_temp_ods_rating PRIMARY KEY CLUSTERED (batch_id, rating_id)
 );
 GO
 
