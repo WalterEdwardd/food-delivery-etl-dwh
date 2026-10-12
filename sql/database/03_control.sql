@@ -38,6 +38,7 @@ GO
 -- 2.1 CONTROL ETL BATCH
 
 DROP TABLE IF EXISTS control.dim_change_log;
+DROP TABLE IF EXISTS control.etl_warning;
 DROP TABLE IF EXISTS control.etl_error;
 DROP TABLE IF EXISTS control.etl_log;
 DROP TABLE IF EXISTS control.etl_batch;
@@ -190,6 +191,38 @@ CREATE TABLE control.dim_change_log
 GO
 
 
+-- 2.5 CONTROL ETL WARNING (Observability & Orphan Anomaly Tracking)
+
+DROP TABLE IF EXISTS control.etl_warning;
+CREATE TABLE control.etl_warning
+    (
+        warning_id          BIGINT IDENTITY(1,1) NOT NULL,
+        batch_id            BIGINT NOT NULL,
+
+        step_name           VARCHAR(200) NOT NULL,
+        table_name          VARCHAR(200) NULL,
+        order_id            VARCHAR(100) NULL,
+
+        entity_name         VARCHAR(100) NOT NULL,
+        entity_id           VARCHAR(100) NOT NULL,
+
+        warning_type        VARCHAR(100) NOT NULL,
+        warning_message     VARCHAR(4000) NOT NULL,
+
+        warning_timestamp   DATETIME2(3) NOT NULL
+            CONSTRAINT DF_etl_warning_timestamp
+            DEFAULT SYSUTCDATETIME(),
+
+        CONSTRAINT PK_etl_warning
+            PRIMARY KEY CLUSTERED (warning_id),
+
+        CONSTRAINT FK_etl_warning_batch
+            FOREIGN KEY (batch_id)
+            REFERENCES control.etl_batch(batch_id)
+    );
+GO
+
+
 -- 3. CREATE INDEXES
 
 -- 3.1 INDEX ON ETL LOG
@@ -264,6 +297,21 @@ IF NOT EXISTS
 BEGIN
     CREATE NONCLUSTERED INDEX IX_dim_change_log_batch_id
     ON control.dim_change_log (batch_id);
+END;
+GO
+
+-- 3.5 INDEX ON ETL WARNING
+
+IF NOT EXISTS
+(
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'IX_etl_warning_batch_id'
+      AND object_id = OBJECT_ID(N'control.etl_warning')
+)
+BEGIN
+    CREATE INDEX IX_etl_warning_batch_id
+    ON control.etl_warning(batch_id);
 END;
 GO
 
