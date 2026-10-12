@@ -43,7 +43,7 @@ BEGIN
             @inserted_count INT = 0,
             @updated_count  INT = 0;
 
-    SELECT @total_temp = COUNT(*) FROM temp.ods_customer;
+    SELECT @total_temp = COUNT(*) FROM temp.ods_customer WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
     IF @total_temp = 0
     BEGIN
@@ -57,7 +57,7 @@ BEGIN
         BEGIN TRANSACTION;
 
         MERGE ods.ods_customer AS target
-        USING temp.ods_customer AS source
+        USING (SELECT * FROM temp.ods_customer WHERE (@batch_id IS NULL OR batch_id = @batch_id)) AS source
         ON target.customer_id = source.customer_id
         WHEN MATCHED AND (
             ISNULL(target.signup_date, '1900-01-01')          <> ISNULL(source.signup_date, '1900-01-01')
@@ -111,6 +111,8 @@ BEGIN
 
         COMMIT TRANSACTION;
 
+        DELETE FROM temp.ods_customer WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+
         PRINT CONCAT('ods_customer: Total = ', @total_temp, ' | Inserted = ', @inserted_count, ' | Updated = ', @updated_count, ' | Unchanged = ', @unchanged_count);
     END TRY
     BEGIN CATCH
@@ -141,7 +143,7 @@ BEGIN
             @inserted_count INT = 0,
             @updated_count  INT = 0;
 
-    SELECT @total_temp = COUNT(*) FROM temp.ods_restaurant;
+    SELECT @total_temp = COUNT(*) FROM temp.ods_restaurant WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
     IF @total_temp = 0
     BEGIN
@@ -155,7 +157,7 @@ BEGIN
         BEGIN TRANSACTION;
 
         MERGE ods.ods_restaurant AS target
-        USING temp.ods_restaurant AS source
+        USING (SELECT * FROM temp.ods_restaurant WHERE (@batch_id IS NULL OR batch_id = @batch_id)) AS source
         ON target.restaurant_id = source.restaurant_id
         WHEN MATCHED AND (
             ISNULL(target.onboard_date, '1900-01-01')    <> ISNULL(source.onboard_date, '1900-01-01')
@@ -225,6 +227,8 @@ BEGIN
 
         COMMIT TRANSACTION;
 
+        DELETE FROM temp.ods_restaurant WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+
         PRINT CONCAT('ods_restaurant: Total = ', @total_temp, ' | Inserted = ', @inserted_count, ' | Updated = ', @updated_count, ' | Unchanged = ', @unchanged_count);
     END TRY
     BEGIN CATCH
@@ -255,7 +259,7 @@ BEGIN
             @inserted_count INT = 0,
             @updated_count  INT = 0;
 
-    SELECT @total_temp = COUNT(*) FROM temp.ods_menu_item;
+    SELECT @total_temp = COUNT(*) FROM temp.ods_menu_item WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
     IF @total_temp = 0
     BEGIN
@@ -269,7 +273,7 @@ BEGIN
         BEGIN TRANSACTION;
 
         MERGE ods.ods_menu_item AS target
-        USING temp.ods_menu_item AS source
+        USING (SELECT * FROM temp.ods_menu_item WHERE (@batch_id IS NULL OR batch_id = @batch_id)) AS source
         ON target.menu_item_id = source.menu_item_id
         WHEN MATCHED AND (
             ISNULL(target.restaurant_id, '')   <> ISNULL(source.restaurant_id, '')
@@ -331,6 +335,8 @@ BEGIN
 
         COMMIT TRANSACTION;
 
+        DELETE FROM temp.ods_menu_item WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+
         PRINT CONCAT('ods_menu_item: Total = ', @total_temp, ' | Inserted = ', @inserted_count, ' | Updated = ', @updated_count, ' | Unchanged = ', @unchanged_count);
     END TRY
     BEGIN CATCH
@@ -361,7 +367,7 @@ BEGIN
             @inserted_count INT = 0,
             @updated_count  INT = 0;
 
-    SELECT @total_temp = COUNT(*) FROM temp.ods_delivery_partner;
+    SELECT @total_temp = COUNT(*) FROM temp.ods_delivery_partner WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
     IF @total_temp = 0
     BEGIN
@@ -375,7 +381,7 @@ BEGIN
         BEGIN TRANSACTION;
 
         MERGE ods.ods_delivery_partner AS target
-        USING temp.ods_delivery_partner AS source
+        USING (SELECT * FROM temp.ods_delivery_partner WHERE (@batch_id IS NULL OR batch_id = @batch_id)) AS source
         ON target.delivery_partner_id = source.delivery_partner_id
         WHEN MATCHED AND (
             ISNULL(target.onboard_date, '1900-01-01')    <> ISNULL(source.onboard_date, '1900-01-01')
@@ -445,6 +451,8 @@ BEGIN
 
         COMMIT TRANSACTION;
 
+        DELETE FROM temp.ods_delivery_partner WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+
         PRINT CONCAT('ods_delivery_partner: Total = ', @total_temp, ' | Inserted = ', @inserted_count, ' | Updated = ', @updated_count, ' | Unchanged = ', @unchanged_count);
     END TRY
     BEGIN CATCH
@@ -475,7 +483,7 @@ BEGIN
             @inserted_count INT = 0,
             @updated_count  INT = 0;
 
-    SELECT @total_temp = COUNT(*) FROM temp.ods_order;
+    SELECT @total_temp = COUNT(*) FROM temp.ods_order WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
     IF @total_temp = 0
     BEGIN
@@ -485,11 +493,109 @@ BEGIN
 
     DECLARE @merge_actions TABLE (action_type VARCHAR(10));
 
+    -- Audit & Log Orphan Records into control.etl_warning
+    DECLARE @orphan_cust_count     INT = 0,
+            @orphan_rest_count     INT = 0,
+            @orphan_dp_count       INT = 0,
+            @mismatch_amount_count INT = 0;
+
+    IF OBJECT_ID('control.etl_warning', 'U') IS NOT NULL
+    BEGIN
+        -- 1. Orphan Customer Warning (GDPR deleted or out-of-order ingestion)
+        INSERT INTO control.etl_warning (
+            batch_id, step_name, table_name, order_id, entity_name, entity_id, warning_type, warning_message
+        )
+        SELECT 
+            t.batch_id,
+            'LOAD_ORDER',
+            'ods_order',
+            t.order_id,
+            'CUSTOMER',
+            t.customer_id,
+            'ORPHAN_CUSTOMER_DETECTED',
+            CONCAT('Customer ID ', t.customer_id, ' not found in ods.ods_customer (retained for compliance / revenue)')
+        FROM temp.ods_order t
+        LEFT JOIN ods.ods_customer c ON t.customer_id = c.customer_id
+        WHERE (@batch_id IS NULL OR t.batch_id = @batch_id)
+          AND c.customer_id IS NULL;
+
+        SET @orphan_cust_count = @@ROWCOUNT;
+
+        -- 2. Orphan Restaurant Warning
+        INSERT INTO control.etl_warning (
+            batch_id, step_name, table_name, order_id, entity_name, entity_id, warning_type, warning_message
+        )
+        SELECT 
+            t.batch_id,
+            'LOAD_ORDER',
+            'ods_order',
+            t.order_id,
+            'RESTAURANT',
+            t.restaurant_id,
+            'ORPHAN_RESTAURANT_DETECTED',
+            CONCAT('Restaurant ID ', t.restaurant_id, ' not found in ods.ods_restaurant')
+        FROM temp.ods_order t
+        LEFT JOIN ods.ods_restaurant r ON t.restaurant_id = r.restaurant_id
+        WHERE (@batch_id IS NULL OR t.batch_id = @batch_id)
+          AND r.restaurant_id IS NULL;
+
+        SET @orphan_rest_count = @@ROWCOUNT;
+
+        -- 3. Orphan Delivery Partner Warning
+        INSERT INTO control.etl_warning (
+            batch_id, step_name, table_name, order_id, entity_name, entity_id, warning_type, warning_message
+        )
+        SELECT 
+            t.batch_id,
+            'LOAD_ORDER',
+            'ods_order',
+            t.order_id,
+            'DELIVERY_PARTNER',
+            t.delivery_partner_id,
+            'ORPHAN_DELIVERY_PARTNER_DETECTED',
+            CONCAT('Delivery Partner ID ', t.delivery_partner_id, ' not found in ods.ods_delivery_partner')
+        FROM temp.ods_order t
+        LEFT JOIN ods.ods_delivery_partner dp ON t.delivery_partner_id = dp.delivery_partner_id
+        WHERE (@batch_id IS NULL OR t.batch_id = @batch_id)
+          AND t.delivery_partner_id IS NOT NULL AND LTRIM(RTRIM(t.delivery_partner_id)) <> ''
+          AND dp.delivery_partner_id IS NULL;
+
+        SET @orphan_dp_count = @@ROWCOUNT;
+
+        -- 4. Total Amount Discrepancy Warning (Financial Integrity Audit)
+        INSERT INTO control.etl_warning (
+            batch_id, step_name, table_name, order_id, entity_name, entity_id, warning_type, warning_message
+        )
+        SELECT 
+            t.batch_id,
+            'LOAD_ORDER',
+            'ods_order',
+            t.order_id,
+            'FINANCIAL_INTEGRITY',
+            t.order_id,
+            'TOTAL_AMOUNT_MISMATCH',
+            CONCAT(
+                'Total amount (', t.total_amount, 
+                ') <> Calculated (subtotal ', t.subtotal_amount, 
+                ' - discount ', ISNULL(t.discount_amount, 0), 
+                ' + fee ', ISNULL(t.delivery_fee, 0), 
+                ' = ', (t.subtotal_amount - ISNULL(t.discount_amount, 0) + ISNULL(t.delivery_fee, 0)), 
+                '). Diff: ', (t.total_amount - (t.subtotal_amount - ISNULL(t.discount_amount, 0) + ISNULL(t.delivery_fee, 0)))
+            )
+        FROM temp.ods_order t
+        WHERE (@batch_id IS NULL OR t.batch_id = @batch_id)
+          AND t.total_amount IS NOT NULL 
+          AND t.subtotal_amount IS NOT NULL
+          AND ABS(t.total_amount - (t.subtotal_amount - ISNULL(t.discount_amount, 0) + ISNULL(t.delivery_fee, 0))) > 0.01;
+
+        SET @mismatch_amount_count = @@ROWCOUNT;
+    END;
+
     BEGIN TRY
         BEGIN TRANSACTION;
 
         MERGE ods.ods_order AS target
-        USING temp.ods_order AS source
+        USING (SELECT * FROM temp.ods_order WHERE (@batch_id IS NULL OR batch_id = @batch_id)) AS source
         ON target.order_id = source.order_id
         WHEN MATCHED AND (
             ISNULL(target.customer_id, '')           <> ISNULL(source.customer_id, '')
@@ -565,13 +671,15 @@ BEGIN
         DECLARE @unchanged_count INT = @total_temp - (@inserted_count + @updated_count);
 
         UPDATE control.etl_log
-        SET message = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged.')
+        SET message = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged. Warnings: ', @orphan_cust_count, ' orphan cust, ', @orphan_rest_count, ' orphan rest, ', @orphan_dp_count, ' orphan dp, ', @mismatch_amount_count, ' amount mismatch.')
         WHERE step_name = 'LOAD_ORDER'
           AND status = 'RUNNING';
 
         COMMIT TRANSACTION;
 
-        PRINT CONCAT('ods_order: Total = ', @total_temp, ' | Inserted = ', @inserted_count, ' | Updated = ', @updated_count, ' | Unchanged = ', @unchanged_count);
+        DELETE FROM temp.ods_order WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+
+        PRINT CONCAT('ods_order: Total = ', @total_temp, ' | Inserted = ', @inserted_count, ' | Updated = ', @updated_count, ' | Unchanged = ', @unchanged_count, ' | Orphan Cust = ', @orphan_cust_count, ' | Orphan Rest = ', @orphan_rest_count, ' | Orphan DP = ', @orphan_dp_count, ' | Amount Mismatch = ', @mismatch_amount_count);
     END TRY
     BEGIN CATCH
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
@@ -601,7 +709,7 @@ BEGIN
             @inserted_count INT = 0,
             @updated_count  INT = 0;
 
-    SELECT @total_temp = COUNT(*) FROM temp.ods_order_item;
+    SELECT @total_temp = COUNT(*) FROM temp.ods_order_item WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
     IF @total_temp = 0
     BEGIN
@@ -615,7 +723,7 @@ BEGIN
         BEGIN TRANSACTION;
 
         MERGE ods.ods_order_item AS target
-        USING temp.ods_order_item AS source
+        USING (SELECT * FROM temp.ods_order_item WHERE (@batch_id IS NULL OR batch_id = @batch_id)) AS source
         ON target.order_item_id = source.order_item_id
         WHEN MATCHED AND (
             ISNULL(target.order_id, '')       <> ISNULL(source.order_id, '')
@@ -681,6 +789,8 @@ BEGIN
 
         COMMIT TRANSACTION;
 
+        DELETE FROM temp.ods_order_item WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+
         PRINT CONCAT('ods_order_item: Total = ', @total_temp, ' | Inserted = ', @inserted_count, ' | Updated = ', @updated_count, ' | Unchanged = ', @unchanged_count);
     END TRY
     BEGIN CATCH
@@ -711,7 +821,7 @@ BEGIN
             @inserted_count INT = 0,
             @updated_count  INT = 0;
 
-    SELECT @total_temp = COUNT(*) FROM temp.ods_delivery_performance;
+    SELECT @total_temp = COUNT(*) FROM temp.ods_delivery_performance WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
     IF @total_temp = 0
     BEGIN
@@ -725,7 +835,7 @@ BEGIN
         BEGIN TRANSACTION;
 
         MERGE ods.ods_delivery_performance AS target
-        USING temp.ods_delivery_performance AS source
+        USING (SELECT * FROM temp.ods_delivery_performance WHERE (@batch_id IS NULL OR batch_id = @batch_id)) AS source
         ON target.delivery_id = source.delivery_id
         WHEN MATCHED AND (
             ISNULL(target.order_id, '')                   <> ISNULL(source.order_id, '')
@@ -803,6 +913,8 @@ BEGIN
 
         COMMIT TRANSACTION;
 
+        DELETE FROM temp.ods_delivery_performance WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+
         PRINT CONCAT('ods_delivery_performance: Total = ', @total_temp, ' | Inserted = ', @inserted_count, ' | Updated = ', @updated_count, ' | Unchanged = ', @unchanged_count);
     END TRY
     BEGIN CATCH
@@ -833,7 +945,7 @@ BEGIN
             @inserted_count INT = 0,
             @updated_count  INT = 0;
 
-    SELECT @total_temp = COUNT(*) FROM temp.ods_rating;
+    SELECT @total_temp = COUNT(*) FROM temp.ods_rating WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
     IF @total_temp = 0
     BEGIN
@@ -847,7 +959,7 @@ BEGIN
         BEGIN TRANSACTION;
 
         MERGE ods.ods_rating AS target
-        USING temp.ods_rating AS source
+        USING (SELECT * FROM temp.ods_rating WHERE (@batch_id IS NULL OR batch_id = @batch_id)) AS source
         ON target.rating_id = source.rating_id
         WHEN MATCHED AND (
             ISNULL(target.order_id, '')         <> ISNULL(source.order_id, '')
@@ -917,6 +1029,8 @@ BEGIN
 
         COMMIT TRANSACTION;
 
+        DELETE FROM temp.ods_rating WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+
         PRINT CONCAT('ods_rating: Total = ', @total_temp, ' | Inserted = ', @inserted_count, ' | Updated = ', @updated_count, ' | Unchanged = ', @unchanged_count);
     END TRY
     BEGIN CATCH
@@ -959,7 +1073,7 @@ BEGIN
     -- 1. CUSTOMER
     -- =========================================================================
     EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_CUSTOMER', @batch_id = @batch_id, @table_name = 'raw_customer';
-    TRUNCATE TABLE temp.ods_customer;
+    DELETE FROM temp.ods_customer WHERE batch_id = @batch_id;
 
     INSERT INTO temp.ods_customer (
         customer_id, signup_date, city, acquisition_channel, batch_id, source_file_name, source_row_number, load_timestamp
@@ -983,7 +1097,7 @@ BEGIN
     -- 2. RESTAURANT
     -- =========================================================================
     EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_RESTAURANT', @batch_id = @batch_id, @table_name = 'raw_restaurant';
-    TRUNCATE TABLE temp.ods_restaurant;
+    DELETE FROM temp.ods_restaurant WHERE batch_id = @batch_id;
 
     INSERT INTO temp.ods_restaurant (
         restaurant_id, onboard_date, restaurant_name, city, cuisine_type, partner_type, avg_prep_time_min, is_active, batch_id, source_file_name, source_row_number, load_timestamp
@@ -1011,7 +1125,7 @@ BEGIN
     -- 3. DELIVERY PARTNER
     -- =========================================================================
     EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_DELIVERY_PARTNER', @batch_id = @batch_id, @table_name = 'raw_delivery_partner';
-    TRUNCATE TABLE temp.ods_delivery_partner;
+    DELETE FROM temp.ods_delivery_partner WHERE batch_id = @batch_id;
 
     INSERT INTO temp.ods_delivery_partner (
         delivery_partner_id, onboard_date, partner_name, city, vehicle_type, employment_type, avg_rating, is_active, batch_id, source_file_name, source_row_number, load_timestamp
@@ -1039,7 +1153,7 @@ BEGIN
     -- 4. MENU ITEM
     -- =========================================================================
     EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_MENU_ITEM', @batch_id = @batch_id, @table_name = 'raw_menu_item';
-    TRUNCATE TABLE temp.ods_menu_item;
+    DELETE FROM temp.ods_menu_item WHERE batch_id = @batch_id;
 
     INSERT INTO temp.ods_menu_item (
         menu_item_id, restaurant_id, item_name, category, is_veg, price, batch_id, source_file_name, source_row_number, load_timestamp
@@ -1065,28 +1179,7 @@ BEGIN
     -- 5. ORDER
     -- =========================================================================
     EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ORDER', @batch_id = @batch_id, @table_name = 'raw_order';
-    TRUNCATE TABLE temp.ods_order;
-
-    -- Log FK violations: customer_id missing in ods.ods_customer
-    INSERT INTO control.etl_error (
-        batch_id, source_file_name, source_row_number, table_name, column_name,
-        error_type, error_message, raw_value, error_timestamp
-    )
-    SELECT 
-        o.batch_id,
-        o.source_file_name,
-        o.source_row_number,
-        'raw_order',
-        'customer_id',
-        'MASTER_DATA_NOT_FOUND',
-        'customer_id value does not exists in reference master',
-        o.customer_id,
-        SYSDATETIME()
-    FROM raw.raw_order o
-    WHERE o.batch_id = @batch_id
-      AND NOT EXISTS (
-          SELECT 1 FROM ods.ods_customer c WHERE c.customer_id = o.customer_id
-      );
+    DELETE FROM temp.ods_order WHERE batch_id = @batch_id;
 
     -- Insert clean orders to temp
     INSERT INTO temp.ods_order (
@@ -1120,7 +1213,7 @@ BEGIN
     -- 6. ORDER ITEM
     -- =========================================================================
     EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ORDER_ITEM', @batch_id = @batch_id, @table_name = 'raw_order_item';
-    TRUNCATE TABLE temp.ods_order_item;
+    DELETE FROM temp.ods_order_item WHERE batch_id = @batch_id;
 
     -- Log FK violations: order_id missing in ods.ods_order
     INSERT INTO control.etl_error (
@@ -1173,7 +1266,7 @@ BEGIN
     -- 7. DELIVERY PERFORMANCE
     -- =========================================================================
     EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_DELIVERY_PERFORMANCE', @batch_id = @batch_id, @table_name = 'raw_delivery_performance';
-    TRUNCATE TABLE temp.ods_delivery_performance;
+    DELETE FROM temp.ods_delivery_performance WHERE batch_id = @batch_id;
 
     -- Log FK violations: order_id missing in ods.ods_order
     INSERT INTO control.etl_error (
@@ -1299,7 +1392,7 @@ BEGIN
     -- 8. RATING
     -- =========================================================================
     EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_RATING', @batch_id = @batch_id, @table_name = 'raw_rating';
-    TRUNCATE TABLE temp.ods_rating;
+    DELETE FROM temp.ods_rating WHERE batch_id = @batch_id;
 
     INSERT INTO temp.ods_rating (
         rating_id, order_id, customer_id, restaurant_id, rating, review_text,
