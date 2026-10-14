@@ -2,14 +2,15 @@
    QUICKBITE DATA PLATFORM
    Food Delivery ETL & Data Warehouse
 
-   PERFORMANCE OPTIMIZATION: FOREIGN KEY NON-CLUSTERED INDEXES
+   REFERENCE / BENCHMARK ONLY: FOREIGN KEY NON-CLUSTERED B-TREE INDEXES
    
    Database : FoodDeliveryDW
    Schema   : dwh
-   File     : sql/database/10_fact_indexes.sql
-   Purpose  : Create non-clustered indexes on all Foreign Key and relationship
-              columns across all DWH Fact tables to accelerate Star Schema JOINs,
-              serving view aggregations, and Power BI analytical queries.
+   File     : docs/reference/fact_btree_indexes_optional.sql
+   Status   : ARCHIVED / OPTIONAL REFERENCE (Excluded from active database DDL pipeline)
+   Note     : Fact tables in dwh utilize Ordered Clustered Columnstore Indexes (CCI).
+              Applying these individual B-tree FK indexes in production induces ETL write
+              penalties and storage bloat. Retained for benchmark reference prior to final deletion.
 ============================================================================== */
 
 USE FoodDeliveryDW;
