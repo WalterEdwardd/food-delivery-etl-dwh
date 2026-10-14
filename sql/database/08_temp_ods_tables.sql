@@ -70,6 +70,9 @@ CREATE TABLE temp.ods_customer
 );
 GO
 
+ALTER TABLE temp.ods_customer SET (LOCK_ESCALATION = DISABLE);
+GO
+
 
 /* =========================================================
    2. ODS RESTAURANT
@@ -124,6 +127,9 @@ CREATE TABLE temp.ods_restaurant
 );
 GO
 
+ALTER TABLE temp.ods_restaurant SET (LOCK_ESCALATION = DISABLE);
+GO
+
 
 /* =========================================================
    3. ODS MENU ITEM
@@ -174,6 +180,9 @@ CREATE TABLE temp.ods_menu_item
 
     CONSTRAINT PK_temp_ods_menu_item PRIMARY KEY CLUSTERED (batch_id, menu_item_id)
 );
+GO
+
+ALTER TABLE temp.ods_menu_item SET (LOCK_ESCALATION = DISABLE);
 GO
 
 
@@ -228,6 +237,9 @@ CREATE TABLE temp.ods_delivery_partner
 
     CONSTRAINT PK_temp_ods_delivery_partner PRIMARY KEY CLUSTERED (batch_id, delivery_partner_id)
 );
+GO
+
+ALTER TABLE temp.ods_delivery_partner SET (LOCK_ESCALATION = DISABLE);
 GO
 
 
@@ -290,6 +302,9 @@ CREATE TABLE temp.ods_order
 );
 GO
 
+ALTER TABLE temp.ods_order SET (LOCK_ESCALATION = DISABLE);
+GO
+
 
 /* =========================================================
    6. ODS ORDER ITEM
@@ -343,6 +358,9 @@ CREATE TABLE temp.ods_order_item
 
     CONSTRAINT PK_temp_ods_order_item PRIMARY KEY CLUSTERED (batch_id, order_item_id)
 );
+GO
+
+ALTER TABLE temp.ods_order_item SET (LOCK_ESCALATION = DISABLE);
 GO
 
 
@@ -403,6 +421,9 @@ CREATE TABLE temp.ods_delivery_performance
 );
 GO
 
+ALTER TABLE temp.ods_delivery_performance SET (LOCK_ESCALATION = DISABLE);
+GO
+
 
 /* =========================================================
    8. ODS RATING
@@ -456,6 +477,9 @@ CREATE TABLE temp.ods_rating
 
     CONSTRAINT PK_temp_ods_rating PRIMARY KEY CLUSTERED (batch_id, rating_id)
 );
+GO
+
+ALTER TABLE temp.ods_rating SET (LOCK_ESCALATION = DISABLE);
 GO
 
 
