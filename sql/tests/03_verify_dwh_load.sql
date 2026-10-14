@@ -518,6 +518,24 @@ VALUES ('Multi-Aspect Separation Check', 'Tasty but a bit late -> 2 aspects', @b
         CASE WHEN @multi_aspect_anomalies = 0 THEN NULL ELSE 'Multi-aspect separation failed for Tasty but a bit late' END);
 
 
+-- 9.18 Serving Layer Views Completeness Check
+DECLARE @missing_views INT = 0;
+SELECT @missing_views = COUNT(*)
+FROM (VALUES ('v_dim_customer'), ('v_dim_restaurant'), ('v_dim_delivery_partner')) AS v(view_name)
+WHERE NOT EXISTS (
+    SELECT 1 FROM sys.views vws
+    JOIN sys.schemas s ON vws.schema_id = s.schema_id
+    WHERE s.name = 'dwh' AND vws.name = v.view_name
+);
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('Serving Views Completeness', 'dwh.v_dim_* (3 Semantic Views)', @batch_id,
+        '3 views present',
+        CONCAT(3 - @missing_views, ' views present'),
+        CASE WHEN @missing_views = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @missing_views = 0 THEN NULL ELSE 'One or more Serving Layer views missing in dwh schema' END);
+
+
 
 /*==============================================================================
   10. TEST RESULTS SUMMARY
