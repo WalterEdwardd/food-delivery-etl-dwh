@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/23/2026 9:04:56 AM"
@@ -12478,7 +12478,7 @@ WHERE batch_id = COALESCE(
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{080BB402-425B-4533-A64F-4840D127D019}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE temp.ods_rating;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="DELETE FROM temp.ods_rating WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_RATING' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_rating));" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
