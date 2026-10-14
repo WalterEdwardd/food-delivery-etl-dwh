@@ -184,38 +184,55 @@ BEGIN
         EXEC sp_executesql @sql, N'@b BIGINT, @cnt BIGINT OUTPUT', @b = @cur_batch_id, @cnt = @rows_processed OUTPUT;
     END;
 
-    -- 2. Count valid rows successfully written to ODS table
-    -- (Prefer counting from temp.<target_table> if present as it contains clean batch rows)
-    IF @target_table IS NOT NULL
+    -- 2. Determine valid rows successfully processed through Staging/Upsert
+    -- Strategy: In a CDC/Upsert architecture, unchanged records retain their prior batch_id in ODS.
+    -- Therefore, we retrieve the total valid staging rows recorded by the Upsert procedure (@total_temp),
+    -- or directly query the staging table before cleanup.
+    DECLARE @rows_valid BIGINT = NULL;
+
+    SELECT @rows_valid = rows_processed
+    FROM control.etl_log
+    WHERE log_id = @log_id
+      AND rows_processed IS NOT NULL
+      AND rows_processed > 0;
+
+    -- Fallback: If not recorded in etl_log, query target temp table directly if records still exist
+    IF @rows_valid IS NULL AND @target_table IS NOT NULL
     BEGIN
-        IF OBJECT_ID('temp.' + QUOTENAME(@target_table), 'U') IS NOT NULL
-        BEGIN
-            SET @sql = N'SELECT @cnt = COUNT_BIG(*) FROM temp.' + QUOTENAME(@target_table) + N';';
-            EXEC sp_executesql @sql, N'@cnt BIGINT OUTPUT', @cnt = @rows_inserted OUTPUT;
-        END
-        ELSE
-        BEGIN
-            SET @sql = N'SELECT @cnt = COUNT_BIG(*) FROM ods.' + QUOTENAME(@target_table) + N' WHERE batch_id = @b;';
-            EXEC sp_executesql @sql, N'@b BIGINT, @cnt BIGINT OUTPUT', @b = @cur_batch_id, @cnt = @rows_inserted OUTPUT;
-        END
+        BEGIN TRY
+            SET @sql = N'SELECT @cnt = COUNT_BIG(*) FROM temp.' + QUOTENAME(@target_table) + N' WHERE batch_id = @b;';
+            EXEC sp_executesql @sql, N'@b BIGINT, @cnt BIGINT OUTPUT', @b = @cur_batch_id, @cnt = @rows_valid OUTPUT;
+        END TRY
+        BEGIN CATCH
+            SET @rows_valid = NULL;
+        END CATCH;
+    END;
+
+    -- Fallback 2: Direct count in ODS if no staging count was captured
+    IF @rows_valid IS NULL AND @target_table IS NOT NULL
+    BEGIN
+        SET @sql = N'SELECT @cnt = COUNT_BIG(*) FROM ods.' + QUOTENAME(@target_table) + N' WHERE batch_id = @b;';
+        EXEC sp_executesql @sql, N'@b BIGINT, @cnt BIGINT OUTPUT', @b = @cur_batch_id, @cnt = @rows_valid OUTPUT;
     END;
 
     SET @rows_processed = COALESCE(@rows_processed, 0);
-    SET @rows_inserted  = COALESCE(@rows_inserted, 0);
+    SET @rows_inserted  = COALESCE(@rows_valid, @rows_processed);
 
-    -- 3. Rejected rows = Total RAW rows - Successful ODS rows
+    -- 3. Rejected rows = Total RAW rows - Valid Staging rows
     IF @rows_processed >= @rows_inserted
         SET @rows_rejected = @rows_processed - @rows_inserted;
     ELSE
         SET @rows_rejected = 0;
 
-    -- 4. Determine final status
-    IF @rows_rejected > 0
+    -- 4. Determine final status accurately based on real rejections
+    IF @rows_rejected > 0 AND @rows_inserted > 0
         SET @final_status = 'PARTIAL';
+    ELSE IF @rows_rejected > 0 AND @rows_inserted = 0
+        SET @final_status = 'FAILED';
     ELSE
         SET @final_status = 'SUCCESS';
 
-    -- 5. Update etl_log table (preserve detailed message from Upsert step if exists)
+    -- 5. Update etl_log table (preserve detailed CDC message from Upsert step)
     UPDATE control.etl_log
     SET end_time       = SYSDATETIME(),
         status         = @final_status,
