@@ -212,13 +212,8 @@ CREATE TABLE dwh.dim_customer
     city                    VARCHAR(100)         NULL, -- SCD Type 2
     acquisition_channel     VARCHAR(100)         NULL,
 
-    last_active             DATE                 NULL, -- SCD Type 1 (Behavioral)
-    days_since_last_active  INT                  NULL, -- SCD Type 1 (Behavioral)
-    churn_risk              VARCHAR(20)          NULL, -- SCD Type 1 (Behavioral)
-    life_cycle_id           TINYINT              NULL, -- SCD Type 1 (Behavioral)
-    last_status_id          TINYINT              NULL, -- SCD Type 1 (Behavioral)
-    is_churned              BIT                  NULL, -- SCD Type 1 (Behavioral)
-    churned_date            DATE                 NULL, -- SCD Type 1 (Behavioral)
+    last_active             DATE                 NULL, -- Last transaction date (from fact_order)
+    life_cycle_id           TINYINT              NULL, -- Transaction lifecycle at last order (1: New, 2: Retained, 3: Reactivated)
 
     /* SCD Type 2 Timeline Metadata */
     valid_from              DATE                 NOT NULL
@@ -240,10 +235,7 @@ CREATE TABLE dwh.dim_customer
         UNIQUE (customer_id, valid_from),
 
     CONSTRAINT FK_dim_customer_life_cycle
-        FOREIGN KEY (life_cycle_id) REFERENCES dwh.dim_life_cycles(lc_id),
-
-    CONSTRAINT FK_dim_customer_last_status
-        FOREIGN KEY (last_status_id) REFERENCES dwh.dim_life_cycles(lc_id)
+        FOREIGN KEY (life_cycle_id) REFERENCES dwh.dim_life_cycles(lc_id)
 );
 GO
 
@@ -265,13 +257,8 @@ CREATE TABLE dwh.dim_restaurant
     max_prep_min            INT                  NULL,
     prep_time_group         VARCHAR(50)          NULL,
     prep_time_index         TINYINT              NULL,
-    last_active             DATE                 NULL, -- SCD Type 1 (Behavioral)
-    days_since_last_active  INT                  NULL, -- SCD Type 1 (Behavioral)
-    churn_risk              VARCHAR(20)          NULL, -- SCD Type 1 (Behavioral)
-    life_cycle_id           TINYINT              NULL, -- SCD Type 1 (Behavioral)
-    last_status_id          TINYINT              NULL, -- SCD Type 1 (Behavioral)
-    is_churned              BIT                  NULL, -- SCD Type 1 (Behavioral)
-    churned_date            DATE                 NULL, -- SCD Type 1 (Behavioral)
+    last_active             DATE                 NULL, -- Last transaction date (from fact_order)
+    life_cycle_id           TINYINT              NULL, -- Transaction lifecycle at last order (1: New, 2: Retained, 3: Reactivated)
 
     /* SCD Type 2 Timeline Metadata */
     valid_from              DATE                 NOT NULL
@@ -293,10 +280,7 @@ CREATE TABLE dwh.dim_restaurant
         UNIQUE (restaurant_id, valid_from),
 
     CONSTRAINT FK_dim_restaurant_life_cycle
-        FOREIGN KEY (life_cycle_id) REFERENCES dwh.dim_life_cycles(lc_id),
-
-    CONSTRAINT FK_dim_restaurant_last_status
-        FOREIGN KEY (last_status_id) REFERENCES dwh.dim_life_cycles(lc_id)
+        FOREIGN KEY (life_cycle_id) REFERENCES dwh.dim_life_cycles(lc_id)
 );
 GO
 
@@ -314,13 +298,8 @@ CREATE TABLE dwh.dim_delivery_partner
     avg_rating              DECIMAL(5,2)         NULL,
     is_active               BIT                  NULL, -- SCD Type 2
 
-    last_active             DATE                 NULL, -- SCD Type 1 (Behavioral)
-    days_since_last_active  INT                  NULL, -- SCD Type 1 (Behavioral)
-    churn_risk              VARCHAR(20)          NULL, -- SCD Type 1 (Behavioral)
-    life_cycle_id           TINYINT              NULL, -- SCD Type 1 (Behavioral)
-    last_status_id          TINYINT              NULL, -- SCD Type 1 (Behavioral)
-    is_churned              BIT                  NULL, -- SCD Type 1 (Behavioral)
-    churned_date            DATE                 NULL, -- SCD Type 1 (Behavioral)
+    last_active             DATE                 NULL, -- Last transaction date (from fact_order)
+    life_cycle_id           TINYINT              NULL, -- Transaction lifecycle at last order (1: New, 2: Retained, 3: Reactivated)
     rating_type_id          TINYINT              NULL,
     rating_type             VARCHAR(50)          NULL,
 
@@ -344,10 +323,7 @@ CREATE TABLE dwh.dim_delivery_partner
         UNIQUE (delivery_partner_id, valid_from),
 
     CONSTRAINT FK_dim_delivery_partner_life_cycle
-        FOREIGN KEY (life_cycle_id) REFERENCES dwh.dim_life_cycles(lc_id),
-
-    CONSTRAINT FK_dim_delivery_partner_last_status
-        FOREIGN KEY (last_status_id) REFERENCES dwh.dim_life_cycles(lc_id)
+        FOREIGN KEY (life_cycle_id) REFERENCES dwh.dim_life_cycles(lc_id)
 );
 GO
 
