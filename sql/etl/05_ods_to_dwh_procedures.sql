@@ -24,6 +24,9 @@ TABLE OF PROCEDURES:
     8. dwh.usp_load_fact_delivery_performance
     9. dwh.usp_load_fact_rating
     10. dwh.usp_load_fact_review_aspect
+    11. dwh.usp_enrich_dimensions_behavioral_metrics
+    12. dwh.usp_relink_orphan_facts
+    13. dwh.usp_run_ods_to_dwh_pipeline
 ================================================================================
 */
 
@@ -349,8 +352,8 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM dwh.dim_customer WHERE customer_key = -1)
         BEGIN
             SET IDENTITY_INSERT dwh.dim_customer ON;
-            INSERT INTO dwh.dim_customer (customer_key, customer_id, signup_date, city, acquisition_channel, last_active, days_since_last_active, churn_risk, life_cycle_id, last_status_id, is_churned, churned_date, valid_from, valid_to, is_current, batch_id)
-            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown', 'Unknown', '1900-01-01', 0, 'Unknown', 0, 0, 0, NULL, '1900-01-01', '9999-12-31', 1, 0);
+            INSERT INTO dwh.dim_customer (customer_key, customer_id, signup_date, city, acquisition_channel, last_active, life_cycle_id, valid_from, valid_to, is_current, batch_id)
+            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown', 'Unknown', '1900-01-01', 0, '1900-01-01', '9999-12-31', 1, 0);
             SET IDENTITY_INSERT dwh.dim_customer OFF;
             PRINT '    - Seeded dwh.dim_customer Unknown Member (-1)';
         END;
@@ -359,8 +362,8 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM dwh.dim_restaurant WHERE restaurant_key = -1)
         BEGIN
             SET IDENTITY_INSERT dwh.dim_restaurant ON;
-            INSERT INTO dwh.dim_restaurant (restaurant_key, restaurant_id, onboard_date, restaurant_name, city, cuisine_type, partner_type, avg_prep_time_min, is_active, min_prep_min, max_prep_min, prep_time_group, prep_time_index, last_active, days_since_last_active, churn_risk, life_cycle_id, last_status_id, is_churned, churned_date, valid_from, valid_to, is_current, batch_id)
-            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown Restaurant', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 0, 0, 0, 'Unknown', 0, '1900-01-01', 0, 'Unknown', 0, 0, 0, NULL, '1900-01-01', '9999-12-31', 1, 0);
+            INSERT INTO dwh.dim_restaurant (restaurant_key, restaurant_id, onboard_date, restaurant_name, city, cuisine_type, partner_type, avg_prep_time_min, is_active, min_prep_min, max_prep_min, prep_time_group, prep_time_index, last_active, life_cycle_id, valid_from, valid_to, is_current, batch_id)
+            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown Restaurant', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 0, 0, 0, 'Unknown', 0, '1900-01-01', 0, '1900-01-01', '9999-12-31', 1, 0);
             SET IDENTITY_INSERT dwh.dim_restaurant OFF;
             PRINT '    - Seeded dwh.dim_restaurant Unknown Member (-1)';
         END;
@@ -369,8 +372,8 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM dwh.dim_delivery_partner WHERE delivery_partner_key = -1)
         BEGIN
             SET IDENTITY_INSERT dwh.dim_delivery_partner ON;
-            INSERT INTO dwh.dim_delivery_partner (delivery_partner_key, delivery_partner_id, onboard_date, partner_name, city, vehicle_type, employment_type, avg_rating, is_active, last_active, days_since_last_active, churn_risk, life_cycle_id, last_status_id, is_churned, churned_date, rating_type_id, rating_type, valid_from, valid_to, is_current, batch_id)
-            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown Driver', 'Unknown', 'Unknown', 'Unknown', NULL, 0, '1900-01-01', 0, 'Unknown', 0, 0, 0, NULL, 0, 'Unknown', '1900-01-01', '9999-12-31', 1, 0);
+            INSERT INTO dwh.dim_delivery_partner (delivery_partner_key, delivery_partner_id, onboard_date, partner_name, city, vehicle_type, employment_type, avg_rating, is_active, rating_type_id, rating_type, last_active, life_cycle_id, valid_from, valid_to, is_current, batch_id)
+            VALUES (-1, 'UNKNOWN', '1900-01-01', 'Unknown Driver', 'Unknown', 'Unknown', 'Unknown', NULL, 0, 0, 'Unknown', '1900-01-01', 0, '1900-01-01', '9999-12-31', 1, 0);
             SET IDENTITY_INSERT dwh.dim_delivery_partner OFF;
             PRINT '    - Seeded dwh.dim_delivery_partner Unknown Member (-1)';
         END;
@@ -466,12 +469,7 @@ BEGIN
             c.city,
             c.acquisition_channel,
             c.signup_date                                               AS last_active,
-            DATEDIFF(DAY, c.signup_date, @max_order_date)               AS days_since_last_active,
             CAST(0 AS TINYINT)                                          AS life_cycle_id,  -- 0: Unknown (chưa phát sinh giao dịch)
-            CAST(0 AS TINYINT)                                          AS last_status_id, -- 0: Unknown
-            CAST(0 AS BIT)                                              AS is_churned,
-            CAST(NULL AS DATE)                                          AS churned_date,
-            CAST('Undefined' AS VARCHAR(20))                            AS churn_risk,
             c.batch_id
         INTO #CustomerPrepared
         FROM ods.ods_customer c
@@ -484,15 +482,13 @@ BEGIN
         INSERT INTO dwh.dim_customer
         (
             customer_id, signup_date, city, acquisition_channel,
-            last_active, days_since_last_active, churn_risk,
-            life_cycle_id, last_status_id, is_churned, churned_date,
+            last_active, life_cycle_id,
             valid_from, valid_to, is_current,
             batch_id, load_timestamp
         )
         SELECT 
             src.customer_id, src.signup_date, src.city, src.acquisition_channel,
-            src.last_active, src.days_since_last_active, src.churn_risk,
-            src.life_cycle_id, src.last_status_id, src.is_churned, src.churned_date,
+            src.last_active, src.life_cycle_id,
             '1900-01-01', '9999-12-31', 1,
             src.batch_id, SYSUTCDATETIME()
         FROM #CustomerPrepared src
@@ -507,13 +503,9 @@ BEGIN
         SELECT 
             src.customer_id, src.signup_date, src.city, src.acquisition_channel,
             COALESCE(tgt.last_active, src.last_active)                       AS last_active,
-            COALESCE(tgt.days_since_last_active, src.days_since_last_active) AS days_since_last_active,
-            COALESCE(tgt.churn_risk, src.churn_risk)                         AS churn_risk,
             COALESCE(tgt.life_cycle_id, src.life_cycle_id)                   AS life_cycle_id,
-            COALESCE(tgt.last_status_id, src.last_status_id)                 AS last_status_id,
-            COALESCE(tgt.is_churned, src.is_churned)                         AS is_churned,
-            tgt.churned_date                                                 AS churned_date,
-            src.batch_id
+            src.batch_id,
+            tgt.valid_from                                                   AS tgt_valid_from
         INTO #Customer_SCD2
         FROM #CustomerPrepared src
         INNER JOIN dwh.dim_customer tgt
@@ -533,8 +525,10 @@ BEGIN
             )
             SELECT 
                 @batch_id, 'dim_customer', chg.customer_id,
-                tgt.customer_key, NULL,
-                'SCD2_VERSION', delta.col_name, delta.old_val, delta.new_val,
+                tgt.customer_key, 
+                CASE WHEN chg.tgt_valid_from >= @effective_date THEN tgt.customer_key ELSE NULL END,
+                CASE WHEN chg.tgt_valid_from >= @effective_date THEN 'SCD2_SAME_DAY_CORRECTION' ELSE 'SCD2_VERSION' END,
+                delta.col_name, delta.old_val, delta.new_val,
                 @effective_date, SYSUTCDATETIME()
             FROM #Customer_SCD2 chg
             INNER JOIN dwh.dim_customer tgt
@@ -545,37 +539,51 @@ BEGIN
                 WHERE ISNULL(tgt.city, '') <> ISNULL(chg.city, '')
             ) delta;
 
-            -- B.1 Expire current version
+            -- B.1a In-place Overwrite for Same-Day Changes (guardrail against valid_to < valid_from)
+            UPDATE tgt
+            SET tgt.city                = chg.city,
+                tgt.signup_date         = chg.signup_date,
+                tgt.acquisition_channel = chg.acquisition_channel,
+                tgt.batch_id            = chg.batch_id,
+                tgt.load_timestamp      = SYSUTCDATETIME()
+            FROM dwh.dim_customer tgt
+            INNER JOIN #Customer_SCD2 chg ON tgt.customer_id = chg.customer_id
+            WHERE tgt.is_current = 1
+              AND chg.tgt_valid_from >= @effective_date;
+
+            SET @rows_updated = @rows_updated + @@ROWCOUNT;
+
+            -- B.1b Expire prior version for Different-Day Changes
             UPDATE tgt
             SET tgt.valid_to       = @yesterday,
                 tgt.is_current     = 0,
                 tgt.load_timestamp = SYSUTCDATETIME()
             FROM dwh.dim_customer tgt
             INNER JOIN #Customer_SCD2 chg ON tgt.customer_id = chg.customer_id
-            WHERE tgt.is_current = 1;
+            WHERE tgt.is_current = 1
+              AND chg.tgt_valid_from < @effective_date;
 
             SET @rows_updated = @rows_updated + @@ROWCOUNT;
 
-            -- B.2 Insert new active version with new Surrogate Key
+            -- B.2 Insert new active version for Different-Day Changes
             INSERT INTO dwh.dim_customer
             (
                 customer_id, signup_date, city, acquisition_channel,
-                last_active, days_since_last_active, churn_risk,
-                life_cycle_id, last_status_id, is_churned, churned_date,
+                last_active, life_cycle_id,
                 valid_from, valid_to, is_current,
                 batch_id, load_timestamp
             )
             SELECT 
                 chg.customer_id, chg.signup_date, chg.city, chg.acquisition_channel,
-                chg.last_active, chg.days_since_last_active, chg.churn_risk,
-                chg.life_cycle_id, chg.last_status_id, chg.is_churned, chg.churned_date,
+                chg.last_active, chg.life_cycle_id,
                 @effective_date, '9999-12-31', 1,
                 chg.batch_id, SYSUTCDATETIME()
-            FROM #Customer_SCD2 chg;
+            FROM #Customer_SCD2 chg
+            WHERE chg.tgt_valid_from < @effective_date;
 
             SET @rows_inserted = @rows_inserted + @@ROWCOUNT;
 
-            -- B.3 Update new surrogate key in change log
+            -- B.3 Update new surrogate key in change log (for new versions only)
             UPDATE l
             SET l.surrogate_key_new = tgt.customer_key
             FROM control.dim_change_log l
@@ -725,12 +733,7 @@ BEGIN
             rt.rating_type,
             -- Behavioral Defaults (to be enriched post-fact by usp_enrich_dimensions_behavioral_metrics)
             dp.onboard_date                                             AS last_active,
-            DATEDIFF(DAY, dp.onboard_date, @max_order_date)             AS days_since_last_active,
             CAST(0 AS TINYINT)                                          AS life_cycle_id,  -- 0: Unknown (chưa phát sinh giao dịch)
-            CAST(0 AS TINYINT)                                          AS last_status_id, -- 0: Unknown
-            CAST(0 AS BIT)                                              AS is_churned,
-            CAST(NULL AS DATE)                                          AS churned_date,
-            CAST('Undefined' AS VARCHAR(20))                            AS churn_risk,
             dp.batch_id
         INTO #DriverPrepared
         FROM ods.ods_delivery_partner dp
@@ -748,18 +751,16 @@ BEGIN
         (
             delivery_partner_id, onboard_date, partner_name, city,
             vehicle_type, employment_type, avg_rating, is_active,
-            last_active, days_since_last_active, churn_risk,
-            life_cycle_id, last_status_id, is_churned, churned_date,
             rating_type_id, rating_type,
+            last_active, life_cycle_id,
             valid_from, valid_to, is_current,
             batch_id, load_timestamp
         )
         SELECT 
             src.delivery_partner_id, src.onboard_date, src.partner_name, src.city,
             src.vehicle_type, src.employment_type, src.avg_rating, src.is_active,
-            src.last_active, src.days_since_last_active, src.churn_risk,
-            src.life_cycle_id, src.last_status_id, src.is_churned, src.churned_date,
             src.rating_type_id, src.rating_type,
+            src.last_active, src.life_cycle_id,
             '1900-01-01', '9999-12-31', 1,
             src.batch_id, SYSUTCDATETIME()
         FROM #DriverPrepared src
@@ -776,13 +777,9 @@ BEGIN
             src.vehicle_type, src.employment_type, src.avg_rating, src.is_active,
             src.rating_type_id, src.rating_type,
             COALESCE(tgt.last_active, src.last_active)                       AS last_active,
-            COALESCE(tgt.days_since_last_active, src.days_since_last_active) AS days_since_last_active,
-            COALESCE(tgt.churn_risk, src.churn_risk)                         AS churn_risk,
             COALESCE(tgt.life_cycle_id, src.life_cycle_id)                   AS life_cycle_id,
-            COALESCE(tgt.last_status_id, src.last_status_id)                 AS last_status_id,
-            COALESCE(tgt.is_churned, src.is_churned)                         AS is_churned,
-            tgt.churned_date                                                 AS churned_date,
-            src.batch_id
+            src.batch_id,
+            tgt.valid_from                                                   AS tgt_valid_from
         INTO #Driver_SCD2
         FROM #DriverPrepared src
         INNER JOIN dwh.dim_delivery_partner tgt
@@ -806,8 +803,10 @@ BEGIN
             )
             SELECT 
                 @batch_id, 'dim_delivery_partner', chg.delivery_partner_id,
-                tgt.delivery_partner_key, NULL,
-                'SCD2_VERSION', delta.col_name, delta.old_val, delta.new_val,
+                tgt.delivery_partner_key, 
+                CASE WHEN chg.tgt_valid_from >= @effective_date THEN tgt.delivery_partner_key ELSE NULL END,
+                CASE WHEN chg.tgt_valid_from >= @effective_date THEN 'SCD2_SAME_DAY_CORRECTION' ELSE 'SCD2_VERSION' END,
+                delta.col_name, delta.old_val, delta.new_val,
                 @effective_date, SYSUTCDATETIME()
             FROM #Driver_SCD2 chg
             INNER JOIN dwh.dim_delivery_partner tgt
@@ -830,41 +829,61 @@ BEGIN
                 WHERE ISNULL(tgt.is_active, 2)         <> ISNULL(chg.is_active, 2)
             ) delta;
 
-            -- B.1 Expire current version
+            -- B.1a In-place Overwrite for Same-Day Changes (guardrail against valid_to < valid_from)
+            UPDATE tgt
+            SET tgt.partner_name       = chg.partner_name,
+                tgt.city               = chg.city,
+                tgt.vehicle_type       = chg.vehicle_type,
+                tgt.employment_type    = chg.employment_type,
+                tgt.is_active          = chg.is_active,
+                tgt.onboard_date       = chg.onboard_date,
+                tgt.avg_rating         = chg.avg_rating,
+                tgt.rating_type_id     = chg.rating_type_id,
+                tgt.rating_type        = chg.rating_type,
+                tgt.batch_id           = chg.batch_id,
+                tgt.load_timestamp     = SYSUTCDATETIME()
+            FROM dwh.dim_delivery_partner tgt
+            INNER JOIN #Driver_SCD2 chg ON tgt.delivery_partner_id = chg.delivery_partner_id
+            WHERE tgt.is_current = 1
+              AND chg.tgt_valid_from >= @effective_date;
+
+            SET @rows_updated = @rows_updated + @@ROWCOUNT;
+
+            -- B.1b Expire prior version for Different-Day Changes
             UPDATE tgt
             SET tgt.valid_to       = @yesterday,
                 tgt.is_current     = 0,
                 tgt.load_timestamp = SYSUTCDATETIME()
             FROM dwh.dim_delivery_partner tgt
             INNER JOIN #Driver_SCD2 chg ON tgt.delivery_partner_id = chg.delivery_partner_id
-            WHERE tgt.is_current = 1;
+            WHERE tgt.is_current = 1
+              AND chg.tgt_valid_from < @effective_date;
 
             SET @rows_updated = @rows_updated + @@ROWCOUNT;
 
-            -- B.2 Insert new active version with new Surrogate Key
+            -- B.2 Insert new active version for Different-Day Changes
             INSERT INTO dwh.dim_delivery_partner
             (
                 delivery_partner_id, onboard_date, partner_name, city,
                 vehicle_type, employment_type, avg_rating, is_active,
-                last_active, days_since_last_active, churn_risk,
-                life_cycle_id, last_status_id, is_churned, churned_date,
                 rating_type_id, rating_type,
+                last_active, life_cycle_id,
                 valid_from, valid_to, is_current,
                 batch_id, load_timestamp
             )
             SELECT 
                 chg.delivery_partner_id, chg.onboard_date, chg.partner_name, chg.city,
                 chg.vehicle_type, chg.employment_type, chg.avg_rating, chg.is_active,
-                chg.last_active, chg.days_since_last_active, chg.churn_risk,
-                chg.life_cycle_id, chg.last_status_id, chg.is_churned, chg.churned_date,
                 chg.rating_type_id, chg.rating_type,
+                chg.last_active, chg.life_cycle_id,
                 @effective_date, '9999-12-31', 1,
                 chg.batch_id, SYSUTCDATETIME()
-            FROM #Driver_SCD2 chg;
+            FROM #Driver_SCD2 chg
+            WHERE chg.tgt_valid_from < @effective_date;
 
             SET @rows_inserted = @rows_inserted + @@ROWCOUNT;
 
-            -- B.3 Update new surrogate key in change log
+            -- B.3 Update new surrogate key in change log (for new versions only)
             UPDATE l
             SET l.surrogate_key_new = tgt.delivery_partner_key
             FROM control.dim_change_log l
@@ -1042,12 +1061,7 @@ BEGIN
             END AS prep_time_index,
             -- Behavioral Defaults (to be enriched post-fact by usp_enrich_dimensions_behavioral_metrics)
             r.onboard_date                                              AS last_active,
-            DATEDIFF(DAY, r.onboard_date, @max_order_date)              AS days_since_last_active,
             CAST(0 AS TINYINT)                                          AS life_cycle_id,  -- 0: Unknown (chưa phát sinh giao dịch)
-            CAST(0 AS TINYINT)                                          AS last_status_id, -- 0: Unknown
-            CAST(0 AS BIT)                                              AS is_churned,
-            CAST(NULL AS DATE)                                          AS churned_date,
-            CAST('Undefined' AS VARCHAR(20))                            AS churn_risk,
             r.batch_id
         INTO #RestPrepared
         FROM ods.ods_restaurant r
@@ -1062,8 +1076,7 @@ BEGIN
             restaurant_id, onboard_date, restaurant_name, city,
             cuisine_type, partner_type, avg_prep_time_min, is_active,
             min_prep_min, max_prep_min, prep_time_group, prep_time_index,
-            last_active, days_since_last_active, churn_risk,
-            life_cycle_id, last_status_id, is_churned, churned_date,
+            last_active, life_cycle_id,
             valid_from, valid_to, is_current,
             batch_id, load_timestamp
         )
@@ -1071,8 +1084,7 @@ BEGIN
             src.restaurant_id, src.onboard_date, src.restaurant_name, src.city,
             src.cuisine_type, src.partner_type, src.avg_prep_time_min, src.is_active,
             src.min_prep_min, src.max_prep_min, src.prep_time_group, src.prep_time_index,
-            src.last_active, src.days_since_last_active, src.churn_risk,
-            src.life_cycle_id, src.last_status_id, src.is_churned, src.churned_date,
+            src.last_active, src.life_cycle_id,
             '1900-01-01', '9999-12-31', 1,
             src.batch_id, SYSUTCDATETIME()
         FROM #RestPrepared src
@@ -1089,13 +1101,9 @@ BEGIN
             src.cuisine_type, src.partner_type, src.avg_prep_time_min, src.is_active,
             src.min_prep_min, src.max_prep_min, src.prep_time_group, src.prep_time_index,
             COALESCE(tgt.last_active, src.last_active)                       AS last_active,
-            COALESCE(tgt.days_since_last_active, src.days_since_last_active) AS days_since_last_active,
-            COALESCE(tgt.churn_risk, src.churn_risk)                         AS churn_risk,
             COALESCE(tgt.life_cycle_id, src.life_cycle_id)                   AS life_cycle_id,
-            COALESCE(tgt.last_status_id, src.last_status_id)                 AS last_status_id,
-            COALESCE(tgt.is_churned, src.is_churned)                         AS is_churned,
-            tgt.churned_date                                                 AS churned_date,
-            src.batch_id
+            src.batch_id,
+            tgt.valid_from                                                   AS tgt_valid_from
         INTO #Rest_SCD2
         FROM #RestPrepared src
         INNER JOIN dwh.dim_restaurant tgt
@@ -1119,8 +1127,10 @@ BEGIN
             )
             SELECT 
                 @batch_id, 'dim_restaurant', chg.restaurant_id,
-                tgt.restaurant_key, NULL,
-                'SCD2_VERSION', delta.col_name, delta.old_val, delta.new_val,
+                tgt.restaurant_key, 
+                CASE WHEN chg.tgt_valid_from >= @effective_date THEN tgt.restaurant_key ELSE NULL END,
+                CASE WHEN chg.tgt_valid_from >= @effective_date THEN 'SCD2_SAME_DAY_CORRECTION' ELSE 'SCD2_VERSION' END,
+                delta.col_name, delta.old_val, delta.new_val,
                 @effective_date, SYSUTCDATETIME()
             FROM #Rest_SCD2 chg
             INNER JOIN dwh.dim_restaurant tgt
@@ -1143,25 +1153,47 @@ BEGIN
                 WHERE ISNULL(tgt.is_active, 2)        <> ISNULL(chg.is_active, 2)
             ) delta;
 
-            -- B.1 Expire current version
+            -- B.1a In-place Overwrite for Same-Day Changes (guardrail against valid_to < valid_from)
+            UPDATE tgt
+            SET tgt.restaurant_name    = chg.restaurant_name,
+                tgt.city               = chg.city,
+                tgt.cuisine_type       = chg.cuisine_type,
+                tgt.partner_type       = chg.partner_type,
+                tgt.is_active          = chg.is_active,
+                tgt.onboard_date       = chg.onboard_date,
+                tgt.avg_prep_time_min  = chg.avg_prep_time_min,
+                tgt.min_prep_min       = chg.min_prep_min,
+                tgt.max_prep_min       = chg.max_prep_min,
+                tgt.prep_time_group    = chg.prep_time_group,
+                tgt.prep_time_index    = chg.prep_time_index,
+                tgt.batch_id           = chg.batch_id,
+                tgt.load_timestamp     = SYSUTCDATETIME()
+            FROM dwh.dim_restaurant tgt
+            INNER JOIN #Rest_SCD2 chg ON tgt.restaurant_id = chg.restaurant_id
+            WHERE tgt.is_current = 1
+              AND chg.tgt_valid_from >= @effective_date;
+
+            SET @rows_updated = @rows_updated + @@ROWCOUNT;
+
+            -- B.1b Expire prior version for Different-Day Changes
             UPDATE tgt
             SET tgt.valid_to       = @yesterday,
                 tgt.is_current     = 0,
                 tgt.load_timestamp = SYSUTCDATETIME()
             FROM dwh.dim_restaurant tgt
             INNER JOIN #Rest_SCD2 chg ON tgt.restaurant_id = chg.restaurant_id
-            WHERE tgt.is_current = 1;
+            WHERE tgt.is_current = 1
+              AND chg.tgt_valid_from < @effective_date;
 
             SET @rows_updated = @rows_updated + @@ROWCOUNT;
 
-            -- B.2 Insert new active version with new Surrogate Key
+            -- B.2 Insert new active version for Different-Day Changes
             INSERT INTO dwh.dim_restaurant
             (
                 restaurant_id, onboard_date, restaurant_name, city,
                 cuisine_type, partner_type, avg_prep_time_min, is_active,
                 min_prep_min, max_prep_min, prep_time_group, prep_time_index,
-                last_active, days_since_last_active, churn_risk,
-                life_cycle_id, last_status_id, is_churned, churned_date,
+                last_active, life_cycle_id,
                 valid_from, valid_to, is_current,
                 batch_id, load_timestamp
             )
@@ -1169,15 +1201,15 @@ BEGIN
                 chg.restaurant_id, chg.onboard_date, chg.restaurant_name, chg.city,
                 chg.cuisine_type, chg.partner_type, chg.avg_prep_time_min, chg.is_active,
                 chg.min_prep_min, chg.max_prep_min, chg.prep_time_group, chg.prep_time_index,
-                chg.last_active, chg.days_since_last_active, chg.churn_risk,
-                chg.life_cycle_id, chg.last_status_id, chg.is_churned, chg.churned_date,
+                chg.last_active, chg.life_cycle_id,
                 @effective_date, '9999-12-31', 1,
                 chg.batch_id, SYSUTCDATETIME()
-            FROM #Rest_SCD2 chg;
+            FROM #Rest_SCD2 chg
+            WHERE chg.tgt_valid_from < @effective_date;
 
             SET @rows_inserted = @rows_inserted + @@ROWCOUNT;
 
-            -- B.3 Update new surrogate key in change log
+            -- B.3 Update new surrogate key in change log (for new versions only)
             UPDATE l
             SET l.surrogate_key_new = tgt.restaurant_key
             FROM control.dim_change_log l
@@ -1501,42 +1533,15 @@ BEGIN
             FROM ods.ods_order o
             WHERE (@batch_id = -1 OR o.batch_id = @batch_id)
         ),
-        CustHistLastOrder AS (
-            SELECT c.customer_id, MAX(d.full_date) AS hist_last_order_date
-            FROM dwh.fact_order fo
-            JOIN dwh.dim_date d ON fo.order_date_key = d.date_key
-            JOIN dwh.dim_customer c ON fo.customer_key = c.customer_key
-            WHERE (@batch_id = -1 OR fo.batch_id <> @batch_id)
-              AND EXISTS (SELECT 1 FROM OrderBase ob WHERE ob.customer_id = c.customer_id)
-            GROUP BY c.customer_id
-        ),
         CustIntraLag AS (
             SELECT customer_id, order_date,
                    LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS intra_last_order_date
             FROM (SELECT DISTINCT customer_id, order_date FROM OrderBase) d
         ),
-        RestHistLastOrder AS (
-            SELECT r.restaurant_id, MAX(d.full_date) AS hist_last_order_date
-            FROM dwh.fact_order fo
-            JOIN dwh.dim_date d ON fo.order_date_key = d.date_key
-            JOIN dwh.dim_restaurant r ON fo.restaurant_key = r.restaurant_key
-            WHERE (@batch_id = -1 OR fo.batch_id <> @batch_id)
-              AND EXISTS (SELECT 1 FROM OrderBase ob WHERE ob.restaurant_id = r.restaurant_id)
-            GROUP BY r.restaurant_id
-        ),
         RestIntraLag AS (
             SELECT restaurant_id, order_date,
                    LAG(order_date) OVER (PARTITION BY restaurant_id ORDER BY order_date) AS intra_last_order_date
             FROM (SELECT DISTINCT restaurant_id, order_date FROM OrderBase) d
-        ),
-        DriverHistLastOrder AS (
-            SELECT dp.delivery_partner_id, MAX(d.full_date) AS hist_last_order_date
-            FROM dwh.fact_order fo
-            JOIN dwh.dim_date d ON fo.order_date_key = d.date_key
-            JOIN dwh.dim_delivery_partner dp ON fo.delivery_partner_key = dp.delivery_partner_key
-            WHERE (@batch_id = -1 OR fo.batch_id <> @batch_id)
-              AND EXISTS (SELECT 1 FROM OrderBase ob WHERE ob.delivery_partner_id = dp.delivery_partner_id)
-            GROUP BY dp.delivery_partner_id
         ),
         DriverIntraLag AS (
             SELECT delivery_partner_id, order_date,
@@ -1557,23 +1562,24 @@ BEGIN
             (ISNULL(o.subtotal_amount, 0) - ISNULL(o.discount_amount, 0)) AS net_order_value,
             o.is_cod,
             o.is_cancelled,
+            -- Lifecycle State Attribution: Reuses dim_customer.last_active cache instead of full fact scans
             CASE 
-                WHEN COALESCE(cl.intra_last_order_date, chl.hist_last_order_date) IS NULL THEN 1
-                WHEN DATEDIFF(DAY, COALESCE(cl.intra_last_order_date, chl.hist_last_order_date), o.order_date) <= 60 THEN 2
-                WHEN DATEDIFF(DAY, COALESCE(cl.intra_last_order_date, chl.hist_last_order_date), o.order_date) > 60 THEN 3
+                WHEN COALESCE(cl.intra_last_order_date, CASE WHEN ISNULL(c.life_cycle_id, 0) = 0 THEN NULL ELSE c.last_active END) IS NULL THEN 1
+                WHEN DATEDIFF(DAY, COALESCE(cl.intra_last_order_date, c.last_active), o.order_date) <= 60 THEN 2
+                WHEN DATEDIFF(DAY, COALESCE(cl.intra_last_order_date, c.last_active), o.order_date) > 60 THEN 3
                 ELSE 0
             END AS cust_lc_id,
             CASE 
-                WHEN COALESCE(rl.intra_last_order_date, rhl.hist_last_order_date) IS NULL THEN 1
-                WHEN DATEDIFF(DAY, COALESCE(rl.intra_last_order_date, rhl.hist_last_order_date), o.order_date) <= 60 THEN 2
-                WHEN DATEDIFF(DAY, COALESCE(rl.intra_last_order_date, rhl.hist_last_order_date), o.order_date) > 60 THEN 3
+                WHEN COALESCE(rl.intra_last_order_date, CASE WHEN ISNULL(r.life_cycle_id, 0) = 0 THEN NULL ELSE r.last_active END) IS NULL THEN 1
+                WHEN DATEDIFF(DAY, COALESCE(rl.intra_last_order_date, r.last_active), o.order_date) <= 60 THEN 2
+                WHEN DATEDIFF(DAY, COALESCE(rl.intra_last_order_date, r.last_active), o.order_date) > 60 THEN 3
                 ELSE 0
             END AS rest_lc_id,
             CASE 
                 WHEN o.delivery_partner_id IS NULL THEN NULL
-                WHEN COALESCE(dl.intra_last_order_date, dhl.hist_last_order_date) IS NULL THEN 1
-                WHEN DATEDIFF(DAY, COALESCE(dl.intra_last_order_date, dhl.hist_last_order_date), o.order_date) <= 30 THEN 2
-                WHEN DATEDIFF(DAY, COALESCE(dl.intra_last_order_date, dhl.hist_last_order_date), o.order_date) > 30 THEN 3
+                WHEN COALESCE(dl.intra_last_order_date, CASE WHEN ISNULL(dp.life_cycle_id, 0) = 0 THEN NULL ELSE dp.last_active END) IS NULL THEN 1
+                WHEN DATEDIFF(DAY, COALESCE(dl.intra_last_order_date, dp.last_active), o.order_date) <= 30 THEN 2
+                WHEN DATEDIFF(DAY, COALESCE(dl.intra_last_order_date, dp.last_active), o.order_date) > 30 THEN 3
                 ELSE 0
             END AS driver_lc_id,
             o.batch_id
@@ -1597,16 +1603,10 @@ BEGIN
            AND o.order_date <= dp.valid_to
         LEFT JOIN CustIntraLag cl
             ON o.customer_id = cl.customer_id AND o.order_date = cl.order_date
-        LEFT JOIN CustHistLastOrder chl
-            ON o.customer_id = chl.customer_id
         LEFT JOIN RestIntraLag rl
             ON o.restaurant_id = rl.restaurant_id AND o.order_date = rl.order_date
-        LEFT JOIN RestHistLastOrder rhl
-            ON o.restaurant_id = rhl.restaurant_id
         LEFT JOIN DriverIntraLag dl
-            ON o.delivery_partner_id = dl.delivery_partner_id AND o.order_date = dl.order_date
-        LEFT JOIN DriverHistLastOrder dhl
-            ON o.delivery_partner_id = dhl.delivery_partner_id;
+            ON o.delivery_partner_id = dl.delivery_partner_id AND o.order_date = dl.order_date;
 
         CREATE CLUSTERED INDEX CIX_StageOrder_id ON #StageOrder(order_id);
 
@@ -2683,17 +2683,16 @@ GO
 
 /* ==============================================================================
    11. PROCEDURE: dwh.usp_enrich_dimensions_behavioral_metrics
-   PURPOSE  : Post-Fact Dimension Enrichment (Two-Pass Architecture).
-              Calculates and updates behavioral and lifecycle metrics directly
-              from dwh.fact_order into dwh.dim_customer, dwh.dim_restaurant,
-              and dwh.dim_delivery_partner:
-                - last_active
-                - days_since_last_active
-                - life_cycle_id (from fact_order at last_active date)
-                - is_churned
-                - churned_date
-                - last_status_id
-                - churn_risk
+   PURPOSE  : Post-Fact Dimension Transaction Metrics Enrichment (Two-Pass Architecture).
+              Calculates and updates transaction-bound metrics directly from
+              dwh.fact_order into dwh.dim_customer, dwh.dim_restaurant, and
+              dwh.dim_delivery_partner for active batch entities:
+                - last_active (date of latest order)
+                - life_cycle_id (transaction lifecycle state at latest order: 1: New, 2: Retained, 3: Reactivated)
+              Note: Dynamic time-decaying metrics (days_since_last_active, is_churned,
+              churned_date, last_status_id, churn_risk) are computed dynamically
+              by the Serving Layer Views (dwh.v_dim_customer, dwh.v_dim_restaurant,
+              dwh.v_dim_delivery_partner) without incurring table update overhead.
 ============================================================================== */
 
 CREATE OR ALTER PROCEDURE dwh.usp_enrich_dimensions_behavioral_metrics
@@ -2748,17 +2747,8 @@ BEGIN
         WHERE delivery_partner_key <> -1 AND (@batch_id = -1 OR batch_id = @batch_id);
         CREATE CLUSTERED INDEX CIX_ActiveDriverKeys ON #ActiveDriverKeys(delivery_partner_key);
 
-        -- 1.1 Determine System-wide Reference Max Order Date
-        DECLARE @max_order_date DATE;
-        SELECT @max_order_date = MAX(d.full_date)
-        FROM dwh.fact_order fo
-        JOIN dwh.dim_date d ON fo.order_date_key = d.date_key;
-
-        IF @max_order_date IS NULL
-            SELECT @max_order_date = CAST(GETDATE() AS DATE);
-
         /* ----------------------------------------------------------------------
-           1.2 Enrich Customer Behavioral Metrics (Targeted Active Batch)
+           1.2 Enrich Customer Transaction Metrics (Targeted Active Batch)
         ---------------------------------------------------------------------- */
         ;WITH LastOrdersCust AS (
             SELECT 
@@ -2780,65 +2770,17 @@ BEGIN
             GROUP BY fo.customer_key, lo.last_order_date
         )
         UPDATE c
-        SET c.last_active            = COALESCE(ll.last_order_date, c.signup_date),
-            c.days_since_last_active = DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date),
-            c.life_cycle_id          = ISNULL(ll.last_cust_lc_id, 0),
-            c.is_churned             = CASE 
-                                         WHEN COALESCE(ll.last_order_date, c.signup_date) IS NULL THEN 0
-                                         WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) <= 60 THEN 0
-                                         WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 60 AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2, 3) THEN 1
-                                         ELSE 0
-                                       END,
-            c.churned_date           = CASE 
-                                         WHEN COALESCE(ll.last_order_date, c.signup_date) IS NOT NULL 
-                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 60 
-                                              AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2, 3)
-                                         THEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, c.signup_date))
-                                         ELSE NULL
-                                       END,
-            c.last_status_id         = CASE 
-                                         WHEN COALESCE(ll.last_order_date, c.signup_date) IS NOT NULL 
-                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 60 
-                                              AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2, 3)
-                                         THEN 4
-                                         ELSE ISNULL(ll.last_cust_lc_id, 0)
-                                       END,
-            c.churn_risk             = CASE 
-                                         WHEN COALESCE(ll.last_order_date, c.signup_date) IS NOT NULL 
-                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 60 
-                                              AND ISNULL(ll.last_cust_lc_id, 0) IN (0, 1, 2, 3)
-                                         THEN 'Churned'
-                                         WHEN ISNULL(ll.last_cust_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 45 THEN 'High'
-                                         WHEN ISNULL(ll.last_cust_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) > 30 THEN 'High'
-                                         WHEN ISNULL(ll.last_cust_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) BETWEEN 20 AND 45 THEN 'Medium'
-                                         WHEN ISNULL(ll.last_cust_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) BETWEEN 10 AND 30 THEN 'Medium'
-                                         WHEN ISNULL(ll.last_cust_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) < 20 THEN 'Low'
-                                         WHEN ISNULL(ll.last_cust_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, c.signup_date), @max_order_date) < 10 THEN 'Low'
-                                         ELSE 'Undefined'
-                                       END
+        SET c.last_active   = COALESCE(ll.last_order_date, c.signup_date),
+            c.life_cycle_id = ISNULL(ll.last_cust_lc_id, 0)
         FROM dwh.dim_customer c
         INNER JOIN #ActiveCustKeys ak ON c.customer_key = ak.customer_key
         LEFT JOIN LastLifecycleCust ll ON c.customer_key = ll.customer_key
         WHERE c.customer_key <> -1 AND c.is_current = 1;
 
-        -- 1.2b Time-Aging Churn Sweep for Customers (> 60 days without order)
-        UPDATE c
-        SET c.days_since_last_active = DATEDIFF(DAY, c.last_active, @max_order_date),
-            c.is_churned             = 1,
-            c.churned_date           = DATEADD(DAY, 60, c.last_active),
-            c.last_status_id         = 4,
-            c.churn_risk             = 'Churned'
-        FROM dwh.dim_customer c
-        WHERE c.customer_key <> -1 
-          AND c.is_current = 1
-          AND c.is_churned = 0
-          AND c.last_active IS NOT NULL
-          AND DATEDIFF(DAY, c.last_active, @max_order_date) > 60;
-
-        PRINT '    - Enriched dim_customer behavioral metrics from fact_order';
+        PRINT '    - Enriched dim_customer transaction metrics from fact_order';
 
         /* ----------------------------------------------------------------------
-           1.3 Enrich Restaurant Behavioral Metrics (Targeted Active Batch)
+           1.3 Enrich Restaurant Transaction Metrics (Targeted Active Batch)
         ---------------------------------------------------------------------- */
         ;WITH LastOrdersRest AS (
             SELECT 
@@ -2860,65 +2802,17 @@ BEGIN
             GROUP BY fo.restaurant_key, lo.last_order_date
         )
         UPDATE r
-        SET r.last_active            = COALESCE(ll.last_order_date, r.onboard_date),
-            r.days_since_last_active = DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date),
-            r.life_cycle_id          = ISNULL(ll.last_rest_lc_id, 0),
-            r.is_churned             = CASE 
-                                         WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NULL THEN 0
-                                         WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) <= 60 THEN 0
-                                         WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 60 AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2, 3) THEN 1
-                                         ELSE 0
-                                       END,
-            r.churned_date           = CASE 
-                                         WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NOT NULL 
-                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 60 
-                                              AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2, 3)
-                                         THEN DATEADD(DAY, 60, COALESCE(ll.last_order_date, r.onboard_date))
-                                         ELSE NULL
-                                       END,
-            r.last_status_id         = CASE 
-                                         WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NOT NULL 
-                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 60 
-                                              AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2, 3)
-                                         THEN 4
-                                         ELSE ISNULL(ll.last_rest_lc_id, 0)
-                                       END,
-            r.churn_risk             = CASE 
-                                         WHEN COALESCE(ll.last_order_date, r.onboard_date) IS NOT NULL 
-                                              AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 60 
-                                              AND ISNULL(ll.last_rest_lc_id, 0) IN (0, 1, 2, 3)
-                                         THEN 'Churned'
-                                         WHEN ISNULL(ll.last_rest_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 45 THEN 'High'
-                                         WHEN ISNULL(ll.last_rest_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) > 21 THEN 'High'
-                                         WHEN ISNULL(ll.last_rest_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) BETWEEN 15 AND 45 THEN 'Medium'
-                                         WHEN ISNULL(ll.last_rest_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) BETWEEN 8 AND 21 THEN 'Medium'
-                                         WHEN ISNULL(ll.last_rest_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) < 15 THEN 'Low'
-                                         WHEN ISNULL(ll.last_rest_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, r.onboard_date), @max_order_date) <= 7 THEN 'Low'
-                                         ELSE 'Undefined'
-                                       END
+        SET r.last_active   = COALESCE(ll.last_order_date, r.onboard_date),
+            r.life_cycle_id = ISNULL(ll.last_rest_lc_id, 0)
         FROM dwh.dim_restaurant r
         INNER JOIN #ActiveRestKeys ak ON r.restaurant_key = ak.restaurant_key
         LEFT JOIN LastLifecycleRest ll ON r.restaurant_key = ll.restaurant_key
         WHERE r.restaurant_key <> -1 AND r.is_current = 1;
 
-        -- 1.3b Time-Aging Churn Sweep for Restaurants (> 60 days without order)
-        UPDATE r
-        SET r.days_since_last_active = DATEDIFF(DAY, r.last_active, @max_order_date),
-            r.is_churned             = 1,
-            r.churned_date           = DATEADD(DAY, 60, r.last_active),
-            r.last_status_id         = 4,
-            r.churn_risk             = 'Churned'
-        FROM dwh.dim_restaurant r
-        WHERE r.restaurant_key <> -1 
-          AND r.is_current = 1
-          AND r.is_churned = 0
-          AND r.last_active IS NOT NULL
-          AND DATEDIFF(DAY, r.last_active, @max_order_date) > 60;
-
-        PRINT '    - Enriched dim_restaurant behavioral metrics from fact_order';
+        PRINT '    - Enriched dim_restaurant transaction metrics from fact_order';
 
         /* ----------------------------------------------------------------------
-           1.4 Enrich Delivery Partner Behavioral Metrics (Targeted Active Batch)
+           1.4 Enrich Delivery Partner Transaction Metrics (Targeted Active Batch)
         ---------------------------------------------------------------------- */
         ;WITH LastOrdersDriver AS (
             SELECT 
@@ -2941,62 +2835,14 @@ BEGIN
             GROUP BY fo.delivery_partner_key, lo.last_order_date
         )
         UPDATE dp
-        SET dp.last_active            = COALESCE(ll.last_order_date, dp.onboard_date),
-            dp.days_since_last_active = DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date),
-            dp.life_cycle_id          = ISNULL(ll.last_driver_lc_id, 0),
-            dp.is_churned             = CASE 
-                                          WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NULL THEN 0
-                                          WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) <= 30 THEN 0
-                                          WHEN DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2, 3) THEN 1
-                                          ELSE 0
-                                        END,
-            dp.churned_date           = CASE 
-                                          WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NOT NULL 
-                                                AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 
-                                                AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2, 3)
-                                          THEN DATEADD(DAY, 30, COALESCE(ll.last_order_date, dp.onboard_date))
-                                          ELSE NULL
-                                        END,
-            dp.last_status_id         = CASE 
-                                          WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NOT NULL 
-                                                AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 
-                                                AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2, 3)
-                                          THEN 4
-                                          ELSE ISNULL(ll.last_driver_lc_id, 0)
-                                        END,
-            dp.churn_risk             = CASE 
-                                          WHEN COALESCE(ll.last_order_date, dp.onboard_date) IS NOT NULL 
-                                                AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 
-                                                AND ISNULL(ll.last_driver_lc_id, 0) IN (0, 1, 2, 3)
-                                          THEN 'Churned'
-                                         WHEN ISNULL(ll.last_driver_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 30 THEN 'High'
-                                         WHEN ISNULL(ll.last_driver_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) > 15 THEN 'High'
-                                         WHEN ISNULL(ll.last_driver_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) BETWEEN 15 AND 30 THEN 'Medium'
-                                         WHEN ISNULL(ll.last_driver_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) BETWEEN 7 AND 15 THEN 'Medium'
-                                         WHEN ISNULL(ll.last_driver_lc_id, 0) = 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) < 15 THEN 'Low'
-                                         WHEN ISNULL(ll.last_driver_lc_id, 0) <> 2 AND DATEDIFF(DAY, COALESCE(ll.last_order_date, dp.onboard_date), @max_order_date) < 7 THEN 'Low'
-                                         ELSE 'Undefined'
-                                       END
+        SET dp.last_active   = COALESCE(ll.last_order_date, dp.onboard_date),
+            dp.life_cycle_id = ISNULL(ll.last_driver_lc_id, 0)
         FROM dwh.dim_delivery_partner dp
         INNER JOIN #ActiveDriverKeys ak ON dp.delivery_partner_key = ak.delivery_partner_key
         LEFT JOIN LastLifecycleDriver ll ON dp.delivery_partner_key = ll.delivery_partner_key
         WHERE dp.delivery_partner_key <> -1 AND dp.is_current = 1;
 
-        -- 1.4b Time-Aging Churn Sweep for Delivery Partners (> 30 days without order)
-        UPDATE dp
-        SET dp.days_since_last_active = DATEDIFF(DAY, dp.last_active, @max_order_date),
-            dp.is_churned             = 1,
-            dp.churned_date           = DATEADD(DAY, 30, dp.last_active),
-            dp.last_status_id         = 4,
-            dp.churn_risk             = 'Churned'
-        FROM dwh.dim_delivery_partner dp
-        WHERE dp.delivery_partner_key <> -1 
-          AND dp.is_current = 1
-          AND dp.is_churned = 0
-          AND dp.last_active IS NOT NULL
-          AND DATEDIFF(DAY, dp.last_active, @max_order_date) > 30;
-
-        PRINT '    - Enriched dim_delivery_partner behavioral metrics from fact_order';
+        PRINT '    - Enriched dim_delivery_partner transaction metrics from fact_order';
 
         COMMIT TRANSACTION;
 
@@ -3027,7 +2873,151 @@ END;
 GO
 
 /* ==============================================================================
-   12. PROCEDURE: dwh.usp_run_ods_to_dwh_pipeline
+   12. PROCEDURE: dwh.usp_relink_orphan_facts
+   PURPOSE  : Automated self-healing reconciliation procedure to re-link orphan fact rows
+              (carrying -1 unknown surrogate keys due to out-of-order or late-arriving parent orders).
+              Scans downstream fact tables (fact_order_item, fact_delivery_performance, fact_rating)
+              and reconciles foreign keys with dwh.fact_order once the parent order arrives.
+   PARAMETERS:
+       @batch_id BIGINT = NULL (Audit batch identifier)
+       @dry_run  BIT    = 0    (If 1, previews candidate counts without modifying data)
+============================================================================== */
+
+CREATE OR ALTER PROCEDURE dwh.usp_relink_orphan_facts
+    @batch_id BIGINT = NULL,
+    @dry_run  BIT    = 0
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    DECLARE @rows_relinked_order_item BIGINT = 0,
+            @rows_relinked_delivery   BIGINT = 0,
+            @rows_relinked_rating     BIGINT = 0,
+            @start_time               DATETIME2(3) = SYSUTCDATETIME();
+
+    IF @batch_id IS NULL OR @batch_id <= 0
+    BEGIN
+        SELECT @batch_id = MAX(batch_id) FROM dwh.fact_order;
+        IF @batch_id IS NULL SET @batch_id = 1;
+    END;
+
+    PRINT '==============================================================================';
+    PRINT 'RECONCILING ORPHAN FACTS (LATE-ARRIVING PARENT ORDERS)';
+    PRINT '==============================================================================';
+    PRINT 'Mode: ' + CASE WHEN @dry_run = 1 THEN 'DRY RUN (Preview Only)' ELSE 'LIVE RECONCILIATION' END;
+    PRINT '------------------------------------------------------------------------------';
+
+    BEGIN TRY
+        IF @dry_run = 1
+        BEGIN
+            SELECT @rows_relinked_order_item = COUNT(*)
+            FROM dwh.fact_order_item oi
+            INNER JOIN dwh.fact_order fo ON oi.order_id = fo.order_id
+            WHERE (oi.customer_key = -1 OR oi.order_date_key = -1 OR oi.restaurant_key = -1)
+              AND fo.customer_key <> -1;
+
+            SELECT @rows_relinked_delivery = COUNT(*)
+            FROM dwh.fact_delivery_performance dp
+            INNER JOIN dwh.fact_order fo ON dp.order_id = fo.order_id
+            WHERE (dp.customer_key = -1 OR dp.delivery_partner_key = -1 OR dp.delivery_date_key = -1 OR dp.restaurant_key = -1)
+              AND fo.customer_key <> -1;
+
+            SELECT @rows_relinked_rating = COUNT(*)
+            FROM dwh.fact_rating r
+            INNER JOIN dwh.fact_order fo ON r.order_id = fo.order_id
+            WHERE (r.delivery_partner_key = -1 OR r.customer_key = -1 OR r.restaurant_key = -1)
+              AND fo.customer_key <> -1;
+
+            PRINT CONCAT('[DRY RUN PREVIEW] Candidate orphan rows to re-link: order_item=', @rows_relinked_order_item,
+                         ', delivery_performance=', @rows_relinked_delivery,
+                         ', rating=', @rows_relinked_rating);
+            RETURN;
+        END;
+
+        BEGIN TRANSACTION;
+
+        -- 1. Reconcile dwh.fact_order_item
+        UPDATE oi
+        SET oi.order_date_key = fo.order_date_key,
+            oi.customer_key   = fo.customer_key,
+            oi.restaurant_key = fo.restaurant_key,
+            oi.load_timestamp = SYSUTCDATETIME()
+        FROM dwh.fact_order_item oi
+        INNER JOIN dwh.fact_order fo ON oi.order_id = fo.order_id
+        WHERE (oi.customer_key = -1 OR oi.order_date_key = -1 OR oi.restaurant_key = -1)
+          AND fo.customer_key <> -1;
+
+        SET @rows_relinked_order_item = @@ROWCOUNT;
+
+        -- 2. Reconcile dwh.fact_delivery_performance
+        UPDATE dp
+        SET dp.delivery_date_key    = fo.order_date_key,
+            dp.customer_key         = fo.customer_key,
+            dp.restaurant_key       = fo.restaurant_key,
+            dp.delivery_partner_key = fo.delivery_partner_key,
+            dp.load_timestamp       = SYSUTCDATETIME()
+        FROM dwh.fact_delivery_performance dp
+        INNER JOIN dwh.fact_order fo ON dp.order_id = fo.order_id
+        WHERE (dp.customer_key = -1 OR dp.delivery_partner_key = -1 OR dp.delivery_date_key = -1 OR dp.restaurant_key = -1)
+          AND fo.customer_key <> -1;
+
+        SET @rows_relinked_delivery = @@ROWCOUNT;
+
+        -- 3. Reconcile dwh.fact_rating
+        UPDATE r
+        SET r.delivery_partner_key = CASE WHEN r.delivery_partner_key = -1 THEN fo.delivery_partner_key ELSE r.delivery_partner_key END,
+            r.customer_key         = CASE WHEN r.customer_key = -1 THEN fo.customer_key ELSE r.customer_key END,
+            r.restaurant_key       = CASE WHEN r.restaurant_key = -1 THEN fo.restaurant_key ELSE r.restaurant_key END,
+            r.load_timestamp       = SYSUTCDATETIME()
+        FROM dwh.fact_rating r
+        INNER JOIN dwh.fact_order fo ON r.order_id = fo.order_id
+        WHERE (r.delivery_partner_key = -1 OR r.customer_key = -1 OR r.restaurant_key = -1)
+          AND fo.customer_key <> -1;
+
+        SET @rows_relinked_rating = @@ROWCOUNT;
+
+        COMMIT TRANSACTION;
+
+        PRINT CONCAT('[SUCCESS] Re-linked orphan fact records: order_item=', @rows_relinked_order_item,
+                     ', delivery_performance=', @rows_relinked_delivery,
+                     ', rating=', @rows_relinked_rating);
+
+        -- Audit log entry
+        INSERT INTO control.etl_log
+        (
+            batch_id, process_name, step_name, start_time, end_time,
+            status, rows_processed, rows_updated, message, created_at
+        )
+        VALUES
+        (
+            @batch_id, 'DWH_RECONCILIATION', 'RELINK_ORPHAN_FACTS', @start_time, SYSUTCDATETIME(),
+            'SUCCESS', 
+            (@rows_relinked_order_item + @rows_relinked_delivery + @rows_relinked_rating),
+            (@rows_relinked_order_item + @rows_relinked_delivery + @rows_relinked_rating),
+            CONCAT('Re-linked orphan facts: order_item=', @rows_relinked_order_item, 
+                   ', delivery=', @rows_relinked_delivery, 
+                   ', rating=', @rows_relinked_rating),
+            SYSUTCDATETIME()
+        );
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        DECLARE @err_msg NVARCHAR(4000) = ERROR_MESSAGE(),
+                @err_num INT = ERROR_NUMBER();
+        INSERT INTO control.etl_error (batch_id, step_name, error_number, error_message, error_timestamp)
+        VALUES (@batch_id, 'RELINK_ORPHAN_FACTS', @err_num, @err_msg, SYSUTCDATETIME());
+        THROW;
+    END CATCH;
+END;
+GO
+
+PRINT 'Compiled procedure dwh.usp_relink_orphan_facts successfully.';
+GO
+
+
+/* ==============================================================================
+   13. PROCEDURE: dwh.usp_run_ods_to_dwh_pipeline
    PURPOSE  : Master Orchestrator for ODS -> DWH Dimensional Pipeline.
               Executes all dimension seeding, entity loading, and fact processing
               in strict dependency order (Two-Pass Post-Fact Architecture).
@@ -3046,7 +3036,7 @@ BEGIN
     BEGIN
         SELECT TOP 1 @batch_id = batch_id 
         FROM control.etl_batch 
-        WHERE status IN ('COMPLETED', 'SUCCESS') 
+        WHERE status IN ('RUNNING', 'SUCCESS') 
         ORDER BY batch_id DESC;
 
         IF @batch_id IS NULL OR @batch_id <= 0
@@ -3060,47 +3050,94 @@ BEGIN
     PRINT 'STARTING END-TO-END ODS -> DWH PIPELINE EXECUTION (BATCH: ' + CAST(@batch_id AS VARCHAR(10)) + ')';
     PRINT '==============================================================================';
 
-    -- Stage 0: Dimension Seeds & Unknown Members (-1)
-    PRINT '>>> Step 1/11: Seeding Reference Dimensions and Unknown Members...';
-    EXEC dwh.usp_seed_dimensions_and_unknowns;
+    BEGIN TRY
+        -- Stage 0: Dimension Seeds & Unknown Members (-1)
+        PRINT '>>> Step 1/12: Seeding Reference Dimensions and Unknown Members...';
+        EXEC dwh.usp_seed_dimensions_and_unknowns;
 
-    -- Stage 1: Entity Dimensions Base Profile Load
-    PRINT '>>> Step 2/11: Loading dim_customer...';
-    EXEC dwh.usp_load_dim_customer @batch_id = @batch_id;
+        -- Stage 1: Entity Dimensions Base Profile Load
+        PRINT '>>> Step 2/12: Loading dim_customer...';
+        EXEC dwh.usp_load_dim_customer @batch_id = @batch_id;
 
-    PRINT '>>> Step 3/11: Loading dim_restaurant...';
-    EXEC dwh.usp_load_dim_restaurant @batch_id = @batch_id;
+        PRINT '>>> Step 3/12: Loading dim_restaurant...';
+        EXEC dwh.usp_load_dim_restaurant @batch_id = @batch_id;
 
-    PRINT '>>> Step 4/11: Loading dim_delivery_partner...';
-    EXEC dwh.usp_load_dim_delivery_partner @batch_id = @batch_id;
+        PRINT '>>> Step 4/12: Loading dim_delivery_partner...';
+        EXEC dwh.usp_load_dim_delivery_partner @batch_id = @batch_id;
 
-    PRINT '>>> Step 5/11: Loading dim_menu_item...';
-    EXEC dwh.usp_load_dim_menu_item @batch_id = @batch_id;
+        PRINT '>>> Step 5/12: Loading dim_menu_item...';
+        EXEC dwh.usp_load_dim_menu_item @batch_id = @batch_id;
 
-    -- Stage 2: Core Fact Order (Computes order-level lifecycles cust_lc_id, rest_lc_id, driver_lc_id)
-    PRINT '>>> Step 6/11: Loading fact_order...';
-    EXEC dwh.usp_load_fact_order @batch_id = @batch_id;
+        -- Stage 2: Core Fact Order (Computes order-level lifecycles cust_lc_id, rest_lc_id, driver_lc_id)
+        PRINT '>>> Step 6/12: Loading fact_order...';
+        EXEC dwh.usp_load_fact_order @batch_id = @batch_id;
 
-    -- Stage 3: Post-Fact Dimension Enrichment (Two-Pass: Enriches Dim metrics directly from fact_order)
-    PRINT '>>> Step 7/11: Enriching Dimension Behavioral Metrics from fact_order...';
-    EXEC dwh.usp_enrich_dimensions_behavioral_metrics @batch_id = @batch_id;
+        -- Stage 3: Post-Fact Dimension Enrichment (Two-Pass: Enriches Dim metrics directly from fact_order)
+        PRINT '>>> Step 7/12: Enriching Dimension Behavioral Metrics from fact_order...';
+        EXEC dwh.usp_enrich_dimensions_behavioral_metrics @batch_id = @batch_id;
 
-    -- Stage 4: Downstream Fact Tables
-    PRINT '>>> Step 8/11: Loading fact_order_item...';
-    EXEC dwh.usp_load_fact_order_item @batch_id = @batch_id;
+        -- Stage 4: Downstream Fact Tables
+        PRINT '>>> Step 8/12: Loading fact_order_item...';
+        EXEC dwh.usp_load_fact_order_item @batch_id = @batch_id;
 
-    PRINT '>>> Step 9/11: Loading fact_delivery_performance...';
-    EXEC dwh.usp_load_fact_delivery_performance @batch_id = @batch_id;
+        PRINT '>>> Step 9/12: Loading fact_delivery_performance...';
+        EXEC dwh.usp_load_fact_delivery_performance @batch_id = @batch_id;
 
-    PRINT '>>> Step 10/11: Loading fact_rating...';
-    EXEC dwh.usp_load_fact_rating @batch_id = @batch_id;
+        PRINT '>>> Step 10/12: Loading fact_rating...';
+        EXEC dwh.usp_load_fact_rating @batch_id = @batch_id;
 
-    -- Stage 5: VoC Text Analytics Fact
-    PRINT '>>> Step 11/11: Loading fact_review_aspect...';
-    EXEC dwh.usp_load_fact_review_aspect @batch_id = @batch_id;
+        -- Stage 5: VoC Text Analytics Fact
+        PRINT '>>> Step 11/12: Loading fact_review_aspect...';
+        EXEC dwh.usp_load_fact_review_aspect @batch_id = @batch_id;
 
-    PRINT '==============================================================================';
-    PRINT 'END-TO-END ODS -> DWH PIPELINE COMPLETED SUCCESSFULLY (TWO-PASS ARCHITECTURE)!';
-    PRINT '==============================================================================';
+        -- Stage 6: Self-Healing & Reconciliation of Late-Arriving Parent Facts
+        PRINT '>>> Step 12/12: Reconciling Orphan Facts (Late-Arriving Orders)...';
+        EXEC dwh.usp_relink_orphan_facts @batch_id = @batch_id, @dry_run = 0;
+
+        -- Stage 7: Close End-to-End Batch Lifecycle if batch was active in RUNNING state
+        IF @batch_id > 0
+        BEGIN
+            UPDATE control.etl_batch
+            SET end_time = SYSUTCDATETIME(),
+                status   = 'SUCCESS'
+            WHERE batch_id = @batch_id
+              AND status = 'RUNNING';
+        END;
+
+        PRINT '==============================================================================';
+        PRINT 'END-TO-END ODS -> DWH PIPELINE COMPLETED SUCCESSFULLY (TWO-PASS ARCHITECTURE)!';
+        PRINT '==============================================================================';
+    END TRY
+    BEGIN CATCH
+        DECLARE @err_msg NVARCHAR(4000) = ERROR_MESSAGE(),
+                @err_num INT = ERROR_NUMBER(),
+                @err_proc NVARCHAR(128) = ERROR_PROCEDURE(),
+                @err_line INT = ERROR_LINE();
+
+        PRINT '==============================================================================';
+        PRINT 'PIPELINE FAILED AT: ' + ISNULL(@err_proc, 'dwh.usp_run_ods_to_dwh_pipeline') + ' (Line ' + CAST(@err_line AS VARCHAR) + ')';
+        PRINT 'Error: ' + @err_msg;
+        PRINT '==============================================================================';
+
+        INSERT INTO control.etl_error
+        (
+            batch_id, step_name, error_number, error_message, error_timestamp
+        )
+        VALUES
+        (
+            @batch_id, ISNULL(@err_proc, 'ODS_TO_DWH_PIPELINE'), @err_num, @err_msg, SYSUTCDATETIME()
+        );
+
+        IF @batch_id > 0
+        BEGIN
+            UPDATE control.etl_batch
+            SET end_time = SYSUTCDATETIME(),
+                status   = 'FAILED'
+            WHERE batch_id = @batch_id
+              AND status = 'RUNNING';
+        END;
+
+        THROW;
+    END CATCH;
 END;
 GO
