@@ -383,6 +383,26 @@ VALUES ('Audit Metadata completeness', 'ALL ODS Tables', @batch_id, '0 missing a
 
 
 /*==============================================================================
+  8.1 OBSERVABILITY & WARNING INTEGRITY
+==============================================================================*/
+
+DECLARE @invalid_warning_count INT = 0;
+IF OBJECT_ID('control.etl_warning', 'U') IS NOT NULL
+BEGIN
+    SELECT @invalid_warning_count = COUNT(*)
+    FROM control.etl_warning
+    WHERE batch_id = @batch_id
+      AND (entity_name IS NULL OR entity_id IS NULL OR warning_type IS NULL OR warning_message IS NULL);
+
+    INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+    VALUES ('Warning Observability Integrity', 'control.etl_warning', @batch_id, '0 invalid warning records',
+            CAST(@invalid_warning_count AS VARCHAR) + ' invalid records',
+            CASE WHEN @invalid_warning_count = 0 THEN 'PASS' ELSE 'FAIL' END,
+            CASE WHEN @invalid_warning_count = 0 THEN NULL ELSE 'Malformed warning records detected in control.etl_warning' END);
+END;
+
+
+/*==============================================================================
   9. TEST RESULTS SUMMARY
 ==============================================================================*/
 
