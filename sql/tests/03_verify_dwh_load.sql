@@ -211,7 +211,7 @@ VALUES ('Unknown Member (-1) Integrity', 'All Dimensions', @batch_id, '6 Unknown
   7. STAR SCHEMA LOGICAL REFERENTIAL INTEGRITY (ORPHAN KEY CHECK)
 ==============================================================================*/
 
--- 7.1 Dimension Physical FKs Check (Dimension hierarchies retain physical FKs: 7 FKs)
+-- 7.1 Dimension Physical FKs Check (Dimension hierarchies retain physical FKs: 4 FKs after SCD2 decoupling)
 DECLARE @actual_dim_fk_count INT;
 SELECT @actual_dim_fk_count = COUNT(*)
 FROM sys.foreign_keys
@@ -219,10 +219,10 @@ WHERE schema_id = SCHEMA_ID('dwh');
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Dimension Physical FKs', 'Dimension hierarchies', @batch_id,
-        '>=7 FKs', 
+        '>=4 FKs', 
         CAST(@actual_dim_fk_count AS VARCHAR) + ' FKs active',
-        CASE WHEN @actual_dim_fk_count >= 7 THEN 'PASS' ELSE 'FAIL' END,
-        CASE WHEN @actual_dim_fk_count >= 7 THEN NULL ELSE 'Missing Dimension Foreign Key constraints in DWH' END);
+        CASE WHEN @actual_dim_fk_count >= 4 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @actual_dim_fk_count >= 4 THEN NULL ELSE 'Missing Dimension Foreign Key constraints in DWH' END);
 
 -- 7.2 Fact-to-Dimension Logical Referential Integrity (Zero Orphan Records)
 DECLARE @orphan_records INT = 0;
@@ -518,22 +518,28 @@ VALUES ('Multi-Aspect Separation Check', 'Tasty but a bit late -> 2 aspects', @b
         CASE WHEN @multi_aspect_anomalies = 0 THEN NULL ELSE 'Multi-aspect separation failed for Tasty but a bit late' END);
 
 
--- 9.18 Serving Layer Views Completeness Check
-DECLARE @missing_views INT = 0;
-SELECT @missing_views = COUNT(*)
-FROM (VALUES ('v_dim_customer'), ('v_dim_restaurant'), ('v_dim_delivery_partner')) AS v(view_name)
+-- 9.18 BI Serving Layer Completeness Check (15 Dedicated Views in schema bi)
+DECLARE @missing_bi_views INT = 0;
+SELECT @missing_bi_views = COUNT(*)
+FROM (VALUES 
+    ('dim_customer'), ('dim_restaurant'), ('dim_delivery_partner'),
+    ('dim_menu_item'), ('dim_date'), ('dim_time'),
+    ('dim_aspect'), ('dim_rating_type'), ('dim_sentiment_type'), ('dim_life_cycles'),
+    ('fact_order'), ('fact_order_item'), ('fact_delivery_performance'),
+    ('fact_rating'), ('fact_review_aspect')
+) AS v(view_name)
 WHERE NOT EXISTS (
     SELECT 1 FROM sys.views vws
     JOIN sys.schemas s ON vws.schema_id = s.schema_id
-    WHERE s.name = 'dwh' AND vws.name = v.view_name
+    WHERE s.name = 'bi' AND vws.name = v.view_name
 );
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
-VALUES ('Serving Views Completeness', 'dwh.v_dim_* (3 Semantic Views)', @batch_id,
-        '3 views present',
-        CONCAT(3 - @missing_views, ' views present'),
-        CASE WHEN @missing_views = 0 THEN 'PASS' ELSE 'FAIL' END,
-        CASE WHEN @missing_views = 0 THEN NULL ELSE 'One or more Serving Layer views missing in dwh schema' END);
+VALUES ('BI Serving Views Completeness', 'bi.* (15 BI Semantic Views)', @batch_id,
+        '15 views present',
+        CONCAT(15 - @missing_bi_views, ' views present'),
+        CASE WHEN @missing_bi_views = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @missing_bi_views = 0 THEN NULL ELSE 'One or more BI Serving Layer views missing in bi schema' END);
 
 
 
