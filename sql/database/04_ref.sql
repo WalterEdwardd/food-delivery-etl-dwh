@@ -19,6 +19,7 @@
        5. ref_category
        6. ref_cuisine_type
        7. ref_partner_type
+       8. ref_review_aspect_cache
    ========================================================= */
 
 
@@ -266,9 +267,9 @@ GO
 
 SELECT
     COUNT(*) AS actual_table_count,
-    7 AS expected_table_count,
+    8 AS expected_table_count,
     CASE
-        WHEN COUNT(*) = 7 THEN 'PASS'
+        WHEN COUNT(*) = 8 THEN 'PASS'
         ELSE 'FAIL'
     END AS validation_status
 FROM sys.tables AS t
