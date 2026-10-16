@@ -82,7 +82,7 @@ def test_invalid_record_counts():
 
 
 # test orphan running batch
-def test_invalid_record_counts():
+def test_orphan_batch_invalid_counts():
     with pytest.raises(ValueError):
         complete_batch(
             batch_id=999999,
@@ -157,4 +157,34 @@ def test_log_etl_error():
         total_records=0,
         success_records=0,
         error_records=0,
-    )
+    )
+
+
+def test_log_etl_warning():
+    from src.orchestration.batch_manager import log_etl_warning
+
+    batch_id = start_batch(
+        pipeline_name="FoodDeliveryETL_WarningTest",
+        source_system="CSV",
+        source_file_count=1,
+    )
+
+    warning_id = log_etl_warning(
+        batch_id=batch_id,
+        step_name="UNIT_TEST_STEP",
+        entity_name="CUSTOMER",
+        entity_id="CUST_99999",
+        warning_type="ORPHAN_CUSTOMER_DETECTED",
+        warning_message="Unit test orphan customer warning",
+    )
+
+    assert warning_id is not None
+    assert isinstance(warning_id, int)
+
+    fail_batch(
+        batch_id=batch_id,
+        total_records=0,
+        success_records=0,
+        error_records=0,
+    )
+
