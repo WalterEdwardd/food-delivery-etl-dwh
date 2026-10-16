@@ -39,13 +39,13 @@ DECLARE @batch_id BIGINT = NULL;
 
 IF @batch_id IS NULL
 BEGIN
-    SELECT @batch_id = MAX(batch_id)
-    FROM control.etl_batch
-    WHERE status = 'SUCCESS';
+    SELECT @batch_id = MAX(batch_id) FROM raw.raw_order;
 
     IF @batch_id IS NULL
     BEGIN
-        SELECT @batch_id = MAX(batch_id) FROM raw.raw_order;
+        SELECT @batch_id = MAX(batch_id)
+        FROM control.etl_batch
+        WHERE status = 'SUCCESS' AND pipeline_name = 'CSV_to_RAW_Pipeline';
     END;
 END;
 
