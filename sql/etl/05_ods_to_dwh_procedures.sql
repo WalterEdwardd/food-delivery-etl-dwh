@@ -2426,7 +2426,7 @@ BEGIN
             OR target.delivery_partner_key                        <> source.delivery_partner_key
             OR ISNULL(target.rating, -1)                          <> ISNULL(source.rating, -1)
             OR ISNULL(target.rating_type_id, 255)                 <> ISNULL(source.rating_type_id, 255)
-            OR ISNULL(target.sentiment_score, -99)                <> ISNULL(source.sentiment_score, -99)
+            OR ISNULL(target.sentiment_score, -9.0000)            <> ISNULL(source.sentiment_score, -9.0000)
             OR ISNULL(target.sentiment_type_id, 255)              <> ISNULL(source.sentiment_type_id, 255)
             OR ISNULL(target.review_text, '')                     <> ISNULL(source.review_text, '')
         );
@@ -2691,8 +2691,8 @@ GO
                 - life_cycle_id (transaction lifecycle state at latest order: 1: New, 2: Retained, 3: Reactivated)
               Note: Dynamic time-decaying metrics (days_since_last_active, is_churned,
               churned_date, last_status_id, churn_risk) are computed dynamically
-              by the Serving Layer Views (dwh.v_dim_customer, dwh.v_dim_restaurant,
-              dwh.v_dim_delivery_partner) without incurring table update overhead.
+              by the Serving Layer Views (bi.dim_customer, bi.dim_restaurant,
+              bi.dim_delivery_partner) without incurring table update overhead.
 ============================================================================== */
 
 CREATE OR ALTER PROCEDURE dwh.usp_enrich_dimensions_behavioral_metrics
@@ -2987,14 +2987,15 @@ BEGIN
         INSERT INTO control.etl_log
         (
             batch_id, process_name, step_name, start_time, end_time,
-            status, rows_processed, rows_updated, message, created_at
+            status, rows_processed, rows_inserted, rows_rejected, message, created_at
         )
         VALUES
         (
             @batch_id, 'DWH_RECONCILIATION', 'RELINK_ORPHAN_FACTS', @start_time, SYSUTCDATETIME(),
             'SUCCESS', 
             (@rows_relinked_order_item + @rows_relinked_delivery + @rows_relinked_rating),
-            (@rows_relinked_order_item + @rows_relinked_delivery + @rows_relinked_rating),
+            0,
+            0,
             CONCAT('Re-linked orphan facts: order_item=', @rows_relinked_order_item, 
                    ', delivery=', @rows_relinked_delivery, 
                    ', rating=', @rows_relinked_rating),
@@ -3005,8 +3006,8 @@ BEGIN
         IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
         DECLARE @err_msg NVARCHAR(4000) = ERROR_MESSAGE(),
                 @err_num INT = ERROR_NUMBER();
-        INSERT INTO control.etl_error (batch_id, step_name, error_number, error_message, error_timestamp)
-        VALUES (@batch_id, 'RELINK_ORPHAN_FACTS', @err_num, @err_msg, SYSUTCDATETIME());
+        INSERT INTO control.etl_error (batch_id, table_name, error_type, error_message, error_timestamp)
+        VALUES (@batch_id, 'dwh.usp_relink_orphan_facts', CONCAT('SQL_ERROR_', @err_num), @err_msg, SYSUTCDATETIME());
         THROW;
     END CATCH;
 END;
@@ -3121,11 +3122,11 @@ BEGIN
 
         INSERT INTO control.etl_error
         (
-            batch_id, step_name, error_number, error_message, error_timestamp
+            batch_id, table_name, error_type, error_message, error_timestamp
         )
         VALUES
         (
-            @batch_id, ISNULL(@err_proc, 'ODS_TO_DWH_PIPELINE'), @err_num, @err_msg, SYSUTCDATETIME()
+            @batch_id, ISNULL(@err_proc, 'ODS_TO_DWH_PIPELINE'), CONCAT('SQL_ERROR_', @err_num), @err_msg, SYSUTCDATETIME()
         );
 
         IF @batch_id > 0
