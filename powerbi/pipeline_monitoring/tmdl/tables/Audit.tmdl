@@ -1,0 +1,86 @@
+table Audit
+	lineageTag: e60e4314-71c7-4c97-a3b7-cb69d0db45fb
+
+	column change_log_id
+		dataType: int64
+		isKey
+		isNullable: false
+		lineageTag: b34f3e57-c261-41a9-af97-55b97db9a098
+		sourceColumn: change_log_id
+
+	column batch_id
+		dataType: int64
+		isNullable: false
+		lineageTag: d6110eff-c15f-4607-a4ae-af412ef47bde
+		sourceColumn: batch_id
+
+	column pipeline_name
+		dataType: string
+		lineageTag: 31454b1d-e0b0-4464-bddb-3c992337b00e
+		sourceColumn: pipeline_name
+
+	column dimension_name
+		dataType: string
+		isNullable: false
+		lineageTag: 877e04fd-15a7-4b67-a43d-bbc0c4164b3e
+		sourceColumn: dimension_name
+
+	column business_id
+		dataType: string
+		isNullable: false
+		lineageTag: decf7050-a471-4dfe-a108-62c59da36704
+		sourceColumn: business_id
+
+	column surrogate_key_old
+		dataType: int64
+		lineageTag: 5626f58d-0d80-414d-b1ec-159cbd5f763a
+		sourceColumn: surrogate_key_old
+
+	column surrogate_key_new
+		dataType: int64
+		lineageTag: a99c5ec6-4aba-4382-8959-9b8e2368a84d
+		sourceColumn: surrogate_key_new
+
+	column change_type
+		dataType: string
+		isNullable: false
+		lineageTag: 3bd2ace6-5b0f-452c-ba2d-dade5b8d7ddb
+		sourceColumn: change_type
+
+	column column_name
+		dataType: string
+		isNullable: false
+		lineageTag: c04ea3df-1c40-4e6b-a8a4-32da542e37d9
+		sourceColumn: column_name
+
+	column old_value
+		dataType: string
+		lineageTag: 0eef9581-f2c6-4e7f-9d66-fb89a5645396
+		sourceColumn: old_value
+
+	column new_value
+		dataType: string
+		lineageTag: 8aab08e4-2aa3-4e78-a953-8f6723b81180
+		sourceColumn: new_value
+
+	column effective_date
+		dataType: dateTime
+		isNullable: false
+		lineageTag: f818bb02-e20d-4354-bf77-283f9c865a7d
+		sourceColumn: effective_date
+
+	column logged_at
+		dataType: dateTime
+		isNullable: false
+		lineageTag: 4739da07-5112-47ad-9a83-f80d3289164e
+		sourceColumn: logged_at
+
+	partition v_monitor_scd2_audit = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("localhost\SQLEXPRESS", "FoodDeliveryDW"),
+				    bi_v_monitor_scd2_audit = Source{[Schema="bi",Item="v_monitor_scd2_audit"]}[Data]
+				in
+				    bi_v_monitor_scd2_audit
+

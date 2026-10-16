@@ -1,0 +1,133 @@
+table _Measures
+	lineageTag: 31138a5f-5627-4692-b14a-601686686827
+
+	/// Batch ID of the latest pipeline execution
+	measure 'Latest Batch ID' = CALCULATE(MAX('Batch'[batch_id]), ALL('Batch'))
+		formatString: #,##0
+		displayFolder: 01. Pipeline Status & Health
+		lineageTag: b8f6e8cf-c591-4b20-b5c8-2d50ad7b79c5
+
+	/// Status of the latest executed batch
+	measure 'Latest Batch Status' =
+			CALCULATE(
+			    SELECTEDVALUE('Batch'[batch_status]),
+			    FILTER(
+			        ALL('Batch'),
+			        'Batch'[batch_id] = [Latest Batch ID]
+			    )
+			)
+		displayFolder: 01. Pipeline Status & Health
+		lineageTag: 1f89c1ec-de2d-49bd-a8e0-a471ca86e654
+
+	/// Visual pipeline health badge with indicator icon
+	measure 'Pipeline Health KPI' =
+			SWITCH(
+			    [Latest Batch Status],
+			    "SUCCESS", "🟢 Healthy",
+			    "RUNNING", "🔵 In Progress",
+			    "PARTIAL", "🟡 Degraded",
+			    "FAILED",  "🔴 Critical",
+			    "⚪ Unknown"
+			)
+		displayFolder: 01. Pipeline Status & Health
+		lineageTag: f8ee61db-a91c-43dd-8445-d3ff114802a6
+
+	/// Number of hours elapsed since the latest batch started
+	measure 'Hours Since Last Run' = ```
+			VAR _LastStartTime = 
+			    CALCULATE(
+			        MAX('Batch'[start_time]),
+			        FILTER(
+			            ALL('Batch'),
+			            'Batch'[batch_id] = [Latest Batch ID]
+			        )
+			    )
+			RETURN
+			    IF(NOT ISBLANK(_LastStartTime), DATEDIFF(_LastStartTime, NOW(), HOUR), BLANK())
+			```
+		formatString: #,##0
+		displayFolder: 01. Pipeline Status & Health
+		lineageTag: 053f12a4-48e3-432b-bfd0-b56618bbf785
+
+	/// SLA Data Freshness indicator (< 24h is fresh)
+	measure 'Data Freshness Status' =
+			VAR _Hours = [Hours Since Last Run]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(_Hours), "⚪ Unknown",
+			        _Hours <= 24, "🟢 Fresh (< 24h)",
+			        _Hours <= 36, "🟡 Warning (24h - 36h)",
+			        "🔴 Stale (> 36h)"
+			    )
+		displayFolder: 01. Pipeline Status & Health
+		lineageTag: b221da25-2778-429e-be90-fbbf1b9da772
+
+	/// Total pipeline batches recorded in control layer
+	measure 'Total Batches Executed' = COUNTROWS('Batch')
+		formatString: #,##0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: bc643ac2-5caf-439f-b0e1-cd7d89fef164
+
+	/// Average record success rate across batches
+	measure 'Avg Success Rate Pct' = AVERAGE('Batch'[success_rate_pct])
+		formatString: 0.00
+		displayFolder: 02. Execution & Throughput
+		lineageTag: f89e4d01-d83a-4649-96bd-3f0391d47a9f
+
+	/// Average runtime in minutes for successful batches
+	measure 'Avg Batch Duration Min' =
+			AVERAGEX(
+			    FILTER('Batch', 'Batch'[batch_status] = "SUCCESS"),
+			    'Batch'[duration_minutes]
+			)
+		formatString: #,##0.0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: a22b1478-66f7-4770-9500-84b38a12647f
+
+	/// Total quarantined data quality errors across all batches
+	measure 'Total Quarantined Errors' = COUNTROWS('Error')
+		formatString: #,##0
+		displayFolder: 03. Data Quality & Errors
+		lineageTag: 43955fef-4b8d-4bca-ae4f-07d23ce1d35e
+
+	/// Total non-fatal operational warnings and orphan anomalies
+	measure 'Total Operational Warnings' = COUNTROWS(Warning)
+		formatString: #,##0
+		displayFolder: 03. Data Quality & Errors
+		lineageTag: 1b293a01-a69b-475d-b8ca-eeb519437639
+
+	/// Average duration in seconds per ETL step
+	measure 'Avg Step Duration Sec' = AVERAGE(Step[duration_seconds])
+		formatString: #,##0.0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: 7f40eff8-af42-4a8e-b062-8cfef15cefb8
+
+	/// Total rows loaded into DWH layer across all entities
+	measure 'Total Records Loaded DWH' = SUM(Reconciliation[dwh_rows])
+		formatString: #,##0
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: f92c3d87-e6de-42b0-8495-5fd86a8232e4
+
+	/// Total rows ingested into RAW layer across all entities
+	measure 'Total Records Ingested RAW' = SUM(Reconciliation[raw_rows])
+		formatString: #,##0
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: 3833c032-9aab-46d2-bcb4-7bd4065e606c
+
+	/// Overall percentage of data retained from RAW to DWH
+	measure 'Overall Data Retention Rate Pct' = DIVIDE([Total Records Loaded DWH], [Total Records Ingested RAW], 0) * 100
+		formatString: 0.00
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: f95641a4-242c-4808-99ae-3666e3493cc8
+
+	column Placeholder
+		isHidden
+		lineageTag: 0445b9d7-6528-4d3b-ace2-59d6a2861fbf
+		isNameInferred
+		sourceColumn: [Placeholder]
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW("Placeholder", 1)
+

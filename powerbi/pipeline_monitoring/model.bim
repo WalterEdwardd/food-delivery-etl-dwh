@@ -1,0 +1,1717 @@
+{
+  "name": "9af7c273-64f0-4839-b7ea-30e58bca0958",
+  "compatibilityLevel": 1606,
+  "createdTimestamp": "2026-10-16T09:26:29.263333+07:00",
+  "lastUpdate": "2026-10-16T09:26:42.366667+07:00",
+  "lastSchemaUpdate": "2026-10-16T09:26:29.263333+07:00",
+  "lastProcessed": "1699-12-31T07:00:00+07:00",
+  "model": {
+    "culture": "en-US",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "en-US",
+    "valueFilterBehavior": "independent",
+    "modifiedTime": "2026-10-16T02:26:29.836667",
+    "structureModifiedTime": "2026-10-16T02:34:18.94",
+    "tables": [
+      {
+        "name": "Batch",
+        "lineageTag": "cec4d1fe-a60d-4684-a3b7-6f5ae2404ca6",
+        "modifiedTime": "2026-10-16T02:39:24.59",
+        "structureModifiedTime": "2026-10-16T02:29:15.04",
+        "columns": [
+          {
+            "name": "batch_id",
+            "dataType": "int64",
+            "isKey": true,
+            "isNullable": false,
+            "sourceColumn": "batch_id",
+            "lineageTag": "724d33cf-b32c-432f-9402-b1d3a4fe638b",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "name": "pipeline_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "pipeline_name",
+            "lineageTag": "d29bb8d0-9096-4537-b854-b6861ca566a1",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.773333"
+            }
+          },
+          {
+            "name": "source_system",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "source_system",
+            "lineageTag": "d81c5778-a3b0-4e69-8f67-fd67eb7c06e3",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "name": "source_file_count",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "source_file_count",
+            "lineageTag": "b64a4e93-cf19-4390-b9fb-a93846e58d6a",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.773333"
+            }
+          },
+          {
+            "name": "start_time",
+            "dataType": "dateTime",
+            "isNullable": false,
+            "sourceColumn": "start_time",
+            "lineageTag": "853ae5dc-13d1-4975-bc3c-3a3ad37efe69",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.773333"
+            }
+          },
+          {
+            "name": "end_time",
+            "dataType": "dateTime",
+            "sourceColumn": "end_time",
+            "lineageTag": "768a5755-d6de-4231-a731-19103c1db8de",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.773333"
+            }
+          },
+          {
+            "name": "duration_seconds",
+            "dataType": "int64",
+            "sourceColumn": "duration_seconds",
+            "lineageTag": "f13ade2f-d42a-456e-b47d-84cf834f8f76",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "name": "duration_minutes",
+            "dataType": "double",
+            "sourceColumn": "duration_minutes",
+            "lineageTag": "2b2abdd8-5a3b-4303-904c-4ac6554b34b0",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.773333"
+            }
+          },
+          {
+            "name": "batch_status",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "batch_status",
+            "lineageTag": "32e0035c-5305-41e2-8aff-14add5e137b7",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.773333"
+            }
+          },
+          {
+            "name": "total_records",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "total_records",
+            "lineageTag": "5b69bd7a-965f-411f-b254-6f1c402426d1",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "name": "success_records",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "success_records",
+            "lineageTag": "65840168-3741-488a-87bf-5c5348b6c639",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.773333"
+            }
+          },
+          {
+            "name": "error_records",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "error_records",
+            "lineageTag": "85b9b573-8f2a-480c-8916-85766799a3f3",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "name": "success_rate_pct",
+            "dataType": "double",
+            "sourceColumn": "success_rate_pct",
+            "lineageTag": "85fc5254-e963-43f6-a9b7-9db8d220c448",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "name": "error_rate_pct",
+            "dataType": "double",
+            "sourceColumn": "error_rate_pct",
+            "lineageTag": "1cbf5a46-a051-4582-8c11-1a00fe09ba56",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.773333"
+            }
+          },
+          {
+            "name": "is_latest_batch",
+            "dataType": "boolean",
+            "sourceColumn": "is_latest_batch",
+            "lineageTag": "f1863b0c-0b93-4c16-a5f9-9128473fa5c6",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "name": "hours_since_run",
+            "dataType": "int64",
+            "sourceColumn": "hours_since_run",
+            "lineageTag": "634fdd07-e274-4ee5-8c2a-7598d48b7a49",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "name": "pipeline_health_status",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "pipeline_health_status",
+            "lineageTag": "cfa0d58a-b88e-4a31-90e6-92d045dd5020",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "name": "created_at",
+            "dataType": "dateTime",
+            "isNullable": false,
+            "sourceColumn": "created_at",
+            "lineageTag": "db2b14a9-3f33-4f3e-b71f-848e81c8ec50",
+            "modifiedTime": "2026-10-16T02:29:15.056667",
+            "structureModifiedTime": "2026-10-16T02:29:15.056667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.776667"
+            }
+          },
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isNullable": false,
+            "modifiedTime": "2026-10-16T02:29:15.05",
+            "structureModifiedTime": "2026-10-16T02:29:15.05",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:30:05.403333",
+              "refreshedTime": "2026-10-16T02:32:08.773333"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_monitor_pipeline_overview",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-10-16T02:30:05.263333",
+            "refreshedTime": "2026-10-16T02:32:08.766667",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = Sql.Database(\"localhost\\SQLEXPRESS\", \"FoodDeliveryDW\"),\n    bi_v_monitor_pipeline_overview = Source{[Schema=\"bi\",Item=\"v_monitor_pipeline_overview\"]}[Data]\nin\n    bi_v_monitor_pipeline_overview"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Step",
+        "lineageTag": "7a801f9c-724e-43a2-8ae8-4d1e6d912917",
+        "modifiedTime": "2026-10-16T02:39:24.67",
+        "structureModifiedTime": "2026-10-16T02:30:32.433333",
+        "columns": [
+          {
+            "name": "log_id",
+            "dataType": "int64",
+            "isKey": true,
+            "isNullable": false,
+            "sourceColumn": "log_id",
+            "lineageTag": "9d62050a-4411-48f7-a3d3-d2bc1bce71f2",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.67",
+              "refreshedTime": "2026-10-16T02:32:08.67"
+            }
+          },
+          {
+            "name": "batch_id",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "batch_id",
+            "lineageTag": "c10c83b3-2c36-4716-80f4-d88656bc652d",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.67",
+              "refreshedTime": "2026-10-16T02:32:08.67"
+            }
+          },
+          {
+            "name": "pipeline_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "pipeline_name",
+            "lineageTag": "1dc7669e-046c-4374-8920-ff1a8223badd",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.67",
+              "refreshedTime": "2026-10-16T02:32:08.67"
+            }
+          },
+          {
+            "name": "process_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "process_name",
+            "lineageTag": "af5e703a-85a0-427f-b48f-02ea57490f6e",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.67",
+              "refreshedTime": "2026-10-16T02:32:08.67"
+            }
+          },
+          {
+            "name": "step_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "step_name",
+            "lineageTag": "34ead9bc-9545-4993-95bd-ae93ad185f8d",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "name": "start_time",
+            "dataType": "dateTime",
+            "isNullable": false,
+            "sourceColumn": "start_time",
+            "lineageTag": "058d958b-4a5c-4b87-a8a5-513398ea834f",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.67",
+              "refreshedTime": "2026-10-16T02:32:08.67"
+            }
+          },
+          {
+            "name": "end_time",
+            "dataType": "dateTime",
+            "sourceColumn": "end_time",
+            "lineageTag": "a7b04ce6-1d3c-4bd5-90eb-8a9c52c21231",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.67",
+              "refreshedTime": "2026-10-16T02:32:08.67"
+            }
+          },
+          {
+            "name": "duration_seconds",
+            "dataType": "int64",
+            "sourceColumn": "duration_seconds",
+            "lineageTag": "0901ef73-1a7f-4c03-b5dd-bcd9f7ebca98",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "name": "duration_minutes",
+            "dataType": "double",
+            "sourceColumn": "duration_minutes",
+            "lineageTag": "322f65a6-0298-4deb-a1b3-bf7f9560e66d",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "name": "step_status",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "step_status",
+            "lineageTag": "91294c2e-3aec-4c01-9987-a6e11a4d73d8",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "name": "rows_processed",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "rows_processed",
+            "lineageTag": "32afed65-dd5f-4435-a650-265e7d716914",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "name": "rows_inserted",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "rows_inserted",
+            "lineageTag": "64230d31-1d1a-4cf7-9ec1-c8fa3cc49f32",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.67",
+              "refreshedTime": "2026-10-16T02:32:08.67"
+            }
+          },
+          {
+            "name": "rows_rejected",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "rows_rejected",
+            "lineageTag": "299822f9-a809-4cd3-bdf5-90c97518452d",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "name": "rejection_rate_pct",
+            "dataType": "double",
+            "sourceColumn": "rejection_rate_pct",
+            "lineageTag": "748e71c0-def6-41bc-81bf-732972be264e",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "name": "throughput_rows_per_sec",
+            "dataType": "double",
+            "sourceColumn": "throughput_rows_per_sec",
+            "lineageTag": "0b507b81-7a2f-4f40-ae7d-f1daaf1a01a0",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "name": "message",
+            "dataType": "string",
+            "sourceColumn": "message",
+            "lineageTag": "8d5ca71c-3b73-4917-a5be-59b03b8245d1",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "name": "created_at",
+            "dataType": "dateTime",
+            "isNullable": false,
+            "sourceColumn": "created_at",
+            "lineageTag": "a5a87d46-09d4-416e-a900-2d834a5341af",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.673333",
+              "refreshedTime": "2026-10-16T02:32:08.673333"
+            }
+          },
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isNullable": false,
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:08.67",
+              "refreshedTime": "2026-10-16T02:32:08.67"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_monitor_step_performance",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-10-16T02:32:08.616667",
+            "refreshedTime": "2026-10-16T02:32:08.616667",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = Sql.Database(\"localhost\\SQLEXPRESS\", \"FoodDeliveryDW\"),\n    bi_v_monitor_step_performance = Source{[Schema=\"bi\",Item=\"v_monitor_step_performance\"]}[Data]\nin\n    bi_v_monitor_step_performance"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Error",
+        "lineageTag": "4b9fd7ff-3c6e-4909-b1a5-2d03b862b107",
+        "modifiedTime": "2026-10-16T02:39:24.753333",
+        "structureModifiedTime": "2026-10-16T02:30:32.433333",
+        "columns": [
+          {
+            "name": "error_id",
+            "dataType": "int64",
+            "isKey": true,
+            "isNullable": false,
+            "sourceColumn": "error_id",
+            "lineageTag": "36d1039a-f538-4b0d-a148-f1556b20475d",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.07",
+              "refreshedTime": "2026-10-16T02:32:41.07"
+            }
+          },
+          {
+            "name": "batch_id",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "batch_id",
+            "lineageTag": "21bc05a9-c5fc-4d0d-98a1-1ac63bfbeb0c",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.06",
+              "refreshedTime": "2026-10-16T02:32:41.06"
+            }
+          },
+          {
+            "name": "pipeline_name",
+            "dataType": "string",
+            "sourceColumn": "pipeline_name",
+            "lineageTag": "51b7ce76-f501-437f-8e60-d8baa98213b1",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.063333",
+              "refreshedTime": "2026-10-16T02:32:41.063333"
+            }
+          },
+          {
+            "name": "batch_status",
+            "dataType": "string",
+            "sourceColumn": "batch_status",
+            "lineageTag": "491dddb4-a41c-4cef-877a-f6435b5fe736",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.063333",
+              "refreshedTime": "2026-10-16T02:32:41.063333"
+            }
+          },
+          {
+            "name": "table_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "table_name",
+            "lineageTag": "9a58560e-6fd8-4fbc-9311-04670df25636",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.063333",
+              "refreshedTime": "2026-10-16T02:32:41.063333"
+            }
+          },
+          {
+            "name": "column_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "column_name",
+            "lineageTag": "99de3897-f0d2-4ca6-91aa-8307621f2b8e",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.063333",
+              "refreshedTime": "2026-10-16T02:32:41.063333"
+            }
+          },
+          {
+            "name": "error_type",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "error_type",
+            "lineageTag": "7c4ab405-a611-4de9-b9d5-a46a839c69e3",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.063333",
+              "refreshedTime": "2026-10-16T02:32:41.063333"
+            }
+          },
+          {
+            "name": "error_category",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "error_category",
+            "lineageTag": "c1517c11-c4dd-4ec0-9711-79d541c4c745",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.063333",
+              "refreshedTime": "2026-10-16T02:32:41.063333"
+            }
+          },
+          {
+            "name": "error_message",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "error_message",
+            "lineageTag": "4f428297-e846-43b7-9f1f-96759a85d45b",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.066667",
+              "refreshedTime": "2026-10-16T02:32:41.066667"
+            }
+          },
+          {
+            "name": "raw_value",
+            "dataType": "string",
+            "sourceColumn": "raw_value",
+            "lineageTag": "e12bedc5-ddf7-4d0f-ab2f-3216b1ef6289",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.106667",
+              "refreshedTime": "2026-10-16T02:32:41.106667"
+            }
+          },
+          {
+            "name": "source_file_name",
+            "dataType": "string",
+            "sourceColumn": "source_file_name",
+            "lineageTag": "ef9834a9-056e-46a8-934a-cfe0295c6a78",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.063333",
+              "refreshedTime": "2026-10-16T02:32:41.063333"
+            }
+          },
+          {
+            "name": "source_row_number",
+            "dataType": "int64",
+            "sourceColumn": "source_row_number",
+            "lineageTag": "731f7cd8-d827-40b0-bd0e-7b255bd1715e",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.076667",
+              "refreshedTime": "2026-10-16T02:32:41.076667"
+            }
+          },
+          {
+            "name": "error_timestamp",
+            "dataType": "dateTime",
+            "isNullable": false,
+            "sourceColumn": "error_timestamp",
+            "lineageTag": "4e1b4503-02b5-4234-8d1a-35c4980c9c38",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.066667",
+              "refreshedTime": "2026-10-16T02:32:41.066667"
+            }
+          },
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isNullable": false,
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:32:41.06",
+              "refreshedTime": "2026-10-16T02:32:41.06"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_monitor_data_quality_errors",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-10-16T02:32:41.043333",
+            "refreshedTime": "2026-10-16T02:32:41.043333",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = Sql.Database(\"localhost\\SQLEXPRESS\", \"FoodDeliveryDW\"),\n    bi_v_monitor_data_quality_errors = Source{[Schema=\"bi\",Item=\"v_monitor_data_quality_errors\"]}[Data]\nin\n    bi_v_monitor_data_quality_errors"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Warning",
+        "lineageTag": "5e082bb8-999d-40fd-ba01-b4afe4e389cb",
+        "modifiedTime": "2026-10-16T02:39:24.836667",
+        "structureModifiedTime": "2026-10-16T02:30:32.433333",
+        "columns": [
+          {
+            "name": "warning_id",
+            "dataType": "int64",
+            "isKey": true,
+            "isNullable": false,
+            "sourceColumn": "warning_id",
+            "lineageTag": "e65ed114-e505-47e2-af56-89ad9e4e509e",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.97",
+              "refreshedTime": "2026-10-16T02:33:05.97"
+            }
+          },
+          {
+            "name": "batch_id",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "batch_id",
+            "lineageTag": "a4fe1732-8aac-40cc-947d-fd1ac77a8c2b",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.966667",
+              "refreshedTime": "2026-10-16T02:33:05.966667"
+            }
+          },
+          {
+            "name": "pipeline_name",
+            "dataType": "string",
+            "sourceColumn": "pipeline_name",
+            "lineageTag": "bb25fec4-d9e6-4d5d-9e12-ef3b0276b833",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.97",
+              "refreshedTime": "2026-10-16T02:33:05.97"
+            }
+          },
+          {
+            "name": "step_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "step_name",
+            "lineageTag": "6b245682-97fa-4303-b8c1-8036755ce0ec",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.97",
+              "refreshedTime": "2026-10-16T02:33:05.97"
+            }
+          },
+          {
+            "name": "table_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "table_name",
+            "lineageTag": "736d84b9-98e1-45e1-9f7c-61f802a666ef",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.97",
+              "refreshedTime": "2026-10-16T02:33:05.97"
+            }
+          },
+          {
+            "name": "order_id",
+            "dataType": "string",
+            "sourceColumn": "order_id",
+            "lineageTag": "0c2c6081-98ad-4bca-961a-920633e65b32",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.986667",
+              "refreshedTime": "2026-10-16T02:33:05.986667"
+            }
+          },
+          {
+            "name": "entity_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "entity_name",
+            "lineageTag": "bbd05cba-ebf0-4b21-9e7b-d40592ee6b73",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.97",
+              "refreshedTime": "2026-10-16T02:33:05.97"
+            }
+          },
+          {
+            "name": "entity_id",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "entity_id",
+            "lineageTag": "f8e18915-5d9b-4898-8883-8495926c9896",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.983333",
+              "refreshedTime": "2026-10-16T02:33:05.983333"
+            }
+          },
+          {
+            "name": "warning_type",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "warning_type",
+            "lineageTag": "8d3ce715-b54b-4fae-aaf6-56ada6287947",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.97",
+              "refreshedTime": "2026-10-16T02:33:05.97"
+            }
+          },
+          {
+            "name": "warning_message",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "warning_message",
+            "lineageTag": "e69d1214-cd63-4b9c-a828-01b2c82a02b4",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:06.003333",
+              "refreshedTime": "2026-10-16T02:33:06.003333"
+            }
+          },
+          {
+            "name": "warning_timestamp",
+            "dataType": "dateTime",
+            "isNullable": false,
+            "sourceColumn": "warning_timestamp",
+            "lineageTag": "b6230053-c846-4779-bfd1-f0822e642fc6",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.97",
+              "refreshedTime": "2026-10-16T02:33:05.97"
+            }
+          },
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isNullable": false,
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:05.966667",
+              "refreshedTime": "2026-10-16T02:33:05.966667"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_monitor_warnings_anomalies",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-10-16T02:33:05.966667",
+            "refreshedTime": "2026-10-16T02:33:05.966667",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = Sql.Database(\"localhost\\SQLEXPRESS\", \"FoodDeliveryDW\"),\n    bi_v_monitor_warnings_anomalies = Source{[Schema=\"bi\",Item=\"v_monitor_warnings_anomalies\"]}[Data]\nin\n    bi_v_monitor_warnings_anomalies"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Reconciliation",
+        "lineageTag": "ff0616ec-4740-4d8e-8de5-025ad840f8ef",
+        "modifiedTime": "2026-10-16T02:39:24.903333",
+        "structureModifiedTime": "2026-10-16T02:30:32.433333",
+        "columns": [
+          {
+            "name": "entity_name",
+            "dataType": "string",
+            "isKey": true,
+            "isNullable": false,
+            "sourceColumn": "entity_name",
+            "lineageTag": "c9a3a7d4-0223-42bb-92f7-1e7b4354a62b",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "name": "raw_rows",
+            "dataType": "int64",
+            "sourceColumn": "raw_rows",
+            "lineageTag": "8725e781-2a09-4c32-93b1-8204167687bd",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "name": "ods_rows",
+            "dataType": "int64",
+            "sourceColumn": "ods_rows",
+            "lineageTag": "a0df18b8-2d52-4aae-824c-48af1807576d",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "name": "dwh_rows",
+            "dataType": "int64",
+            "sourceColumn": "dwh_rows",
+            "lineageTag": "cce9c387-fa59-44d1-ac23-680655721b0f",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "name": "raw_to_ods_variance",
+            "dataType": "int64",
+            "sourceColumn": "raw_to_ods_variance",
+            "lineageTag": "3b58667d-fceb-4d7f-9350-45b05fd0b349",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "name": "ods_to_dwh_variance",
+            "dataType": "int64",
+            "sourceColumn": "ods_to_dwh_variance",
+            "lineageTag": "c7df9bde-ce8e-4e08-ae64-8745d9b3efe5",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "name": "quarantined_error_rows",
+            "dataType": "int64",
+            "sourceColumn": "quarantined_error_rows",
+            "lineageTag": "e221eb20-f3b6-4834-a343-55423776e740",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "name": "warning_rows",
+            "dataType": "int64",
+            "sourceColumn": "warning_rows",
+            "lineageTag": "5e1fa736-8dce-43f1-b924-f185f5ef7a0f",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "name": "data_retention_rate_pct",
+            "dataType": "double",
+            "sourceColumn": "data_retention_rate_pct",
+            "lineageTag": "514cebb8-16dc-487d-8e18-8e2cad3a9c27",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "name": "audit_status",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "audit_status",
+            "lineageTag": "1ea1035f-d8df-44f8-9ce8-ca835ba3968c",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          },
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isNullable": false,
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:33:30.173333",
+              "refreshedTime": "2026-10-16T02:33:30.173333"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_monitor_layer_reconciliation",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-10-16T02:33:30.17",
+            "refreshedTime": "2026-10-16T02:33:30.17",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = Sql.Database(\"localhost\\SQLEXPRESS\", \"FoodDeliveryDW\"),\n    bi_v_monitor_layer_reconciliation = Source{[Schema=\"bi\",Item=\"v_monitor_layer_reconciliation\"]}[Data]\nin\n    bi_v_monitor_layer_reconciliation"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Audit",
+        "lineageTag": "e60e4314-71c7-4c97-a3b7-cb69d0db45fb",
+        "modifiedTime": "2026-10-16T02:39:24.956667",
+        "structureModifiedTime": "2026-10-16T02:30:32.433333",
+        "columns": [
+          {
+            "name": "change_log_id",
+            "dataType": "int64",
+            "isKey": true,
+            "isNullable": false,
+            "sourceColumn": "change_log_id",
+            "lineageTag": "b34f3e57-c261-41a9-af97-55b97db9a098",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "batch_id",
+            "dataType": "int64",
+            "isNullable": false,
+            "sourceColumn": "batch_id",
+            "lineageTag": "d6110eff-c15f-4607-a4ae-af412ef47bde",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "pipeline_name",
+            "dataType": "string",
+            "sourceColumn": "pipeline_name",
+            "lineageTag": "31454b1d-e0b0-4464-bddb-3c992337b00e",
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "dimension_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "dimension_name",
+            "lineageTag": "877e04fd-15a7-4b67-a43d-bbc0c4164b3e",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "business_id",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "business_id",
+            "lineageTag": "decf7050-a471-4dfe-a108-62c59da36704",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "surrogate_key_old",
+            "dataType": "int64",
+            "sourceColumn": "surrogate_key_old",
+            "lineageTag": "5626f58d-0d80-414d-b1ec-159cbd5f763a",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "surrogate_key_new",
+            "dataType": "int64",
+            "sourceColumn": "surrogate_key_new",
+            "lineageTag": "a99c5ec6-4aba-4382-8959-9b8e2368a84d",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "change_type",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "change_type",
+            "lineageTag": "3bd2ace6-5b0f-452c-ba2d-dade5b8d7ddb",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "column_name",
+            "dataType": "string",
+            "isNullable": false,
+            "sourceColumn": "column_name",
+            "lineageTag": "c04ea3df-1c40-4e6b-a8a4-32da542e37d9",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "old_value",
+            "dataType": "string",
+            "sourceColumn": "old_value",
+            "lineageTag": "0eef9581-f2c6-4e7f-9d66-fb89a5645396",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "new_value",
+            "dataType": "string",
+            "sourceColumn": "new_value",
+            "lineageTag": "8aab08e4-2aa3-4e78-a953-8f6723b81180",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "effective_date",
+            "dataType": "dateTime",
+            "isNullable": false,
+            "sourceColumn": "effective_date",
+            "lineageTag": "f818bb02-e20d-4354-bf77-283f9c865a7d",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "name": "logged_at",
+            "dataType": "dateTime",
+            "isNullable": false,
+            "sourceColumn": "logged_at",
+            "lineageTag": "4739da07-5112-47ad-9a83-f80d3289164e",
+            "modifiedTime": "2026-10-16T02:30:32.436667",
+            "structureModifiedTime": "2026-10-16T02:30:32.436667",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          },
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isNullable": false,
+            "modifiedTime": "2026-10-16T02:30:32.433333",
+            "structureModifiedTime": "2026-10-16T02:30:32.433333",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:31:42.87",
+              "refreshedTime": "2026-10-16T02:31:42.87"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_monitor_scd2_audit",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-10-16T02:31:42.843333",
+            "refreshedTime": "2026-10-16T02:31:42.843333",
+            "source": {
+              "type": "m",
+              "expression": "let\n    Source = Sql.Database(\"localhost\\SQLEXPRESS\", \"FoodDeliveryDW\"),\n    bi_v_monitor_scd2_audit = Source{[Schema=\"bi\",Item=\"v_monitor_scd2_audit\"]}[Data]\nin\n    bi_v_monitor_scd2_audit"
+            }
+          }
+        ]
+      },
+      {
+        "name": "_Measures",
+        "lineageTag": "31138a5f-5627-4692-b14a-601686686827",
+        "modifiedTime": "2026-10-16T02:34:18.94",
+        "structureModifiedTime": "2026-10-16T02:34:58.513333",
+        "columns": [
+          {
+            "type": "rowNumber",
+            "name": "RowNumber-2662979B-1795-4F74-8F37-6A1BA8059B61",
+            "dataType": "int64",
+            "isHidden": true,
+            "isUnique": true,
+            "isKey": true,
+            "isNullable": false,
+            "modifiedTime": "2026-10-16T02:34:18.94",
+            "structureModifiedTime": "2026-10-16T02:34:18.94",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:34:26.52",
+              "refreshedTime": "2026-10-16T02:34:26.52"
+            }
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Placeholder",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Placeholder]",
+            "lineageTag": "0445b9d7-6528-4d3b-ace2-59d6a2861fbf",
+            "modifiedTime": "2026-10-16T02:35:55.48",
+            "structureModifiedTime": "2026-10-16T02:34:18.97",
+            "refreshedTime": "1699-12-31T00:00:00",
+            "attributeHierarchy": {
+              "state": "ready",
+              "modifiedTime": "2026-10-16T02:34:26.52",
+              "refreshedTime": "2026-10-16T02:34:26.52"
+            }
+          }
+        ],
+        "partitions": [
+          {
+            "name": "_Measures",
+            "mode": "import",
+            "state": "ready",
+            "modifiedTime": "2026-10-16T02:34:26.52",
+            "refreshedTime": "2026-10-16T02:34:26.52",
+            "source": {
+              "type": "calculated",
+              "expression": "ROW(\"Placeholder\", 1)"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Latest Batch ID",
+            "description": "Batch ID of the latest pipeline execution",
+            "expression": "CALCULATE(MAX('Batch'[batch_id]), ALL('Batch'))",
+            "formatString": "#,##0",
+            "displayFolder": "01. Pipeline Status & Health",
+            "lineageTag": "b8f6e8cf-c591-4b20-b5c8-2d50ad7b79c5",
+            "dataType": "int64",
+            "modifiedTime": "2026-10-16T02:39:24.62",
+            "structureModifiedTime": "2026-10-16T02:34:58.51"
+          },
+          {
+            "name": "Latest Batch Status",
+            "description": "Status of the latest executed batch",
+            "expression": "CALCULATE(\n    SELECTEDVALUE('Batch'[batch_status]),\n    FILTER(\n        ALL('Batch'),\n        'Batch'[batch_id] = [Latest Batch ID]\n    )\n)",
+            "displayFolder": "01. Pipeline Status & Health",
+            "lineageTag": "1f89c1ec-de2d-49bd-a8e0-a471ca86e654",
+            "dataType": "string",
+            "modifiedTime": "2026-10-16T02:39:24.62",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Pipeline Health KPI",
+            "description": "Visual pipeline health badge with indicator icon",
+            "expression": "SWITCH(\n    [Latest Batch Status],\n    \"SUCCESS\", \"🟢 Healthy\",\n    \"RUNNING\", \"🔵 In Progress\",\n    \"PARTIAL\", \"🟡 Degraded\",\n    \"FAILED\",  \"🔴 Critical\",\n    \"⚪ Unknown\"\n)",
+            "displayFolder": "01. Pipeline Status & Health",
+            "lineageTag": "f8ee61db-a91c-43dd-8445-d3ff114802a6",
+            "dataType": "string",
+            "modifiedTime": "2026-10-16T02:34:58.576667",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Hours Since Last Run",
+            "description": "Number of hours elapsed since the latest batch started",
+            "expression": "VAR _LastStartTime = \n    CALCULATE(\n        MAX('Batch'[start_time]),\n        FILTER(\n            ALL('Batch'),\n            'Batch'[batch_id] = [Latest Batch ID]\n        )\n    )\nRETURN\n    IF(NOT ISBLANK(_LastStartTime), DATEDIFF(_LastStartTime, NOW(), HOUR), BLANK())",
+            "formatString": "#,##0",
+            "displayFolder": "01. Pipeline Status & Health",
+            "lineageTag": "053f12a4-48e3-432b-bfd0-b56618bbf785",
+            "dataType": "int64",
+            "modifiedTime": "2026-10-16T02:39:24.62",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Data Freshness Status",
+            "description": "SLA Data Freshness indicator (< 24h is fresh)",
+            "expression": "VAR _Hours = [Hours Since Last Run]\nRETURN\n    SWITCH(\n        TRUE(),\n        ISBLANK(_Hours), \"⚪ Unknown\",\n        _Hours <= 24, \"🟢 Fresh (< 24h)\",\n        _Hours <= 36, \"🟡 Warning (24h - 36h)\",\n        \"🔴 Stale (> 36h)\"\n    )",
+            "displayFolder": "01. Pipeline Status & Health",
+            "lineageTag": "b221da25-2778-429e-be90-fbbf1b9da772",
+            "dataType": "string",
+            "modifiedTime": "2026-10-16T02:34:58.576667",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Total Batches Executed",
+            "description": "Total pipeline batches recorded in control layer",
+            "expression": "COUNTROWS('Batch')",
+            "formatString": "#,##0",
+            "displayFolder": "02. Execution & Throughput",
+            "lineageTag": "bc643ac2-5caf-439f-b0e1-cd7d89fef164",
+            "dataType": "int64",
+            "modifiedTime": "2026-10-16T02:39:24.62",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Avg Success Rate Pct",
+            "description": "Average record success rate across batches",
+            "expression": "AVERAGE('Batch'[success_rate_pct])",
+            "formatString": "0.00",
+            "displayFolder": "02. Execution & Throughput",
+            "lineageTag": "f89e4d01-d83a-4649-96bd-3f0391d47a9f",
+            "dataType": "double",
+            "modifiedTime": "2026-10-16T02:39:24.62",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Avg Batch Duration Min",
+            "description": "Average runtime in minutes for successful batches",
+            "expression": "AVERAGEX(\n    FILTER('Batch', 'Batch'[batch_status] = \"SUCCESS\"),\n    'Batch'[duration_minutes]\n)",
+            "formatString": "#,##0.0",
+            "displayFolder": "02. Execution & Throughput",
+            "lineageTag": "a22b1478-66f7-4770-9500-84b38a12647f",
+            "dataType": "double",
+            "modifiedTime": "2026-10-16T02:39:24.62",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Total Quarantined Errors",
+            "description": "Total quarantined data quality errors across all batches",
+            "expression": "COUNTROWS('Error')",
+            "formatString": "#,##0",
+            "displayFolder": "03. Data Quality & Errors",
+            "lineageTag": "43955fef-4b8d-4bca-ae4f-07d23ce1d35e",
+            "dataType": "int64",
+            "modifiedTime": "2026-10-16T02:39:24.776667",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Total Operational Warnings",
+            "description": "Total non-fatal operational warnings and orphan anomalies",
+            "expression": "COUNTROWS(Warning)",
+            "formatString": "#,##0",
+            "displayFolder": "03. Data Quality & Errors",
+            "lineageTag": "1b293a01-a69b-475d-b8ca-eeb519437639",
+            "dataType": "int64",
+            "modifiedTime": "2026-10-16T02:39:24.866667",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Avg Step Duration Sec",
+            "description": "Average duration in seconds per ETL step",
+            "expression": "AVERAGE(Step[duration_seconds])",
+            "formatString": "#,##0.0",
+            "displayFolder": "02. Execution & Throughput",
+            "lineageTag": "7f40eff8-af42-4a8e-b062-8cfef15cefb8",
+            "dataType": "double",
+            "modifiedTime": "2026-10-16T02:39:24.713333",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Total Records Loaded DWH",
+            "description": "Total rows loaded into DWH layer across all entities",
+            "expression": "SUM(Reconciliation[dwh_rows])",
+            "formatString": "#,##0",
+            "displayFolder": "04. Layer Reconciliation",
+            "lineageTag": "f92c3d87-e6de-42b0-8495-5fd86a8232e4",
+            "dataType": "int64",
+            "modifiedTime": "2026-10-16T02:39:24.926667",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Total Records Ingested RAW",
+            "description": "Total rows ingested into RAW layer across all entities",
+            "expression": "SUM(Reconciliation[raw_rows])",
+            "formatString": "#,##0",
+            "displayFolder": "04. Layer Reconciliation",
+            "lineageTag": "3833c032-9aab-46d2-bcb4-7bd4065e606c",
+            "dataType": "int64",
+            "modifiedTime": "2026-10-16T02:39:24.926667",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          },
+          {
+            "name": "Overall Data Retention Rate Pct",
+            "description": "Overall percentage of data retained from RAW to DWH",
+            "expression": "DIVIDE([Total Records Loaded DWH], [Total Records Ingested RAW], 0) * 100",
+            "formatString": "0.00",
+            "displayFolder": "04. Layer Reconciliation",
+            "lineageTag": "f95641a4-242c-4808-99ae-3666e3493cc8",
+            "dataType": "double",
+            "modifiedTime": "2026-10-16T02:34:58.576667",
+            "structureModifiedTime": "2026-10-16T02:34:58.513333"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "Rel_Batch_StepPerformance",
+        "fromTable": "Step",
+        "fromColumn": "batch_id",
+        "toTable": "Batch",
+        "toColumn": "batch_id",
+        "state": "ready",
+        "modifiedTime": "2026-10-16T02:35:55.533333",
+        "refreshedTime": "2026-10-16T02:35:55.533333"
+      },
+      {
+        "name": "Rel_Batch_DataQualityErrors",
+        "fromTable": "Error",
+        "fromColumn": "batch_id",
+        "toTable": "Batch",
+        "toColumn": "batch_id",
+        "state": "ready",
+        "modifiedTime": "2026-10-16T02:35:55.52",
+        "refreshedTime": "2026-10-16T02:35:55.52"
+      },
+      {
+        "name": "Rel_Batch_WarningsAnomalies",
+        "fromTable": "Warning",
+        "fromColumn": "batch_id",
+        "toTable": "Batch",
+        "toColumn": "batch_id",
+        "state": "ready",
+        "modifiedTime": "2026-10-16T02:35:55.52",
+        "refreshedTime": "2026-10-16T02:35:55.52"
+      },
+      {
+        "name": "Rel_Batch_Scd2Audit",
+        "fromTable": "Audit",
+        "fromColumn": "batch_id",
+        "toTable": "Batch",
+        "toColumn": "batch_id",
+        "state": "ready",
+        "modifiedTime": "2026-10-16T02:35:55.533333",
+        "refreshedTime": "2026-10-16T02:35:55.533333"
+      }
+    ],
+    "cultures": [
+      {
+        "name": "en-US",
+        "modifiedTime": "2026-10-16T02:26:29.836667",
+        "structureModifiedTime": "2026-10-16T02:26:29.836667"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0",
+        "modifiedTime": "2026-10-16T02:26:29.836667"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"MCP-PBIModeling\"]",
+        "modifiedTime": "2026-10-16T02:29:15.06"
+      }
+    ]
+  }
+}

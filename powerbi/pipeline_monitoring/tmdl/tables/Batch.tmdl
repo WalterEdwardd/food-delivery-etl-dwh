@@ -1,0 +1,114 @@
+table Batch
+	lineageTag: cec4d1fe-a60d-4684-a3b7-6f5ae2404ca6
+
+	column batch_id
+		dataType: int64
+		isKey
+		isNullable: false
+		lineageTag: 724d33cf-b32c-432f-9402-b1d3a4fe638b
+		sourceColumn: batch_id
+
+	column pipeline_name
+		dataType: string
+		isNullable: false
+		lineageTag: d29bb8d0-9096-4537-b854-b6861ca566a1
+		sourceColumn: pipeline_name
+
+	column source_system
+		dataType: string
+		isNullable: false
+		lineageTag: d81c5778-a3b0-4e69-8f67-fd67eb7c06e3
+		sourceColumn: source_system
+
+	column source_file_count
+		dataType: int64
+		isNullable: false
+		lineageTag: b64a4e93-cf19-4390-b9fb-a93846e58d6a
+		sourceColumn: source_file_count
+
+	column start_time
+		dataType: dateTime
+		isNullable: false
+		lineageTag: 853ae5dc-13d1-4975-bc3c-3a3ad37efe69
+		sourceColumn: start_time
+
+	column end_time
+		dataType: dateTime
+		lineageTag: 768a5755-d6de-4231-a731-19103c1db8de
+		sourceColumn: end_time
+
+	column duration_seconds
+		dataType: int64
+		lineageTag: f13ade2f-d42a-456e-b47d-84cf834f8f76
+		sourceColumn: duration_seconds
+
+	column duration_minutes
+		dataType: double
+		lineageTag: 2b2abdd8-5a3b-4303-904c-4ac6554b34b0
+		sourceColumn: duration_minutes
+
+	column batch_status
+		dataType: string
+		isNullable: false
+		lineageTag: 32e0035c-5305-41e2-8aff-14add5e137b7
+		sourceColumn: batch_status
+
+	column total_records
+		dataType: int64
+		isNullable: false
+		lineageTag: 5b69bd7a-965f-411f-b254-6f1c402426d1
+		sourceColumn: total_records
+
+	column success_records
+		dataType: int64
+		isNullable: false
+		lineageTag: 65840168-3741-488a-87bf-5c5348b6c639
+		sourceColumn: success_records
+
+	column error_records
+		dataType: int64
+		isNullable: false
+		lineageTag: 85b9b573-8f2a-480c-8916-85766799a3f3
+		sourceColumn: error_records
+
+	column success_rate_pct
+		dataType: double
+		lineageTag: 85fc5254-e963-43f6-a9b7-9db8d220c448
+		sourceColumn: success_rate_pct
+
+	column error_rate_pct
+		dataType: double
+		lineageTag: 1cbf5a46-a051-4582-8c11-1a00fe09ba56
+		sourceColumn: error_rate_pct
+
+	column is_latest_batch
+		dataType: boolean
+		lineageTag: f1863b0c-0b93-4c16-a5f9-9128473fa5c6
+		sourceColumn: is_latest_batch
+
+	column hours_since_run
+		dataType: int64
+		lineageTag: 634fdd07-e274-4ee5-8c2a-7598d48b7a49
+		sourceColumn: hours_since_run
+
+	column pipeline_health_status
+		dataType: string
+		isNullable: false
+		lineageTag: cfa0d58a-b88e-4a31-90e6-92d045dd5020
+		sourceColumn: pipeline_health_status
+
+	column created_at
+		dataType: dateTime
+		isNullable: false
+		lineageTag: db2b14a9-3f33-4f3e-b71f-848e81c8ec50
+		sourceColumn: created_at
+
+	partition v_monitor_pipeline_overview = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("localhost\SQLEXPRESS", "FoodDeliveryDW"),
+				    bi_v_monitor_pipeline_overview = Source{[Schema="bi",Item="v_monitor_pipeline_overview"]}[Data]
+				in
+				    bi_v_monitor_pipeline_overview
+

@@ -1,0 +1,16 @@
+relationship Rel_Batch_StepPerformance
+	fromColumn: Step.batch_id
+	toColumn: Batch.batch_id
+
+relationship Rel_Batch_DataQualityErrors
+	fromColumn: Error.batch_id
+	toColumn: Batch.batch_id
+
+relationship Rel_Batch_WarningsAnomalies
+	fromColumn: Warning.batch_id
+	toColumn: Batch.batch_id
+
+relationship Rel_Batch_Scd2Audit
+	fromColumn: Audit.batch_id
+	toColumn: Batch.batch_id
+

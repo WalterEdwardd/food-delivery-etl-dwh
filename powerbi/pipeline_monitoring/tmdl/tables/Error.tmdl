@@ -1,0 +1,86 @@
+table Error
+	lineageTag: 4b9fd7ff-3c6e-4909-b1a5-2d03b862b107
+
+	column error_id
+		dataType: int64
+		isKey
+		isNullable: false
+		lineageTag: 36d1039a-f538-4b0d-a148-f1556b20475d
+		sourceColumn: error_id
+
+	column batch_id
+		dataType: int64
+		isNullable: false
+		lineageTag: 21bc05a9-c5fc-4d0d-98a1-1ac63bfbeb0c
+		sourceColumn: batch_id
+
+	column pipeline_name
+		dataType: string
+		lineageTag: 51b7ce76-f501-437f-8e60-d8baa98213b1
+		sourceColumn: pipeline_name
+
+	column batch_status
+		dataType: string
+		lineageTag: 491dddb4-a41c-4cef-877a-f6435b5fe736
+		sourceColumn: batch_status
+
+	column table_name
+		dataType: string
+		isNullable: false
+		lineageTag: 9a58560e-6fd8-4fbc-9311-04670df25636
+		sourceColumn: table_name
+
+	column column_name
+		dataType: string
+		isNullable: false
+		lineageTag: 99de3897-f0d2-4ca6-91aa-8307621f2b8e
+		sourceColumn: column_name
+
+	column error_type
+		dataType: string
+		isNullable: false
+		lineageTag: 7c4ab405-a611-4de9-b9d5-a46a839c69e3
+		sourceColumn: error_type
+
+	column error_category
+		dataType: string
+		isNullable: false
+		lineageTag: c1517c11-c4dd-4ec0-9711-79d541c4c745
+		sourceColumn: error_category
+
+	column error_message
+		dataType: string
+		isNullable: false
+		lineageTag: 4f428297-e846-43b7-9f1f-96759a85d45b
+		sourceColumn: error_message
+
+	column raw_value
+		dataType: string
+		lineageTag: e12bedc5-ddf7-4d0f-ab2f-3216b1ef6289
+		sourceColumn: raw_value
+
+	column source_file_name
+		dataType: string
+		lineageTag: ef9834a9-056e-46a8-934a-cfe0295c6a78
+		sourceColumn: source_file_name
+
+	column source_row_number
+		dataType: int64
+		lineageTag: 731f7cd8-d827-40b0-bd0e-7b255bd1715e
+		sourceColumn: source_row_number
+
+	column error_timestamp
+		dataType: dateTime
+		isNullable: false
+		lineageTag: 4e1b4503-02b5-4234-8d1a-35c4980c9c38
+		sourceColumn: error_timestamp
+
+	partition v_monitor_data_quality_errors = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("localhost\SQLEXPRESS", "FoodDeliveryDW"),
+				    bi_v_monitor_data_quality_errors = Source{[Schema="bi",Item="v_monitor_data_quality_errors"]}[Data]
+				in
+				    bi_v_monitor_data_quality_errors
+

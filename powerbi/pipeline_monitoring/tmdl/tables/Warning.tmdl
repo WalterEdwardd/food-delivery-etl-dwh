@@ -1,0 +1,77 @@
+table Warning
+	lineageTag: 5e082bb8-999d-40fd-ba01-b4afe4e389cb
+
+	column warning_id
+		dataType: int64
+		isKey
+		isNullable: false
+		lineageTag: e65ed114-e505-47e2-af56-89ad9e4e509e
+		sourceColumn: warning_id
+
+	column batch_id
+		dataType: int64
+		isNullable: false
+		lineageTag: a4fe1732-8aac-40cc-947d-fd1ac77a8c2b
+		sourceColumn: batch_id
+
+	column pipeline_name
+		dataType: string
+		lineageTag: bb25fec4-d9e6-4d5d-9e12-ef3b0276b833
+		sourceColumn: pipeline_name
+
+	column step_name
+		dataType: string
+		isNullable: false
+		lineageTag: 6b245682-97fa-4303-b8c1-8036755ce0ec
+		sourceColumn: step_name
+
+	column table_name
+		dataType: string
+		isNullable: false
+		lineageTag: 736d84b9-98e1-45e1-9f7c-61f802a666ef
+		sourceColumn: table_name
+
+	column order_id
+		dataType: string
+		lineageTag: 0c2c6081-98ad-4bca-961a-920633e65b32
+		sourceColumn: order_id
+
+	column entity_name
+		dataType: string
+		isNullable: false
+		lineageTag: bbd05cba-ebf0-4b21-9e7b-d40592ee6b73
+		sourceColumn: entity_name
+
+	column entity_id
+		dataType: string
+		isNullable: false
+		lineageTag: f8e18915-5d9b-4898-8883-8495926c9896
+		sourceColumn: entity_id
+
+	column warning_type
+		dataType: string
+		isNullable: false
+		lineageTag: 8d3ce715-b54b-4fae-aaf6-56ada6287947
+		sourceColumn: warning_type
+
+	column warning_message
+		dataType: string
+		isNullable: false
+		lineageTag: e69d1214-cd63-4b9c-a828-01b2c82a02b4
+		sourceColumn: warning_message
+
+	column warning_timestamp
+		dataType: dateTime
+		isNullable: false
+		lineageTag: b6230053-c846-4779-bfd1-f0822e642fc6
+		sourceColumn: warning_timestamp
+
+	partition v_monitor_warnings_anomalies = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("localhost\SQLEXPRESS", "FoodDeliveryDW"),
+				    bi_v_monitor_warnings_anomalies = Source{[Schema="bi",Item="v_monitor_warnings_anomalies"]}[Data]
+				in
+				    bi_v_monitor_warnings_anomalies
+

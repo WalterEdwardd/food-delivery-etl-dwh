@@ -1,0 +1,109 @@
+table Step
+	lineageTag: 7a801f9c-724e-43a2-8ae8-4d1e6d912917
+
+	column log_id
+		dataType: int64
+		isKey
+		isNullable: false
+		lineageTag: 9d62050a-4411-48f7-a3d3-d2bc1bce71f2
+		sourceColumn: log_id
+
+	column batch_id
+		dataType: int64
+		isNullable: false
+		lineageTag: c10c83b3-2c36-4716-80f4-d88656bc652d
+		sourceColumn: batch_id
+
+	column pipeline_name
+		dataType: string
+		isNullable: false
+		lineageTag: 1dc7669e-046c-4374-8920-ff1a8223badd
+		sourceColumn: pipeline_name
+
+	column process_name
+		dataType: string
+		isNullable: false
+		lineageTag: af5e703a-85a0-427f-b48f-02ea57490f6e
+		sourceColumn: process_name
+
+	column step_name
+		dataType: string
+		isNullable: false
+		lineageTag: 34ead9bc-9545-4993-95bd-ae93ad185f8d
+		sourceColumn: step_name
+
+	column start_time
+		dataType: dateTime
+		isNullable: false
+		lineageTag: 058d958b-4a5c-4b87-a8a5-513398ea834f
+		sourceColumn: start_time
+
+	column end_time
+		dataType: dateTime
+		lineageTag: a7b04ce6-1d3c-4bd5-90eb-8a9c52c21231
+		sourceColumn: end_time
+
+	column duration_seconds
+		dataType: int64
+		lineageTag: 0901ef73-1a7f-4c03-b5dd-bcd9f7ebca98
+		sourceColumn: duration_seconds
+
+	column duration_minutes
+		dataType: double
+		lineageTag: 322f65a6-0298-4deb-a1b3-bf7f9560e66d
+		sourceColumn: duration_minutes
+
+	column step_status
+		dataType: string
+		isNullable: false
+		lineageTag: 91294c2e-3aec-4c01-9987-a6e11a4d73d8
+		sourceColumn: step_status
+
+	column rows_processed
+		dataType: int64
+		isNullable: false
+		lineageTag: 32afed65-dd5f-4435-a650-265e7d716914
+		sourceColumn: rows_processed
+
+	column rows_inserted
+		dataType: int64
+		isNullable: false
+		lineageTag: 64230d31-1d1a-4cf7-9ec1-c8fa3cc49f32
+		sourceColumn: rows_inserted
+
+	column rows_rejected
+		dataType: int64
+		isNullable: false
+		lineageTag: 299822f9-a809-4cd3-bdf5-90c97518452d
+		sourceColumn: rows_rejected
+
+	column rejection_rate_pct
+		dataType: double
+		lineageTag: 748e71c0-def6-41bc-81bf-732972be264e
+		sourceColumn: rejection_rate_pct
+
+	column throughput_rows_per_sec
+		dataType: double
+		lineageTag: 0b507b81-7a2f-4f40-ae7d-f1daaf1a01a0
+		sourceColumn: throughput_rows_per_sec
+
+	column message
+		dataType: string
+		lineageTag: 8d5ca71c-3b73-4917-a5be-59b03b8245d1
+		sourceColumn: message
+
+	column created_at
+		dataType: dateTime
+		isNullable: false
+		lineageTag: a5a87d46-09d4-416e-a900-2d834a5341af
+		sourceColumn: created_at
+
+	partition v_monitor_step_performance = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("localhost\SQLEXPRESS", "FoodDeliveryDW"),
+				    bi_v_monitor_step_performance = Source{[Schema="bi",Item="v_monitor_step_performance"]}[Data]
+				in
+				    bi_v_monitor_step_performance
+
