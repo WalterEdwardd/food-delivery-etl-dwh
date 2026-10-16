@@ -458,7 +458,7 @@ SELECT
 		AND MAX(
 				CASE
 					WHEN c.name = N'load_timestamp'
-					AND ty.name = N'dateitme2'
+					AND ty.name = N'datetime2'
 					AND c.is_nullable = 0
 					THEN 1
 					ELSE 0
