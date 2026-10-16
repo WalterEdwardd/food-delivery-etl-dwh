@@ -189,9 +189,9 @@ CREATE TABLE stg.stg_rating
         customer_id				VARCHAR(100),
         restaurant_id			VARCHAR(100),
 		rating					VARCHAR(50),
-        sentiment_score			VARCHAR(50),
         review_text				VARCHAR(5000),
         review_timestamp		VARCHAR(100),
+        sentiment_score			VARCHAR(50),
 
         batch_id				BIGINT,
         source_file_name		VARCHAR(200),
