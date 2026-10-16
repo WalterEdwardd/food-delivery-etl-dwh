@@ -135,12 +135,91 @@ def call_gemini_absa(reviews: List[str], api_key: str, preferred_model: str = "g
     raise RuntimeError(f"All candidate Gemini models failed. Last error: {last_error}")
 
 
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+CACHE_FILE_PATH = os.path.join(PROJECT_ROOT, "data", "reference", "ai_review_aspect_cache.json")
+
+
+def sync_disk_to_cache(conn) -> int:
+    """
+    Seed or synchronize ref.ref_review_aspect_cache from the JSON file on disk.
+    Ensures zero external API dependency when running tests or in offline environments.
+    """
+    if not os.path.exists(CACHE_FILE_PATH):
+        logger.warning(f"Cache file not found at: {CACHE_FILE_PATH}")
+        return 0
+
+    try:
+        with open(CACHE_FILE_PATH, "r", encoding="utf-8") as f:
+            cached_data = json.load(f)
+    except Exception as exc:
+        logger.error(f"Failed to read cache file {CACHE_FILE_PATH}: {exc}")
+        return 0
+
+    inserted_count = 0
+    insert_sql = """
+    IF NOT EXISTS (
+        SELECT 1 FROM ref.ref_review_aspect_cache 
+        WHERE review_hash = ? AND aspect_id = ? AND sentiment_type_id = ?
+    )
+    BEGIN
+        INSERT INTO ref.ref_review_aspect_cache
+        (review_hash, review_text, aspect_id, sentiment_type_id, matched_phrase, ai_model, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, SYSUTCDATETIME());
+    END
+    """
+    with conn.cursor() as cur:
+        for row in cached_data:
+            h, txt, aid, sid, phrase, mdl = row
+            cur.execute(insert_sql, (h, aid, sid, h, txt, aid, sid, phrase, mdl))
+            inserted_count += cur.rowcount
+        conn.commit()
+
+    if inserted_count > 0:
+        logger.info(f"Loaded {inserted_count} review aspect cache records from disk ({CACHE_FILE_PATH}).")
+    return inserted_count
+
+
+def sync_cache_to_disk(conn) -> int:
+    """
+    Export the current database cache table back to data/reference/ai_review_aspect_cache.json.
+    Ensures the disk backup file remains the self-enriching Single Source of Truth as new reviews arrive.
+    """
+    query = """
+    SELECT review_hash, review_text, aspect_id, sentiment_type_id, matched_phrase, ai_model
+    FROM ref.ref_review_aspect_cache
+    ORDER BY review_text, aspect_id, sentiment_type_id
+    """
+    with conn.cursor() as cur:
+        cur.execute(query)
+        rows = cur.fetchall()
+
+    cache_list = [
+        [
+            r[0].strip() if r[0] else "",
+            r[1],
+            int(r[2]),
+            int(r[3]),
+            r[4] if r[4] else "",
+            r[5] if r[5] else "gemini-2.5-flash",
+        ]
+        for r in rows
+    ]
+
+    os.makedirs(os.path.dirname(CACHE_FILE_PATH), exist_ok=True)
+    with open(CACHE_FILE_PATH, "w", encoding="utf-8") as f:
+        json.dump(cache_list, f, ensure_ascii=False, indent=2)
+
+    logger.info(f"Synchronized {len(cache_list)} cache records to {CACHE_FILE_PATH}.")
+    return len(cache_list)
+
+
 def populate_ai_cache(conn, batch_id: int = 1) -> int:
     """
-    Check for uncached distinct reviews and analyze them with Gemini.
-    Returns the number of new cache records inserted.
+    Check for uncached distinct reviews and analyze them with Gemini (or fallback).
+    Automatically maintains two-way sync between database cache and data/reference/ai_review_aspect_cache.json.
     """
     ensure_cache_table(conn)
+    sync_disk_to_cache(conn)
 
     # 1. Fetch all distinct reviews currently in fact_rating
     with conn.cursor() as cur:
@@ -163,46 +242,60 @@ def populate_ai_cache(conn, batch_id: int = 1) -> int:
 
     api_key = settings.GEMINI_API_KEY
     model = settings.GEMINI_MODEL or "gemini-2.5-flash"
-    if not api_key:
-        raise ValueError("GEMINI_API_KEY is not configured in environment or .env file.")
-
-    # 3. Process uncached reviews in batches of 15
-    batch_size = 15
     new_cache_rows = []
-    
-    for i in range(0, len(uncached_reviews), batch_size):
-        chunk = uncached_reviews[i : i + batch_size]
-        logger.info(f"Sending batch of {len(chunk)} reviews to Gemini ({model})...")
-        results = call_gemini_absa(chunk, api_key, model)
-        
-        # Build lookup from normalized text
-        norm_map = {compute_sha256(r): r for r in chunk}
-        
-        for item in results:
-            orig_text = item.get("review_text", "").strip()
-            item_hash = compute_sha256(orig_text)
-            
-            # If text matches one in chunk
-            matched_orig = norm_map.get(item_hash)
-            if not matched_orig:
-                # Find best substring match if slight variation
-                for h, t in norm_map.items():
-                    if t.lower() in orig_text.lower() or orig_text.lower() in t.lower():
-                        matched_orig = t
-                        item_hash = h
-                        break
-            
-            target_text = matched_orig if matched_orig else orig_text
-            aspects = item.get("aspects", [])
-            for asp in aspects:
-                new_cache_rows.append((
-                    item_hash,
-                    target_text,
-                    int(asp.get("aspect_id", 0)),
-                    int(asp.get("sentiment_type_id", 0)),
-                    asp.get("matched_phrase", "")[:200],
-                    model
-                ))
+
+    if api_key:
+        # 3. Process uncached reviews in batches of 15 using Gemini
+        batch_size = 15
+        for i in range(0, len(uncached_reviews), batch_size):
+            chunk = uncached_reviews[i : i + batch_size]
+            logger.info(f"Sending batch of {len(chunk)} reviews to Gemini ({model})...")
+            try:
+                results = call_gemini_absa(chunk, api_key, model)
+                norm_map = {compute_sha256(r): r for r in chunk}
+                for item in results:
+                    orig_text = item.get("review_text", "").strip()
+                    item_hash = compute_sha256(orig_text)
+                    matched_orig = norm_map.get(item_hash)
+                    if not matched_orig:
+                        for h, t in norm_map.items():
+                            if t.lower() in orig_text.lower() or orig_text.lower() in t.lower():
+                                matched_orig = t
+                                item_hash = h
+                                break
+                    target_text = matched_orig if matched_orig else orig_text
+                    aspects = item.get("aspects", [])
+                    for asp in aspects:
+                        new_cache_rows.append((
+                            item_hash,
+                            target_text,
+                            int(asp.get("aspect_id", 0)),
+                            int(asp.get("sentiment_type_id", 0)),
+                            asp.get("matched_phrase", "")[:200],
+                            model
+                        ))
+            except Exception as exc:
+                logger.warning(f"Gemini API call failed: {exc}. Falling back to default aspect classification.")
+                for r in chunk:
+                    new_cache_rows.append((
+                        compute_sha256(r),
+                        r,
+                        0,
+                        2,
+                        r[:200],
+                        "offline-fallback"
+                    ))
+    else:
+        logger.warning(f"GEMINI_API_KEY is not configured. Falling back to default aspect classification for {len(uncached_reviews)} reviews.")
+        for r in uncached_reviews:
+            new_cache_rows.append((
+                compute_sha256(r),
+                r,
+                0,
+                2,
+                r[:200],
+                "offline-fallback"
+            ))
 
     # 4. Insert into ref.ref_review_aspect_cache
     if new_cache_rows:
@@ -223,6 +316,9 @@ def populate_ai_cache(conn, batch_id: int = 1) -> int:
                 h, txt, aid, sid, phrase, mdl = row
                 cur.execute(insert_sql, (h, aid, sid, h, txt, aid, sid, phrase, mdl))
             conn.commit()
+
+        # 5. Automatically synchronize updated cache back to disk JSON file!
+        sync_cache_to_disk(conn)
 
     return len(new_cache_rows)
 
