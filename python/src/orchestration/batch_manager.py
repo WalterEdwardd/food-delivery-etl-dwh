@@ -300,4 +300,71 @@ def log_etl_error(
         return None
     finally:
         if connection:
-            connection.close()
+            connection.close()
+
+
+def log_etl_warning(
+    batch_id: int,
+    step_name: str,
+    entity_name: str,
+    entity_id: str,
+    warning_type: str,
+    warning_message: str,
+    table_name: str | None = None,
+    order_id: str | None = None,
+) -> int | None:
+    """
+    Log an anomaly/warning entry into control.etl_warning.
+    Returns the generated warning_id or None if logging failed.
+    """
+    logger.warning(
+        "Logging ETL warning | batch_id=%s | step=%s | entity=%s | id=%s | type=%s | msg=%s",
+        batch_id,
+        step_name,
+        entity_name,
+        entity_id,
+        warning_type,
+        warning_message,
+    )
+    connection = None
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(
+            """
+            INSERT INTO control.etl_warning
+            (
+                batch_id,
+                step_name,
+                table_name,
+                order_id,
+                entity_name,
+                entity_id,
+                warning_type,
+                warning_message,
+                warning_timestamp
+            )
+            OUTPUT INSERTED.warning_id
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, SYSUTCDATETIME());
+            """,
+            batch_id,
+            step_name,
+            table_name,
+            order_id,
+            entity_name,
+            str(entity_id),
+            warning_type,
+            warning_message[:4000] if warning_message else "Unknown warning",
+        )
+        warning_id = cursor.fetchone()[0]
+        connection.commit()
+        return warning_id
+    except Exception:
+        if connection:
+            connection.rollback()
+        logger.exception("Failed to write entry to control.etl_warning | batch_id=%s", batch_id)
+        return None
+    finally:
+        if connection:
+            connection.close()
+
