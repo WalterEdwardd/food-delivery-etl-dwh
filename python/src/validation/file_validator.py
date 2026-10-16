@@ -109,7 +109,8 @@ def validate_csv_readability(
         pd.read_csv(
             file_path,
             nrows=0,
-            )
+            encoding="utf-8-sig",
+        )
 
     except Exception as exc:
         return [
@@ -128,7 +129,8 @@ def validate_has_data(
     try:
         sample = pd.read_csv(
             file_path,
-            nrows = 1,
+            nrows=1,
+            encoding="utf-8-sig",
         )
 
         if sample.empty:
@@ -157,6 +159,7 @@ def validate_columns(
         actual_columns = pd.read_csv(
             file_path,
             nrows=0,
+            encoding="utf-8-sig",
         ).columns.to_list()
 
     except Exception as exc:
