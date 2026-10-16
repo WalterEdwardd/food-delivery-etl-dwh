@@ -78,7 +78,11 @@ Write-Host "Target Package: $pkgPath"
 Set-Location -Path $ssisDir
 & "dtexec.exe" /File $pkgPath
 if ($LASTEXITCODE -ne 0) {
-    throw "SSIS Pipeline Orchestrator failed with exit code $LASTEXITCODE"
+    Write-Warning "SSIS dtexec returned exit code $LASTEXITCODE (license constraint). Executing native T-SQL fallback: ods.usp_load_raw_to_ods_batch"
+    & "sqlcmd.exe" -S "localhost\SQLEXPRESS" -d "FoodDeliveryDW" -E -b -Q "EXEC ods.usp_load_raw_to_ods_batch;"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Both SSIS and T-SQL fallback failed with exit code $LASTEXITCODE"
+    }
 }
 ';
 
@@ -182,6 +186,7 @@ DECLARE @current_batch_id BIGINT;
 SELECT TOP 1 @current_batch_id = batch_id
 FROM control.etl_batch
 WHERE status IN (''RUNNING'', ''SUCCESS'')
+  AND ISNULL(total_records, 0) > 0
 ORDER BY batch_id DESC;
 
 IF @current_batch_id IS NULL OR @current_batch_id <= 0
@@ -228,6 +233,7 @@ DECLARE @current_batch_id BIGINT;
 SELECT TOP 1 @current_batch_id = batch_id
 FROM control.etl_batch
 WHERE status IN (''RUNNING'', ''SUCCESS'')
+  AND ISNULL(total_records, 0) > 0
 ORDER BY batch_id DESC;
 
 IF @current_batch_id IS NULL OR @current_batch_id <= 0
@@ -326,6 +332,13 @@ END;
 /* ==============================================================================
    3. CONFIGURE RECURRING DAILY SCHEDULE (02:00 AM)
 ============================================================================== */
+DECLARE @del_daily_sched_id INT;
+WHILE EXISTS (SELECT 1 FROM msdb.dbo.sysschedules WHERE name = N'Daily_02_AM_Schedule')
+BEGIN
+    SELECT TOP 1 @del_daily_sched_id = schedule_id FROM msdb.dbo.sysschedules WHERE name = N'Daily_02_AM_Schedule';
+    EXEC msdb.dbo.sp_delete_schedule @schedule_id = @del_daily_sched_id, @force_delete = 1;
+END;
+
 DECLARE @schedule_id INT;
 
 EXEC msdb.dbo.sp_add_schedule
@@ -337,8 +350,8 @@ EXEC msdb.dbo.sp_add_schedule
     @schedule_id         = @schedule_id OUTPUT;
 
 EXEC msdb.dbo.sp_attach_schedule
-    @job_name     = @job_name,
-    @schedule_name = N'Daily_02_AM_Schedule';
+    @job_name      = @job_name,
+    @schedule_id   = @schedule_id;
 
 -- Set server
 EXEC msdb.dbo.sp_add_jobserver
@@ -366,6 +379,7 @@ IF @weekly_job_id IS NOT NULL
 BEGIN
     PRINT 'Existing weekly job found. Dropping job: ' + @weekly_job_name;
     EXEC msdb.dbo.sp_delete_job @job_id = @weekly_job_id, @delete_unused_schedule = 1;
+    SET @weekly_job_id = NULL;
 END;
 
 EXEC msdb.dbo.sp_add_job
@@ -470,6 +484,13 @@ END;
     @database_name   = N'FoodDeliveryDW';
 
 -- Configure Weekly Sunday Schedule (03:00 AM)
+DECLARE @del_weekly_sched_id INT;
+WHILE EXISTS (SELECT 1 FROM msdb.dbo.sysschedules WHERE name = N'Weekly_Sunday_03_AM_Schedule')
+BEGIN
+    SELECT TOP 1 @del_weekly_sched_id = schedule_id FROM msdb.dbo.sysschedules WHERE name = N'Weekly_Sunday_03_AM_Schedule';
+    EXEC msdb.dbo.sp_delete_schedule @schedule_id = @del_weekly_sched_id, @force_delete = 1;
+END;
+
 DECLARE @weekly_schedule_id INT;
 
 EXEC msdb.dbo.sp_add_schedule
@@ -483,7 +504,7 @@ EXEC msdb.dbo.sp_add_schedule
 
 EXEC msdb.dbo.sp_attach_schedule
     @job_name      = @weekly_job_name,
-    @schedule_name = N'Weekly_Sunday_03_AM_Schedule';
+    @schedule_id   = @weekly_schedule_id;
 
 EXEC msdb.dbo.sp_add_jobserver
     @job_name     = @weekly_job_name,
