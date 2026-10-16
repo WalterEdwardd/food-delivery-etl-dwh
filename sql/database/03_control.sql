@@ -456,7 +456,7 @@ ORDER BY
 GO
 
 
--- 4.8 VERIFY CONTROL TABLES HAVE NO DATA
+-- 4.8 VERIFY CONTROL TABLES ROW COUNT
 
 SELECT
     'etl_batch' AS table_name,
@@ -475,7 +475,21 @@ UNION ALL
 SELECT
     'etl_error',
     COUNT(*)
-FROM control.etl_error;
+FROM control.etl_error
+
+UNION ALL
+
+SELECT
+    'dim_change_log',
+    COUNT(*)
+FROM control.dim_change_log
+
+UNION ALL
+
+SELECT
+    'etl_warning',
+    COUNT(*)
+FROM control.etl_warning;
 GO
 
 
@@ -493,7 +507,8 @@ WHERE s.name = N'control'
       N'etl_batch',
       N'etl_log',
       N'etl_error',
-      N'dim_change_log'
+      N'dim_change_log',
+      N'etl_warning'
   )
 ORDER BY
     t.name;
@@ -543,9 +558,9 @@ GO
 SELECT
     'CONTROL TABLE COUNT' AS validation_name,
     COUNT(*) AS actual_count,
-    4 AS expected_count,
+    5 AS expected_count,
     CASE
-        WHEN COUNT(*) = 4 THEN 'PASS'
+        WHEN COUNT(*) = 5 THEN 'PASS'
         ELSE 'FAIL'
     END AS validation_status
 FROM sys.tables AS t
@@ -557,6 +572,7 @@ WHERE s.name = N'control'
       N'etl_batch',
       N'etl_log',
       N'etl_error',
-      N'dim_change_log'
+      N'dim_change_log',
+      N'etl_warning'
   );
 GO
