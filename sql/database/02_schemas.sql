@@ -65,6 +65,16 @@ BEGIN
 END;
 GO
 
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.schemas
+    WHERE name = N'bi'
+)
+BEGIN
+    EXEC(N'CREATE SCHEMA bi');
+END;
+GO
+
 -- Clean up deprecated mart schema if it exists
 IF EXISTS (
     SELECT 1
@@ -121,6 +131,7 @@ WHERE name IN
     N'raw',
     N'ods',
     N'dwh',
+    N'bi',
     N'control',
 	N'ref',
     N'temp'
@@ -147,6 +158,7 @@ WHERE s.name IN
     N'raw',
     N'ods',
     N'dwh',
+    N'bi',
     N'control',
 	N'ref',
     N'temp'
