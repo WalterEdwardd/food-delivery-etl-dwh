@@ -1213,6 +1213,12 @@ GO
 
 /* ==============================================================================
    9. ORCHESTRATION: BATCH RAW TO ODS UPSERT PIPELINE
+   PURPOSE: Production Native T-SQL execution engine for RAW -> ODS transformation.
+            - Cleanses, standardizes, and validates records across all 8 entities.
+            - Logs data quality and quarantine errors to control.etl_error.
+            - Merges clean records into ODS via set-based UPSERT.
+            - Used as the primary runtime orchestrator by Python (run_monthly_pipeline.py),
+              providing a high-performance alternative to SSIS (.dtsx).
 ============================================================================== */
 
 CREATE OR ALTER PROCEDURE ods.usp_load_raw_to_ods_batch
@@ -1246,9 +1252,9 @@ BEGIN
     )
     SELECT 
         LTRIM(RTRIM(customer_id)),
-        TRY_CONVERT(DATE, LTRIM(RTRIM(signup_date)), 105),
+        COALESCE(TRY_CAST(signup_date AS DATE), TRY_CONVERT(DATE, LTRIM(RTRIM(signup_date)), 105)),
         LTRIM(RTRIM(city)),
-        LTRIM(RTRIM(acquisition_channel)),
+        NULLIF(LTRIM(RTRIM(acquisition_channel)), ''),
         batch_id,
         source_file_name,
         source_row_number,
@@ -1270,12 +1276,12 @@ BEGIN
     )
     SELECT 
         LTRIM(RTRIM(restaurant_id)),
-        TRY_CONVERT(DATE, LTRIM(RTRIM(onboard_date)), 101),
+        COALESCE(TRY_CAST(onboard_date AS DATE), TRY_CONVERT(DATE, LTRIM(RTRIM(onboard_date)), 101)),
         LTRIM(RTRIM(restaurant_name)),
         LTRIM(RTRIM(city)),
         LTRIM(RTRIM(cuisine_type)),
         LTRIM(RTRIM(partner_type)),
-        LTRIM(RTRIM(avg_prep_time_min)),
+        NULLIF(LTRIM(RTRIM(avg_prep_time_min)), ''),
         CASE WHEN UPPER(LTRIM(RTRIM(is_active))) IN ('Y', '1', 'TRUE') THEN 1 ELSE 0 END,
         batch_id,
         source_file_name,
@@ -1298,12 +1304,12 @@ BEGIN
     )
     SELECT 
         LTRIM(RTRIM(delivery_partner_id)),
-        TRY_CONVERT(DATE, LTRIM(RTRIM(onboard_date)), 101),
+        COALESCE(TRY_CAST(onboard_date AS DATE), TRY_CONVERT(DATE, LTRIM(RTRIM(onboard_date)), 101)),
         LTRIM(RTRIM(partner_name)),
         LTRIM(RTRIM(city)),
-        LTRIM(RTRIM(vehicle_type)),
-        LTRIM(RTRIM(employment_type)),
-        TRY_CAST(LTRIM(RTRIM(avg_rating)) AS DECIMAL(3,2)),
+        NULLIF(LTRIM(RTRIM(vehicle_type)), ''),
+        NULLIF(LTRIM(RTRIM(employment_type)), ''),
+        TRY_CAST(LTRIM(RTRIM(avg_rating)) AS DECIMAL(5,2)),
         CASE WHEN UPPER(LTRIM(RTRIM(is_active))) IN ('Y', '1', 'TRUE') THEN 1 ELSE 0 END,
         batch_id,
         source_file_name,
@@ -1357,12 +1363,12 @@ BEGIN
         LTRIM(RTRIM(o.order_id)),
         LTRIM(RTRIM(o.customer_id)),
         LTRIM(RTRIM(o.restaurant_id)),
-        LTRIM(RTRIM(o.delivery_partner_id)),
+        NULLIF(LTRIM(RTRIM(o.delivery_partner_id)), ''),
         TRY_CAST(o.order_timestamp AS DATETIME2),
-        TRY_CAST(o.subtotal_amount AS DECIMAL(10,2)),
-        TRY_CAST(o.discount_amount AS DECIMAL(10,2)),
-        TRY_CAST(o.delivery_fee AS DECIMAL(10,2)),
-        TRY_CAST(o.total_amount AS DECIMAL(10,2)),
+        TRY_CAST(o.subtotal_amount AS DECIMAL(18,2)),
+        TRY_CAST(o.discount_amount AS DECIMAL(18,2)),
+        TRY_CAST(o.delivery_fee AS DECIMAL(18,2)),
+        TRY_CAST(o.total_amount AS DECIMAL(18,2)),
         CASE WHEN UPPER(LTRIM(RTRIM(o.is_cod))) IN ('Y', '1', 'TRUE') THEN 1 ELSE 0 END,
         CASE WHEN UPPER(LTRIM(RTRIM(o.is_cancelled))) IN ('Y', '1', 'TRUE') THEN 1 ELSE 0 END,
         o.batch_id,
@@ -1412,9 +1418,9 @@ BEGIN
         LTRIM(RTRIM(oi.order_id)),
         LTRIM(RTRIM(oi.menu_item_id)),
         TRY_CAST(oi.quantity AS INT),
-        TRY_CAST(oi.unit_price AS DECIMAL(10,2)),
-        TRY_CAST(oi.item_discount AS DECIMAL(10,2)),
-        TRY_CAST(oi.line_total AS DECIMAL(10,2)),
+        TRY_CAST(oi.unit_price AS DECIMAL(18,2)),
+        TRY_CAST(oi.item_discount AS DECIMAL(18,2)),
+        TRY_CAST(oi.line_total AS DECIMAL(18,2)),
         oi.batch_id,
         oi.source_file_name,
         oi.source_row_number,
@@ -1475,7 +1481,7 @@ BEGIN
       AND EXISTS (
           SELECT 1 FROM ods.ods_order o WHERE o.order_id = dp.order_id
       )
-      AND (dp.actual_delivery_time_min IS NULL OR LTRIM(RTRIM(dp.actual_delivery_time_min)) = '' OR TRY_CAST(dp.actual_delivery_time_min AS INT) IS NULL);
+      AND (dp.actual_delivery_time_min IS NULL OR LTRIM(RTRIM(dp.actual_delivery_time_min)) = '' OR TRY_CAST(TRY_CAST(dp.actual_delivery_time_min AS FLOAT) AS INT) IS NULL);
 
     -- Log format errors for order_item
     INSERT INTO control.etl_error (
@@ -1497,7 +1503,7 @@ BEGIN
       AND EXISTS (
           SELECT 1 FROM ods.ods_order o WHERE o.order_id = dp.order_id
       )
-      AND (dp.order_item IS NULL OR LTRIM(RTRIM(dp.order_item)) = '' OR TRY_CAST(dp.order_item AS INT) IS NULL);
+      AND (dp.order_item IS NULL OR LTRIM(RTRIM(dp.order_item)) = '' OR TRY_CAST(TRY_CAST(dp.order_item AS FLOAT) AS INT) IS NULL);
 
     -- Log format errors for delivery_item
     INSERT INTO control.etl_error (
@@ -1519,7 +1525,7 @@ BEGIN
       AND EXISTS (
           SELECT 1 FROM ods.ods_order o WHERE o.order_id = dp.order_id
       )
-      AND (dp.delivery_item IS NULL OR LTRIM(RTRIM(dp.delivery_item)) = '' OR TRY_CAST(dp.delivery_item AS INT) IS NULL);
+      AND (dp.delivery_item IS NULL OR LTRIM(RTRIM(dp.delivery_item)) = '' OR TRY_CAST(TRY_CAST(dp.delivery_item AS FLOAT) AS INT) IS NULL);
 
     -- Insert clean delivery performance to temp
     INSERT INTO temp.ods_delivery_performance (
@@ -1530,13 +1536,13 @@ BEGIN
     SELECT 
         LTRIM(RTRIM(dp.delivery_id)),
         LTRIM(RTRIM(dp.order_id)),
-        TRY_CAST(dp.prep_time AS INT),
-        TRY_CAST(dp.rider_wait_time AS INT),
-        TRY_CAST(dp.travel_time AS INT),
-        TRY_CAST(dp.order_item AS INT),
-        TRY_CAST(dp.expected_delivery_time_min AS INT),
-        TRY_CAST(dp.actual_delivery_time_min AS INT),
-        TRY_CAST(dp.delivery_item AS INT),
+        TRY_CAST(TRY_CAST(dp.prep_time AS FLOAT) AS INT),
+        TRY_CAST(TRY_CAST(dp.rider_wait_time AS FLOAT) AS INT),
+        TRY_CAST(TRY_CAST(dp.travel_time AS FLOAT) AS INT),
+        TRY_CAST(TRY_CAST(dp.order_item AS FLOAT) AS INT),
+        TRY_CAST(TRY_CAST(dp.expected_delivery_time_min AS FLOAT) AS INT),
+        TRY_CAST(TRY_CAST(dp.actual_delivery_time_min AS FLOAT) AS INT),
+        TRY_CAST(TRY_CAST(dp.delivery_item AS FLOAT) AS INT),
         TRY_CAST(dp.distance_km AS DECIMAL(10,2)),
         dp.batch_id,
         dp.source_file_name,
@@ -1547,9 +1553,9 @@ BEGIN
       AND EXISTS (
           SELECT 1 FROM ods.ods_order o WHERE o.order_id = dp.order_id
       )
-      AND (dp.actual_delivery_time_min IS NOT NULL AND LTRIM(RTRIM(dp.actual_delivery_time_min)) <> '' AND TRY_CAST(dp.actual_delivery_time_min AS INT) IS NOT NULL)
-      AND (dp.order_item IS NOT NULL AND LTRIM(RTRIM(dp.order_item)) <> '' AND TRY_CAST(dp.order_item AS INT) IS NOT NULL)
-      AND (dp.delivery_item IS NOT NULL AND LTRIM(RTRIM(dp.delivery_item)) <> '' AND TRY_CAST(dp.delivery_item AS INT) IS NOT NULL);
+      AND (dp.actual_delivery_time_min IS NOT NULL AND LTRIM(RTRIM(dp.actual_delivery_time_min)) <> '' AND TRY_CAST(TRY_CAST(dp.actual_delivery_time_min AS FLOAT) AS INT) IS NOT NULL)
+      AND (dp.order_item IS NOT NULL AND LTRIM(RTRIM(dp.order_item)) <> '' AND TRY_CAST(TRY_CAST(dp.order_item AS FLOAT) AS INT) IS NOT NULL)
+      AND (dp.delivery_item IS NOT NULL AND LTRIM(RTRIM(dp.delivery_item)) <> '' AND TRY_CAST(TRY_CAST(dp.delivery_item AS FLOAT) AS INT) IS NOT NULL);
 
     EXEC ods.usp_upsert_ods_delivery_performance @batch_id = @batch_id;
     EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_DELIVERY_PERFORMANCE', @target_table = 'ods_delivery_performance', @raw_table = 'raw_delivery_performance', @batch_id = @batch_id;
@@ -1570,9 +1576,9 @@ BEGIN
         LTRIM(RTRIM(customer_id)),
         LTRIM(RTRIM(restaurant_id)),
         TRY_CAST(rating AS DECIMAL(3,2)),
-        LTRIM(RTRIM(review_text)),
+        NULLIF(LTRIM(RTRIM(review_text)), ''),
         TRY_CAST(review_timestamp AS DATETIME2),
-        TRY_CAST(sentiment_score AS DECIMAL(5,2)),
+        TRY_CAST(sentiment_score AS DECIMAL(5,4)),
         batch_id,
         source_file_name,
         source_row_number,
