@@ -6,6 +6,7 @@ and executes all verification and audit suites.
 
 import os
 import sys
+import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -58,30 +59,32 @@ def step_cleanup_filesystem():
         folder = DATA_DIR / folder_name
         if folder.exists():
             for item in folder.iterdir():
-                if item.is_file() and item.name != ".gitkeep":
+                if item.name == ".gitkeep":
+                    continue
+                if item.is_file():
                     item.unlink()
                     log(f"Deleted {folder_name}/{item.name}")
+                elif item.is_dir():
+                    shutil.rmtree(item)
+                    log(f"Deleted directory {folder_name}/{item.name}/")
 
-    # Ensure all 8 incoming files exist
-    expected_files = [
-        "customer_20250930.csv",
-        "delivery_partner_20251030.csv",
-        "delivery_performance_20251030.csv",
-        "menu_item_20251030.csv",
-        "order_20250930.csv",
-        "order_item_20250930.csv",
-        "rating_20250930.csv",
-        "restaurant_20251030.csv",
-    ]
+    # Ensure incoming files exist
     incoming_dir = DATA_DIR / "incoming"
-    missing = [f for f in expected_files if not (incoming_dir / f).exists()]
-    if missing:
-        log(f"Restoring missing incoming files from git: {missing}")
-        run_cmd(["git", "checkout", "--", "data/incoming"])
-
-    for f in expected_files:
-        p = incoming_dir / f
-        log(f"Verified incoming file: {f} ({p.stat().st_size:,} bytes)")
+    incoming_csvs = list(incoming_dir.glob("*.csv"))
+    if not incoming_csvs:
+        init_folder = incoming_dir / "2026_01"
+        if init_folder.exists() and list(init_folder.glob("*.csv")):
+            log(f"Staging initial batch CSVs from {init_folder.name} into incoming/...")
+            for f in init_folder.glob("*.csv"):
+                dest = incoming_dir / f.name
+                shutil.copy2(str(f), str(dest))
+                log(f"  -> Staged {f.name} ({f.stat().st_size:,} bytes)")
+        else:
+            log("Restoring missing incoming files from git...")
+            run_cmd(["git", "checkout", "--", "data/incoming"])
+    else:
+        for f in incoming_csvs:
+            log(f"Verified incoming file: {f.name} ({f.stat().st_size:,} bytes)")
 
 
 def step_reset_database():
@@ -110,8 +113,9 @@ def step_reset_database():
         "08_temp_ods_tables.sql",
         "09_dwh.sql",
         "10_bi_views.sql",
+        "11_control_monitoring_views.sql",
     ]
-    log("--- Executing DDL Scripts (01 to 10) ---")
+    log("--- Executing DDL Scripts (01 to 11) ---")
     for script in ddl_scripts:
         script_path = SQL_DIR / "database" / script
         log(f"Applying DDL: {script}")
@@ -203,7 +207,7 @@ def step_verify_database_summary():
 
     SELECT 'Serving Views Check' AS [Check], name AS [View Name]
     FROM sys.views
-    WHERE schema_id = SCHEMA_ID('dwh');
+    WHERE schema_id = SCHEMA_ID('bi');
 
     SELECT batch_id, pipeline_name, status, total_records, success_records, error_records, start_time, end_time
     FROM control.etl_batch
@@ -214,8 +218,15 @@ def step_verify_database_summary():
 
 def step_cleanup_and_restore_sources():
     log("=== STEP 7: RESTORING INCOMING SOURCE CSVs ===")
-    run_cmd(["git", "checkout", "--", "data/incoming"])
-    log("Incoming CSV files successfully restored for future runs.")
+    init_folder = DATA_DIR / "incoming" / "2026_01"
+    incoming_dir = DATA_DIR / "incoming"
+    if init_folder.exists() and list(init_folder.glob("*.csv")):
+        for f in init_folder.glob("*.csv"):
+            shutil.copy2(str(f), str(incoming_dir / f.name))
+        log("Incoming CSV files successfully restored from 2026_01 for future runs.")
+    else:
+        run_cmd(["git", "checkout", "--", "data/incoming"])
+        log("Incoming CSV files successfully restored from git.")
 
 
 def step_run_pytest():
