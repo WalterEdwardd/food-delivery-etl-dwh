@@ -271,8 +271,8 @@ VALUES ('Fact Surrogate Keys Nullability', 'fact_order & fact_order_item', @batc
 
 -- 9.1 Customer Reconciliation
 DECLARE @ods_cust BIGINT, @dwh_cust BIGINT;
-SELECT @ods_cust = COUNT(*) FROM ods.ods_customer WHERE batch_id = @batch_id;
-SELECT @dwh_cust = COUNT(DISTINCT customer_id) FROM dwh.dim_customer WHERE customer_key <> -1;
+SELECT @ods_cust = COUNT(*) FROM ods.ods_customer WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+SELECT @dwh_cust = COUNT(DISTINCT customer_id) FROM dwh.dim_customer WHERE customer_key <> -1 AND (@batch_id IS NULL OR batch_id = @batch_id);
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Customer Reconciliation', 'ods_customer -> dim_customer', @batch_id,
@@ -283,8 +283,8 @@ VALUES ('Customer Reconciliation', 'ods_customer -> dim_customer', @batch_id,
 
 -- 9.2 Delivery Partner Reconciliation
 DECLARE @ods_dp BIGINT, @dwh_dp BIGINT;
-SELECT @ods_dp = COUNT(*) FROM ods.ods_delivery_partner WHERE batch_id = @batch_id;
-SELECT @dwh_dp = COUNT(DISTINCT delivery_partner_id) FROM dwh.dim_delivery_partner WHERE delivery_partner_key <> -1;
+SELECT @ods_dp = COUNT(*) FROM ods.ods_delivery_partner WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+SELECT @dwh_dp = COUNT(DISTINCT delivery_partner_id) FROM dwh.dim_delivery_partner WHERE delivery_partner_key <> -1 AND (@batch_id IS NULL OR batch_id = @batch_id);
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Delivery Partner Reconciliation', 'ods_delivery_partner -> dim_delivery_partner', @batch_id,
@@ -295,8 +295,8 @@ VALUES ('Delivery Partner Reconciliation', 'ods_delivery_partner -> dim_delivery
 
 -- 9.3 Restaurant Reconciliation
 DECLARE @ods_rest BIGINT, @dwh_rest BIGINT;
-SELECT @ods_rest = COUNT(*) FROM ods.ods_restaurant WHERE batch_id = @batch_id;
-SELECT @dwh_rest = COUNT(DISTINCT restaurant_id) FROM dwh.dim_restaurant WHERE restaurant_key <> -1;
+SELECT @ods_rest = COUNT(*) FROM ods.ods_restaurant WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+SELECT @dwh_rest = COUNT(DISTINCT restaurant_id) FROM dwh.dim_restaurant WHERE restaurant_key <> -1 AND (@batch_id IS NULL OR batch_id = @batch_id);
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Restaurant Reconciliation', 'ods_restaurant -> dim_restaurant', @batch_id,
@@ -307,8 +307,8 @@ VALUES ('Restaurant Reconciliation', 'ods_restaurant -> dim_restaurant', @batch_
 
 -- 9.4 Menu Item Reconciliation
 DECLARE @ods_item BIGINT, @dwh_item BIGINT;
-SELECT @ods_item = COUNT(*) FROM ods.ods_menu_item WHERE batch_id = @batch_id;
-SELECT @dwh_item = COUNT(*) FROM dwh.dim_menu_item WHERE batch_id = @batch_id AND menu_item_key <> -1;
+SELECT @ods_item = COUNT(*) FROM ods.ods_menu_item WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+SELECT @dwh_item = COUNT(*) FROM dwh.dim_menu_item WHERE menu_item_key <> -1 AND (@batch_id IS NULL OR batch_id = @batch_id);
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Menu Item Reconciliation', 'ods_menu_item -> dim_menu_item', @batch_id,
@@ -319,8 +319,8 @@ VALUES ('Menu Item Reconciliation', 'ods_menu_item -> dim_menu_item', @batch_id,
 
 -- 9.5 Fact Order Reconciliation
 DECLARE @ods_ord BIGINT, @dwh_ord BIGINT;
-SELECT @ods_ord = COUNT(*) FROM ods.ods_order WHERE batch_id = @batch_id;
-SELECT @dwh_ord = COUNT(*) FROM dwh.fact_order WHERE batch_id = @batch_id;
+SELECT @ods_ord = COUNT(*) FROM ods.ods_order WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+SELECT @dwh_ord = COUNT(*) FROM dwh.fact_order WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Fact Order Reconciliation', 'ods_order -> fact_order', @batch_id,
@@ -331,8 +331,8 @@ VALUES ('Fact Order Reconciliation', 'ods_order -> fact_order', @batch_id,
 
 -- 9.6 Fact Order Item Reconciliation
 DECLARE @ods_oi BIGINT, @dwh_oi BIGINT;
-SELECT @ods_oi = COUNT(*) FROM ods.ods_order_item WHERE batch_id = @batch_id;
-SELECT @dwh_oi = COUNT(*) FROM dwh.fact_order_item WHERE batch_id = @batch_id;
+SELECT @ods_oi = COUNT(*) FROM ods.ods_order_item WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+SELECT @dwh_oi = COUNT(*) FROM dwh.fact_order_item WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Fact Order Item Reconciliation', 'ods_order_item -> fact_order_item', @batch_id,
@@ -343,8 +343,8 @@ VALUES ('Fact Order Item Reconciliation', 'ods_order_item -> fact_order_item', @
 
 -- 9.7 Fact Delivery Performance Reconciliation
 DECLARE @ods_deliv BIGINT, @dwh_deliv BIGINT;
-SELECT @ods_deliv = COUNT(*) FROM ods.ods_delivery_performance WHERE batch_id = @batch_id;
-SELECT @dwh_deliv = COUNT(*) FROM dwh.fact_delivery_performance WHERE batch_id = @batch_id;
+SELECT @ods_deliv = COUNT(*) FROM ods.ods_delivery_performance WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+SELECT @dwh_deliv = COUNT(*) FROM dwh.fact_delivery_performance WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Delivery Performance Reconciliation', 'ods_delivery_performance -> fact_delivery_performance', @batch_id,
@@ -373,8 +373,8 @@ VALUES ('Cross-Table Item Quantity Check', 'delivery_performance.order_item vs s
 
 -- 9.9 Fact Rating Reconciliation
 DECLARE @ods_rat BIGINT, @dwh_rat BIGINT;
-SELECT @ods_rat = COUNT(*) FROM ods.ods_rating WHERE batch_id = @batch_id;
-SELECT @dwh_rat = COUNT(*) FROM dwh.fact_rating WHERE batch_id = @batch_id;
+SELECT @ods_rat = COUNT(*) FROM ods.ods_rating WHERE (@batch_id IS NULL OR batch_id = @batch_id);
+SELECT @dwh_rat = COUNT(*) FROM dwh.fact_rating WHERE (@batch_id IS NULL OR batch_id = @batch_id);
 
 INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
 VALUES ('Fact Rating Reconciliation', 'ods_rating -> fact_rating', @batch_id,
@@ -540,6 +540,21 @@ VALUES ('BI Serving Views Completeness', 'bi.* (15 BI Semantic Views)', @batch_i
         CONCAT(15 - @missing_bi_views, ' views present'),
         CASE WHEN @missing_bi_views = 0 THEN 'PASS' ELSE 'FAIL' END,
         CASE WHEN @missing_bi_views = 0 THEN NULL ELSE 'One or more BI Serving Layer views missing in bi schema' END);
+
+
+-- 9.19 SCD Type 2 Timeline Integrity Check (valid_from <= valid_to)
+DECLARE @invalid_timeline_records INT = 0;
+SELECT @invalid_timeline_records = 
+    (SELECT COUNT(*) FROM dwh.dim_customer WHERE valid_from > valid_to) +
+    (SELECT COUNT(*) FROM dwh.dim_restaurant WHERE valid_from > valid_to) +
+    (SELECT COUNT(*) FROM dwh.dim_delivery_partner WHERE valid_from > valid_to);
+
+INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status, error_message)
+VALUES ('SCD Type 2 Timeline Integrity', 'dim_customer, dim_restaurant, dim_delivery_partner', @batch_id,
+        '0 records with valid_from > valid_to',
+        CONCAT(@invalid_timeline_records, ' invalid records'),
+        CASE WHEN @invalid_timeline_records = 0 THEN 'PASS' ELSE 'FAIL' END,
+        CASE WHEN @invalid_timeline_records = 0 THEN NULL ELSE 'Found records where valid_from > valid_to' END);
 
 
 

@@ -183,11 +183,25 @@ BEGIN
         @raw_cnt = @raw_cnt OUTPUT, @ods_cnt = @ods_cnt OUTPUT, 
         @distinct_err_rows = @distinct_err_rows OUTPUT, @total_err_violations = @total_err_violations OUTPUT;
 
-    -- Mathematical reconciliation: Rejected rows = RAW - ODS
-    SET @rejected_cnt = @raw_cnt - @ods_cnt;
+    -- Determine effective valid rows processed for this batch.
+    -- For master/CDC tables (customer, restaurant, delivery_partner, menu_item), unchanged records keep their 
+    -- prior batch_id in ODS, so COUNT(*) FROM ods.<tbl> WHERE batch_id = @batch_id only reflects inserts/updates.
+    -- We retrieve rows_inserted from control.etl_log which represents the total valid rows processed from RAW staging.
+    DECLARE @log_inserted BIGINT = NULL;
+    SELECT TOP 1 @log_inserted = rows_inserted
+    FROM control.etl_log
+    WHERE batch_id = @batch_id
+      AND step_name = 'LOAD_' + UPPER(@entity)
+    ORDER BY log_id DESC;
 
-    -- Test 4.1: Mathematical Balance (RAW = ODS + Rejected)
-    IF @raw_cnt >= @ods_cnt
+    DECLARE @effective_valid_cnt BIGINT;
+    SET @effective_valid_cnt = COALESCE(@log_inserted, @ods_cnt);
+
+    -- Mathematical reconciliation: Rejected rows = RAW - Effective Valid (ODS/Staging)
+    SET @rejected_cnt = @raw_cnt - @effective_valid_cnt;
+
+    -- Test 4.1: Mathematical Balance (RAW = Valid + Rejected)
+    IF @raw_cnt >= @effective_valid_cnt
     BEGIN
         INSERT INTO #test_results (test_name, entity_name, batch_id, expected_value, actual_value, status)
         VALUES (
@@ -195,7 +209,7 @@ BEGIN
             @entity,
             @batch_id,
             CONCAT('RAW = ', @raw_cnt),
-            CONCAT('ODS = ', @ods_cnt, ' | Rejected = ', @rejected_cnt),
+            CONCAT('Valid = ', @effective_valid_cnt, ' (ODS new/upd = ', @ods_cnt, ') | Rejected = ', @rejected_cnt),
             'PASS'
         );
     END
@@ -207,9 +221,9 @@ BEGIN
             @entity,
             @batch_id,
             CONCAT('RAW = ', @raw_cnt),
-            CONCAT('ODS = ', @ods_cnt, ' | Rejected = ', @rejected_cnt),
+            CONCAT('Valid = ', @effective_valid_cnt, ' (ODS new/upd = ', @ods_cnt, ') | Rejected = ', @rejected_cnt),
             'FAIL',
-            'ODS row count exceeds RAW row count (row duplication detected)'
+            'Valid row count exceeds RAW row count (row duplication detected)'
         );
     END;
 
