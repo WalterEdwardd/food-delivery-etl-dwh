@@ -9,24 +9,31 @@ The project demonstrates a Microsoft Data Platform architecture covering source 
 ## Architecture
 
 ```text
-CSV
- ↓
-Python
- ↓
-STG
- ↓
-RAW
- ↓
-SSIS
- ↓
-ODS
- ↓
-DWH (Single Source of Truth)
- ↓
-BI (Semantic Serving Layer: Schema bi)
- ↓
-POWER BI
+CSV Source Files
+  ↓
+Python Ingestion (STG Loader)
+  ↓
+STG (Staging Layer)
+  ↓
+RAW (Audit & Source-Preserving Layer)
+  ↓
+[ RAW -> ODS ]
+  ├── Production Engine  : Native T-SQL Stored Procedure (ods.usp_load_raw_to_ods_batch)
+  └── Reference Engine   : SSIS Packages (ssis/FoodDeliveryETL/*.dtsx in Visual Studio)
+  ↓
+ODS (Operational Data Store: Cleansed & Typed)
+  ↓
+DWH (Dimensional Warehouse: Star Schema, SCD 1/2, Columnstore Indexes)
+  ↓
+BI (Semantic Serving Layer: Schema bi Views)
+  ↓
+POWER BI (Dashboards & Pipeline Observability)
 ```
+
+> [!NOTE]
+> **Dual-Engine Architecture Note:**
+> * **Production Pipeline (Active):** Uses Python (`run_monthly_pipeline.py`) orchestrating Native T-SQL stored procedures (`ods.usp_load_raw_to_ods_batch` and `dwh.usp_run_ods_to_dwh_pipeline`). This enables 100% automated CLI/CI/CD execution with zero SSIS licensing or runtime dependencies.
+> * **Enterprise Reference Implementation (`ssis/`):** Preserved in the repository as a graphical ETL reference implementation designed in Visual Studio SSDT for Microsoft BI Enterprise environments utilizing SSISDB Catalog and SQL Server Agent.
 
 A dedicated control layer provides batch tracking, logging, error handling, and auditability.
 
@@ -238,3 +245,30 @@ The pipeline is designed with production-oriented principles:
 * [x] Monitoring & Alerting
 * [x] Performance (Columnstore, Partitioning-ready)
 * [x] Scheduling (SQL Agent / Orchestration)
+
+---
+
+## Running the Pipeline
+
+### 1. Run a Monthly Batch (Production CLI)
+Execute end-to-end ingestion, cleansing, and dimensional loading for any monthly dataset:
+```bash
+# Run monthly batch (e.g. 2026_01)
+python run_monthly_pipeline.py --month 2026_01
+
+# Or run sequentially across multiple batches
+python run_monthly_pipeline.py --month 2026_02
+```
+
+### 2. Run Comprehensive Audit & Integration Tests
+Verify data integrity across all layers (RAW, ODS, DWH) after loading:
+```bash
+# Verify RAW Ingestion
+sqlcmd -S localhost\SQLEXPRESS -d FoodDeliveryDW -E -i sql/tests/01_verify_raw_load.sql
+
+# Verify ODS Cleansing & Typing
+sqlcmd -S localhost\SQLEXPRESS -d FoodDeliveryDW -E -i sql/tests/02_verify_ods_load.sql
+
+# Verify DWH Dimensional Modeling & Zero Orphan Facts
+sqlcmd -S localhost\SQLEXPRESS -d FoodDeliveryDW -E -i sql/tests/03_verify_dwh_load.sql
+```
