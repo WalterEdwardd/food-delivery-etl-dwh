@@ -1,6 +1,8 @@
 """Orchestrator script to validate, ingest incoming files to STG, sync to RAW, and manage batch status."""
 
+import re
 import shutil
+import sys
 from pathlib import Path
 
 from src.config.database import get_connection
@@ -18,9 +20,18 @@ from src.validation.file_validator import validate_all_files
 logger = get_logger(__name__)
 
 
+def _extract_month_folder(file_name: str) -> str:
+    """Extract YYYY_MM folder name from filename (e.g. order_20260131.csv -> 2026_01)."""
+    match = re.search(r"(\d{4})(\d{2})\d{2}", file_name)
+    if match:
+        return f"{match.group(1)}_{match.group(2)}"
+    return "general"
+
+
 def _safe_move(src: Path, dst: Path) -> bool:
     """Move *src* to *dst*, logging a warning on failure. Returns True if succeeded."""
     try:
+        dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(src), str(dst))
         return True
     except Exception as exc:  # noqa: BLE001
@@ -95,7 +106,7 @@ def run_staging_ingestion(
 
     if not validation_results:
         logger.info("No files found in incoming directory. Ingestion skipped.")
-        return
+        return True
 
     # 2. Initialize Batch in control.etl_batch
     batch_id = start_batch(
@@ -119,6 +130,7 @@ def run_staging_ingestion(
         # 4. Iterate through files and load data into STG
         for result in validation_results:
             file_path = result.file_path
+            month_folder = _extract_month_folder(file_path.name)
 
             # If file failed schema/structure validation
             if not result.is_valid or not result.source_name:
@@ -137,9 +149,10 @@ def run_staging_ingestion(
                 )
                 _safe_move(
                     src=file_path,
-                    dst=rejected_dir / f"{file_path.stem}_batch{batch_id}{file_path.suffix}",
+                    dst=rejected_dir / month_folder / f"{file_path.stem}_batch{batch_id}{file_path.suffix}",
                 )
                 files_rejected += 1
+                has_critical_failure = True
                 continue
 
             # If file is valid -> Load into STG
@@ -153,7 +166,7 @@ def run_staging_ingestion(
                 files_ok += 1
 
                 # Track file for archival after entire STG -> RAW process completes (2-phase commit)
-                target_archive_path = processed_dir / f"{file_path.stem}_batch{batch_id}{file_path.suffix}"
+                target_archive_path = processed_dir / month_folder / f"{file_path.stem}_batch{batch_id}{file_path.suffix}"
                 files_to_archive.append((file_path, target_archive_path))
 
             except StagingLoadError as exc:
@@ -169,7 +182,7 @@ def run_staging_ingestion(
                 )
                 _safe_move(
                     src=file_path,
-                    dst=rejected_dir / f"{file_path.stem}_batch{batch_id}{file_path.suffix}",
+                    dst=rejected_dir / month_folder / f"{file_path.stem}_batch{batch_id}{file_path.suffix}",
                 )
 
         # 5. If STG load succeeded for valid files -> Trigger STG -> RAW
@@ -214,7 +227,7 @@ def run_staging_ingestion(
         rows_loaded,
     )
 
-    if has_critical_failure:
+    if has_critical_failure or files_rejected > 0:
         fail_batch(
             batch_id=batch_id,
             total_records=rows_loaded,
@@ -222,6 +235,7 @@ def run_staging_ingestion(
             error_records=rows_loaded,
         )
         logger.error("Batch %s finished with errors.", batch_id)
+        return False
     else:
         complete_batch(
             batch_id=batch_id,
@@ -230,12 +244,15 @@ def run_staging_ingestion(
             error_records=0,
         )
         logger.info("Batch %s (CSV -> STG -> RAW) completed successfully.", batch_id)
+        return True
 
 
 if __name__ == "__main__":
     BASE_DIR = Path(__file__).resolve().parents[3]
-    run_staging_ingestion(
+    success = run_staging_ingestion(
         incoming_dir=BASE_DIR / "data" / "incoming",
         processed_dir=BASE_DIR / "data" / "processed",
         rejected_dir=BASE_DIR / "data" / "rejected",
     )
+    if not success:
+        sys.exit(1)

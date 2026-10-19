@@ -9,6 +9,7 @@ import pandas as pd
 import pyodbc
 
 from src.config.database import get_connection
+from src.config.source_schema import SOURCE_SCHEMA
 from src.config.staging_config import STAGING_CONFIG
 from src.utils.logger import get_logger
 
@@ -125,6 +126,7 @@ class StagingLoader:
                         chunk=chunk,
                         expected_columns=source_columns,
                         source_file_name=source_file_name,
+                        source_name=source_name,
                     )
                     is_first_chunk = False
                 chunk_row_count = len(chunk)
@@ -222,15 +224,33 @@ class StagingLoader:
         chunk: pd.DataFrame,
         expected_columns: list[str],
         source_file_name: str,
+        source_name: str | None = None,
     ) -> None:
         """Defensive validation before inserting CSV data."""
-        actual_columns = list(chunk.columns)
-        if set(actual_columns) != set(expected_columns):
+        actual_columns = set(chunk.columns)
+
+        if source_name and source_name in SOURCE_SCHEMA:
+            source_meta = SOURCE_SCHEMA[source_name].get("columns", {})
+            required_columns = [
+                col for col, meta in source_meta.items() if meta.get("required", False)
+            ]
+        else:
+            required_columns = expected_columns
+
+        missing_required = set(required_columns) - actual_columns
+        if missing_required:
             raise ValueError(
-                "CSV columns do not match staging contract. "
-                f"file={source_file_name}, "
-                f"expected={expected_columns}, "
-                f"actual={actual_columns}"
+                "CSV missing required columns: "
+                f"{sorted(missing_required)}. "
+                f"file={source_file_name}"
+            )
+
+        unexpected_columns = actual_columns - set(expected_columns)
+        if unexpected_columns:
+            raise ValueError(
+                "CSV contains unexpected columns: "
+                f"{sorted(unexpected_columns)}. "
+                f"file={source_file_name}"
             )
 
     @staticmethod
@@ -242,6 +262,11 @@ class StagingLoader:
         source_row_numbers: Iterable[int],
     ) -> list[tuple]:
         """Build parameter tuples for pyodbc.executemany()."""
+        # Populate any missing optional columns with None
+        for col in source_columns:
+            if col not in chunk.columns:
+                chunk[col] = None
+
         source_values = chunk[source_columns].itertuples(
             index=False,
             name=None,

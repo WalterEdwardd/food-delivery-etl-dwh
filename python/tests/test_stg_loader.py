@@ -139,3 +139,41 @@ def test_load_file_rollback_on_error(tmp_path):
 
     mock_conn.rollback.assert_called_once()
     mock_conn.close.assert_called_once()
+
+
+def test_load_file_with_missing_optional_column_succeeds(tmp_path):
+    # customer CSV omitting optional 'acquisition_channel'
+    csv_file = tmp_path / "customer_20250930.csv"
+    csv_file.write_text("customer_id,signup_date,city\nC1,2025-01-01,HCM")
+
+    mock_cursor = MagicMock()
+    mock_conn = MagicMock()
+    mock_conn.cursor.return_value = mock_cursor
+
+    loader = StagingLoader(connection_factory=lambda: mock_conn)
+    result = loader.load_file(
+        file_path=csv_file,
+        source_name="customer",
+        batch_id=1,
+    )
+
+    assert result.rows_loaded == 1
+    assert mock_cursor.executemany.called
+    inserted_rows = mock_cursor.executemany.call_args[0][1]
+    assert len(inserted_rows) == 1
+    # Check that acquisition_channel was passed as None
+    assert inserted_rows[0] == ("C1", "2025-01-01", "HCM", None, 1, "customer_20250930.csv", 2)
+
+
+def test_load_file_rejects_missing_required_column(tmp_path):
+    # customer CSV omitting required 'customer_id'
+    csv_file = tmp_path / "customer_20250930.csv"
+    csv_file.write_text("signup_date,city,acquisition_channel\n2025-01-01,HCM,Organic")
+
+    loader = StagingLoader(connection_factory=lambda: MagicMock())
+    with pytest.raises(StagingLoadError, match="CSV missing required columns"):
+        loader.load_file(
+            file_path=csv_file,
+            source_name="customer",
+            batch_id=1,
+        )
