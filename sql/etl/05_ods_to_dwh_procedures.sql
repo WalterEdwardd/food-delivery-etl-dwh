@@ -475,7 +475,14 @@ BEGIN
         FROM ods.ods_customer c
         WHERE (@batch_id = -1 OR c.batch_id = @batch_id);
 
-        DECLARE @effective_date DATE = CAST(SYSUTCDATETIME() AS DATE);
+        DECLARE @effective_date DATE;
+        SELECT @effective_date = MIN(CAST(order_timestamp AS DATE))
+        FROM ods.ods_order
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
+
+        IF @effective_date IS NULL
+            SET @effective_date = CAST(SYSUTCDATETIME() AS DATE);
+
         DECLARE @yesterday DATE = DATEADD(DAY, -1, @effective_date);
 
         -- Step A: Insert Brand New Customers (never seen before in dim_customer)
@@ -489,7 +496,7 @@ BEGIN
         SELECT 
             src.customer_id, src.signup_date, src.city, src.acquisition_channel,
             src.last_active, src.life_cycle_id,
-            '1900-01-01', '9999-12-31', 1,
+            ISNULL(src.signup_date, '1900-01-01'), '9999-12-31', 1,
             src.batch_id, SYSUTCDATETIME()
         FROM #CustomerPrepared src
         WHERE NOT EXISTS (
@@ -743,7 +750,14 @@ BEGIN
            AND rt.rating_type_id <> 0
         WHERE (@batch_id = -1 OR dp.batch_id = @batch_id);
 
-        DECLARE @effective_date DATE = CAST(SYSUTCDATETIME() AS DATE);
+        DECLARE @effective_date DATE;
+        SELECT @effective_date = MIN(CAST(order_timestamp AS DATE))
+        FROM ods.ods_order
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
+
+        IF @effective_date IS NULL
+            SET @effective_date = CAST(SYSUTCDATETIME() AS DATE);
+
         DECLARE @yesterday DATE = DATEADD(DAY, -1, @effective_date);
 
         -- Step A: Insert Brand New Delivery Partners
@@ -761,7 +775,7 @@ BEGIN
             src.vehicle_type, src.employment_type, src.avg_rating, src.is_active,
             src.rating_type_id, src.rating_type,
             src.last_active, src.life_cycle_id,
-            '1900-01-01', '9999-12-31', 1,
+            ISNULL(src.onboard_date, '1900-01-01'), '9999-12-31', 1,
             src.batch_id, SYSUTCDATETIME()
         FROM #DriverPrepared src
         WHERE NOT EXISTS (
@@ -1067,7 +1081,14 @@ BEGIN
         FROM ods.ods_restaurant r
         WHERE (@batch_id = -1 OR r.batch_id = @batch_id);
 
-        DECLARE @effective_date DATE = CAST(SYSUTCDATETIME() AS DATE);
+        DECLARE @effective_date DATE;
+        SELECT @effective_date = MIN(CAST(order_timestamp AS DATE))
+        FROM ods.ods_order
+        WHERE (@batch_id = -1 OR batch_id = @batch_id);
+
+        IF @effective_date IS NULL
+            SET @effective_date = CAST(SYSUTCDATETIME() AS DATE);
+
         DECLARE @yesterday DATE = DATEADD(DAY, -1, @effective_date);
 
         -- Step A: Insert Brand New Restaurants
@@ -1085,7 +1106,7 @@ BEGIN
             src.cuisine_type, src.partner_type, src.avg_prep_time_min, src.is_active,
             src.min_prep_min, src.max_prep_min, src.prep_time_group, src.prep_time_index,
             src.last_active, src.life_cycle_id,
-            '1900-01-01', '9999-12-31', 1,
+            ISNULL(src.onboard_date, '1900-01-01'), '9999-12-31', 1,
             src.batch_id, SYSUTCDATETIME()
         FROM #RestPrepared src
         WHERE NOT EXISTS (
@@ -1358,6 +1379,7 @@ BEGIN
             FROM ods.ods_menu_item m
             LEFT JOIN dwh.dim_restaurant r
                 ON m.restaurant_id = r.restaurant_id
+               AND r.is_current = 1
             WHERE (@batch_id = -1 OR m.batch_id = @batch_id)
         ) AS source
         ON target.menu_item_id = source.menu_item_id
@@ -1513,41 +1535,53 @@ BEGIN
         WHERE (@batch_id = -1 OR batch_id = @batch_id);
 
         -- 6.3 Stage and Transform Source Orders with Incremental Dimensional Lookups
+        IF OBJECT_ID('tempdb..#OrderBase') IS NOT NULL DROP TABLE #OrderBase;
+        SELECT 
+            o.order_id,
+            o.customer_id,
+            o.restaurant_id,
+            NULLIF(LTRIM(RTRIM(o.delivery_partner_id)), '') AS delivery_partner_id,
+            o.order_timestamp,
+            CAST(o.order_timestamp AS DATE) AS order_date,
+            o.subtotal_amount,
+            o.discount_amount,
+            o.delivery_fee,
+            o.total_amount,
+            o.is_cod,
+            o.is_cancelled,
+            o.batch_id
+        INTO #OrderBase
+        FROM ods.ods_order o
+        WHERE (@batch_id = -1 OR o.batch_id = @batch_id);
+
+        CREATE CLUSTERED INDEX CIX_OrderBase_id ON #OrderBase(order_id);
+        CREATE NONCLUSTERED INDEX IX_OrderBase_cust ON #OrderBase(customer_id, order_date);
+        CREATE NONCLUSTERED INDEX IX_OrderBase_rest ON #OrderBase(restaurant_id, order_date);
+        CREATE NONCLUSTERED INDEX IX_OrderBase_driver ON #OrderBase(delivery_partner_id, order_date);
+
+        IF OBJECT_ID('tempdb..#CustLag') IS NOT NULL DROP TABLE #CustLag;
+        SELECT customer_id, order_date,
+               LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS intra_last_order_date
+        INTO #CustLag
+        FROM (SELECT DISTINCT customer_id, order_date FROM #OrderBase) d;
+        CREATE CLUSTERED INDEX CIX_CustLag ON #CustLag(customer_id, order_date);
+
+        IF OBJECT_ID('tempdb..#RestLag') IS NOT NULL DROP TABLE #RestLag;
+        SELECT restaurant_id, order_date,
+               LAG(order_date) OVER (PARTITION BY restaurant_id ORDER BY order_date) AS intra_last_order_date
+        INTO #RestLag
+        FROM (SELECT DISTINCT restaurant_id, order_date FROM #OrderBase) d;
+        CREATE CLUSTERED INDEX CIX_RestLag ON #RestLag(restaurant_id, order_date);
+
+        IF OBJECT_ID('tempdb..#DriverLag') IS NOT NULL DROP TABLE #DriverLag;
+        SELECT delivery_partner_id, order_date,
+               LAG(order_date) OVER (PARTITION BY delivery_partner_id ORDER BY order_date) AS intra_last_order_date
+        INTO #DriverLag
+        FROM (SELECT DISTINCT delivery_partner_id, order_date FROM #OrderBase WHERE delivery_partner_id IS NOT NULL) d;
+        CREATE CLUSTERED INDEX CIX_DriverLag ON #DriverLag(delivery_partner_id, order_date);
+
         IF OBJECT_ID('tempdb..#StageOrder') IS NOT NULL DROP TABLE #StageOrder;
 
-        ;WITH OrderBase AS (
-            SELECT 
-                o.order_id,
-                o.customer_id,
-                o.restaurant_id,
-                NULLIF(LTRIM(RTRIM(o.delivery_partner_id)), '') AS delivery_partner_id,
-                o.order_timestamp,
-                CAST(o.order_timestamp AS DATE) AS order_date,
-                o.subtotal_amount,
-                o.discount_amount,
-                o.delivery_fee,
-                o.total_amount,
-                o.is_cod,
-                o.is_cancelled,
-                o.batch_id
-            FROM ods.ods_order o
-            WHERE (@batch_id = -1 OR o.batch_id = @batch_id)
-        ),
-        CustIntraLag AS (
-            SELECT customer_id, order_date,
-                   LAG(order_date) OVER (PARTITION BY customer_id ORDER BY order_date) AS intra_last_order_date
-            FROM (SELECT DISTINCT customer_id, order_date FROM OrderBase) d
-        ),
-        RestIntraLag AS (
-            SELECT restaurant_id, order_date,
-                   LAG(order_date) OVER (PARTITION BY restaurant_id ORDER BY order_date) AS intra_last_order_date
-            FROM (SELECT DISTINCT restaurant_id, order_date FROM OrderBase) d
-        ),
-        DriverIntraLag AS (
-            SELECT delivery_partner_id, order_date,
-                   LAG(order_date) OVER (PARTITION BY delivery_partner_id ORDER BY order_date) AS intra_last_order_date
-            FROM (SELECT DISTINCT delivery_partner_id, order_date FROM OrderBase WHERE delivery_partner_id IS NOT NULL) d
-        )
         SELECT 
             o.order_id,
             ISNULL(d.date_key, -1)                          AS order_date_key,
@@ -1584,7 +1618,7 @@ BEGIN
             END AS driver_lc_id,
             o.batch_id
         INTO #StageOrder
-        FROM OrderBase o
+        FROM #OrderBase o
         LEFT JOIN dwh.dim_date d
             ON d.date_key = CAST(CONVERT(VARCHAR(8), o.order_timestamp, 112) AS INT)
         LEFT JOIN dwh.dim_time t
@@ -1601,11 +1635,11 @@ BEGIN
             ON o.delivery_partner_id = dp.delivery_partner_id
            AND o.order_date >= dp.valid_from
            AND o.order_date <= dp.valid_to
-        LEFT JOIN CustIntraLag cl
+        LEFT JOIN #CustLag cl
             ON o.customer_id = cl.customer_id AND o.order_date = cl.order_date
-        LEFT JOIN RestIntraLag rl
+        LEFT JOIN #RestLag rl
             ON o.restaurant_id = rl.restaurant_id AND o.order_date = rl.order_date
-        LEFT JOIN DriverIntraLag dl
+        LEFT JOIN #DriverLag dl
             ON o.delivery_partner_id = dl.delivery_partner_id AND o.order_date = dl.order_date;
 
         CREATE CLUSTERED INDEX CIX_StageOrder_id ON #StageOrder(order_id);
@@ -2546,8 +2580,8 @@ BEGIN
             SELECT @batch_id = 1;
     END;
 
-    DECLARE @process_name   VARCHAR(100) = 'DWH_FACT_REVIEW_ASPECT',
-            @step_name      VARCHAR(100) = 'usp_load_fact_review_aspect',
+    DECLARE @process_name   VARCHAR(100) = 'ODS_TO_DWH',
+            @step_name      VARCHAR(100) = 'LOAD_FACT_REVIEW_ASPECT',
             @start_time     DATETIME2(3) = SYSUTCDATETIME(),
             @rows_read      BIGINT = 0,
             @rows_inserted  BIGINT = 0,
@@ -2914,20 +2948,30 @@ BEGIN
             SELECT @rows_relinked_order_item = COUNT(*)
             FROM dwh.fact_order_item oi
             INNER JOIN dwh.fact_order fo ON oi.order_id = fo.order_id
-            WHERE (oi.customer_key = -1 OR oi.order_date_key = -1 OR oi.restaurant_key = -1)
-              AND fo.customer_key <> -1;
+            WHERE (
+                (oi.customer_key = -1 AND fo.customer_key <> -1)
+                OR (oi.order_date_key = -1 AND fo.order_date_key <> -1)
+                OR (oi.restaurant_key = -1 AND fo.restaurant_key <> -1)
+            );
 
             SELECT @rows_relinked_delivery = COUNT(*)
             FROM dwh.fact_delivery_performance dp
             INNER JOIN dwh.fact_order fo ON dp.order_id = fo.order_id
-            WHERE (dp.customer_key = -1 OR dp.delivery_partner_key = -1 OR dp.delivery_date_key = -1 OR dp.restaurant_key = -1)
-              AND fo.customer_key <> -1;
+            WHERE (
+                (dp.customer_key = -1 AND fo.customer_key <> -1)
+                OR (dp.delivery_date_key = -1 AND fo.order_date_key <> -1)
+                OR (dp.restaurant_key = -1 AND fo.restaurant_key <> -1)
+                OR (dp.delivery_partner_key = -1 AND fo.delivery_partner_key <> -1)
+            );
 
             SELECT @rows_relinked_rating = COUNT(*)
             FROM dwh.fact_rating r
             INNER JOIN dwh.fact_order fo ON r.order_id = fo.order_id
-            WHERE (r.delivery_partner_key = -1 OR r.customer_key = -1 OR r.restaurant_key = -1)
-              AND fo.customer_key <> -1;
+            WHERE (
+                (r.delivery_partner_key = -1 AND fo.delivery_partner_key <> -1)
+                OR (r.customer_key = -1 AND fo.customer_key <> -1)
+                OR (r.restaurant_key = -1 AND fo.restaurant_key <> -1)
+            );
 
             PRINT CONCAT('[DRY RUN PREVIEW] Candidate orphan rows to re-link: order_item=', @rows_relinked_order_item,
                          ', delivery_performance=', @rows_relinked_delivery,
@@ -2939,28 +2983,35 @@ BEGIN
 
         -- 1. Reconcile dwh.fact_order_item
         UPDATE oi
-        SET oi.order_date_key = fo.order_date_key,
-            oi.customer_key   = fo.customer_key,
-            oi.restaurant_key = fo.restaurant_key,
+        SET oi.order_date_key = CASE WHEN oi.order_date_key = -1 THEN fo.order_date_key ELSE oi.order_date_key END,
+            oi.customer_key   = CASE WHEN oi.customer_key = -1 THEN fo.customer_key ELSE oi.customer_key END,
+            oi.restaurant_key = CASE WHEN oi.restaurant_key = -1 THEN fo.restaurant_key ELSE oi.restaurant_key END,
             oi.load_timestamp = SYSUTCDATETIME()
         FROM dwh.fact_order_item oi
         INNER JOIN dwh.fact_order fo ON oi.order_id = fo.order_id
-        WHERE (oi.customer_key = -1 OR oi.order_date_key = -1 OR oi.restaurant_key = -1)
-          AND fo.customer_key <> -1;
+        WHERE (
+            (oi.customer_key = -1 AND fo.customer_key <> -1)
+            OR (oi.order_date_key = -1 AND fo.order_date_key <> -1)
+            OR (oi.restaurant_key = -1 AND fo.restaurant_key <> -1)
+        );
 
         SET @rows_relinked_order_item = @@ROWCOUNT;
 
         -- 2. Reconcile dwh.fact_delivery_performance
         UPDATE dp
-        SET dp.delivery_date_key    = fo.order_date_key,
-            dp.customer_key         = fo.customer_key,
-            dp.restaurant_key       = fo.restaurant_key,
-            dp.delivery_partner_key = fo.delivery_partner_key,
+        SET dp.delivery_date_key    = CASE WHEN dp.delivery_date_key = -1 THEN fo.order_date_key ELSE dp.delivery_date_key END,
+            dp.customer_key         = CASE WHEN dp.customer_key = -1 THEN fo.customer_key ELSE dp.customer_key END,
+            dp.restaurant_key       = CASE WHEN dp.restaurant_key = -1 THEN fo.restaurant_key ELSE dp.restaurant_key END,
+            dp.delivery_partner_key = CASE WHEN dp.delivery_partner_key = -1 THEN fo.delivery_partner_key ELSE dp.delivery_partner_key END,
             dp.load_timestamp       = SYSUTCDATETIME()
         FROM dwh.fact_delivery_performance dp
         INNER JOIN dwh.fact_order fo ON dp.order_id = fo.order_id
-        WHERE (dp.customer_key = -1 OR dp.delivery_partner_key = -1 OR dp.delivery_date_key = -1 OR dp.restaurant_key = -1)
-          AND fo.customer_key <> -1;
+        WHERE (
+            (dp.customer_key = -1 AND fo.customer_key <> -1)
+            OR (dp.delivery_date_key = -1 AND fo.order_date_key <> -1)
+            OR (dp.restaurant_key = -1 AND fo.restaurant_key <> -1)
+            OR (dp.delivery_partner_key = -1 AND fo.delivery_partner_key <> -1)
+        );
 
         SET @rows_relinked_delivery = @@ROWCOUNT;
 
@@ -2972,8 +3023,11 @@ BEGIN
             r.load_timestamp       = SYSUTCDATETIME()
         FROM dwh.fact_rating r
         INNER JOIN dwh.fact_order fo ON r.order_id = fo.order_id
-        WHERE (r.delivery_partner_key = -1 OR r.customer_key = -1 OR r.restaurant_key = -1)
-          AND fo.customer_key <> -1;
+        WHERE (
+            (r.delivery_partner_key = -1 AND fo.delivery_partner_key <> -1)
+            OR (r.customer_key = -1 AND fo.customer_key <> -1)
+            OR (r.restaurant_key = -1 AND fo.restaurant_key <> -1)
+        );
 
         SET @rows_relinked_rating = @@ROWCOUNT;
 

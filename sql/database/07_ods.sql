@@ -277,6 +277,13 @@ CREATE TABLE ods.ods_rating
 GO
 
 
+CREATE NONCLUSTERED INDEX IX_ods_order_batch_id ON ods.ods_order(batch_id);
+CREATE NONCLUSTERED INDEX IX_ods_order_item_batch_id ON ods.ods_order_item(batch_id);
+CREATE NONCLUSTERED INDEX IX_ods_delivery_perf_batch_id ON ods.ods_delivery_performance(batch_id);
+CREATE NONCLUSTERED INDEX IX_ods_rating_batch_id ON ods.ods_rating(batch_id);
+GO
+
+
 /* =========================================================
    10. VERIFICATION
    ========================================================= */

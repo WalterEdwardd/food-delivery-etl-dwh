@@ -215,7 +215,7 @@ CREATE TABLE dwh.dim_customer
     last_active             DATE                 NULL, -- Last transaction date (from fact_order)
     life_cycle_id           TINYINT              NULL, -- Transaction lifecycle at last order (1: New, 2: Retained, 3: Reactivated)
 
-    /* SCD Type 2 Timeline Metadata */
+    /* SCD Type 2 Timeline Metadata (Initial record valid_from initialized to signup_date; Unknown member key=-1 is 1900-01-01) */
     valid_from              DATE                 NOT NULL
         CONSTRAINT DF_dim_customer_valid_from DEFAULT '1900-01-01',
     valid_to                DATE                 NOT NULL
@@ -260,7 +260,7 @@ CREATE TABLE dwh.dim_restaurant
     last_active             DATE                 NULL, -- Last transaction date (from fact_order)
     life_cycle_id           TINYINT              NULL, -- Transaction lifecycle at last order (1: New, 2: Retained, 3: Reactivated)
 
-    /* SCD Type 2 Timeline Metadata */
+    /* SCD Type 2 Timeline Metadata (Initial record valid_from initialized to onboard_date; Unknown member key=-1 is 1900-01-01) */
     valid_from              DATE                 NOT NULL
         CONSTRAINT DF_dim_restaurant_valid_from DEFAULT '1900-01-01',
     valid_to                DATE                 NOT NULL
@@ -303,7 +303,7 @@ CREATE TABLE dwh.dim_delivery_partner
     rating_type_id          TINYINT              NULL,
     rating_type             VARCHAR(50)          NULL,
 
-    /* SCD Type 2 Timeline Metadata */
+    /* SCD Type 2 Timeline Metadata (Initial record valid_from initialized to onboard_date; Unknown member key=-1 is 1900-01-01) */
     valid_from              DATE                 NOT NULL
         CONSTRAINT DF_dim_delivery_partner_valid_from DEFAULT '1900-01-01',
     valid_to                DATE                 NOT NULL
