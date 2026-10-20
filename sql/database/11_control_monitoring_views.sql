@@ -196,84 +196,176 @@ GO
 /* ==============================================================================
    VIEW 5: bi.v_monitor_layer_reconciliation
    PURPOSE: End-to-end data reconciliation (RAW -> ODS -> DWH) and discrepancy audit
+            scoped by batch_id with multi-batch aggregation support
 ============================================================================== */
 CREATE OR ALTER VIEW bi.v_monitor_layer_reconciliation AS
-WITH entity_metrics AS
-(
-    SELECT 
-        'Customer' AS entity_name,
-        (SELECT COUNT(*) FROM raw.raw_customer) AS raw_rows,
-        (SELECT COUNT(*) FROM ods.ods_customer) AS ods_rows,
-        (SELECT COUNT(*) FROM dwh.dim_customer WHERE customer_key <> -1) AS dwh_rows,
-        (SELECT COUNT(*) FROM control.etl_error WHERE table_name = 'customer') AS error_rows,
-        (SELECT COUNT(*) FROM control.etl_warning WHERE entity_name = 'CUSTOMER') AS warning_rows
+WITH all_batches AS (
+    SELECT DISTINCT batch_id FROM control.etl_batch
+),
+entities AS (
+    SELECT 'Customer' AS entity_name UNION ALL
+    SELECT 'Restaurant' UNION ALL
+    SELECT 'Delivery Partner' UNION ALL
+    SELECT 'Menu Item' UNION ALL
+    SELECT 'Order' UNION ALL
+    SELECT 'Order Item' UNION ALL
+    SELECT 'Delivery Performance' UNION ALL
+    SELECT 'Rating'
+),
+batch_entities AS (
+    SELECT b.batch_id, e.entity_name
+    FROM all_batches b
+    CROSS JOIN entities e
+),
+raw_counts AS (
+    SELECT batch_id, 'Customer' AS entity_name, COUNT(*) AS cnt FROM raw.raw_customer GROUP BY batch_id
     UNION ALL
-    SELECT 
-        'Restaurant' AS entity_name,
-        (SELECT COUNT(*) FROM raw.raw_restaurant),
-        (SELECT COUNT(*) FROM ods.ods_restaurant),
-        (SELECT COUNT(*) FROM dwh.dim_restaurant WHERE restaurant_key <> -1),
-        (SELECT COUNT(*) FROM control.etl_error WHERE table_name = 'restaurant'),
-        (SELECT COUNT(*) FROM control.etl_warning WHERE entity_name = 'RESTAURANT')
+    SELECT batch_id, 'Restaurant', COUNT(*) FROM raw.raw_restaurant GROUP BY batch_id
     UNION ALL
-    SELECT 
-        'Delivery Partner' AS entity_name,
-        (SELECT COUNT(*) FROM raw.raw_delivery_partner),
-        (SELECT COUNT(*) FROM ods.ods_delivery_partner),
-        (SELECT COUNT(*) FROM dwh.dim_delivery_partner WHERE delivery_partner_key <> -1),
-        (SELECT COUNT(*) FROM control.etl_error WHERE table_name = 'delivery_partner'),
-        (SELECT COUNT(*) FROM control.etl_warning WHERE entity_name = 'DELIVERY_PARTNER')
+    SELECT batch_id, 'Delivery Partner', COUNT(*) FROM raw.raw_delivery_partner GROUP BY batch_id
     UNION ALL
-    SELECT 
-        'Menu Item' AS entity_name,
-        (SELECT COUNT(*) FROM raw.raw_menu_item),
-        (SELECT COUNT(*) FROM ods.ods_menu_item),
-        (SELECT COUNT(*) FROM dwh.dim_menu_item WHERE menu_item_key <> -1),
-        (SELECT COUNT(*) FROM control.etl_error WHERE table_name = 'menu_item'),
-        (SELECT COUNT(*) FROM control.etl_warning WHERE entity_name = 'MENU_ITEM')
+    SELECT batch_id, 'Menu Item', COUNT(*) FROM raw.raw_menu_item GROUP BY batch_id
     UNION ALL
-    SELECT 
-        'Order' AS entity_name,
-        (SELECT COUNT(*) FROM raw.raw_order),
-        (SELECT COUNT(*) FROM ods.ods_order),
-        (SELECT COUNT(*) FROM dwh.fact_order),
-        (SELECT COUNT(*) FROM control.etl_error WHERE table_name = 'raw_order'),
-        (SELECT COUNT(*) FROM control.etl_warning WHERE entity_name = 'ORDER')
+    SELECT batch_id, 'Order', COUNT(*) FROM raw.raw_order GROUP BY batch_id
     UNION ALL
-    SELECT 
-        'Order Item' AS entity_name,
-        (SELECT COUNT(*) FROM raw.raw_order_item),
-        (SELECT COUNT(*) FROM ods.ods_order_item),
-        (SELECT COUNT(*) FROM dwh.fact_order_item),
-        (SELECT COUNT(*) FROM control.etl_error WHERE table_name = 'raw_order_item'),
-        (SELECT COUNT(*) FROM control.etl_warning WHERE entity_name = 'ORDER_ITEM')
+    SELECT batch_id, 'Order Item', COUNT(*) FROM raw.raw_order_item GROUP BY batch_id
     UNION ALL
-    SELECT 
-        'Delivery Performance' AS entity_name,
-        (SELECT COUNT(*) FROM raw.raw_delivery_performance),
-        (SELECT COUNT(*) FROM ods.ods_delivery_performance),
-        (SELECT COUNT(*) FROM dwh.fact_delivery_performance),
-        (SELECT COUNT(*) FROM control.etl_error WHERE table_name = 'raw_delivery_performance'),
-        (SELECT COUNT(*) FROM control.etl_warning WHERE entity_name = 'DELIVERY_PERFORMANCE')
+    SELECT batch_id, 'Delivery Performance', COUNT(*) FROM raw.raw_delivery_performance GROUP BY batch_id
     UNION ALL
+    SELECT batch_id, 'Rating', COUNT(*) FROM raw.raw_rating GROUP BY batch_id
+),
+ods_counts AS (
+    SELECT batch_id, 'Customer' AS entity_name, COUNT(*) AS cnt FROM ods.ods_customer GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Restaurant', COUNT(*) FROM ods.ods_restaurant GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Delivery Partner', COUNT(*) FROM ods.ods_delivery_partner GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Menu Item', COUNT(*) FROM ods.ods_menu_item GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Order', COUNT(*) FROM ods.ods_order GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Order Item', COUNT(*) FROM ods.ods_order_item GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Delivery Performance', COUNT(*) FROM ods.ods_delivery_performance GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Rating', COUNT(*) FROM ods.ods_rating GROUP BY batch_id
+),
+dwh_counts AS (
+    SELECT batch_id, 'Customer' AS entity_name, COUNT(*) AS cnt FROM dwh.dim_customer WHERE customer_key <> -1 GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Restaurant', COUNT(*) FROM dwh.dim_restaurant WHERE restaurant_key <> -1 GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Delivery Partner', COUNT(*) FROM dwh.dim_delivery_partner WHERE delivery_partner_key <> -1 GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Menu Item', COUNT(*) FROM dwh.dim_menu_item WHERE menu_item_key <> -1 GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Order', COUNT(*) FROM dwh.fact_order GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Order Item', COUNT(*) FROM dwh.fact_order_item GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Delivery Performance', COUNT(*) FROM dwh.fact_delivery_performance GROUP BY batch_id
+    UNION ALL
+    SELECT batch_id, 'Rating', COUNT(*) FROM dwh.fact_rating GROUP BY batch_id
+),
+error_counts AS (
     SELECT 
-        'Rating' AS entity_name,
-        (SELECT COUNT(*) FROM raw.raw_rating),
-        (SELECT COUNT(*) FROM ods.ods_rating),
-        (SELECT COUNT(*) FROM dwh.fact_rating),
-        (SELECT COUNT(*) FROM control.etl_error WHERE table_name = 'raw_rating'),
-        (SELECT COUNT(*) FROM control.etl_warning WHERE entity_name = 'RATING')
+        batch_id,
+        CASE 
+            WHEN table_name LIKE '%customer%' THEN 'Customer'
+            WHEN table_name LIKE '%restaurant%' THEN 'Restaurant'
+            WHEN table_name LIKE '%delivery_partner%' THEN 'Delivery Partner'
+            WHEN table_name LIKE '%menu_item%' THEN 'Menu Item'
+            WHEN table_name LIKE '%order_item%' THEN 'Order Item'
+            WHEN table_name LIKE '%order%' THEN 'Order'
+            WHEN table_name LIKE '%delivery_performance%' THEN 'Delivery Performance'
+            WHEN table_name LIKE '%rating%' THEN 'Rating'
+            ELSE 'Other'
+        END AS entity_name,
+        COUNT(DISTINCT CASE 
+            WHEN source_file_name IS NOT NULL AND source_row_number IS NOT NULL 
+            THEN CONCAT(source_file_name, '|', CAST(source_row_number AS VARCHAR(20)))
+            ELSE CAST(error_id AS VARCHAR(20))
+        END) AS quarantined_error_rows
+    FROM control.etl_error
+    GROUP BY 
+        batch_id,
+        CASE 
+            WHEN table_name LIKE '%customer%' THEN 'Customer'
+            WHEN table_name LIKE '%restaurant%' THEN 'Restaurant'
+            WHEN table_name LIKE '%delivery_partner%' THEN 'Delivery Partner'
+            WHEN table_name LIKE '%menu_item%' THEN 'Menu Item'
+            WHEN table_name LIKE '%order_item%' THEN 'Order Item'
+            WHEN table_name LIKE '%order%' THEN 'Order'
+            WHEN table_name LIKE '%delivery_performance%' THEN 'Delivery Performance'
+            WHEN table_name LIKE '%rating%' THEN 'Rating'
+            ELSE 'Other'
+        END
+),
+warning_counts AS (
+    SELECT 
+        batch_id,
+        CASE 
+            WHEN entity_name = 'CUSTOMER' THEN 'Customer'
+            WHEN entity_name = 'RESTAURANT' THEN 'Restaurant'
+            WHEN entity_name = 'DELIVERY_PARTNER' THEN 'Delivery Partner'
+            WHEN entity_name = 'MENU_ITEM' THEN 'Menu Item'
+            WHEN entity_name = 'ORDER_ITEM' THEN 'Order Item'
+            WHEN entity_name = 'ORDER' THEN 'Order'
+            WHEN entity_name = 'DELIVERY_PERFORMANCE' THEN 'Delivery Performance'
+            WHEN entity_name = 'RATING' THEN 'Rating'
+            ELSE 'Other'
+        END AS entity_name,
+        COUNT(*) AS warning_rows
+    FROM control.etl_warning
+    GROUP BY 
+        batch_id,
+        CASE 
+            WHEN entity_name = 'CUSTOMER' THEN 'Customer'
+            WHEN entity_name = 'RESTAURANT' THEN 'Restaurant'
+            WHEN entity_name = 'DELIVERY_PARTNER' THEN 'Delivery Partner'
+            WHEN entity_name = 'MENU_ITEM' THEN 'Menu Item'
+            WHEN entity_name = 'ORDER_ITEM' THEN 'Order Item'
+            WHEN entity_name = 'ORDER' THEN 'Order'
+            WHEN entity_name = 'DELIVERY_PERFORMANCE' THEN 'Delivery Performance'
+            WHEN entity_name = 'RATING' THEN 'Rating'
+            ELSE 'Other'
+        END
+),
+reconciliation_base AS (
+    SELECT
+        be.batch_id,
+        be.entity_name,
+        ISNULL(r.cnt, 0) AS raw_rows,
+        ISNULL(o.cnt, 0) AS ods_rows,
+        ISNULL(d.cnt, 0) AS dwh_rows,
+        ISNULL(r.cnt, 0) - ISNULL(o.cnt, 0) AS raw_to_ods_variance,
+        ISNULL(o.cnt, 0) - ISNULL(d.cnt, 0) AS ods_to_dwh_variance,
+        ISNULL(e.quarantined_error_rows, 0) AS quarantined_error_rows,
+        ISNULL(w.warning_rows, 0) AS warning_rows
+    FROM batch_entities be
+    LEFT JOIN raw_counts r 
+        ON be.batch_id = r.batch_id AND be.entity_name = r.entity_name
+    LEFT JOIN ods_counts o 
+        ON be.batch_id = o.batch_id AND be.entity_name = o.entity_name
+    LEFT JOIN dwh_counts d 
+        ON be.batch_id = d.batch_id AND be.entity_name = d.entity_name
+    LEFT JOIN error_counts e 
+        ON be.batch_id = e.batch_id AND be.entity_name = e.entity_name
+    LEFT JOIN warning_counts w 
+        ON be.batch_id = w.batch_id AND be.entity_name = w.entity_name
 )
 SELECT
+    batch_id,
     entity_name,
     raw_rows,
     ods_rows,
     dwh_rows,
-    raw_rows - ods_rows AS raw_to_ods_variance,
-    ods_rows - dwh_rows AS ods_to_dwh_variance,
-    error_rows AS quarantined_error_rows,
+    raw_to_ods_variance,
+    ods_to_dwh_variance,
+    quarantined_error_rows,
     warning_rows,
-    
+
     -- Data Retention Rate (%)
     CASE 
         WHEN raw_rows > 0 
@@ -283,11 +375,12 @@ SELECT
 
     -- Reconciliation Audit Status
     CASE 
-        WHEN (raw_rows - ods_rows = 0 OR error_rows > 0) AND (ods_rows - dwh_rows = 0) 
+        WHEN (raw_to_ods_variance = quarantined_error_rows OR raw_to_ods_variance = 0) 
+             AND ods_to_dwh_variance = 0
         THEN 'RECONCILED (Valid Audit)'
         ELSE 'VARIANCE DETECTED'
     END AS audit_status
-FROM entity_metrics;
+FROM reconciliation_base;
 GO
 
 

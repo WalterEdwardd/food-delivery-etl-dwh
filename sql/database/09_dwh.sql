@@ -517,7 +517,7 @@ CREATE TABLE dwh.fact_rating
     sentiment_score      DECIMAL(5,4)         NULL,
     sentiment_type_id    TINYINT              NULL,
 
-    review_text          VARCHAR(2000)        NULL,
+    review_text          VARCHAR(4000)        NULL,
 
     batch_id             BIGINT               NOT NULL,
     load_timestamp       DATETIME2(3)         NOT NULL

@@ -222,7 +222,7 @@ GO
 CREATE TABLE ref.ref_review_aspect_cache
 (
     review_hash          CHAR(64)             NOT NULL,
-    review_text          VARCHAR(2000)        NOT NULL,
+    review_text          VARCHAR(4000)        NOT NULL,
     aspect_id            TINYINT              NOT NULL,
     sentiment_type_id    TINYINT              NOT NULL,
     matched_phrase       VARCHAR(200)         NULL,

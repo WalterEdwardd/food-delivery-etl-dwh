@@ -464,7 +464,7 @@ CREATE TABLE temp.ods_rating
     restaurant_id       VARCHAR(50)    NOT NULL,
 
     rating              DECIMAL(3,2)   NULL,
-    review_text         VARCHAR(2000)  NULL,
+    review_text         VARCHAR(4000)  NULL,
     review_timestamp    DATETIME2(3)   NULL,
     sentiment_score     DECIMAL(5,4)   NULL,
 
