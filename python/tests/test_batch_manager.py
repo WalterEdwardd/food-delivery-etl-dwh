@@ -8,6 +8,7 @@ from src.orchestration.batch_manager import (
     log_etl_error,
     log_etl_warning,
     start_batch,
+    update_batch_progress,
 )
 
 
@@ -69,6 +70,41 @@ def test_batch_lifecycle(mock_db):
     assert mock_db["cursor"].execute.called
     assert mock_db["connection"].commit.call_count == 2
     assert mock_db["connection"].close.call_count == 2
+
+
+def test_update_batch_progress(mock_db):
+    batch_id = start_batch(
+        pipeline_name="FoodDeliveryETL",
+        source_system="CSV",
+        source_file_count=8,
+    )
+
+    update_batch_progress(
+        batch_id=batch_id,
+        total_records=1000,
+    )
+
+    assert mock_db["cursor"].execute.called
+    assert mock_db["connection"].commit.call_count == 2
+    assert mock_db["connection"].close.call_count == 2
+
+
+def test_update_batch_progress_invalid_count():
+    with pytest.raises(ValueError):
+        update_batch_progress(
+            batch_id=1001,
+            total_records=-5,
+        )
+
+
+def test_update_batch_progress_not_found(mock_db):
+    mock_db["cursor"].rowcount = 0
+
+    with pytest.raises(RuntimeError):
+        update_batch_progress(
+            batch_id=999999,
+            total_records=100,
+        )
 
 
 def test_batch_failure(mock_db):

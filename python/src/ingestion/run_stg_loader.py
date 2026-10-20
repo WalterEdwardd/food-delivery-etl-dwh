@@ -9,10 +9,10 @@ from src.config.database import get_connection
 from src.config.source_schema import SOURCE_SCHEMA
 from src.ingestion.stg_loader import StagingLoader, StagingLoadError
 from src.orchestration.batch_manager import (
-    complete_batch,
     fail_batch,
     log_etl_error,
     start_batch,
+    update_batch_progress,
 )
 from src.utils.logger import get_logger
 from src.validation.file_validator import validate_all_files
@@ -93,8 +93,8 @@ def run_staging_ingestion(
     incoming_dir: Path,
     processed_dir: Path,
     rejected_dir: Path,
-    pipeline_name: str = "CSV_to_RAW_Pipeline",
-    source_system: str = "Source_CSV",
+    pipeline_name: str = "FoodDeliveryETL",
+    source_system: str = "QuickBite_File_Ingestion",
 ):
     incoming_dir.mkdir(parents=True, exist_ok=True)
     processed_dir.mkdir(parents=True, exist_ok=True)
@@ -237,13 +237,15 @@ def run_staging_ingestion(
         logger.error("Batch %s finished with errors.", batch_id)
         return False
     else:
-        complete_batch(
+        update_batch_progress(
             batch_id=batch_id,
             total_records=rows_loaded,
-            success_records=rows_loaded,
-            error_records=0,
         )
-        logger.info("Batch %s (CSV -> STG -> RAW) completed successfully.", batch_id)
+        logger.info(
+            "Batch %s (CSV -> STG -> RAW) ingestion completed successfully. Total records: %d. Batch remains RUNNING for ODS/DWH transformations.",
+            batch_id,
+            rows_loaded,
+        )
         return True
 
 

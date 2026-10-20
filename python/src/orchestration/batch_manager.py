@@ -98,6 +98,62 @@ def _validate_record_counts(
             "must equal total_records"
         )
 
+def update_batch_progress(
+    batch_id: int,
+    total_records: int,
+) -> None:
+    """Update total_records for an ongoing batch while keeping status as RUNNING."""
+    if total_records < 0:
+        raise ValueError("total_records cannot be negative")
+
+    logger.info(
+        "Updating batch progress | batch_id=%s | total_records=%s",
+        batch_id,
+        total_records,
+    )
+
+    connection = get_connection()
+
+    try:
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            UPDATE control.etl_batch
+            SET total_records = ?
+            WHERE batch_id = ?
+                AND status = 'RUNNING';
+            """,
+            total_records,
+            batch_id,
+        )
+
+        if cursor.rowcount != 1:
+            raise RuntimeError(
+                f"Batch not found or not in RUNNING status: batch_id={batch_id}"
+            )
+
+        connection.commit()
+
+        logger.info(
+            "Batch progress updated successfully | batch_id=%s | total_records=%s",
+            batch_id,
+            total_records,
+        )
+
+    except Exception:
+        connection.rollback()
+
+        logger.exception(
+            "Failed to update batch progress | batch_id=%s",
+            batch_id,
+        )
+
+        raise
+
+    finally:
+        connection.close()
+
 
 def complete_batch(
     batch_id,
@@ -121,6 +177,8 @@ def complete_batch(
     try:
         cursor = connection.cursor()
 
+        status = "PARTIAL" if error_records > 0 else "SUCCESS"
+
         cursor.execute(
             """
             UPDATE control.etl_batch
@@ -133,7 +191,7 @@ def complete_batch(
             WHERE batch_id = ?
                 AND status = 'RUNNING';
             """,
-            "SUCCESS",
+            status,
             total_records,
             success_records,
             error_records,

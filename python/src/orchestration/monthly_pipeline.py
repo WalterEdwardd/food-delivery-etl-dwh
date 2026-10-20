@@ -184,7 +184,7 @@ def main():
             if not success:
                 log(f"Pipeline stopped due to failure at {m}")
                 sys.exit(1)
-        log("\n🎉 ALL 9 MONTHLY BATCHES PROCESSED SUCCESSFULLY!")
+        log("\n[SUCCESS] ALL 9 MONTHLY BATCHES PROCESSED SUCCESSFULLY!")
     else:
         log("Usage:")
         log("  python -m src.orchestration.monthly_pipeline --month 2026_01    # Run single month batch")
