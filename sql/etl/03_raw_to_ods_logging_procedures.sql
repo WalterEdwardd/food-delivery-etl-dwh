@@ -46,7 +46,7 @@ BEGIN
     -- Close stale logs stuck in RUNNING state (e.g. from previous crashes)
     UPDATE control.etl_log
     SET status   = 'FAILED',
-        end_time = SYSDATETIME(),
+        end_time = SYSUTCDATETIME(),
         message  = 'Aborted: Superseded by a new execution run.'
     WHERE step_name = @step_name
       AND status    = 'RUNNING';
@@ -89,14 +89,14 @@ BEGIN
         @batch_id,
         @process_name,
         @step_name,
-        SYSDATETIME(),
+        SYSUTCDATETIME(),
         NULL,
         'RUNNING',
         NULL,
         NULL,
         NULL,
         NULL,
-        SYSDATETIME()
+        SYSUTCDATETIME()
     );
 END;
 GO
@@ -163,7 +163,7 @@ BEGIN
     IF @status_override = 'FAILED'
     BEGIN
         UPDATE control.etl_log
-        SET end_time = SYSDATETIME(),
+        SET end_time = SYSUTCDATETIME(),
             status   = 'FAILED',
             message  = COALESCE(@error_message, 'Task failed during execution.')
         WHERE log_id = @log_id;
@@ -193,10 +193,9 @@ BEGIN
     SELECT @rows_valid = rows_processed
     FROM control.etl_log
     WHERE log_id = @log_id
-      AND rows_processed IS NOT NULL
-      AND rows_processed > 0;
+      AND rows_processed IS NOT NULL;
 
-    -- Fallback: If not recorded in etl_log, query target temp table directly if records still exist
+    -- Fallback 1: If not recorded in etl_log, query target temp table directly if records still exist
     IF @rows_valid IS NULL AND @target_table IS NOT NULL
     BEGIN
         BEGIN TRY
@@ -216,30 +215,42 @@ BEGIN
     END;
 
     SET @rows_processed = COALESCE(@rows_processed, 0);
-    SET @rows_inserted  = COALESCE(@rows_valid, @rows_processed);
+    SET @rows_valid     = COALESCE(@rows_valid, 0);
 
     -- 3. Rejected rows = Total RAW rows - Valid Staging rows
-    IF @rows_processed >= @rows_inserted
-        SET @rows_rejected = @rows_processed - @rows_inserted;
+    IF @rows_processed >= @rows_valid
+        SET @rows_rejected = @rows_processed - @rows_valid;
     ELSE
         SET @rows_rejected = 0;
 
+    -- rows_inserted in control.etl_log represents the valid rows successfully delivered to ODS
+    SET @rows_inserted = @rows_valid;
+
     -- 4. Determine final status accurately based on real rejections
-    IF @rows_rejected > 0 AND @rows_inserted > 0
-        SET @final_status = 'PARTIAL';
-    ELSE IF @rows_rejected > 0 AND @rows_inserted = 0
+    IF @rows_processed > 0 AND @rows_valid = 0
+    BEGIN
+        -- 100% of input was rejected / quarantined -> mark FAILED
         SET @final_status = 'FAILED';
+        IF @error_message IS NULL
+            SET @error_message = CONCAT('All ', @rows_processed, ' records from ', @raw_table, ' failed data quality gates and were quarantined.');
+    END
+    ELSE IF @rows_rejected > 0 AND @rows_valid > 0
+    BEGIN
+        SET @final_status = 'PARTIAL';
+    END
     ELSE
+    BEGIN
         SET @final_status = 'SUCCESS';
+    END;
 
     -- 5. Update etl_log table (preserve detailed CDC message from Upsert step)
     UPDATE control.etl_log
-    SET end_time       = SYSDATETIME(),
+    SET end_time       = SYSUTCDATETIME(),
         status         = @final_status,
         rows_processed = @rows_processed,
         rows_inserted  = @rows_inserted,
         rows_rejected  = @rows_rejected,
-        message        = COALESCE(message, @error_message)
+        message        = COALESCE(@error_message, message, 'Completed successfully.')
     WHERE log_id = @log_id;
 END;
 GO
