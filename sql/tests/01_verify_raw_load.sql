@@ -45,7 +45,7 @@ BEGIN
     BEGIN
         SELECT @batch_id = MAX(batch_id)
         FROM control.etl_batch
-        WHERE status = 'SUCCESS' AND pipeline_name = 'CSV_to_RAW_Pipeline';
+        WHERE status = 'SUCCESS' AND pipeline_name IN ('FoodDeliveryETL', 'CSV_to_RAW_Pipeline');
     END;
 END;
 

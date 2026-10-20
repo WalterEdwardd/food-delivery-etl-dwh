@@ -256,6 +256,11 @@ GO
        @force_fact_rebuild   BIT    = 0
        @batch_id             BIGINT = NULL
 ============================================================================= */
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+
 CREATE OR ALTER PROCEDURE dwh.usp_maintain_dwh_indexes_and_stats
     @rebuild_threshold    FLOAT  = 30.0,
     @reorganize_threshold FLOAT  = 10.0,

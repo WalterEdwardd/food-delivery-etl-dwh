@@ -3149,14 +3149,34 @@ BEGIN
         PRINT '>>> Step 12/12: Reconciling Orphan Facts (Late-Arriving Orders)...';
         EXEC dwh.usp_relink_orphan_facts @batch_id = @batch_id, @dry_run = 0;
 
-        -- Stage 7: Close End-to-End Batch Lifecycle if batch was active in RUNNING state
+        -- Stage 7: Close End-to-End Batch Lifecycle (Captures true pipeline completion & quarantined error counts)
         IF @batch_id > 0
         BEGIN
+            DECLARE @batch_error_records BIGINT = 0;
+            SELECT @batch_error_records = COUNT(DISTINCT 
+                CASE 
+                    WHEN source_file_name IS NOT NULL AND source_row_number IS NOT NULL 
+                    THEN CONCAT(source_file_name, '|', CAST(source_row_number AS VARCHAR(20)))
+                    ELSE CAST(error_id AS VARCHAR(20))
+                END
+            )
+            FROM control.etl_error
+            WHERE batch_id = @batch_id;
+
             UPDATE control.etl_batch
-            SET end_time = SYSUTCDATETIME(),
-                status   = 'SUCCESS'
+            SET end_time        = SYSUTCDATETIME(),
+                status          = CASE 
+                    WHEN @batch_error_records > 0 THEN 'PARTIAL'
+                    ELSE 'SUCCESS'
+                END,
+                error_records   = ISNULL(@batch_error_records, 0),
+                success_records = CASE 
+                    WHEN total_records >= ISNULL(@batch_error_records, 0) 
+                    THEN total_records - ISNULL(@batch_error_records, 0) 
+                    ELSE total_records 
+                END
             WHERE batch_id = @batch_id
-              AND status = 'RUNNING';
+              AND status IN ('RUNNING', 'SUCCESS', 'PARTIAL');
         END;
 
         PRINT '==============================================================================';
@@ -3189,7 +3209,7 @@ BEGIN
             SET end_time = SYSUTCDATETIME(),
                 status   = 'FAILED'
             WHERE batch_id = @batch_id
-              AND status = 'RUNNING';
+              AND status IN ('RUNNING', 'SUCCESS', 'PARTIAL');
         END;
 
         THROW;
