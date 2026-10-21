@@ -77,7 +77,7 @@ Toàn bộ các View phục vụ Power BI đã được đóng gói tại file:
 | **`v_monitor_step_performance`** | `bi` | Chi tiết từng bước ETL, phát hiện nút thắt hiệu năng | `step_name`, `process_name`, `duration_seconds`, `rows_processed`, `rows_inserted`, `rows_rejected`, `throughput_rows_per_sec`, `step_status` |
 | **`v_monitor_data_quality_errors`** | `bi` | Phân loại và phân tích chi tiết dữ liệu lỗi cách ly | `table_name`, `column_name`, `error_type`, `error_category`, `error_message`, `raw_value`, `source_file_name`, `source_row_number` |
 | **`v_monitor_warnings_anomalies`** | `bi` | Giám sát các cảnh báo bất thường (Orphan khách hàng, đơn hủy) | `warning_type`, `entity_name`, `entity_id`, `table_name`, `order_id`, `warning_message` |
-| **`v_monitor_layer_reconciliation`** | `bi` | Đối soát lượng bản ghi giữa RAW -> ODS -> DWH | `entity_name`, `raw_rows`, `ods_rows`, `dwh_rows`, `raw_to_ods_variance`, `quarantined_error_rows`, `data_retention_rate_pct`, `audit_status` |
+| **`v_monitor_layer_reconciliation`** | `bi` | Đối soát lượng bản ghi giữa RAW -> ODS -> DWH theo batch | `reconciliation_id`, `batch_id`, `entity_name`, `raw_rows`, `ods_rows`, `dwh_rows`, `raw_to_ods_variance`, `quarantined_error_rows`, `data_retention_rate_pct`, `audit_status` |
 | **`v_monitor_scd2_audit`** | `bi` | Lịch sử thay đổi thuộc tính của Dimension (SCD Type 1 & 2) | `dimension_name`, `business_id`, `change_type`, `column_name`, `old_value`, `new_value`, `logged_at` |
 
 ---
@@ -268,7 +268,7 @@ Trong tab **Model View** của Power BI:
 * Liên kết `v_monitor_pipeline_overview[batch_id]` (1) ──── (N) `v_monitor_data_quality_errors[batch_id]`.
 * Liên kết `v_monitor_pipeline_overview[batch_id]` (1) ──── (N) `v_monitor_warnings_anomalies[batch_id]`.
 * Liên kết `v_monitor_pipeline_overview[batch_id]` (1) ──── (N) `v_monitor_scd2_audit[batch_id]`.
-* Bảng `v_monitor_layer_reconciliation` là bảng độc lập (Stand-alone audit summary).
+* Liên kết `v_monitor_pipeline_overview[batch_id]` (1) ──── (N) `v_monitor_layer_reconciliation[batch_id]`.
 
 ### Bước 3: Cài đặt Lịch Tự Động Refresh & Cảnh Báo (Alerts)
 1. Xuất bản (Publish) file lên **Power BI Service** (Workplace: *Food Delivery Analytics*).

@@ -83,7 +83,8 @@ SELECT
     END AS pipeline_health_status,
 
     b.created_at
-FROM control.etl_batch AS b;
+FROM control.etl_batch AS b
+ORDER BY b.batch_id ASC OFFSET 0 ROWS;
 GO
 
 
@@ -131,7 +132,8 @@ SELECT
     l.created_at
 FROM control.etl_log AS l
 INNER JOIN control.etl_batch AS b
-    ON l.batch_id = b.batch_id;
+    ON l.batch_id = b.batch_id
+ORDER BY l.log_id ASC OFFSET 0 ROWS;
 GO
 
 
@@ -166,7 +168,8 @@ SELECT
     e.error_timestamp
 FROM control.etl_error AS e
 LEFT JOIN control.etl_batch AS b
-    ON e.batch_id = b.batch_id;
+    ON e.batch_id = b.batch_id
+ORDER BY e.error_id ASC OFFSET 0 ROWS;
 GO
 
 
@@ -189,14 +192,16 @@ SELECT
     w.warning_timestamp
 FROM control.etl_warning AS w
 LEFT JOIN control.etl_batch AS b
-    ON w.batch_id = b.batch_id;
+    ON w.batch_id = b.batch_id
+ORDER BY w.warning_id ASC OFFSET 0 ROWS;
 GO
 
 
 /* ==============================================================================
    VIEW 5: bi.v_monitor_layer_reconciliation
    PURPOSE: End-to-end data reconciliation (RAW -> ODS -> DWH) and discrepancy audit
-            scoped by batch_id with multi-batch aggregation support
+            scoped by batch_id with multi-batch aggregation support.
+            Grain: (batch_id, entity_name) with auto-incrementing PK reconciliation_id.
 ============================================================================== */
 CREATE OR ALTER VIEW bi.v_monitor_layer_reconciliation AS
 WITH all_batches AS (
@@ -356,6 +361,8 @@ reconciliation_base AS (
         ON be.batch_id = w.batch_id AND be.entity_name = w.entity_name
 )
 SELECT
+    -- Auto-incrementing row ID for Power BI primary key
+    ROW_NUMBER() OVER (ORDER BY batch_id, entity_name) AS reconciliation_id,
     batch_id,
     entity_name,
     raw_rows,
@@ -380,7 +387,8 @@ SELECT
         THEN 'RECONCILED (Valid Audit)'
         ELSE 'VARIANCE DETECTED'
     END AS audit_status
-FROM reconciliation_base;
+FROM reconciliation_base
+ORDER BY reconciliation_id ASC OFFSET 0 ROWS;
 GO
 
 
@@ -405,7 +413,8 @@ SELECT
     c.logged_at
 FROM control.dim_change_log AS c
 LEFT JOIN control.etl_batch AS b
-    ON c.batch_id = b.batch_id;
+    ON c.batch_id = b.batch_id
+ORDER BY c.change_log_id ASC OFFSET 0 ROWS;
 GO
 
 
