@@ -104,7 +104,14 @@ def execute_month_batch(month_str: str) -> bool:
     log(f"=======================================================")
     log(f"Found {len(csv_files)} files in {month_folder.name}")
 
-    # Step 1: Copy files from subfolder directly into incoming/
+    # Step 1: Clean any leftover CSV files directly in incoming/ before staging
+    for old_csv in INCOMING_DIR.glob("*.csv"):
+        try:
+            old_csv.unlink()
+        except Exception:
+            pass
+
+    # Copy files from subfolder directly into incoming/
     copied_files = []
     for f in csv_files:
         dest = INCOMING_DIR / f.name

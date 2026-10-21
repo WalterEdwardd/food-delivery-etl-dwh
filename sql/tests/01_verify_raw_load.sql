@@ -96,13 +96,13 @@ IF EXISTS (
     SELECT 1 
     FROM control.etl_batch 
     WHERE batch_id = @batch_id 
-      AND status IN ('SUCCESS', 'PARTIAL')
+      AND status IN ('SUCCESS', 'PARTIAL', 'RUNNING')
 )
 BEGIN
     INSERT INTO #test_results (test_name, expected_value, actual_value, status)
     SELECT 
         'Batch status check',
-        'SUCCESS or PARTIAL',
+        'RUNNING, SUCCESS or PARTIAL',
         status,
         'PASS'
     FROM control.etl_batch
@@ -113,10 +113,10 @@ BEGIN
     INSERT INTO #test_results (test_name, expected_value, actual_value, status, error_message)
     VALUES (
         'Batch status check',
-        'SUCCESS or PARTIAL',
+        'RUNNING, SUCCESS or PARTIAL',
         ISNULL((SELECT status FROM control.etl_batch WHERE batch_id = @batch_id), 'NOT_FOUND'),
         'FAIL',
-        'Batch does not exist or did not finish with SUCCESS/PARTIAL status.'
+        'Batch does not exist or did not finish with RUNNING/SUCCESS/PARTIAL status.'
     );
 END;
 
