@@ -120,3 +120,45 @@ REST08640,2026-05-30,Madras Pizza Clouds,Chennai,Fast Food,Restaurant,26-40,N
 REST16192,2026-05-28,Punjabi Curry Heaven,Mumbai,North Indian,Restaurant,<=15,Y
 REST15848,2026-05-29,Kolkata Kitchen Hub,Chennai,South Indian,Cloud Kitchen,<=15,Y
 REST02318,2026-05-30,Royal Thali Point,Hyderabad,Desserts,Restaurant,>40,Y
+REST09167,2025-12-29,Royal Mess Hub,Pune,Chinese,Restaurant,>40,Y
+REST00838,2026-01-04,Classic Delights Delight,Mumbai,North Indian,Cloud Kitchen,16-25,Y
+REST12881,2026-01-25,Madras Sweets Heaven,Ahmedabad,Pizza,Cloud Kitchen,26-40,Y
+REST19171,2026-01-27,Royal Sweets Corner,Kolkata,North Indian,Restaurant,16-25,N
+REST05815,2026-01-08,Bombay Mess Mahal,Pune,South Indian,Restaurant,16-25,N
+REST05776,2026-01-07,Thindi Mane Thali Heaven,Bengaluru,Pizza,Cloud Kitchen,>40,Y
+REST12604,2026-01-06,Royal Darshini Delight,Bengaluru,North Indian,Cloud Kitchen,26-40,Y
+REST10740,2026-01-04,Madras Express Stop,Mumbai,Pizza,Cloud Kitchen,26-40,Y
+REST11163,2026-01-30,Royal Mess Clouds,Bengaluru,North Indian,Cloud Kitchen,<=15,Y
+REST14704,2025-12-29,Spicy Paratha Hub,Bengaluru,Chinese,Restaurant,26-40,Y
+REST14355,2026-01-03,Kolkata Grill Clouds,Pune,North Indian,Cloud Kitchen,26-40,Y
+REST05809,2026-01-01,Delhi Thali Clouds,Mumbai,Fast Food,Cloud Kitchen,>40,Y
+REST00916,2026-01-07,Taste of Express Heaven,Pune,North Indian,Cloud Kitchen,>40,N
+REST14334,2025-12-31,Punjabi Express Central,Kolkata,Fast Food,Cloud Kitchen,26-40,Y
+REST01277,2026-01-15,Namma Kitchen Zone,Kolkata,Chinese,Cloud Kitchen,16-25,Y
+REST13773,2026-01-03,Namma Mess Zone,Hyderabad,Fast Food,Restaurant,26-40,Y
+REST13898,2026-01-26,Bombay Grill Mahal,Bengaluru,Chinese,Cloud Kitchen,16-25,Y
+REST07384,2025-12-20,Punjabi House Palace,Ahmedabad,North Indian,Cloud Kitchen,26-40,Y
+REST15749,2026-01-17,Tandoori Express Zone,Pune,Pizza,Restaurant,16-25,Y
+REST10528,2026-01-14,Royal Grill Palace,Mumbai,North Indian,Restaurant,16-25,N
+REST18545,2026-01-16,Flavours of Paratha Delight,Mumbai,Chinese,Cloud Kitchen,26-40,Y
+REST01789,2026-01-11,Kolkata Mess Mahal,Delhi,South Indian,Cloud Kitchen,16-25,Y
+REST14691,2026-01-01,Urban Paratha Corner,Ahmedabad,Healthy,Cloud Kitchen,<=15,Y
+REST88050,2025-12-01,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-02,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-03,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-04,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-05,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-06,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-07,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-08,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-09,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-10,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-11,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-12,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-13,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-14,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-15,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-16,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-17,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-18,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88050,2025-12-19,,Mumbai,North Indian,Restaurant,16-25,Y

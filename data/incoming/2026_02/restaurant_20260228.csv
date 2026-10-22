@@ -3517,3 +3517,45 @@ REST07276,2026-02-28,Namma Express Heaven,Ahmedabad,Chinese,Cloud Kitchen,26-40,
 REST01416,2026-02-28,Fresh Delights Zone,Pune,Desserts,Restaurant,16-25,Y
 REST05432,2026-02-28,Flavours of Cafe Central,Bengaluru,Fast Food,Cloud Kitchen,26-40,Y
 REST11150,2026-02-08,Thindi Mane Express Zone,Mumbai,Fast Food,Restaurant,<=15,N
+REST01493,2026-01-15,Fresh Paratha Heaven,Pune,Pizza,Restaurant,16-25,Y
+REST02016,2026-01-23,Spicy Thali Heaven,Chennai,Fast Food,Restaurant,26-40,Y
+REST15113,2026-01-18,Tandoori Mess Nest,Chennai,North Indian,Cloud Kitchen,<=15,N
+REST02731,2026-01-04,Kolkata Grill Central,Kolkata,Chinese,Cloud Kitchen,16-25,Y
+REST17028,2025-12-29,Tandoori Cafe Central,Hyderabad,North Indian,Restaurant,16-25,N
+REST18880,2026-01-24,Kolkata Mess Bhojanalay,Pune,North Indian,Restaurant,16-25,Y
+REST06863,2026-01-01,Annapurna Sweets Delight,Chennai,Desserts,Restaurant,26-40,Y
+REST03961,2026-01-04,Spicy Grill Delight,Pune,Desserts,Cloud Kitchen,16-25,Y
+REST05225,2026-01-09,Fresh Biryani Delight,Bengaluru,North Indian,Cloud Kitchen,16-25,Y
+REST12496,2026-01-07,Taste of Thali Cafe,Chennai,Pizza,Restaurant,16-25,Y
+REST08165,2025-12-31,Namma Curry Clouds,Delhi,Chinese,Cloud Kitchen,<=15,Y
+REST13044,2026-01-08,Flavours of House Zone,Delhi,Healthy,Cloud Kitchen,<=15,Y
+REST15494,2026-01-02,Annapurna Grill Hub,Mumbai,Fast Food,Restaurant,26-40,Y
+REST00763,2026-01-07,Urban Biryani Cafe,Bengaluru,South Indian,Cloud Kitchen,<=15,Y
+REST06404,2026-01-02,Urban Biryani Clouds,Delhi,South Indian,Restaurant,16-25,Y
+REST00412,2026-01-15,Bombay House Central,Bengaluru,Chinese,Cloud Kitchen,<=15,Y
+REST12081,2026-01-02,Annapurna Delights Clouds,Kolkata,Fast Food,Cloud Kitchen,<=15,Y
+REST06315,2026-01-08,Hot & Crispy Wraps Zone,Ahmedabad,North Indian,Cloud Kitchen,>40,Y
+REST08336,2026-01-28,Thindi Mane Thali Nest,Delhi,North Indian,Restaurant,16-25,Y
+REST15018,2026-01-25,Urban Express Corner,Mumbai,North Indian,Cloud Kitchen,16-25,N
+REST08039,2025-12-30,Fresh House Clouds,Delhi,Desserts,Cloud Kitchen,16-25,Y
+REST88020,2025-12-01,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-02,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-03,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-04,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-05,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-06,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-07,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-08,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-09,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-10,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-11,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-12,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-13,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-14,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-15,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-16,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-17,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-18,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-19,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-20,,Mumbai,North Indian,Restaurant,16-25,Y
+REST88020,2025-12-21,,Mumbai,North Indian,Restaurant,16-25,Y
