@@ -177,7 +177,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_CUSTOMER',
+            'LOAD_RAW_CUSTOMER',
             @start_time,
             @end_time,
             'SUCCESS',
@@ -230,7 +230,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_CUSTOMER',
+            'LOAD_RAW_CUSTOMER',
             @start_time,
             @end_time,
             'FAILED',
@@ -341,7 +341,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_RESTAURANT',
+            'LOAD_RAW_RESTAURANT',
             @start_time,
             @end_time,
             'SUCCESS',
@@ -388,7 +388,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_RESTAURANT',
+            'LOAD_RAW_RESTAURANT',
             @start_time,
             @end_time,
             'FAILED',
@@ -495,7 +495,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_MENU_ITEM',
+            'LOAD_RAW_MENU_ITEM',
             @start_time,
             @end_time,
             'SUCCESS',
@@ -542,7 +542,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_MENU_ITEM',
+            'LOAD_RAW_MENU_ITEM',
             @start_time,
             @end_time,
             'FAILED',
@@ -653,7 +653,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_DELIVERY_PARTNER',
+            'LOAD_RAW_DELIVERY_PARTNER',
             @start_time,
             @end_time,
             'SUCCESS',
@@ -700,7 +700,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_DELIVERY_PARTNER',
+            'LOAD_RAW_DELIVERY_PARTNER',
             @start_time,
             @end_time,
             'FAILED',
@@ -817,7 +817,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_ORDER',
+            'LOAD_RAW_ORDER',
             @start_time,
             @end_time,
             'SUCCESS',
@@ -864,7 +864,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_ORDER',
+            'LOAD_RAW_ORDER',
             @start_time,
             @end_time,
             'FAILED',
@@ -975,7 +975,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_ORDER_ITEM',
+            'LOAD_RAW_ORDER_ITEM',
             @start_time,
             @end_time,
             'SUCCESS',
@@ -1022,7 +1022,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_ORDER_ITEM',
+            'LOAD_RAW_ORDER_ITEM',
             @start_time,
             @end_time,
             'FAILED',
@@ -1137,7 +1137,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_DELIVERY_PERFORMANCE',
+            'LOAD_RAW_DELIVERY_PERFORMANCE',
             @start_time,
             @end_time,
             'SUCCESS',
@@ -1184,7 +1184,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_DELIVERY_PERFORMANCE',
+            'LOAD_RAW_DELIVERY_PERFORMANCE',
             @start_time,
             @end_time,
             'FAILED',
@@ -1295,7 +1295,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_RATING',
+            'LOAD_RAW_RATING',
             @start_time,
             @end_time,
             'SUCCESS',
@@ -1342,7 +1342,7 @@ BEGIN
         (
             @batch_id,
             'STG_TO_RAW',
-            'LOAD_RATING',
+            'LOAD_RAW_RATING',
             @start_time,
             @end_time,
             'FAILED',
@@ -1689,7 +1689,7 @@ BEGIN
     (
         @batch_id,
         'STG_TO_RAW',
-        'LOAD_BATCH',
+        'LOAD_RAW_BATCH',
         @batch_start_time,
         @batch_end_time,
         @status,

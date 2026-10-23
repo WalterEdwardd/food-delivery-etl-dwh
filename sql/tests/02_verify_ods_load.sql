@@ -191,7 +191,7 @@ BEGIN
     SELECT TOP 1 @log_inserted = rows_inserted
     FROM control.etl_log
     WHERE batch_id = @batch_id
-      AND step_name = 'LOAD_' + UPPER(@entity)
+      AND step_name = 'LOAD_ODS_' + UPPER(@entity)
     ORDER BY log_id DESC;
 
     DECLARE @effective_valid_cnt BIGINT;

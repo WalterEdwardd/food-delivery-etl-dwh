@@ -65,7 +65,7 @@ BEGIN
         SET rows_processed = 0,
             rows_inserted  = 0,
             message        = 'No valid staging rows found to merge (0 clean rows).'
-        WHERE step_name    = 'LOAD_CUSTOMER'
+        WHERE step_name    = 'LOAD_ODS_CUSTOMER'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -134,7 +134,7 @@ BEGIN
         SET rows_processed = @total_temp,
             rows_inserted  = @inserted_count,
             message        = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged.')
-        WHERE step_name    = 'LOAD_CUSTOMER'
+        WHERE step_name    = 'LOAD_ODS_CUSTOMER'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -197,7 +197,7 @@ BEGIN
         SET rows_processed = 0,
             rows_inserted  = 0,
             message        = 'No valid staging rows found to merge (0 clean rows).'
-        WHERE step_name    = 'LOAD_RESTAURANT'
+        WHERE step_name    = 'LOAD_ODS_RESTAURANT'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -278,7 +278,7 @@ BEGIN
         SET rows_processed = @total_temp,
             rows_inserted  = @inserted_count,
             message        = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged.')
-        WHERE step_name    = 'LOAD_RESTAURANT'
+        WHERE step_name    = 'LOAD_ODS_RESTAURANT'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -341,7 +341,7 @@ BEGIN
         SET rows_processed = 0,
             rows_inserted  = 0,
             message        = 'No valid staging rows found to merge (0 clean rows).'
-        WHERE step_name    = 'LOAD_MENU_ITEM'
+        WHERE step_name    = 'LOAD_ODS_MENU_ITEM'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -416,7 +416,7 @@ BEGIN
         SET rows_processed = @total_temp,
             rows_inserted  = @inserted_count,
             message        = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged.')
-        WHERE step_name    = 'LOAD_MENU_ITEM'
+        WHERE step_name    = 'LOAD_ODS_MENU_ITEM'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -479,7 +479,7 @@ BEGIN
         SET rows_processed = 0,
             rows_inserted  = 0,
             message        = 'No valid staging rows found to merge (0 clean rows).'
-        WHERE step_name    = 'LOAD_DELIVERY_PARTNER'
+        WHERE step_name    = 'LOAD_ODS_DELIVERY_PARTNER'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -560,7 +560,7 @@ BEGIN
         SET rows_processed = @total_temp,
             rows_inserted  = @inserted_count,
             message        = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged.')
-        WHERE step_name    = 'LOAD_DELIVERY_PARTNER'
+        WHERE step_name    = 'LOAD_ODS_DELIVERY_PARTNER'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -623,7 +623,7 @@ BEGIN
         SET rows_processed = 0,
             rows_inserted  = 0,
             message        = 'No valid staging rows found to merge (0 clean rows).'
-        WHERE step_name    = 'LOAD_ORDER'
+        WHERE step_name    = 'LOAD_ODS_ORDER'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -644,7 +644,7 @@ BEGIN
     BEGIN
         -- Idempotent Cleanup: Remove existing warnings for this batch if re-running
         DELETE FROM control.etl_warning 
-        WHERE batch_id = @batch_id AND step_name = 'LOAD_ORDER';
+        WHERE batch_id = @batch_id AND step_name = 'LOAD_ODS_ORDER';
 
         -- Single-Pass Scan with CROSS APPLY: preserves 100% individual multi-warning granularity per order
         INSERT INTO control.etl_warning (
@@ -652,7 +652,7 @@ BEGIN
         )
         SELECT 
             t.batch_id,
-            'LOAD_ORDER',
+            'LOAD_ODS_ORDER',
             'ods_order',
             t.order_id,
             w.entity_name,
@@ -724,7 +724,7 @@ BEGIN
             @mismatch_amount_count  = COUNT(CASE WHEN warning_type = 'TOTAL_AMOUNT_MISMATCH' THEN 1 END),
             @high_value_order_count = COUNT(CASE WHEN warning_type = 'HIGH_VALUE_ORDER' THEN 1 END)
         FROM control.etl_warning
-        WHERE batch_id = @batch_id AND step_name = 'LOAD_ORDER';
+        WHERE batch_id = @batch_id AND step_name = 'LOAD_ODS_ORDER';
     END;
 
     BEGIN TRY
@@ -829,7 +829,7 @@ BEGIN
         SET rows_processed = @total_temp,
             rows_inserted  = @inserted_count,
             message        = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged. Warnings: ', @orphan_cust_count, ' orphan cust, ', @orphan_rest_count, ' orphan rest, ', @orphan_dp_count, ' orphan dp, ', @mismatch_amount_count, ' amount mismatch.')
-        WHERE step_name    = 'LOAD_ORDER'
+        WHERE step_name    = 'LOAD_ODS_ORDER'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -890,7 +890,7 @@ BEGIN
         SET rows_processed = 0,
             rows_inserted  = 0,
             message        = 'No valid staging rows found to merge (0 clean rows).'
-        WHERE step_name    = 'LOAD_ORDER_ITEM'
+        WHERE step_name    = 'LOAD_ODS_ORDER_ITEM'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -968,7 +968,7 @@ BEGIN
         SET rows_processed = @total_temp,
             rows_inserted  = @inserted_count,
             message        = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged.')
-        WHERE step_name    = 'LOAD_ORDER_ITEM'
+        WHERE step_name    = 'LOAD_ODS_ORDER_ITEM'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -1031,7 +1031,7 @@ BEGIN
         SET rows_processed = 0,
             rows_inserted  = 0,
             message        = 'No valid staging rows found to merge (0 clean rows).'
-        WHERE step_name    = 'LOAD_DELIVERY_PERFORMANCE'
+        WHERE step_name    = 'LOAD_ODS_DELIVERY_PERFORMANCE'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -1118,7 +1118,7 @@ BEGIN
         SET rows_processed = @total_temp,
             rows_inserted  = @inserted_count,
             message        = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged.')
-        WHERE step_name    = 'LOAD_DELIVERY_PERFORMANCE'
+        WHERE step_name    = 'LOAD_ODS_DELIVERY_PERFORMANCE'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -1181,7 +1181,7 @@ BEGIN
         SET rows_processed = 0,
             rows_inserted  = 0,
             message        = 'No valid staging rows found to merge (0 clean rows).'
-        WHERE step_name    = 'LOAD_RATING'
+        WHERE step_name    = 'LOAD_ODS_RATING'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -1262,7 +1262,7 @@ BEGIN
         SET rows_processed = @total_temp,
             rows_inserted  = @inserted_count,
             message        = CONCAT('Upsert completed: ', @inserted_count, ' inserted, ', @updated_count, ' updated, ', @unchanged_count, ' unchanged.')
-        WHERE step_name    = 'LOAD_RATING'
+        WHERE step_name    = 'LOAD_ODS_RATING'
           AND batch_id     = @batch_id
           AND status       = 'RUNNING';
 
@@ -1319,7 +1319,7 @@ BEGIN
     -- =========================================================================
     -- 1. CUSTOMER (SSIS Package 05 Conversion)
     -- =========================================================================
-    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_CUSTOMER', @batch_id = @batch_id, @table_name = 'raw_customer';
+    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_CUSTOMER', @batch_id = @batch_id, @table_name = 'raw_customer';
     DELETE FROM temp.ods_customer WHERE batch_id = @batch_id;
 
     -- GATE 1: customer_id (CSPL - Validate Customer Required Fields)
@@ -1470,12 +1470,12 @@ BEGIN
     WHERE rn = 1;
 
     EXEC ods.usp_upsert_ods_customer @batch_id = @batch_id;
-    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_CUSTOMER', @target_table = 'ods_customer', @raw_table = 'raw_customer', @batch_id = @batch_id;
+    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_CUSTOMER', @target_table = 'ods_customer', @raw_table = 'raw_customer', @batch_id = @batch_id;
 
     -- =========================================================================
     -- 2. RESTAURANT (SSIS Package 03 Conversion)
     -- =========================================================================
-    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_RESTAURANT', @batch_id = @batch_id, @table_name = 'raw_restaurant';
+    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_RESTAURANT', @batch_id = @batch_id, @table_name = 'raw_restaurant';
     DELETE FROM temp.ods_restaurant WHERE batch_id = @batch_id;
 
     -- GATE 1: restaurant_id (CSPL - Validate Restaurant ID)
@@ -1727,12 +1727,12 @@ FROM raw.raw_restaurant r
     WHERE rn = 1;
 
     EXEC ods.usp_upsert_ods_restaurant @batch_id = @batch_id;
-    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_RESTAURANT', @target_table = 'ods_restaurant', @raw_table = 'raw_restaurant', @batch_id = @batch_id;
+    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_RESTAURANT', @target_table = 'ods_restaurant', @raw_table = 'raw_restaurant', @batch_id = @batch_id;
 
     -- =========================================================================
     -- 3. DELIVERY PARTNER (SSIS Package 02 Conversion)
     -- =========================================================================
-    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_DELIVERY_PARTNER', @batch_id = @batch_id, @table_name = 'raw_delivery_partner';
+    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_DELIVERY_PARTNER', @batch_id = @batch_id, @table_name = 'raw_delivery_partner';
     DELETE FROM temp.ods_delivery_partner WHERE batch_id = @batch_id;
 
     -- GATE 1: delivery_partner_id (CSPL - Validate Delivery Partner ID)
@@ -2011,12 +2011,12 @@ FROM raw.raw_restaurant r
     WHERE rn = 1;
 
     EXEC ods.usp_upsert_ods_delivery_partner @batch_id = @batch_id;
-    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_DELIVERY_PARTNER', @target_table = 'ods_delivery_partner', @raw_table = 'raw_delivery_partner', @batch_id = @batch_id;
+    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_DELIVERY_PARTNER', @target_table = 'ods_delivery_partner', @raw_table = 'raw_delivery_partner', @batch_id = @batch_id;
 
     -- =========================================================================
     -- 4. MENU ITEM (SSIS Package 04 Conversion)
     -- =========================================================================
-    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_MENU_ITEM', @batch_id = @batch_id, @table_name = 'raw_menu_item';
+    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_MENU_ITEM', @batch_id = @batch_id, @table_name = 'raw_menu_item';
     DELETE FROM temp.ods_menu_item WHERE batch_id = @batch_id;
 
     -- GATE 1: menu_item_id (CSPL - Validate Menu Item ID)
@@ -2218,12 +2218,12 @@ FROM raw.raw_restaurant r
     WHERE rn = 1;
 
     EXEC ods.usp_upsert_ods_menu_item @batch_id = @batch_id;
-    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_MENU_ITEM', @target_table = 'ods_menu_item', @raw_table = 'raw_menu_item', @batch_id = @batch_id;
+    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_MENU_ITEM', @target_table = 'ods_menu_item', @raw_table = 'raw_menu_item', @batch_id = @batch_id;
 
     -- =========================================================================
     -- 5. ORDER (SSIS Package 06 Conversion)
     -- =========================================================================
-    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ORDER', @batch_id = @batch_id, @table_name = 'raw_order';
+    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_ORDER', @batch_id = @batch_id, @table_name = 'raw_order';
     DELETE FROM temp.ods_order WHERE batch_id = @batch_id;
 
     -- GATE 1: order_id (CSPL - Validate Order Required Fields)
@@ -2624,12 +2624,12 @@ FROM raw.raw_restaurant r
     WHERE rn = 1;
 
     EXEC ods.usp_upsert_ods_order @batch_id = @batch_id;
-    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ORDER', @target_table = 'ods_order', @raw_table = 'raw_order', @batch_id = @batch_id;
+    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_ORDER', @target_table = 'ods_order', @raw_table = 'raw_order', @batch_id = @batch_id;
 
     -- =========================================================================
     -- 6. ORDER ITEM (SSIS Package 07 Conversion)
     -- =========================================================================
-    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ORDER_ITEM', @batch_id = @batch_id, @table_name = 'raw_order_item';
+    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_ORDER_ITEM', @batch_id = @batch_id, @table_name = 'raw_order_item';
     DELETE FROM temp.ods_order_item WHERE batch_id = @batch_id;
 
     -- GATE 1: order_item_id format & presence (CSPL - Validate Order Item Required Fields)
@@ -3019,12 +3019,12 @@ FROM raw.raw_restaurant r
     WHERE rn = 1;
 
     EXEC ods.usp_upsert_ods_order_item @batch_id = @batch_id;
-    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ORDER_ITEM', @target_table = 'ods_order_item', @raw_table = 'raw_order_item', @batch_id = @batch_id;
+    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_ORDER_ITEM', @target_table = 'ods_order_item', @raw_table = 'raw_order_item', @batch_id = @batch_id;
 
     -- =========================================================================
     -- 7. DELIVERY PERFORMANCE (SSIS Package 08 Conversion)
     -- =========================================================================
-    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_DELIVERY_PERFORMANCE', @batch_id = @batch_id, @table_name = 'raw_delivery_performance';
+    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_DELIVERY_PERFORMANCE', @batch_id = @batch_id, @table_name = 'raw_delivery_performance';
     DELETE FROM temp.ods_delivery_performance WHERE batch_id = @batch_id;
 
     -- Cache Cancelled Orders to enforce business scope (Delivery performance only tracks delivered orders)
@@ -3631,13 +3631,13 @@ FROM raw.raw_restaurant r
     WHERE rn = 1;
 
     EXEC ods.usp_upsert_ods_delivery_performance @batch_id = @batch_id;
-    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_DELIVERY_PERFORMANCE', @target_table = 'ods_delivery_performance', @raw_table = 'raw_delivery_performance', @batch_id = @batch_id;
+    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_DELIVERY_PERFORMANCE', @target_table = 'ods_delivery_performance', @raw_table = 'raw_delivery_performance', @batch_id = @batch_id;
     DROP TABLE IF EXISTS #Cancelled_Orders;
 
     -- =========================================================================
     -- 8. RATING (SSIS Package 09 Conversion)
     -- =========================================================================
-    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_RATING', @batch_id = @batch_id, @table_name = 'raw_rating';
+    EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_RATING', @batch_id = @batch_id, @table_name = 'raw_rating';
     DELETE FROM temp.ods_rating WHERE batch_id = @batch_id;
 
     -- GATE 1: rating_id format & presence (CSPL - Validate Rating Required Fields)
@@ -4012,7 +4012,7 @@ FROM raw.raw_restaurant r
     WHERE rn = 1;
 
     EXEC ods.usp_upsert_ods_rating @batch_id = @batch_id;
-    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_RATING', @target_table = 'ods_rating', @raw_table = 'raw_rating', @batch_id = @batch_id;
+    EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_RATING', @target_table = 'ods_rating', @raw_table = 'raw_rating', @batch_id = @batch_id;
 
     PRINT CONCAT('>>> [ETL RAW -> ODS] Successfully finished load for BATCH_ID = ', @batch_id);
     END TRY

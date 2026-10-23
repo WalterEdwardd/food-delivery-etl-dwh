@@ -2649,7 +2649,7 @@ where [refTable].[vehicle_type_code] = ?</property>
     END AS is_valid_delivery_partner_pattern
 FROM raw.raw_delivery_partner
 WHERE batch_id = COALESCE(
-    (SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_DELIVERY_PARTNER' AND status = 'RUNNING'),
+    (SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_ODS_DELIVERY_PARTNER' AND status = 'RUNNING'),
     (SELECT MAX(batch_id) FROM raw.raw_delivery_partner)
 );</property>
                 <property dataType="System.String" description="The variable that contains the SQL command to be executed." name="SqlCommandVariable">
@@ -2775,19 +2775,19 @@ WHERE batch_id = COALESCE(
     <DTS:Executable DTS:refId="Package\SQL - End ETL Log" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Execute SQL Task" DTS:DTSID="{E1A0F2B1-4A5C-4E7B-9E31-10B5C98E1002}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="SQL - End ETL Log" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1" DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
-        <SQLTask:SqlTaskData SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}" SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_DELIVERY_PARTNER', @target_table = 'ods_delivery_partner', @raw_table = 'raw_delivery_partner';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+        <SQLTask:SqlTaskData SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}" SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_DELIVERY_PARTNER', @target_table = 'ods_delivery_partner', @raw_table = 'raw_delivery_partner';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable DTS:refId="Package\SQL - Start ETL Log" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Execute SQL Task" DTS:DTSID="{E1A0F2B1-4A5C-4E7B-9E31-10B5C98E1001}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="SQL - Start ETL Log" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1" DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
-        <SQLTask:SqlTaskData SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}" SQLTask:SqlStatementSource="EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_DELIVERY_PARTNER';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+        <SQLTask:SqlTaskData SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}" SQLTask:SqlStatementSource="EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_DELIVERY_PARTNER';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable DTS:refId="Package\SQL - Truncate Temp Table" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Execute SQL Task" DTS:DTSID="{4FA5E2E0-D36F-46FF-9CA3-3750CD4CDECC}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="SQL - Truncate Temp Table" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1" DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
-        <SQLTask:SqlTaskData SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}" SQLTask:SqlStatementSource="DELETE FROM temp.ods_delivery_partner WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_DELIVERY_PARTNER' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_delivery_partner));" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+        <SQLTask:SqlTaskData SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}" SQLTask:SqlStatementSource="DELETE FROM temp.ods_delivery_partner WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_ODS_DELIVERY_PARTNER' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_delivery_partner));" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable DTS:refId="Package\SQL - Upsert ODS Delivery Partner" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Execute SQL Task" DTS:DTSID="{B2A0F2B1-4A5C-4E7B-9E31-10B5C98E2001}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="SQL - Upsert ODS Delivery Partner" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1" DTS:ThreadHint="0">
@@ -2814,7 +2814,7 @@ WHERE batch_id = COALESCE(
         <DTS:Executable DTS:refId="Package.EventHandlers[OnError]\SQL - Log Package Failure" DTS:CreationName="Microsoft.ExecuteSQLTask" DTS:Description="Execute SQL Task" DTS:DTSID="{7C981442-8367-4DF8-B043-4BC812380003}" DTS:ExecutableType="Microsoft.ExecuteSQLTask" DTS:LocaleID="-1" DTS:ObjectName="SQL - Log Package Failure" DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
           <DTS:Variables />
           <DTS:ObjectData>
-            <SQLTask:SqlTaskData SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}" SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_DELIVERY_PARTNER', @status_override = 'FAILED', @error_message = 'Package execution encountered an error.';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+            <SQLTask:SqlTaskData SQLTask:Connection="{6317833F-CB1B-468C-AE48-DE1048AF5E91}" SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_DELIVERY_PARTNER', @status_override = 'FAILED', @error_message = 'Package execution encountered an error.';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>

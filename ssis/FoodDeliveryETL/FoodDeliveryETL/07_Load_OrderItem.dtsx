@@ -10849,7 +10849,7 @@ where [refTable].[order_id] = ?</property>
     END AS is_valid_menu_item_pattern
 FROM raw.raw_order_item
 WHERE batch_id = COALESCE(
-    (SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_ORDER_ITEM' AND status = 'RUNNING'), 
+    (SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_ODS_ORDER_ITEM' AND status = 'RUNNING'), 
     (SELECT MAX(batch_id) FROM raw.raw_order_item)
 );</property>
                 <property
@@ -11516,7 +11516,7 @@ WHERE batch_id = COALESCE(
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{4F9C1D80-ADF2-4711-A2C8-F6D1CC11664B}"
-          SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ORDER_ITEM', @target_table = 'ods_order_item', @raw_table = 'raw_order_item';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_ORDER_ITEM', @target_table = 'ods_order_item', @raw_table = 'raw_order_item';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -11533,7 +11533,7 @@ WHERE batch_id = COALESCE(
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{4F9C1D80-ADF2-4711-A2C8-F6D1CC11664B}"
-          SQLTask:SqlStatementSource="EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ORDER_ITEM';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="EXEC control.usp_start_raw_to_ods_log @process_name = 'RAW_TO_ODS', @step_name = 'LOAD_ODS_ORDER_ITEM';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -11550,7 +11550,7 @@ WHERE batch_id = COALESCE(
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{4F9C1D80-ADF2-4711-A2C8-F6D1CC11664B}"
-          SQLTask:SqlStatementSource="DELETE FROM temp.ods_order_item WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_ORDER_ITEM' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_order_item));" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="DELETE FROM temp.ods_order_item WHERE batch_id = COALESCE((SELECT MAX(batch_id) FROM control.etl_log WHERE step_name = 'LOAD_ODS_ORDER_ITEM' AND status = 'RUNNING'), (SELECT MAX(batch_id) FROM raw.raw_order_item));" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -11639,7 +11639,7 @@ WHERE batch_id = COALESCE(
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{4F9C1D80-ADF2-4711-A2C8-F6D1CC11664B}"
-              SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ORDER_ITEM', @status_override = 'FAILED', @error_message = 'Package execution encountered an error.';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="EXEC control.usp_end_raw_to_ods_log @step_name = 'LOAD_ODS_ORDER_ITEM', @status_override = 'FAILED', @error_message = 'Package execution encountered an error.';" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>

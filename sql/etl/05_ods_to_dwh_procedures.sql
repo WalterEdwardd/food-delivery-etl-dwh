@@ -2736,8 +2736,8 @@ BEGIN
     SET NOCOUNT ON;
     SET XACT_ABORT ON;
 
-    DECLARE @process_name   VARCHAR(100) = 'DWH_POST_FACT_ENRICHMENT',
-            @step_name      VARCHAR(200) = 'ENRICH_DIMENSIONS_BEHAVIORAL_METRICS',
+    DECLARE @process_name   VARCHAR(100) = 'DWH_DIM_ENRICHMENT',
+            @step_name      VARCHAR(200) = 'ENRICH_DIM_METRICS',
             @start_time     DATETIME2(3) = SYSUTCDATETIME();
 
     IF @batch_id IS NULL OR @batch_id <= 0

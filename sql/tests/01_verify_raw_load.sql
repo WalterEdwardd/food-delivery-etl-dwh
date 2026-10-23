@@ -163,14 +163,14 @@ DECLARE @raw_reconciliation TABLE
 );
 
 INSERT INTO @raw_reconciliation VALUES
-    ('customer',             'LOAD_CUSTOMER',             'raw_customer'),
-    ('restaurant',           'LOAD_RESTAURANT',           'raw_restaurant'),
-    ('menu_item',            'LOAD_MENU_ITEM',            'raw_menu_item'),
-    ('delivery_partner',     'LOAD_DELIVERY_PARTNER',     'raw_delivery_partner'),
-    ('order',                'LOAD_ORDER',                'raw_order'),
-    ('order_item',           'LOAD_ORDER_ITEM',           'raw_order_item'),
-    ('delivery_performance', 'LOAD_DELIVERY_PERFORMANCE', 'raw_delivery_performance'),
-    ('rating',               'LOAD_RATING',               'raw_rating');
+    ('customer',             'LOAD_RAW_CUSTOMER',             'raw_customer'),
+    ('restaurant',           'LOAD_RAW_RESTAURANT',           'raw_restaurant'),
+    ('menu_item',            'LOAD_RAW_MENU_ITEM',            'raw_menu_item'),
+    ('delivery_partner',     'LOAD_RAW_DELIVERY_PARTNER',     'raw_delivery_partner'),
+    ('order',                'LOAD_RAW_ORDER',                'raw_order'),
+    ('order_item',           'LOAD_RAW_ORDER_ITEM',           'raw_order_item'),
+    ('delivery_performance', 'LOAD_RAW_DELIVERY_PERFORMANCE', 'raw_delivery_performance'),
+    ('rating',               'LOAD_RAW_RATING',               'raw_rating');
 
 DECLARE @cur_entity VARCHAR(100), @cur_step VARCHAR(100), @cur_table VARCHAR(100);
 DECLARE @cur_raw_cnt BIGINT, @cur_log_cnt BIGINT;
