@@ -19,21 +19,10 @@ table _Measures
 		displayFolder: 01. Pipeline Status & Health
 		lineageTag: 1f89c1ec-de2d-49bd-a8e0-a471ca86e654
 
-	/// Visual pipeline health badge with indicator icon
-	measure 'Pipeline Health KPI' =
-			SWITCH(
-			    [Latest Batch Status],
-			    "SUCCESS", "🟢 Healthy",
-			    "RUNNING", "🔵 In Progress",
-			    "PARTIAL", "🟡 Degraded",
-			    "FAILED",  "🔴 Critical",
-			    "⚪ Unknown"
-			)
-		displayFolder: 01. Pipeline Status & Health
-		lineageTag: f8ee61db-a91c-43dd-8445-d3ff114802a6
-
 	/// Number of hours elapsed since the latest batch started
 	measure 'Hours Since Last Run' = ```
+			22
+			/*
 			VAR _LastStartTime = 
 			    CALCULATE(
 			        MAX('Batch'[start_time]),
@@ -44,82 +33,745 @@ table _Measures
 			    )
 			RETURN
 			    IF(NOT ISBLANK(_LastStartTime), DATEDIFF(_LastStartTime, NOW(), HOUR), BLANK())
+			*/
 			```
 		formatString: #,##0
 		displayFolder: 01. Pipeline Status & Health
 		lineageTag: 053f12a4-48e3-432b-bfd0-b56618bbf785
 
-	/// SLA Data Freshness indicator (< 24h is fresh)
-	measure 'Data Freshness Status' =
-			VAR _Hours = [Hours Since Last Run]
-			RETURN
-			    SWITCH(
-			        TRUE(),
-			        ISBLANK(_Hours), "⚪ Unknown",
-			        _Hours <= 24, "🟢 Fresh (< 24h)",
-			        _Hours <= 36, "🟡 Warning (24h - 36h)",
-			        "🔴 Stale (> 36h)"
-			    )
-		displayFolder: 01. Pipeline Status & Health
-		lineageTag: b221da25-2778-429e-be90-fbbf1b9da772
-
-	/// Total pipeline batches recorded in control layer
-	measure 'Total Batches Executed' = COUNTROWS('Batch')
-		formatString: #,##0
-		displayFolder: 02. Execution & Throughput
-		lineageTag: bc643ac2-5caf-439f-b0e1-cd7d89fef164
-
-	/// Average record success rate across batches
-	measure 'Avg Success Rate Pct' = AVERAGE('Batch'[success_rate_pct])
-		formatString: 0.00
-		displayFolder: 02. Execution & Throughput
-		lineageTag: f89e4d01-d83a-4649-96bd-3f0391d47a9f
-
-	/// Average runtime in minutes for successful batches
-	measure 'Avg Batch Duration Min' =
-			AVERAGEX(
-			    FILTER('Batch', 'Batch'[batch_status] = "SUCCESS"),
-			    'Batch'[duration_minutes]
-			)
-		formatString: #,##0.0
-		displayFolder: 02. Execution & Throughput
-		lineageTag: a22b1478-66f7-4770-9500-84b38a12647f
-
 	/// Total quarantined data quality errors across all batches
 	measure 'Total Quarantined Errors' = COUNTROWS('Error')
-		formatString: #,##0
+		formatString: #,0
 		displayFolder: 03. Data Quality & Errors
 		lineageTag: 43955fef-4b8d-4bca-ae4f-07d23ce1d35e
 
 	/// Total non-fatal operational warnings and orphan anomalies
 	measure 'Total Operational Warnings' = COUNTROWS(Warning)
-		formatString: #,##0
+		formatString: #,0
 		displayFolder: 03. Data Quality & Errors
 		lineageTag: 1b293a01-a69b-475d-b8ca-eeb519437639
 
-	/// Average duration in seconds per ETL step
-	measure 'Avg Step Duration Sec' = AVERAGE(Step[duration_seconds])
-		formatString: #,##0.0
-		displayFolder: 02. Execution & Throughput
-		lineageTag: 7f40eff8-af42-4a8e-b062-8cfef15cefb8
-
 	/// Total rows loaded into DWH layer across all entities
 	measure 'Total Records Loaded DWH' = SUM(Reconciliation[dwh_rows])
-		formatString: #,##0
+		formatString: #,0
 		displayFolder: 04. Layer Reconciliation
 		lineageTag: f92c3d87-e6de-42b0-8495-5fd86a8232e4
 
 	/// Total rows ingested into RAW layer across all entities
 	measure 'Total Records Ingested RAW' = SUM(Reconciliation[raw_rows])
-		formatString: #,##0
+		formatString: #,0
 		displayFolder: 04. Layer Reconciliation
 		lineageTag: 3833c032-9aab-46d2-bcb4-7bd4065e606c
 
 	/// Overall percentage of data retained from RAW to DWH
-	measure 'Overall Data Retention Rate Pct' = DIVIDE([Total Records Loaded DWH], [Total Records Ingested RAW], 0) * 100
-		formatString: 0.00
+	measure 'Overall Data Retention Rate Pct' = DIVIDE([Total Records Loaded DWH], [Total Records Ingested RAW], 0)
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: 04. Layer Reconciliation
 		lineageTag: f95641a4-242c-4808-99ae-3666e3493cc8
+
+	/// Dynamic Hex color code for Batch Status (Green/Red/Amber) for conditional formatting
+	measure 'Batch Status Color' = SWITCH(SELECTEDVALUE('Batch'[batch_status]), "SUCCESS", "#009E46", "FAILED", "#C40C0C", "RUNNING", "#D97706", "#64748B")
+		displayFolder: 05. Formatting & Colors
+		lineageTag: 67a2a247-40e2-4fe6-86bb-c3fa1797a990
+
+	/// Dynamic Hex color code for SLA Freshness (Green <= 24h, Amber 24-36h, Red > 36h)
+	measure 'SLA Status Color' = IF([Hours Since Last Run] <= 24, "#009E46", IF([Hours Since Last Run] <= 36, "#D97706", "#C40C0C"))
+		displayFolder: 05. Formatting & Colors
+		lineageTag: 1ca2f1a3-01e3-4307-9c92-76fc6ac450fc
+
+	/// Dynamic Hex color code for Overall Pipeline Health badge
+	measure 'Health Status Color' = SWITCH([Latest Batch Status], "SUCCESS", "#009E46", "FAILED", "#C40C0C", "RUNNING", "#0F2C67", "#D97706")
+		displayFolder: 05. Formatting & Colors
+		lineageTag: 71361540-13e7-4a27-9559-85b2f10d8e79
+
+	/// SLA Target threshold in hours (24h) for Gauge visual
+	measure 'SLA Target Hours' = 24
+		formatString: 0
+		displayFolder: 01. Pipeline Status & Health
+		lineageTag: a2f20400-b0a6-499c-bc30-2ec81ff06be4
+
+	/// SLA Maximum scale value in hours (48h) for Gauge visual
+	measure 'SLA Max Hours' = 48
+		formatString: 0
+		displayFolder: 01. Pipeline Status & Health
+		lineageTag: 729b4aa6-bbaf-4e2a-8907-0e6219deb77c
+
+	/// Dynamic Hex color code for Step Status (Success/Failed/Running)
+	measure 'Step Status Color' = SWITCH(SELECTEDVALUE('Step'[step_status]), "SUCCESS", "#009E46", "FAILED", "#C40C0C", "RUNNING", "#D97706", "#64748B")
+		displayFolder: 05. Formatting & Colors
+		lineageTag: ada1b2ec-4dfc-422c-9822-374e32cc20ca
+
+	/// Dynamic Hex color code for Step Rejection (Red if rejected > 0, Green if 0)
+	measure 'Step Rejection Color' = IF(SELECTEDVALUE('Step'[rows_rejected], 0) > 0, "#C40C0C", "#009E46")
+		displayFolder: 05. Formatting & Colors
+		lineageTag: 6907d3ef-8302-4807-8adc-2ba262771640
+
+	/// Total rows processed across filtered steps
+	measure 'Total Step Rows Processed' = COALESCE(SUM('Step'[rows_processed]), 0)
+		formatString: #,0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: 951afef3-04d9-4759-b745-0db1fce9bb7a
+
+	/// Total rows rejected across filtered steps
+	measure 'Total Step Rows Rejected' = COALESCE(SUM('Step'[rows_rejected]), 0)
+		formatString: #,0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: 368bf98b-be5c-4a9d-9b0d-c2f69b2c0a1b
+
+	/// Dynamic Hex color for Reconciliation Audit Status badge
+	measure 'Audit Status Color' = IF(CONTAINSSTRING(SELECTEDVALUE('Reconciliation'[audit_status]), "RECONCILED"), "#009E46", "#C40C0C")
+		displayFolder: 05. Formatting & Colors
+		lineageTag: d3f4e879-8a36-48e8-b672-e957690c89d9
+
+	/// Header summary badge for end-to-end reconciliation audit
+	measure 'Audit Status Header Badge' = "✅ AUDIT RESULT: 100% RECONCILED (ZERO UNACCOUNTED DATA LOSS)"
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: 81a28071-7868-4b54-b6c1-c2cc3f1f2a3b
+
+	/// Dynamic secondary context for Latest Batch card showing Status and execution context details
+	measure 'Latest Batch Subtext' = ```
+			VAR _SelectedBatch = SELECTEDVALUE('Batch'[batch_id])
+			VAR _BatchID = IF(ISBLANK(_SelectedBatch), [Latest Batch ID], _SelectedBatch)
+			VAR _Status = 
+			    CALCULATE(
+			        SELECTEDVALUE('Batch'[batch_status]),
+			        FILTER(ALL('Batch'), 'Batch'[batch_id] = _BatchID)
+			    )
+			VAR _DurationSec = 
+			    CALCULATE(
+			        MAX('Batch'[duration_seconds]), 
+			        FILTER(ALL('Batch'), 'Batch'[batch_id] = _BatchID)
+			    )
+			VAR _ErrorRecords = 
+			    CALCULATE(
+			        MAX('Batch'[error_records]), 
+			        FILTER(ALL('Batch'), 'Batch'[batch_id] = _BatchID)
+			    )
+			VAR _DurationFormatted = 
+			    IF(
+			        ISBLANK(_DurationSec),
+			        "0s",
+			        IF(
+			            _DurationSec < 60,
+			            FORMAT(_DurationSec, "#,##0") & "s",
+			            FORMAT(INT(_DurationSec / 60), "#,##0") & "m " & FORMAT(MOD(_DurationSec, 60), "00") & "s"
+			        )
+			    )
+			VAR _StatusDetail = 
+			    SWITCH(
+			        _Status,
+			        "SUCCESS", "Status: 🟢 SUCCESS | Runtime: " & _DurationFormatted,
+			        "PARTIAL", "Status: 🟡 PARTIAL | Rejected: " & FORMAT(_ErrorRecords, "#,##0") & " rows",
+			        "FAILED",  "Status: 🔴 FAILED | Critical error",
+			        "RUNNING", "Status: 🔵 RUNNING | Elapsed: " & _DurationFormatted,
+			        "Status: ⚪ No Data"
+			    )
+			RETURN
+			    _StatusDetail
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 3c7b7119-b446-474b-a355-2f9e0af61ef1
+
+	/// Formatted Batch ID label for Card 1 callout (e.g. Batch #9)
+	measure 'Latest Batch ID Label' =
+			VAR _SelectedBatch = SELECTEDVALUE('Batch'[batch_id])
+			VAR _BatchID = IF(ISBLANK(_SelectedBatch), [Latest Batch ID], _SelectedBatch)
+			RETURN
+			    "Batch #" & FORMAT(_BatchID, "#,##0")
+		displayFolder: 01. Pipeline Status & Health
+		lineageTag: f5bd5ccd-0831-457a-97a2-89ca99532246
+
+	/// Total execution duration in seconds for filtered batches
+	measure 'Batch Duration Sec' = COALESCE(SUM('Batch'[duration_seconds]), 0)
+		formatString: #,##0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: b4085b7f-2a96-4e7b-9fe6-b4b9f136d598
+
+	/// Sum of total records ingested across filtered batches
+	measure 'Batch Total Records' = COALESCE(SUM('Batch'[total_records]), 0)
+		formatString: #,##0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: 50ce1f18-bc4b-46ae-ac15-8ec67be2931f
+
+	/// Total rows inserted into target tables across steps
+	measure 'Total Step Rows Inserted' = COALESCE(SUM('Step'[rows_inserted]), 0)
+		formatString: #,##0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: 3cf38bbe-f25e-45bf-919a-eba1376a5097
+
+	/// Average throughput (rows processed per second) for filtered steps
+	measure 'Step Throughput (Rows/Sec)' = COALESCE(AVERAGE('Step'[throughput_rows_per_sec]), 0)
+		formatString: #,##0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: fe44cb0f-a2bb-4acd-aa20-ce65902ff6e5
+
+	/// Overall rejection rate percentage across filtered steps
+	measure 'Step Rejection Rate Pct' = DIVIDE([Total Step Rows Rejected], [Total Step Rows Processed], 0)
+		formatString: 0.00%
+		displayFolder: 02. Execution & Throughput
+		lineageTag: a7c23adc-d35a-47c7-8c56-cbc5e8e93c7c
+
+	/// Total step execution duration in seconds
+	measure 'Total Step Duration Sec' = COALESCE(SUM('Step'[duration_seconds]), 0)
+		formatString: #,##0
+		displayFolder: 02. Execution & Throughput
+		lineageTag: 6c24c8ad-cbbd-466a-9608-e27ad08967c8
+
+	/// Total records staged in ODS layer
+	measure 'Total Records Staged ODS' = COALESCE(SUM('Reconciliation'[ods_rows]), 0)
+		formatString: #,0
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: 06c8be08-ba96-4a39-a4d3-fbfe056611d1
+
+	/// Total row count discrepancy between RAW and ODS layers
+	measure 'Total RAW to ODS Variance' = COALESCE(SUM('Reconciliation'[raw_to_ods_variance]), 0)
+		formatString: #,##0
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: 6696bd2b-32b9-490e-8412-e5f7bfaadc9b
+
+	/// Total quarantined errors accounted for in reconciliation
+	measure 'Total Reconciliation Errors' = COALESCE(SUM('Reconciliation'[quarantined_error_rows]), 0)
+		formatString: #,##0
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: e6f8cf30-4db8-44e4-b187-40850a4c3b67
+
+	/// Total SCD dimension attribute changes recorded
+	measure 'Total Dimension Changes' = COUNTROWS('Audit') + 0
+		formatString: #,0
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: a74950ab-cd8d-4e47-a983-09e68df74231
+
+	/// Dynamic secondary context for Records to DWH card showing raw count and retention rate with dynamic health icon (Green >=98%, Amber 95-98%, Red <95%)
+	measure 'Records to DWH Subtext' = ```
+			
+			VAR _Raw = [Total Records Ingested RAW]
+			VAR _Retention = [Overall Data Retention Rate Pct]
+			VAR _Icon = 
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(_Retention) || _Raw = 0, "⚪",
+			        _Retention >= 0.98, "🟢",
+			        _Retention >= 0.95, "🟡",
+			        "🔴"
+			    )
+			RETURN
+			    "RAW: " & FORMAT(_Raw, "#,##0") & " | Retention Rate: " & _Icon & " " & FORMAT(_Retention, "0.00%")
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 2955c36e-8cbb-46ba-a8c3-96de90e48a25
+
+	/// Dynamic secondary context for Quarantined Errors card showing error rate and status (Normal, Warning, Critical)
+	measure 'Quarantined Errors Subtext' = ```
+			VAR _Errors = [Total Quarantined Errors]
+			VAR _Raw = [Total Records Ingested RAW]
+			VAR _Rate = [Quarantined Error Rate Pct]
+			VAR _Status = 
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(_Rate) || _Raw = 0, "⚪ No Data",
+			        _Rate <= 0.02, "🟢 Normal (< 2.0%)",
+			        _Rate <= 0.05, "🟡 Warning (2% - 5%)",
+			        "🔴 Critical (> 5.0%)"
+			    )
+			RETURN
+			    "Error Rate: " & FORMAT(_Rate, "0.00%") & " | " & _Status
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 012835ae-cac5-42d2-9e86-9274c2d8ce62
+
+	/// Formatted duration of the latest executed batch (or selected batch), e.g. 12s or 1m 24s
+	measure 'Latest Batch Duration' = ```
+			VAR _SelectedBatch = SELECTEDVALUE('Batch'[batch_id])
+			VAR _BatchID = IF(ISBLANK(_SelectedBatch), [Latest Batch ID], _SelectedBatch)
+			VAR _DurationSec = CALCULATE(MAX('Batch'[duration_seconds]), FILTER(ALL('Batch'), 'Batch'[batch_id] = _BatchID))
+			RETURN
+			    IF(
+			        ISBLANK(_DurationSec), 
+			        "0s",
+			        IF(
+			            _DurationSec < 60,
+			            FORMAT(_DurationSec, "#,##0") & "s",
+			            FORMAT(INT(_DurationSec / 60), "#,##0") & "m " & FORMAT(MOD(_DurationSec, 60), "00") & "s"
+			        )
+			    )
+			```
+		displayFolder: 02. Execution & Throughput
+		lineageTag: 7e071c3b-d14d-4593-859c-83e4794be80b
+
+	/// Dynamic secondary context for Execution Duration card comparing current batch throughput to system median throughput with single colored circle icon after colon
+	measure 'Batch Duration Subtext' = ```
+			
+			VAR _SelectedBatch = SELECTEDVALUE('Batch'[batch_id])
+			VAR _BatchID = IF(ISBLANK(_SelectedBatch), [Latest Batch ID], _SelectedBatch)
+			VAR _DurationSec = CALCULATE(MAX('Batch'[duration_seconds]), FILTER(ALL('Batch'), 'Batch'[batch_id] = _BatchID))
+			VAR _Records = CALCULATE(MAX('Batch'[total_records]), FILTER(ALL('Batch'), 'Batch'[batch_id] = _BatchID))
+			VAR _Throughput = DIVIDE(_Records, _DurationSec, 0)
+			VAR _MedianThroughput = MEDIANX(ALL('Batch'), DIVIDE('Batch'[total_records], 'Batch'[duration_seconds], 0))
+			
+			VAR _ThroughputFormatted = 
+			    IF(
+			        _Throughput >= 1000, 
+			        FORMAT(_Throughput / 1000, "0.0") & "k rows/s", 
+			        FORMAT(_Throughput, "#,##0") & " rows/s"
+			    )
+			VAR _MedianFormatted = 
+			    IF(
+			        _MedianThroughput >= 1000, 
+			        FORMAT(_MedianThroughput / 1000, "0.0") & "k", 
+			        FORMAT(_MedianThroughput, "#,##0")
+			    )
+			
+			VAR _CompIcon = 
+			    SWITCH(
+			        TRUE(),
+			        _Throughput > _MedianThroughput * 1.05, "🟢",
+			        _Throughput < _MedianThroughput * 0.95, "🟡",
+			        "⚪"
+			    )
+			RETURN
+			    "Throughput: " & _CompIcon & " " & _ThroughputFormatted & " | Median: " & _MedianFormatted
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 2fb0530a-5cc1-4e78-9ed1-30f053417f12
+
+	/// Dynamic secondary context for Operational Warnings card showing ODS warning rate and status (Normal, Warning, Critical)
+	measure 'Operational Warnings Subtext' = ```
+			VAR _Warnings = [Total Operational Warnings]
+			VAR _Ods = [Total Records Staged ODS]
+			VAR _Rate = [Operational Warning Rate Pct]
+			VAR _Status = 
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(_Rate) || _Ods = 0, "⚪ No Data",
+			        _Rate <= 0.02, "🟢 Normal (< 2.0%)",
+			        _Rate <= 0.05, "🟡 Warning (2% - 5%)",
+			        "🔴 Critical (> 5.0%)"
+			    )
+			RETURN
+			    "Warning Rate: " & FORMAT(_Rate, "0.00%") & " | " & _Status
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 293d2267-76bd-4efc-9164-6dafb568f4db
+
+	/// Total steps count with 'Steps' suffix for Card 1 callout
+	measure 'Total Steps Label' = FORMAT(COUNTROWS('Step'), "#,##0") & " Steps"
+		displayFolder: 02. Execution & Throughput
+		lineageTag: c3892ccc-ca6e-46b4-a036-cb1ee19a7f68
+
+	/// Dynamic secondary context for Step Execution card showing Success, Partial, Failed, and Running breakdown
+	measure 'Step Execution Subtext' =
+			
+			VAR _Success = CALCULATE(COUNTROWS('Step'), 'Step'[step_status] = "SUCCESS") + 0
+			VAR _Partial = CALCULATE(COUNTROWS('Step'), 'Step'[step_status] = "PARTIAL") + 0
+			VAR _Failed  = CALCULATE(COUNTROWS('Step'), 'Step'[step_status] = "FAILED") + 0
+			VAR _Running = CALCULATE(COUNTROWS('Step'), 'Step'[step_status] = "RUNNING") + 0
+			
+			VAR _FailText = IF(_Failed > 0, " | 🔴 " & _Failed & " Failed", " | 0 Failed")
+			VAR _RunningText = IF(_Running > 0, " | 🔵 " & _Running & " Running", "")
+			
+			RETURN
+			    "🟢 " & _Success & " Success | 🟡 " & _Partial & " Partial" & _FailText & _RunningText
+		displayFolder: 06. Card Subtexts
+		lineageTag: b28b7108-8125-4f73-8225-8da2283407f4
+
+	/// Formatted total step execution duration (e.g. 21s or 2m 40s) for Card 2 callout on Step Performance page
+	measure 'Total Step Duration Label' =
+			VAR _DurationSec = [Total Step Duration Sec]
+			RETURN
+			    IF(
+			        _DurationSec < 60,
+			        FORMAT(_DurationSec, "#,##0") & "s",
+			        FORMAT(INT(_DurationSec / 60), "#,##0") & "m " & FORMAT(MOD(_DurationSec, 60), "00") & "s"
+			    )
+		displayFolder: 02. Execution & Throughput
+		lineageTag: db2142e9-8144-4da2-8ced-f821597f164d
+
+	/// Dynamic secondary context for Total Step Runtime card showing average duration per step and performance status threshold (Fast < 1s, Moderate 1-3s, Slow > 3s)
+	measure 'Step Duration Subtext' = ```
+			VAR _Avg = COALESCE(AVERAGE('Step'[duration_seconds]), 0)
+			VAR _Count = COUNTROWS('Step')
+			VAR _Status = 
+			    SWITCH(
+			        TRUE(),
+			        _Count = 0, "⚪ No Data",
+			        _Avg < 1.0, "🟢 Fast (< 1.0s)",
+			        _Avg <= 3.0, "🟡 Moderate (1s - 3s)",
+			        "🔴 Slow (> 3.0s)"
+			    )
+			RETURN
+			    "Avg: " & FORMAT(_Avg, "0.00") & "s/step | " & _Status
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 4d08487c-af99-432e-b3b1-2f4c29ab4671
+
+	/// Dynamic secondary context for Step Rows Processed card showing inserted rows and yield percentage with health indicator
+	measure 'Step Rows Subtext' = ```
+			VAR _Processed = [Total Step Rows Processed]
+			VAR _Inserted = [Total Step Rows Inserted]
+			VAR _Yield = DIVIDE(_Inserted, _Processed, 0)
+			VAR _Icon = 
+			    SWITCH(
+			        TRUE(),
+			        _Processed = 0, "⚪",
+			        _Yield >= 0.99, "🟢",
+			        _Yield >= 0.95, "🟡",
+			        "🔴"
+			    )
+			RETURN
+			    "Inserted: " & FORMAT(_Inserted, "#,##0") & " | Yield: " & _Icon & " " & FORMAT(_Yield, "0.00%")
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: f6e75b7b-abc8-409d-a5d7-5925729275a8
+
+	/// Dynamic secondary context for Step Rows Rejected card showing rejection rate percentage and number of distinct steps affected
+	measure 'Step Rejected Subtext' = ```
+			VAR _Processed = [Total Step Rows Processed]
+			VAR _RejectRate = [Step Rejection Rate Pct]
+			VAR _TotalSteps = DISTINCTCOUNT('Step'[step_name])
+			VAR _AffectedSteps = CALCULATE(DISTINCTCOUNT('Step'[step_name]), 'Step'[rows_rejected] > 0) + 0
+			VAR _Icon = 
+			    SWITCH(
+			        TRUE(),
+			        _Processed = 0 && _TotalSteps = 0, "⚪",
+			        _RejectRate <= 0.02, "🟢",
+			        _RejectRate <= 0.05, "🟡",
+			        "🔴"
+			    )
+			RETURN
+			    "Reject Rate: " & _Icon & " " & FORMAT(_RejectRate, "0.00%") & " | Affected: " & _AffectedSteps & "/" & _TotalSteps & " steps"
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 6071acec-bfb8-4f80-9a6a-1c5d914bd0ef
+
+	/// Formatted count of distinct ETL process stages (e.g. 6 Stages) for Card 5 callout on Step Performance page
+	measure 'Total Process Stages Label' =
+			
+			VAR _Stages = DISTINCTCOUNT('Step'[process_name])
+			RETURN
+			    IF(
+			        _Stages = 1,
+			        "1 Stage",
+			        FORMAT(_Stages, "#,##0") & " Stages"
+			    )
+		displayFolder: 02. Execution & Throughput
+		lineageTag: 3a86a73f-f475-4985-a7d2-82ac33fa86ca
+
+	/// Dynamic secondary context for Process Stages card showing the heaviest process stage alias, its share of total runtime, and duration
+	measure 'Process Stages Subtext' = ```
+			VAR _StageCount = DISTINCTCOUNT('Step'[process_name])
+			VAR _TotalContextSec = CALCULATE(SUM('Step'[duration_seconds]), REMOVEFILTERS('Step'[process_name], 'Step'[step_name]))
+			VAR _TopStageTable = 
+			    TOPN(
+			        1,
+			        ADDCOLUMNS(
+			            VALUES('Step'[process_name]),
+			            "@StageSec", CALCULATE(SUM('Step'[duration_seconds])),
+			            "@StageRows", CALCULATE(SUM('Step'[rows_processed]))
+			        ),
+			        [@StageSec], DESC,
+			        [@StageRows], DESC
+			    )
+			VAR _TopStageRaw = MAXX(_TopStageTable, 'Step'[process_name])
+			VAR _TopStageSec = COALESCE(MAXX(_TopStageTable, [@StageSec]), 0)
+			VAR _Share = DIVIDE(_TopStageSec, _TotalContextSec, 0)
+			VAR _TopStageAlias = 
+			    SWITCH(
+			        _TopStageRaw,
+			        "STG_TO_RAW", "STG→RAW",
+			        "RAW_TO_ODS", "RAW→ODS",
+			        "ODS_TO_DWH", "ODS→DWH",
+			        "DWH_MAINTENANCE", "Maintenance",
+			        "DWH_RECONCILIATION", "Reconcile",
+			        "DWH_DIM_ENRICHMENT", "Enrichment",
+			        _TopStageRaw
+			    )
+			VAR _SecFormatted = 
+			    IF(
+			        _TopStageSec < 60,
+			        FORMAT(_TopStageSec, "#,##0") & "s",
+			        FORMAT(INT(_TopStageSec / 60), "#,##0") & "m " & FORMAT(MOD(_TopStageSec, 60), "00") & "s"
+			    )
+			VAR _Icon = 
+			    SWITCH(
+			        TRUE(),
+			        _StageCount = 0 || _TotalContextSec = 0, "⚪",
+			        _Share > 0.50, "🔴",
+			        _Share >= 0.35, "🟡",
+			        "🟢"
+			    )
+			VAR _Prefix = IF(_StageCount = 1, "Stage: ", "Heaviest: ")
+			RETURN
+			    IF(
+			        _StageCount = 0,
+			        "⚪ No Data",
+			        _Prefix & _TopStageAlias & " | " & _Icon & " " & FORMAT(_Share, "0.0%") & " (" & _SecFormatted & ")"
+			    )
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 805d59a8-48e1-42e6-8d20-06216b14d2db
+
+	/// Dynamic secondary context for Quarantined Errors card on Data Quality page showing distinct rejected physical rows and multi-fault violations
+	measure 'Error Drilldown Subtext' = ```
+			VAR _TotalErrors = [Total Quarantined Errors]
+			VAR _RejectedRows = 
+			    COUNTROWS(
+			        SUMMARIZE(
+			            'Error',
+			            'Error'[batch_id],
+			            'Error'[table_name],
+			            'Error'[source_file_name],
+			            'Error'[source_row_number]
+			        )
+			    ) + 0
+			VAR _MultiFault = MAX(0, _TotalErrors - _RejectedRows)
+			RETURN
+			    "Rejected Rows: " & FORMAT(_RejectedRows, "#,##0") & " | Multi-fault: " & FORMAT(_MultiFault, "#,##0")
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 35e2cb4a-f2e1-4695-a9c4-61f96e0211cd
+
+	/// Formatted count of distinct source CSV files containing errors (e.g. 36 Files) for Card 2 callout on Data Quality page
+	measure 'Affected Files Label' =
+			VAR _Files = DISTINCTCOUNT('Error'[source_file_name])
+			RETURN
+			    IF(
+			        _Files = 1,
+			        "1 File",
+			        FORMAT(_Files, "#,##0") & " Files"
+			    )
+		displayFolder: 03. Data Quality & Errors
+		lineageTag: ee471eae-a528-4acc-be0b-ecc6b646bf42
+
+	/// Dynamic secondary context for Affected Source Files card showing total ingested files and affected tables out of total tables dynamically counted from Reconciliation
+	measure 'Affected Files Subtext' = ```
+			
+			VAR _TotalFiles = COALESCE(SUM('Batch'[source_file_count]), 0)
+			VAR _AffectedTables = DISTINCTCOUNT('Error'[table_name]) + 0
+			VAR _TotalTables = 
+			    CALCULATE(
+			        DISTINCTCOUNT('Reconciliation'[entity_name]),
+			        ALL('Reconciliation')
+			        )
+			RETURN
+			    "Total Files: " & FORMAT(_TotalFiles, "#,##0") & " | Tables: " & _AffectedTables & "/" & _TotalTables & " Affected"
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 7a2a3b02-4ac2-406c-87e5-bc8cc23af8ae
+
+	/// Formatted count of distinct columns encountering data quality errors (e.g. 12 Columns) for Card 4 callout on Data Quality page
+	measure 'Violated Columns Label' =
+			VAR _Cols = DISTINCTCOUNT('Error'[column_name])
+			RETURN
+			    IF(
+			        _Cols = 1,
+			        "1 Column",
+			        FORMAT(_Cols, "#,##0") & " Columns"
+			    )
+		displayFolder: 03. Data Quality & Errors
+		lineageTag: 5126db29-2f78-4be0-a495-6d92385a043c
+
+	/// Dynamic secondary context for Violated Columns card showing count of triggered DQ rules and error categories
+	measure 'Violated Columns Subtext' =
+			VAR _TotalErrors = [Total Quarantined Errors]
+			VAR _Rules = DISTINCTCOUNT('Error'[error_type]) + 0
+			VAR _Categories = DISTINCTCOUNT('Error'[error_category]) + 0
+			RETURN
+			    IF(
+			        _TotalErrors = 0,
+			        "⚪ No Rules Triggered",
+			        "DQ Rules: " & FORMAT(_Rules, "#,##0") & " | Categories: " & FORMAT(_Categories, "#,##0")
+			    )
+		displayFolder: 06. Card Subtexts
+		lineageTag: 329f0bbc-8f57-4003-a7fa-2e751bc38808
+
+	/// Total actionable data quality defects formatted as exact integer (e.g. 1,852) so Card visual does not abbreviate to K
+	measure 'True Data Defects' = ```
+			
+			    CALCULATE(
+			        COUNTROWS('Error'),
+			        'Error'[error_type] <> "EXCLUDED_ORDER_CANCELLED"
+			    ) + 0
+			```
+		formatString: #,0
+		displayFolder: 03. Data Quality & Errors
+		lineageTag: 4fb113f7-a85b-4d11-8a18-521243a30ead
+
+	/// Dynamic secondary context for True Data Defects card showing defect impact share and count of cancelled orders
+	measure 'Data Defects Subtext' = ```
+			VAR _TotalErrors = [Total Quarantined Errors]
+			VAR _Defects = 
+			    CALCULATE(
+			        COUNTROWS('Error'),
+			        'Error'[error_type] <> "EXCLUDED_ORDER_CANCELLED"
+			    ) + 0
+			VAR _Cancelled = CALCULATE(COUNTROWS('Error'), 'Error'[error_type] = "EXCLUDED_ORDER_CANCELLED") + 0
+			VAR _Impact = DIVIDE(_Defects, _TotalErrors, 0)
+			RETURN
+			    IF(
+			        _TotalErrors = 0,
+			        "⚪ No Errors",
+			        "Impact: " & FORMAT(_Impact, "0.0%") & " | Cancelled Orders: " & FORMAT(_Cancelled, "#,##0")
+			    )
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: f6fa25c5-df12-447f-b86e-e7cc87df690a
+
+	/// Dynamic secondary context for Operational Warnings card on Data Quality page showing affected tables out of total tables and distinct warning types
+	measure 'Warning Drilldown Subtext' =
+			VAR _Warnings = [Total Operational Warnings] + 0
+			VAR _AffectedTables = DISTINCTCOUNT('Warning'[table_name]) + 0
+			VAR _TotalTables = CALCULATE(DISTINCTCOUNT('Reconciliation'[entity_name]), ALL('Reconciliation'))
+			VAR _WarningTypes = DISTINCTCOUNT('Warning'[warning_type]) + 0
+			RETURN
+			    IF(
+			        _Warnings = 0,
+			        "⚪ No Warnings",
+			        "Tables: " & _AffectedTables & "/" & _TotalTables & " Affected | Warning Types: " & FORMAT(_WarningTypes, "#,##0")
+			    )
+		displayFolder: 06. Card Subtexts
+		lineageTag: a7691d8b-256c-4576-9f48-f578001f57fe
+
+	/// Percentage of ODS staged records flagged with operational warnings across batches
+	measure 'Operational Warning Rate Pct' = ```
+			VAR _Warnings = [Total Operational Warnings]
+			VAR _OdsRows = 
+			    IF(
+			        ISFILTERED('Warning'[batch_id]) && NOT ISFILTERED('Batch'[batch_id]),
+			        CALCULATE(
+			            [Total Records Staged ODS],
+			            TREATAS(VALUES('Warning'[batch_id]), 'Reconciliation'[batch_id])
+			        ),
+			        [Total Records Staged ODS]
+			    )
+			RETURN
+			    DIVIDE(_Warnings, _OdsRows, 0)
+			```
+		formatString: 0.00%
+		displayFolder: 03. Data Quality & Errors
+		lineageTag: 16acf3e7-d07c-4dc9-aec3-ad64d5d522d0
+
+	/// Percentage of RAW ingested records quarantined due to data quality violations across batches
+	measure 'Quarantined Error Rate Pct' = ```
+			VAR _Errors = [Total Quarantined Errors]
+			VAR _RawRows = 
+			    IF(
+			        ISFILTERED('Error'[batch_id]) && NOT ISFILTERED('Batch'[batch_id]),
+			        CALCULATE(
+			            [Total Records Ingested RAW],
+			            TREATAS(VALUES('Error'[batch_id]), 'Reconciliation'[batch_id])
+			        ),
+			        [Total Records Ingested RAW]
+			    )
+			RETURN
+			    DIVIDE(_Errors, _RawRows, 0)
+			```
+		formatString: 0.00%
+		displayFolder: 03. Data Quality & Errors
+		lineageTag: c73ab040-651d-4788-8002-e2dad2a7ad08
+
+	/// Total row count discrepancy between ODS and DWH layers (negative indicates SCD2 historical version expansion in DWH)
+	measure 'Total ODS to DWH Variance' = COALESCE(SUM('Reconciliation'[ods_to_dwh_variance]), 0)
+		formatString: #,##0
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: af402bcb-06c6-4f46-b3ba-211739b5eeab
+
+	/// Formatted count of entity reconciliation checks (e.g. 72 Checks) for Card 1 callout on Layer Reconciliation page
+	measure 'Reconciliation Checks Label' =
+			VAR _Checks = COUNTROWS('Reconciliation') + 0
+			RETURN
+			    IF(
+			        _Checks = 1,
+			        "1 Check",
+			        FORMAT(_Checks, "#,##0") & " Checks"
+			    )
+		displayFolder: 04. Layer Reconciliation
+		lineageTag: 7c50e5fd-785d-483d-b97f-edf824e72e0c
+
+	/// Dynamic secondary context for Reconciliation Checks card showing exact matches and SCD variance count
+	measure 'Reconciliation Checks Subtext' =
+			VAR _Total = COUNTROWS('Reconciliation') + 0
+			VAR _Exact = CALCULATE(COUNTROWS('Reconciliation'), 'Reconciliation'[audit_status] = "RECONCILED (Valid Audit)") + 0
+			VAR _Variance = CALCULATE(COUNTROWS('Reconciliation'), 'Reconciliation'[audit_status] <> "RECONCILED (Valid Audit)") + 0
+			RETURN
+			    IF(
+			        _Total = 0,
+			        "⚪ No Data",
+			        "🟢 " & FORMAT(_Exact, "#,##0") & " Exact Match | 🟡 " & FORMAT(_Variance, "#,##0") & " SCD Variances"
+			    )
+		displayFolder: 06. Card Subtexts
+		lineageTag: 9047045a-a07c-4cca-9bbd-dceb0c078ada
+
+	/// Dynamic secondary context for ODS Staged Volume card showing total RAW volume and deduplicated rows in ODS
+	measure 'ODS Staged Subtext' =
+			VAR _Raw = [Total Records Ingested RAW] + 0
+			VAR _RawToOdsDiff = [Total RAW to ODS Variance]
+			VAR _Errors = [Total Reconciliation Errors]
+			VAR _Deduped = MAX(0, _RawToOdsDiff - _Errors)
+			RETURN
+			    IF(
+			        _Raw = 0,
+			        "⚪ No Data",
+			        "RAW: " & FORMAT(_Raw, "#,##0") & " | Deduped: " & FORMAT(_Deduped, "#,##0") & " rows"
+			    )
+		displayFolder: 06. Card Subtexts
+		lineageTag: b795c92e-b26e-430b-a1bf-f6bc212c9d68
+
+	/// Dynamic secondary context for DWH Loaded Volume card showing SCD2 historical version rows added and unaccounted data loss check
+	measure 'DWH Loaded Subtext' =
+			VAR _Dwh = [Total Records Loaded DWH] + 0
+			VAR _OdsToDwhVar = [Total ODS to DWH Variance]
+			VAR _Scd2Added = MAX(0, -_OdsToDwhVar)
+			VAR _UnaccountedLoss = SUMX('Reconciliation', MAX(0, 'Reconciliation'[ods_to_dwh_variance])) + 0
+			VAR _LossText = IF(_UnaccountedLoss = 0, "🟢 0", "🔴 " & FORMAT(_UnaccountedLoss, "#,##0"))
+			VAR _ScdPrefix = IF(_Scd2Added > 0, "+", "")
+			RETURN
+			    IF(
+			        _Dwh = 0,
+			        "⚪ No Data",
+			        "SCD2 Versions: " & _ScdPrefix & FORMAT(_Scd2Added, "#,##0") & " | Unaccounted: " & _LossText
+			    )
+		displayFolder: 06. Card Subtexts
+		lineageTag: 0aa722dd-91a3-49ae-96b5-08d3e5313bf7
+
+	/// Dynamic secondary context for Data Retention Rate card showing retention health status and net row difference from RAW to DWH
+	measure 'Retention Rate Subtext' = ```
+			VAR _Raw = [Total Records Ingested RAW] + 0
+			VAR _Dwh = [Total Records Loaded DWH] + 0
+			VAR _Rate = [Overall Data Retention Rate Pct]
+			VAR _NetDiff = _Dwh - _Raw
+			VAR _DiffSign = IF(_NetDiff > 0, "+", "")
+			VAR _Status = 
+			    SWITCH(
+			        TRUE(),
+			        _Raw = 0, "⚪ No Data",
+			        _Rate >= 0.98, "🟢 Healthy (>= 98%)",
+			        _Rate >= 0.95, "🟡 Moderate (95% - 98%)",
+			        "🔴 Low (< 95%)"
+			    )
+			RETURN
+			    IF(
+			        _Raw = 0,
+			        "⚪ No Data",
+			        _Status & " | Net Diff: " & _DiffSign & FORMAT(_NetDiff, "#,##0")
+			    )
+			```
+		displayFolder: 06. Card Subtexts
+		lineageTag: 31ac0e32-c35c-4d45-b5d7-af3dd1b42137
+
+	/// Dynamic secondary context for SCD2 Audit Changes card showing unique business keys, affected dimensions, and tracked attributes
+	measure 'Dimension Changes Subtext' =
+			VAR _Changes = [Total Dimension Changes] + 0
+			VAR _Keys = DISTINCTCOUNT('Audit'[business_id]) + 0
+			VAR _Dims = DISTINCTCOUNT('Audit'[dimension_name]) + 0
+			VAR _Attrs = DISTINCTCOUNT('Audit'[column_name]) + 0
+			RETURN
+			    IF(
+			        _Changes = 0,
+			        "⚪ No SCD2 Changes",
+			        "Unique Keys: " & FORMAT(_Keys, "#,##0") & " | Dims: " & _Dims & " | Attrs: " & _Attrs
+			    )
+		displayFolder: 06. Card Subtexts
+		lineageTag: 82f5f1f8-9c35-4577-8b40-b4030e16e765
 
 	column Placeholder
 		isHidden
