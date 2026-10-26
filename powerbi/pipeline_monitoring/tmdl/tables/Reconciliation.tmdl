@@ -1,65 +1,124 @@
 table Reconciliation
-	lineageTag: ff0616ec-4740-4d8e-8de5-025ad840f8ef
+	lineageTag: 522a71da-9ecb-4fa5-9c84-612b3ac83dd2
+
+	column reconciliation_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 15a0c65d-9ab9-4d0f-9fc7-6e4ae6878bf6
+		summarizeBy: none
+		sourceColumn: reconciliation_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column batch_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 30205817-807f-4958-98f5-5fa2b710a300
+		summarizeBy: none
+		sourceColumn: batch_id
+
+		annotation SummarizationSetBy = Automatic
 
 	column entity_name
 		dataType: string
-		isKey
-		isNullable: false
-		lineageTag: c9a3a7d4-0223-42bb-92f7-1e7b4354a62b
+		lineageTag: 626376c8-e99e-4b74-9e55-cb82b77d8f0d
+		summarizeBy: none
 		sourceColumn: entity_name
+
+		annotation SummarizationSetBy = Automatic
 
 	column raw_rows
 		dataType: int64
-		lineageTag: 8725e781-2a09-4c32-93b1-8204167687bd
+		formatString: 0
+		lineageTag: 3a68eef3-c308-48de-8095-9a9aa6f8db4b
+		summarizeBy: sum
 		sourceColumn: raw_rows
+
+		annotation SummarizationSetBy = Automatic
 
 	column ods_rows
 		dataType: int64
-		lineageTag: a0df18b8-2d52-4aae-824c-48af1807576d
+		formatString: 0
+		lineageTag: 00b315a0-b053-4c63-afdc-0288d6f13784
+		summarizeBy: sum
 		sourceColumn: ods_rows
+
+		annotation SummarizationSetBy = Automatic
 
 	column dwh_rows
 		dataType: int64
-		lineageTag: cce9c387-fa59-44d1-ac23-680655721b0f
+		formatString: 0
+		lineageTag: eafbe65e-94e5-492c-b043-116ca4f948ac
+		summarizeBy: sum
 		sourceColumn: dwh_rows
+
+		annotation SummarizationSetBy = Automatic
 
 	column raw_to_ods_variance
 		dataType: int64
-		lineageTag: 3b58667d-fceb-4d7f-9350-45b05fd0b349
+		formatString: 0
+		lineageTag: 155457c0-c248-42d4-92a4-800600e3a88b
+		summarizeBy: sum
 		sourceColumn: raw_to_ods_variance
+
+		annotation SummarizationSetBy = Automatic
 
 	column ods_to_dwh_variance
 		dataType: int64
-		lineageTag: c7df9bde-ce8e-4e08-ae64-8745d9b3efe5
+		formatString: 0
+		lineageTag: 1a80b72c-5e38-4052-aef5-8a33343f4ce6
+		summarizeBy: sum
 		sourceColumn: ods_to_dwh_variance
+
+		annotation SummarizationSetBy = Automatic
 
 	column quarantined_error_rows
 		dataType: int64
-		lineageTag: e221eb20-f3b6-4834-a343-55423776e740
+		formatString: 0
+		lineageTag: 9cd6a4b1-62b5-440d-a970-00100ffa9269
+		summarizeBy: sum
 		sourceColumn: quarantined_error_rows
+
+		annotation SummarizationSetBy = Automatic
 
 	column warning_rows
 		dataType: int64
-		lineageTag: 5e1fa736-8dce-43f1-b924-f185f5ef7a0f
+		formatString: 0
+		lineageTag: 3432ffd1-a1df-455c-96fe-868e2bbe51c7
+		summarizeBy: sum
 		sourceColumn: warning_rows
+
+		annotation SummarizationSetBy = Automatic
 
 	column data_retention_rate_pct
 		dataType: double
-		lineageTag: 514cebb8-16dc-487d-8e18-8e2cad3a9c27
+		lineageTag: 4181271a-4ec1-488c-b1d5-37a925699891
+		summarizeBy: sum
 		sourceColumn: data_retention_rate_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column audit_status
 		dataType: string
-		isNullable: false
-		lineageTag: 1ea1035f-d8df-44f8-9ce8-ca835ba3968c
+		lineageTag: 5cfbb543-aed1-4a0d-9718-26127dffd6ab
+		summarizeBy: none
 		sourceColumn: audit_status
 
-	partition v_monitor_layer_reconciliation = m
+		annotation SummarizationSetBy = Automatic
+
+	partition Reconciliation = m
 		mode: import
 		source =
 				let
 				    Source = Sql.Database("localhost\SQLEXPRESS", "FoodDeliveryDW"),
-				    bi_v_monitor_layer_reconciliation = Source{[Schema="bi",Item="v_monitor_layer_reconciliation"]}[Data]
+				    bi_v_monitor_layer_reconciliation = Source{[Schema="bi",Item="v_monitor_layer_reconciliation"]}[Data],
+				    #"Sorted Rows" = Table.Sort(bi_v_monitor_layer_reconciliation,{{"batch_id", Order.Ascending}})
 				in
-				    bi_v_monitor_layer_reconciliation
+				    #"Sorted Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
 
