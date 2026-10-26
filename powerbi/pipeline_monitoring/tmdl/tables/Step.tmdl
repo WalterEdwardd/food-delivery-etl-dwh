@@ -45,6 +45,7 @@ table Step
 
 	column duration_seconds
 		dataType: int64
+		formatString: #,##0 "s"
 		lineageTag: 0901ef73-1a7f-4c03-b5dd-bcd9f7ebca98
 		sourceColumn: duration_seconds
 
@@ -62,28 +63,33 @@ table Step
 	column rows_processed
 		dataType: int64
 		isNullable: false
+		formatString: #,##0
 		lineageTag: 32afed65-dd5f-4435-a650-265e7d716914
 		sourceColumn: rows_processed
 
 	column rows_inserted
 		dataType: int64
 		isNullable: false
+		formatString: #,##0
 		lineageTag: 64230d31-1d1a-4cf7-9ec1-c8fa3cc49f32
 		sourceColumn: rows_inserted
 
 	column rows_rejected
 		dataType: int64
 		isNullable: false
+		formatString: #,##0
 		lineageTag: 299822f9-a809-4cd3-bdf5-90c97518452d
 		sourceColumn: rows_rejected
 
 	column rejection_rate_pct
 		dataType: double
+		formatString: 0.0%
 		lineageTag: 748e71c0-def6-41bc-81bf-732972be264e
 		sourceColumn: rejection_rate_pct
 
 	column throughput_rows_per_sec
 		dataType: double
+		formatString: #,##0 "rows/s"
 		lineageTag: 0b507b81-7a2f-4f40-ae7d-f1daaf1a01a0
 		sourceColumn: throughput_rows_per_sec
 
@@ -106,4 +112,8 @@ table Step
 				    bi_v_monitor_step_performance = Source{[Schema="bi",Item="v_monitor_step_performance"]}[Data]
 				in
 				    bi_v_monitor_step_performance
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
 
