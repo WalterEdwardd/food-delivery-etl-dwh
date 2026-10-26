@@ -1,16 +1,16 @@
 # DATA DICTIONARY – POWER BI PIPELINE MONITORING & OBSERVABILITY MODEL
 
-**Mô hình**: QuickBite ETL Pipeline Monitoring & Observability  
-**Nguồn dữ liệu (Database)**: `FoodDeliveryDW` (SQL Server `localhost\SQLEXPRESS`)  
-**Tầng Semantic Serving**: Schema `bi` (6 Semantic Views)  
-**Chế độ lưu trữ (Storage Mode)**: `Import` (Bộ nhớ Tabular / VertiPaq Engine)  
-**File định dạng mô hình**: 
+**Model Name**: QuickBite ETL Pipeline Monitoring & Observability  
+**Database**: `FoodDeliveryDW` (SQL Server `localhost\SQLEXPRESS`)  
+**Semantic Serving Layer**: Schema `bi` (6 Semantic Views)  
+**Storage Mode**: `Import` (Tabular / VertiPaq In-Memory Engine)  
+**Model Definition Files**: 
 - TMDL: [`powerbi/pipeline_monitoring/tmdl/`](file:///c:/Users/PC/Downloads/food-delivery-etl-dwh/powerbi/pipeline_monitoring/tmdl/)
 - BIM: [`powerbi/pipeline_monitoring/model.bim`](file:///c:/Users/PC/Downloads/food-delivery-etl-dwh/powerbi/pipeline_monitoring/model.bim)
 
 ---
 
-## 1. SƠ ĐỒ MỐI QUAN HỆ (DATA MODEL ERD)
+## 1. DATA MODEL RELATIONSHIPS (ERD)
 
 ```mermaid
 erDiagram
@@ -18,6 +18,7 @@ erDiagram
     Batch ||--o{ Error : "1 : N (batch_id)"
     Batch ||--o{ Warning : "1 : N (batch_id)"
     Batch ||--o{ Audit : "1 : N (batch_id)"
+    Batch ||--o{ Reconciliation : "1 : N (batch_id)"
     
     Batch {
         bigint batch_id PK
@@ -67,11 +68,17 @@ erDiagram
     }
 
     Reconciliation {
-        varchar entity_name PK
+        bigint reconciliation_id PK
+        bigint batch_id FK
+        varchar entity_name
         bigint raw_rows
         bigint ods_rows
         bigint dwh_rows
+        bigint raw_to_ods_variance
+        bigint ods_to_dwh_variance
         bigint quarantined_error_rows
+        bigint warning_rows
+        double data_retention_rate_pct
         varchar audit_status
     }
 
@@ -82,318 +89,252 @@ erDiagram
 
 ---
 
-## 2. TỔNG QUAN CÁC BẢNG TRONG MÔ HÌNH
+## 2. DATASET & TABLE OVERVIEW
 
-| Tên Bảng | Vai Trò Trong Model | Nguồn Dữ Liệu SQL | Số Cột | Số Dòng Hiện Tại | Khóa Chính (PK) / Khóa Ngoại (FK) |
+| Table Name | Model Role | SQL Data Source | Columns | Current Rows | Key Mapping (PK / FK) |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| **`Batch`** | Dimension / Header | `bi.v_monitor_pipeline_overview` | 18 | 36 | **PK**: `batch_id` |
-| **`Step`** | Fact (Execution Logs) | `bi.v_monitor_step_performance` | 17 | 33 | **PK**: `log_id`, **FK**: `batch_id` |
-| **`Error`** | Fact (Quarantine Audit) | `bi.v_monitor_data_quality_errors` | 13 | 69,689 | **PK**: `error_id`, **FK**: `batch_id` |
-| **`Warning`** | Fact (Anomaly Alerts) | `bi.v_monitor_warnings_anomalies` | 11 | 5,058 | **PK**: `warning_id`, **FK**: `batch_id` |
-| **`Audit`** | Fact (SCD2 History) | `bi.v_monitor_scd2_audit` | 13 | 0 | **PK**: `change_log_id`, **FK**: `batch_id` |
-| **`Reconciliation`** | Standalone Audit Scorecard | `bi.v_monitor_layer_reconciliation` | 10 | 8 | **PK**: `entity_name` (Không có FK) |
-| **`_Measures`** | Measure Holding Table | Bảng tính toán (Calculated Table) | 1 (Hidden) | 14 Measures | Bảng chứa toàn bộ công thức DAX |
+| **`Batch`** | Dimension / Header | `bi.v_monitor_pipeline_overview` | 18 | 9 | **PK**: `batch_id` |
+| **`Step`** | Fact (Execution Logs) | `bi.v_monitor_step_performance` | 17 | 198 | **PK**: `log_id`, **FK**: `batch_id` |
+| **`Error`** | Fact (Quarantine Audit) | `bi.v_monitor_data_quality_errors` | 13 | 12,964 | **PK**: `error_id`, **FK**: `batch_id` |
+| **`Warning`** | Fact (Anomaly Alerts) | `bi.v_monitor_warnings_anomalies` | 11 | 5,096 | **PK**: `warning_id`, **FK**: `batch_id` |
+| **`Audit`** | Fact (SCD2 History) | `bi.v_monitor_scd2_audit` | 13 | 1,975 | **PK**: `change_log_id`, **FK**: `batch_id` |
+| **`Reconciliation`** | Fact (Layer Audit Scorecard) | `bi.v_monitor_layer_reconciliation` | 12 | 72 | **PK**: `reconciliation_id`, **FK**: `batch_id` |
+| **`_Measures`** | Measure Holding Table | Calculated Table | 1 (Hidden) | 69 Measures | Central DAX repository (6 Display Folders) |
 
 ---
 
-## 3. TỪ ĐIỂN DỮ LIỆU CHI TIẾT TỪNG BẢNG (DATA DICTIONARY)
+## 3. DETAILED TABLE SCHEMAS
 
-### 3.1. Bảng `Batch` (Tổng quan các đợt chạy ETL)
-* **Ý nghĩa**: Bảng trung tâm lưu trữ thông tin cấp mẻ (batch-level) của toàn bộ các lần chạy pipeline (Python, SSIS, T-SQL).
-* **Nguồn**: `bi.v_monitor_pipeline_overview` ➔ `control.etl_batch`.
+### 3.1. `Batch` Table (ETL Execution Overview)
+* **Purpose**: Central table storing batch-level execution metadata for all ETL pipeline runs (Python, SSIS, T-SQL).
+* **Source**: `bi.v_monitor_pipeline_overview` ➔ `control.etl_batch`.
 
-| Tên Cột | Kiểu Dữ Liệu | Nullable | Mô Tả & Nghiệp Vụ | Giá Trị Mẫu / Miền Giá Trị |
+| Column Name | Data Type | Nullable | Description & Business Rules | Sample / Domain Values |
 | :--- | :---: | :---: | :--- | :--- |
-| **`batch_id`** | `Int64` | NO | Khóa chính định danh mẻ chạy | `1`, `27`, `34`, `36` |
-| **`pipeline_name`** | `String` | NO | Tên pipeline thực thi | `'FoodDeliveryETL'`, `'CSV_to_RAW_Pipeline'` |
-| **`source_system`** | `String` | NO | Nguồn dữ liệu đầu vào | `'CSV'`, `'QuickBite Ingestion Engine'` |
-| **`source_file_count`** | `Int64` | NO | Số file nguồn CSV xử lý trong batch | `8`, `1` |
-| **`start_time`** | `DateTime` | NO | Thời điểm bắt đầu chạy batch | `2026-10-16 01:57:19` |
-| **`end_time`** | `DateTime` | YES | Thời điểm kết thúc batch (`NULL` nếu đang chạy) | `2026-10-16 01:57:19` |
-| **`duration_seconds`** | `Int64` | YES | Thời gian chạy tính theo giây | `0`, `45`, `120` |
-| **`duration_minutes`** | `Double` | YES | Thời gian chạy tính theo phút (làm tròn 2 số thập phân) | `0.0`, `0.75`, `2.0` |
-| **`batch_status`** | `String` | NO | Trạng thái batch theo Constraint kiểm soát | `'SUCCESS'`, `'FAILED'`, `'RUNNING'`, `'PARTIAL'` |
-| **`total_records`** | `Int64` | NO | Tổng số dòng dữ liệu batch tiếp nhận | `1000`, `1195593` |
-| **`success_records`** | `Int64` | NO | Số dòng xử lý và nạp thành công | `990`, `1148133` |
-| **`error_records`** | `Int64` | NO | Số dòng bị lỗi và chặn lại | `10`, `47460` |
-| **`success_rate_pct`** | `Double` | YES | Tỷ lệ thành công (%): `(success / total) * 100` | `99.0`, `100.0`, `80.0` |
-| **`error_rate_pct`** | `Double` | YES | Tỷ lệ lỗi (%): `(error / total) * 100` | `1.0`, `0.0`, `20.0` |
-| **`is_latest_batch`** | `Boolean` | YES | Cờ đánh dấu mẻ chạy mới nhất trong hệ thống | `TRUE` (1), `FALSE` (0) |
-| **`hours_since_run`** | `Int64` | YES | Số giờ đã trôi qua kể từ khi mẻ chạy bắt đầu | `8`, `24`, `48` |
-| **`pipeline_health_status`**| `String` | NO | Phân loại trạng thái sức khỏe tự động | `'Healthy'`, `'Critical (Failed)'`, `'Running'` |
-| **`created_at`** | `DateTime` | NO | Thời điểm ghi log vào hệ thống | `2026-10-16 01:57:19` |
+| **`batch_id`** | `Int64` | NO | Unique execution batch identifier (Primary Key) | `1`, `27`, `34`, `36` |
+| **`pipeline_name`** | `String` | NO | Name of executed pipeline | `'FoodDeliveryETL'`, `'CSV_to_RAW_Pipeline'` |
+| **`source_system`** | `String` | NO | Data ingestion source identifier | `'QuickBite_File_Ingestion'`, `'QuickBite Ingestion Engine'` |
+| **`source_file_count`** | `Int64` | NO | Number of source CSV files processed in this batch | `8`, `1` |
+| **`start_time`** | `DateTime` | NO | Batch start timestamp | `2026-10-16 01:57:19` |
+| **`end_time`** | `DateTime` | YES | Batch completion timestamp (`NULL` if still running) | `2026-10-16 01:57:19` |
+| **`duration_seconds`** | `Int64` | YES | Batch elapsed runtime in seconds | `0`, `45`, `120` |
+| **`duration_minutes`** | `Double` | YES | Batch elapsed runtime in minutes (2 decimal places) | `0.0`, `0.75`, `2.0` |
+| **`batch_status`** | `String` | NO | Execution status constrained by control table | `'SUCCESS'`, `'FAILED'`, `'RUNNING'`, `'PARTIAL'` |
+| **`total_records`** | `Int64` | NO | Total input records ingested | `1000`, `1195593` |
+| **`success_records`** | `Int64` | NO | Total valid records successfully processed and loaded | `990`, `1148133` |
+| **`error_records`** | `Int64` | NO | Total invalid/rejected records quarantined | `10`, `47460` |
+| **`success_rate_pct`** | `Double` | YES | Success percentage: `(success_records / total_records) * 100` | `99.0`, `100.0`, `80.0` |
+| **`error_rate_pct`** | `Double` | YES | Error percentage: `(error_records / total_records) * 100` | `1.0`, `0.0`, `20.0` |
+| **`is_latest_batch`** | `Boolean` | YES | Flag indicating the most recent batch execution | `TRUE` (1), `FALSE` (0) |
+| **`hours_since_run`** | `Int64` | YES | Elapsed hours since batch execution began | `8`, `24`, `48` |
+| **`pipeline_health_status`**| `String` | NO | Automated health classification category | `'Healthy'`, `'Critical (Failed)'`, `'Running'` |
+| **`created_at`** | `DateTime` | NO | System timestamp when batch was registered | `2026-10-16 01:57:19` |
 
 ---
 
-### 3.2. Bảng `Step` (Hiệu năng chi tiết từng bước ETL)
-* **Ý nghĩa**: Lưu trữ thời gian chạy và lưu lượng bản ghi của từng bước (step) và từng tiến trình (process) trong pipeline để phát hiện nút thắt cổ chai (bottlenecks).
-* **Nguồn**: `bi.v_monitor_step_performance` ➔ `control.etl_log`.
+### 3.2. `Step` Table (Detailed Step Performance & Latency)
+* **Purpose**: Records individual task and process durations and processed volumes to pinpoint latency bottlenecks.
+* **Source**: `bi.v_monitor_step_performance` ➔ `control.etl_log`.
 
-| Tên Cột | Kiểu Dữ Liệu | Nullable | Mô Tả & Nghiệp Vụ | Giá Trị Mẫu / Miền Giá Trị |
+| Column Name | Data Type | Nullable | Description & Business Rules | Sample / Domain Values |
 | :--- | :---: | :---: | :--- | :--- |
-| **`log_id`** | `Int64` | NO | Khóa chính của dòng log | `1`, `2`, `33` |
-| **`batch_id`** | `Int64` | NO | Khóa ngoại tham chiếu `Batch[batch_id]` | `1` |
-| **`pipeline_name`** | `String` | NO | Tên pipeline chứa bước này | `'FoodDeliveryETL'` |
-| **`process_name`** | `String` | NO | Tên nhóm tiến trình nghiệp vụ | `'ODS_TO_DWH'`, `'DWH_MAINTENANCE'`, `'INGESTION'` |
-| **`step_name`** | `String` | NO | Tên thủ tục / bước thực thi cụ thể | `'LOAD_FACT_DELIVERY_PERFORMANCE'`, `'INDEX_STATS_MAINTENANCE'` |
-| **`start_time`** | `DateTime` | NO | Thời điểm bắt đầu bước | `2026-10-15 02:39:40` |
-| **`end_time`** | `DateTime` | YES | Thời điểm kết thúc bước | `2026-10-15 02:39:43` |
-| **`duration_seconds`** | `Int64` | YES | Thời lượng thực thi của bước (giây) | `3`, `10`, `1` |
-| **`duration_minutes`** | `Double` | YES | Thời lượng thực thi của bước (phút) | `0.05`, `0.167` |
-| **`step_status`** | `String` | NO | Trạng thái bước | `'SUCCESS'`, `'FAILED'`, `'RUNNING'` |
-| **`rows_processed`** | `Int64` | NO | Số dòng bản ghi bước này nhận vào xử lý | `138054`, `68825`, `15` |
-| **`rows_inserted`** | `Int64` | NO | Số dòng nạp thành công vào bảng đích | `138054`, `68825` |
-| **`rows_rejected`** | `Int64` | NO | Số dòng bị từ chối / loại bỏ ở bước này | `0`, `36348` |
-| **`rejection_rate_pct`**| `Double` | YES | Tỷ lệ từ chối (%): `(rejected / processed) * 100` | `0.0%`, `10.6%` |
-| **`throughput_rows_per_sec`**| `Double` | YES | Tốc độ xử lý: `rows_processed / duration_seconds` | `46018`, `68825` (rows/s) |
-| **`message`** | `String` | YES | Thông báo kỹ thuật hoặc chi tiết thực thi | `'Successfully loaded 138054 rows into dwh.fact_delivery_performance'` |
-| **`created_at`** | `DateTime` | NO | Thời điểm tạo bản ghi log | `2026-10-15 02:39:40` |
+| **`log_id`** | `Int64` | NO | Unique step execution log record identifier (PK) | `1`, `2`, `33` |
+| **`batch_id`** | `Int64` | NO | Foreign Key referencing `Batch[batch_id]` | `1` |
+| **`pipeline_name`** | `String` | NO | Name of pipeline containing this step | `'FoodDeliveryETL'` |
+| **`process_name`** | `String` | NO | Logical business process stage | `'ODS_TO_DWH'`, `'DWH_MAINTENANCE'`, `'INGESTION'` |
+| **`step_name`** | `String` | NO | Specific transformation step or stored procedure | `'LOAD_FACT_DELIVERY_PERFORMANCE'`, `'INDEX_STATS_MAINTENANCE'` |
+| **`start_time`** | `DateTime` | NO | Step execution start timestamp | `2026-10-15 02:39:40` |
+| **`end_time`** | `DateTime` | YES | Step execution completion timestamp | `2026-10-15 02:39:43` |
+| **`duration_seconds`** | `Int64` | YES | Step duration in seconds | `3`, `10`, `1` |
+| **`duration_minutes`** | `Double` | YES | Step duration in minutes | `0.05`, `0.167` |
+| **`step_status`** | `String` | NO | Step execution outcome | `'SUCCESS'`, `'FAILED'`, `'RUNNING'` |
+| **`rows_processed`** | `Int64` | NO | Input row count ingested by this step | `138054`, `68825`, `15` |
+| **`rows_inserted`** | `Int64` | NO | Records successfully loaded into target table | `138054`, `68825` |
+| **`rows_rejected`** | `Int64` | NO | Records rejected or dropped during transformation | `0`, `36348` |
+| **`rejection_rate_pct`**| `Double` | YES | Step rejection rate: `(rows_rejected / rows_processed) * 100` | `0.0%`, `10.6%` |
+| **`throughput_rows_per_sec`**| `Double` | YES | Processing throughput: `rows_processed / duration_seconds` | `46018`, `68825` (rows/s) |
+| **`message`** | `String` | YES | Technical execution details or error message | `'Successfully loaded 138054 rows into dwh.fact_delivery_performance'` |
+| **`created_at`** | `DateTime` | NO | Log timestamp | `2026-10-15 02:39:40` |
 
 ---
 
-### 3.3. Bảng `Error` (Kho cách ly dữ liệu lỗi chất lượng)
-* **Ý nghĩa**: Bảng lưu trữ chi tiết từng dòng dữ liệu bị loại bỏ trong quá trình chuẩn hóa (RAW sang ODS) kèm lý do kỹ thuật và giá trị dữ liệu thô.
-* **Nguồn**: `bi.v_monitor_data_quality_errors` ➔ `control.etl_error`.
+### 3.3. `Error` Table (Quarantined Data Quality Audit)
+* **Purpose**: Quarantined records rejected during data quality validation (RAW to ODS) with technical error codes and raw values.
+* **Source**: `bi.v_monitor_data_quality_errors` ➔ `control.etl_error`.
 
-| Tên Cột | Kiểu Dữ Liệu | Nullable | Mô Tả & Nghiệp Vụ | Giá Trị Mẫu / Phân Loại |
+| Column Name | Data Type | Nullable | Description & Business Rules | Sample / Domain Values |
 | :--- | :---: | :---: | :--- | :--- |
-| **`error_id`** | `Int64` | NO | Khóa chính của bản ghi lỗi | `1`, `36348`, `69689` |
-| **`batch_id`** | `Int64` | NO | Khóa ngoại tham chiếu `Batch[batch_id]` | `1` |
-| **`pipeline_name`** | `String` | YES | Tên pipeline phát hiện lỗi | `'FoodDeliveryETL'` |
-| **`batch_status`** | `String` | YES | Trạng thái batch tương ứng | `'SUCCESS'`, `'FAILED'` |
-| **`table_name`** | `String` | NO | Tên bảng nguồn có bản ghi bị lỗi | `'raw_order_item'`, `'raw_delivery_performance'`, `'customer'` |
-| **`column_name`** | `String` | NO | Tên cột bị vi phạm | `'order_id'`, `'actual_delivery_time_min'`, `'order_item'` |
-| **`error_type`** | `String` | NO | Mã phân loại lỗi kỹ thuật | `'MASTER_DATA_NOT_FOUND'`, `'INVALID_FORMAT'`, `'FILE_VALIDATION_ERROR'` |
-| **`error_category`** | `String` | NO | Nhóm lỗi nghiệp vụ chuẩn hóa cho BI | `'Referential Integrity (Orphan Record)'`, `'Data Type & Format Incompatibility'` |
-| **`error_message`** | `String` | NO | Chi tiết mô tả lỗi từ pipeline | `'order_id value does not exists in reference master'` |
-| **`raw_value`** | `String` | YES | Giá trị thô trong file CSV gây ra lỗi | `'ORD202501000003'`, `''` (Blank chuỗi rỗng) |
-| **`source_file_name`** | `String` | YES | Tên file CSV nguồn phát sinh lỗi | `'order_item_20250930.csv'`, `'delivery_performance_20251030.csv'` |
-| **`source_row_number`**| `Int64` | YES | Số thứ tự dòng trong file CSV nguồn | `1024`, `5512` |
-| **`error_timestamp`** | `DateTime` | NO | Thời điểm phát hiện và ghi nhận lỗi | `2026-10-15 02:38:15` |
+| **`error_id`** | `Int64` | NO | Unique quarantined error record identifier (PK) | `1`, `36348`, `69689` |
+| **`batch_id`** | `Int64` | NO | Foreign Key referencing `Batch[batch_id]` | `1` |
+| **`pipeline_name`** | `String` | YES | Name of pipeline capturing the error | `'FoodDeliveryETL'` |
+| **`batch_status`** | `String` | YES | Status of corresponding batch | `'SUCCESS'`, `'FAILED'` |
+| **`table_name`** | `String` | NO | Source entity table name | `'raw_order_item'`, `'raw_delivery_performance'`, `'customer'` |
+| **`column_name`** | `String` | NO | Field name violating DQ rule | `'order_id'`, `'actual_delivery_time_min'`, `'order_item'` |
+| **`error_type`** | `String` | NO | Technical error classification code | `'MASTER_DATA_NOT_FOUND'`, `'INVALID_FORMAT'`, `'FILE_VALIDATION_ERROR'` |
+| **`error_category`** | `String` | NO | Standardized business DQ category | `'Referential Integrity (Orphan Record)'`, `'Data Type & Format Incompatibility'` |
+| **`error_message`** | `String` | NO | Diagnostic description of DQ violation | `'order_id value does not exists in reference master'` |
+| **`raw_value`** | `String` | YES | Unprocessed string literal causing validation failure | `'ORD202501000003'`, `''` (Blank / empty string) |
+| **`source_file_name`** | `String` | YES | Source CSV file containing the defect | `'order_item_20250930.csv'`, `'delivery_performance_20251030.csv'` |
+| **`source_row_number`**| `Int64` | YES | Exact row index in source CSV file | `1024`, `5512` |
+| **`error_timestamp`** | `DateTime` | NO | Detection timestamp | `2026-10-15 02:38:15` |
 
 ---
 
-### 3.4. Bảng `Warning` (Cảnh báo bất thường & Orphan Non-fatal)
-* **Ý nghĩa**: Lưu vết các bản ghi không vi phạm nghiêm trọng để bị chặn lại, nhưng có dấu hiệu bất thường về mặt logic vận hành (ví dụ: Khách hàng chưa từng phát sinh đơn hàng, đơn hàng thiếu tài xế gán tạm thời).
-* **Nguồn**: `bi.v_monitor_warnings_anomalies` ➔ `control.etl_warning`.
+### 3.4. `Warning` Table (Operational Warnings & Orphan Alerts)
+* **Purpose**: Audit records that pass staging validation but exhibit non-fatal business anomalies (e.g., active customers without orders for 90+ days).
+* **Source**: `bi.v_monitor_warnings_anomalies` ➔ `control.etl_warning`.
 
-| Tên Cột | Kiểu Dữ Liệu | Nullable | Mô Tả & Nghiệp Vụ | Giá Trị Mẫu |
+| Column Name | Data Type | Nullable | Description & Business Rules | Sample / Domain Values |
 | :--- | :---: | :---: | :--- | :--- |
-| **`warning_id`** | `Int64` | NO | Khóa chính cảnh báo | `1`, `5058` |
-| **`batch_id`** | `Int64` | NO | Khóa ngoại tham chiếu `Batch[batch_id]` | `1` |
-| **`pipeline_name`** | `String` | YES | Tên pipeline phát sinh cảnh báo | `'FoodDeliveryETL'` |
-| **`step_name`** | `String` | NO | Bước phát hiện cảnh báo | `'VALIDATE_CUSTOMER_ORPHANS'` |
-| **`table_name`** | `String` | NO | Bảng liên quan | `'ods_customer'` |
-| **`order_id`** | `String` | YES | Mã đơn hàng (nếu cảnh báo liên quan đơn hàng) | `NULL`, `'ORD202502000100'` |
-| **`entity_name`** | `String` | NO | Tên thực thể | `'CUSTOMER'`, `'DELIVERY_PARTNER'` |
-| **`entity_id`** | `String` | NO | Mã định danh thực thể cảnh báo | `'CUST_100234'` |
-| **`warning_type`** | `String` | NO | Loại cảnh báo | `'ORPHAN_CUSTOMER_DETECTED'` |
-| **`warning_message`** | `String` | NO | Nội dung chi tiết cảnh báo | `'Customer registered but has 0 transactions over 90 days'` |
-| **`warning_timestamp`**| `DateTime` | NO | Thời điểm ghi nhận cảnh báo | `2026-10-15 02:38:50` |
+| **`warning_id`** | `Int64` | NO | Unique operational warning identifier (PK) | `1`, `5058` |
+| **`batch_id`** | `Int64` | NO | Foreign Key referencing `Batch[batch_id]` | `1` |
+| **`pipeline_name`** | `String` | YES | Name of pipeline raising warning | `'FoodDeliveryETL'` |
+| **`step_name`** | `String` | NO | Verification step triggering the alert | `'VALIDATE_CUSTOMER_ORPHANS'` |
+| **`table_name`** | `String` | NO | Associated entity table | `'ods_customer'` |
+| **`order_id`** | `String` | YES | Relevant order identifier (if applicable) | `NULL`, `'ORD202502000100'` |
+| **`entity_name`** | `String` | NO | High-level entity type | `'CUSTOMER'`, `'DELIVERY_PARTNER'` |
+| **`entity_id`** | `String` | NO | Business identifier of flagged entity | `'CUST_100234'` |
+| **`warning_type`** | `String` | NO | Warning classification code | `'ORPHAN_CUSTOMER_DETECTED'` |
+| **`warning_message`** | `String` | NO | Diagnostic alert description | `'Customer registered but has 0 transactions over 90 days'` |
+| **`warning_timestamp`**| `DateTime` | NO | Detection timestamp | `2026-10-15 02:38:50` |
 
 ---
 
-### 3.5. Bảng `Reconciliation` (Đối soát dữ liệu toàn diện các tầng)
-* **Ý nghĩa**: Bảng đối soát số lượng bản ghi giữa **RAW ➔ ODS ➔ DWH** cho cả 8 thực thể dữ liệu chính.
-* **Nguồn**: `bi.v_monitor_layer_reconciliation`.
+### 3.5. `Reconciliation` Table (Cross-Layer Reconciliation by Batch)
+* **Purpose**: Layer-by-layer balance scorecard comparing **RAW ➔ ODS ➔ DWH** record volumes for all 8 core entities per `batch_id`.
+* **Source**: `bi.v_monitor_layer_reconciliation`.
 
-| Tên Cột | Kiểu Dữ Liệu | Nullable | Mô Tả & Nghiệp Vụ | Giá Trị Mẫu |
+> [!NOTE]
+> **Primary Key Architecture in Power BI**:
+> Because the `Reconciliation` view aggregates row counts by batch across 8 entities, `entity_name` repeats for every batch. An auto-incrementing integer **`reconciliation_id`** (`ROW_NUMBER()`) serves as the Primary Key, while **`batch_id`** acts as Foreign Key to **`Batch[batch_id]`** (1:N relationship).
+
+| Column Name | Data Type | Nullable | Description & Business Rules | Sample / Domain Values |
 | :--- | :---: | :---: | :--- | :--- |
-| **`entity_name`** | `String` | NO | Tên thực thể đối soát (Khóa chính bảng) | `'Order Item'`, `'Delivery Performance'`, `'Customer'` |
-| **`raw_rows`** | `Int64` | YES | Tổng số dòng bản ghi tại tầng RAW | `342,994` (Order Item), `107,776` (Customer) |
-| **`ods_rows`** | `Int64` | YES | Tổng số dòng bản ghi hợp lệ nạp vào ODS | `306,646` (Order Item), `107,776` (Customer) |
-| **`dwh_rows`** | `Int64` | YES | Tổng số dòng nạp vào DWH (không tính Unknown Key -1) | `306,646` (Order Item), `107,776` (Customer) |
-| **`raw_to_ods_variance`**| `Int64` | YES | Chênh lệch giữa RAW và ODS (`raw_rows - ods_rows`) | `36,348` (Khớp 100% với số dòng lỗi) |
-| **`ods_to_dwh_variance`**| `Int64` | YES | Chênh lệch giữa ODS và DWH (`ods_rows - dwh_rows`) | `0` (100% ODS vào trọn vẹn DWH) |
-| **`quarantined_error_rows`**| `Int64` | YES | Số dòng lỗi được cách ly tương ứng trong bảng Error | `36,348` (Khớp 100% với variance) |
-| **`warning_rows`** | `Int64` | YES | Số cảnh báo liên quan đến thực thể này | `0`, `5057` |
-| **`data_retention_rate_pct`**| `Double` | YES | Tỷ lệ dữ liệu sạch nạp vào DWH (%): `(dwh / raw) * 100` | `89.4%` (Order Item), `100.0%` (Customer) |
-| **`audit_status`** | `String` | NO | Trạng thái kết luận kiểm toán tính toàn vẹn | `'RECONCILED (Valid Audit)'` |
+| **`reconciliation_id`** | `Int64` | NO | Surrogate integer identifier (`ROW_NUMBER`) for Power BI (PK) | `1`, `2`, `72` |
+| **`batch_id`** | `Int64` | NO | Foreign Key referencing `Batch[batch_id]` (1:N Relationship) | `1`, `9`, `36` |
+| **`entity_name`** | `String` | NO | Data entity name (Customer, Restaurant, Orders, etc.) | `'Order Item'`, `'Delivery Performance'`, `'Customer'` |
+| **`raw_rows`** | `Int64` | YES | Ingested physical rows at RAW layer for this batch | `48,965` (Batch 1 Order Item), `23,539` (Order) |
+| **`ods_rows`** | `Int64` | YES | Validated rows staged into ODS | `48,965` (Batch 1 Order Item), `22,076` (Delivery Performance) |
+| **`dwh_rows`** | `Int64` | YES | Rows loaded into DWH (excluding technical Unknown Key `-1`) | `48,965` (Order Item), `22,076` (Delivery Performance) |
+| **`raw_to_ods_variance`**| `Int64` | YES | Variance between RAW and ODS (`raw_rows - ods_rows`) | `1,463` (Matches Batch 1 Quarantined Errors 100%) |
+| **`ods_to_dwh_variance`**| `Int64` | YES | Variance between ODS and DWH (`ods_rows - dwh_rows`) | `-1,958` (Reflects SCD2 historical version expansions) |
+| **`quarantined_error_rows`**| `Int64` | YES | Quarantined defect rows captured in Error table | `1,463` (Matches data quality rejections) |
+| **`warning_rows`** | `Int64` | YES | Operational warning count associated with entity in batch | `0`, `453` |
+| **`data_retention_rate_pct`**| `Double` | YES | Data retention percentage: `(dwh_rows / raw_rows) * 100` | `88.2%` (Delivery Perf Batch 9), `100.0%` (Order) |
+| **`audit_status`** | `String` | NO | Audit reconciliation status flag | `'RECONCILED (Valid Audit)'` |
 
 ---
 
-### 3.6. Bảng `Audit` (Kiểm toán SCD Type 1 & Type 2)
-* **Ý nghĩa**: Bảng lưu lịch sử thay đổi thuộc tính của các chiều theo thời gian (Slowly Changing Dimensions).
-* **Nguồn**: `bi.v_monitor_scd2_audit` ➔ `control.dim_change_log`.
+### 3.6. `Audit` Table (SCD Type 1 & Type 2 Dimension History)
+* **Purpose**: Audit log tracking attribute changes over time across dimensions (Slowly Changing Dimensions).
+* **Source**: `bi.v_monitor_scd2_audit` ➔ `control.dim_change_log`.
 
-| Tên Cột | Kiểu Dữ Liệu | Nullable | Mô Tả |
+| Column Name | Data Type | Nullable | Description & Business Rules |
 | :--- | :---: | :---: | :--- |
-| **`change_log_id`** | `Int64` | NO | Khóa chính bản ghi audit |
-| **`batch_id`** | `Int64` | NO | Khóa ngoại tham chiếu `Batch[batch_id]` |
-| **`pipeline_name`** | `String` | YES | Tên pipeline thực hiện update |
-| **`dimension_name`** | `String` | NO | Tên bảng Dimension thay đổi (`dim_customer`, `dim_restaurant`...) |
-| **`business_id`** | `String` | NO | Khóa nghiệp vụ tự nhiên (`customer_id`, `restaurant_id`) |
-| **`surrogate_key_old`**| `Int64` | YES | Surrogate key bản ghi cũ trước khi cập nhật |
-| **`surrogate_key_new`**| `Int64` | YES | Surrogate key bản ghi mới được sinh ra |
-| **`change_type`** | `String` | NO | Loại thay đổi: `'SCD1_UPDATE'`, `'SCD2_INSERT'` |
-| **`column_name`** | `String` | NO | Tên cột thuộc tính bị thay đổi giá trị |
-| **`old_value`** | `String` | YES | Giá trị cũ trước khi thay đổi |
-| **`new_value`** | `String` | YES | Giá trị mới sau khi cập nhật |
-| **`effective_date`** | `DateTime` | NO | Ngày có hiệu lực của thay đổi |
-| **`logged_at`** | `DateTime` | NO | Thời điểm ghi log thay đổi vào hệ thống |
+| **`change_log_id`** | `Int64` | NO | Unique dimension audit log record identifier (PK) |
+| **`batch_id`** | `Int64` | NO | Foreign Key referencing `Batch[batch_id]` |
+| **`pipeline_name`** | `String` | YES | Name of pipeline performing update |
+| **`dimension_name`** | `String` | NO | Dimension table name updated (`dim_customer`, `dim_restaurant`...) |
+| **`business_id`** | `String` | NO | Natural business identifier (`customer_id`, `restaurant_id`) |
+| **`surrogate_key_old`**| `Int64` | YES | Previous surrogate key prior to update |
+| **`surrogate_key_new`**| `Int64` | YES | New active surrogate key generated |
+| **`change_type`** | `String` | NO | Update category: `'SCD1_UPDATE'`, `'SCD2_INSERT'` |
+| **`column_name`** | `String` | NO | Specific attribute/column changed |
+| **`old_value`** | `String` | YES | Previous attribute value |
+| **`new_value`** | `String` | YES | Updated attribute value |
+| **`effective_date`** | `DateTime` | NO | Effective start timestamp of version |
+| **`logged_at`** | `DateTime` | NO | Log insertion timestamp |
 
 ---
 
-## 4. CHI TIẾT CÁC MỐI QUAN HỆ TRONG MÔ HÌNH (RELATIONSHIPS)
+## 4. MODEL RELATIONSHIPS SPECIFICATION
 
-| Tên Mối Quan Hệ | Bảng Nguồn (From Table - Many) | Cột Nguồn | Bảng Đích (To Table - One) | Cột Đích | Hướng Lọc (Cross Filter) | Trạng Thái |
+| Relationship Identifier | From Table (Many) | Foreign Key Column | To Table (One) | Primary Key Column | Filter Direction | State |
 | :--- | :--- | :--- | :--- | :--- | :---: | :---: |
 | **`Rel_Batch_StepPerformance`** | `Step` | `batch_id` | `Batch` | `batch_id` | `OneDirection` (Single) | Active ✅ |
 | **`Rel_Batch_DataQualityErrors`**| `Error` | `batch_id` | `Batch` | `batch_id` | `OneDirection` (Single) | Active ✅ |
 | **`Rel_Batch_WarningsAnomalies`**| `Warning` | `batch_id` | `Batch` | `batch_id` | `OneDirection` (Single) | Active ✅ |
 | **`Rel_Batch_Scd2Audit`** | `Audit` | `batch_id` | `Batch` | `batch_id` | `OneDirection` (Single) | Active ✅ |
+| **`Rel_Batch_LayerReconciliation`**| `Reconciliation` | `batch_id` | `Batch` | `batch_id` | `OneDirection` (Single) | Active ✅ |
 
 ---
 
-## 5. THƯ VIỆN MEASURES (DAX FORMULAS DICTIONARY)
+## 5. DAX MEASURE LIBRARY (69 STANDARDIZED MEASURES)
 
-Toàn bộ các measures được lưu trữ tập trung tại bảng `_Measures`:
+All measures are organized into **6 standardized display folders** inside the `_Measures` table (complete source code available in [`powerbi/pipeline_monitoring/tmdl/tables/_Measures.tmdl`](file:///c:/Users/PC/Downloads/food-delivery-etl-dwh/powerbi/pipeline_monitoring/tmdl/tables/_Measures.tmdl)):
 
-### Thư mục: `01. Pipeline Status & Health`
-1. **`Latest Batch ID`**
-   * **Mô tả**: Lấy mã batch của lần chạy gần đây nhất trên toàn hệ thống.
-   * **Cú pháp DAX**:
-     ```dax
-     CALCULATE(MAX('Batch'[batch_id]), ALL('Batch'))
-     ```
-   * **Kiểu dữ liệu**: `Whole Number` | **Format**: `#,##0`
-
-2. **`Latest Batch Status`**
-   * **Mô tả**: Trạng thái thực thi của mẻ chạy gần nhất (`SUCCESS`, `FAILED`, `RUNNING`).
-   * **Cú pháp DAX**:
-     ```dax
-     CALCULATE(
-         SELECTEDVALUE('Batch'[batch_status]),
-         FILTER(ALL('Batch'), 'Batch'[batch_id] = [Latest Batch ID])
-     )
-     ```
-   * **Kiểu dữ liệu**: `Text`
-
-3. **`Pipeline Health KPI`**
-   * **Mô tả**: Huy hiệu sức khỏe trực quan có màu sắc và icon phục vụ hiển thị lên KPI Card chính.
-   * **Cú pháp DAX**:
-     ```dax
-     SWITCH(
-         [Latest Batch Status],
-         "SUCCESS", "🟢 Healthy",
-         "RUNNING", "🔵 In Progress",
-         "PARTIAL", "🟡 Degraded",
-         "FAILED",  "🔴 Critical",
-         "⚪ Unknown"
-     )
-     ```
-   * **Kiểu dữ liệu**: `Text`
-
-4. **`Hours Since Last Run`**
-   * **Mô tả**: Số giờ đã trôi qua kể từ thời điểm mẻ chạy gần nhất bắt đầu nạp dữ liệu.
-   * **Cú pháp DAX**:
-     ```dax
-     VAR _LastStartTime = 
-         CALCULATE(
-             MAX('Batch'[start_time]),
-             FILTER(ALL('Batch'), 'Batch'[batch_id] = [Latest Batch ID])
-         )
-     RETURN
-         IF(NOT ISBLANK(_LastStartTime), DATEDIFF(_LastStartTime, NOW(), HOUR), BLANK())
-     ```
-   * **Kiểu dữ liệu**: `Whole Number` | **Format**: `#,##0`
-
-5. **`Data Freshness Status`**
-   * **Mô tả**: Đánh giá tính mới của dữ liệu theo cam kết SLA (< 24 giờ).
-   * **Cú pháp DAX**:
-     ```dax
-     VAR _Hours = [Hours Since Last Run]
-     RETURN
-         SWITCH(
-             TRUE(),
-             ISBLANK(_Hours), "⚪ Unknown",
-             _Hours <= 24, "🟢 Fresh (< 24h)",
-             _Hours <= 36, "🟡 Warning (24h - 36h)",
-             "🔴 Stale (> 36h)"
-         )
-     ```
-   * **Kiểu dữ liệu**: `Text`
+### 5.1. Folder: `01. Pipeline Status & Health` (6 Measures)
+| Measure Name | Visual Location & Role | Core DAX Expression |
+| :--- | :--- | :--- |
+| **`Latest Batch ID`** | Global underlying measure retrieving latest batch ID | `CALCULATE(MAX('Batch'[batch_id]), ALL('Batch'))` |
+| **`Latest Batch ID Label`** | Callout Card 1 – Page 1 (`Batch #9`) | `"Batch #" & FORMAT(_BatchID, "#,##0")` |
+| **`Latest Batch Status`** | Status string of latest batch (`SUCCESS`, `PARTIAL`, `FAILED`, `RUNNING`) | `CALCULATE(SELECTEDVALUE('Batch'[batch_status]), FILTER(ALL('Batch'), 'Batch'[batch_id] = [Latest Batch ID]))` |
+| **`Hours Since Last Run`** | Value pointer for SLA Gauge – Page 1 | Elapsed hours since latest execution run started |
+| **`SLA Target Hours`** | Target SLA threshold on SLA Gauge (`24h`) | `24` |
+| **`SLA Max Hours`** | Upper scale limit on SLA Gauge (`48h`) | `48` |
 
 ---
 
-### Thư mục: `02. Execution & Throughput`
-6. **`Total Batches Executed`**
-   * **Mô tả**: Tổng số lần pipeline đã thực thi được ghi nhận trong `control.etl_batch`.
-   * **Cú pháp DAX**:
-     ```dax
-     COUNTROWS('Batch')
-     ```
-   * **Kiểu dữ liệu**: `Whole Number` | **Format**: `#,##0`
-
-7. **`Avg Success Rate Pct`**
-   * **Mô tả**: Tỷ lệ nạp thành công trung bình của các mẻ chạy.
-   * **Cú pháp DAX**:
-     ```dax
-     AVERAGE('Batch'[success_rate_pct])
-     ```
-   * **Kiểu dữ liệu**: `Decimal Number` | **Format**: `0.00`
-
-8. **`Avg Batch Duration Min`**
-   * **Mô tả**: Thời gian thực thi trung bình (phút) của các batch hoàn thành thành công.
-   * **Cú pháp DAX**:
-     ```dax
-     AVERAGEX(
-         FILTER('Batch', 'Batch'[batch_status] = "SUCCESS"),
-         'Batch'[duration_minutes]
-     )
-     ```
-   * **Kiểu dữ liệu**: `Decimal Number` | **Format**: `#,##0.0`
-
-9. **`Avg Step Duration Sec`**
-   * **Mô tả**: Thời lượng trung bình (giây) của từng bước thực thi trong pipeline.
-   * **Cú pháp DAX**:
-     ```dax
-     AVERAGE('Step'[duration_seconds])
-     ```
-   * **Kiểu dữ liệu**: `Decimal Number` | **Format**: `#,##0.0`
+### 5.2. Folder: `02. Execution & Throughput` (12 Measures)
+| Measure Name | Visual Location & Role | Core DAX Expression |
+| :--- | :--- | :--- |
+| **`Latest Batch Duration`** | Callout Card 2 – Page 1 (`12s` / `42s`) | Dynamic formatting `Xs` or `Xm Ys` from `Batch[duration_seconds]` |
+| **`Batch Duration Sec`** | Secondary Line Y-Axis on Combo Chart – Page 1 | `COALESCE(SUM('Batch'[duration_seconds]), 0)` |
+| **`Batch Total Records`** | Primary Column Y-Axis on Combo Chart – Page 1 | `COALESCE(SUM('Batch'[total_records]), 0)` |
+| **`Total Steps Label`** | Callout Card 1 – Page 2 (`198 Steps`) | `FORMAT(COUNTROWS('Step'), "#,##0") & " Steps"` |
+| **`Total Process Stages Label`** | Callout Card 2 – Page 2 (`6 Stages`) | `DISTINCTCOUNT('Step'[process_name])` with suffix `" Stage(s)"` |
+| **`Total Step Duration Sec`** | X-Axis on `Top Execution Time Steps` – Page 2 | `COALESCE(SUM('Step'[duration_seconds]), 0)` |
+| **`Total Step Duration Label`** | Callout Card 3 – Page 2 (`2m 40s`) | Formats `[Total Step Duration Sec]` into `Xs` / `Xm Ys` |
+| **`Total Step Rows Processed`** | Callout Card 4 – Page 2 (`4,713,492`) | `COALESCE(SUM('Step'[rows_processed]), 0)` |
+| **`Total Step Rows Inserted`** | Helper measure calculating yield rate | `COALESCE(SUM('Step'[rows_inserted]), 0)` |
+| **`Total Step Rows Rejected`** | Callout Card 5 – Page 2 (`12,492`) | `COALESCE(SUM('Step'[rows_rejected]), 0)` |
+| **`Step Rejection Rate Pct`** | Step-level rejection percentage (`0.27%`) | `DIVIDE([Total Step Rows Rejected], [Total Step Rows Processed], 0)` |
+| **`Step Throughput (Rows/Sec)`** | X-Axis on `Step Throughput & Velocity` – Page 2 | `COALESCE(AVERAGE('Step'[throughput_rows_per_sec]), 0)` |
 
 ---
 
-### Thư mục: `03. Data Quality & Errors`
-10. **`Total Quarantined Errors`**
-    * **Mô tả**: Tổng số dòng dữ liệu vi phạm chất lượng đang được cách ly trong bảng `Error`.
-    * **Cú pháp DAX**:
-      ```dax
-      COUNTROWS('Error')
-      ```
-    * **Kiểu dữ liệu**: `Whole Number` | **Format**: `#,##0`
-
-11. **`Total Operational Warnings`**
-    * **Mô tả**: Tổng số cảnh báo bất thường vận hành ghi nhận trong bảng `Warning`.
-    * **Cú pháp DAX**:
-      ```dax
-      COUNTROWS('Warning')
-      ```
-    * **Kiểu dữ liệu**: `Whole Number` | **Format**: `#,##0`
+### 5.3. Folder: `03. Data Quality & Errors` (7 Measures)
+| Measure Name | Visual Location & Role | Core DAX Expression |
+| :--- | :--- | :--- |
+| **`Total Quarantined Errors`** | Callout Card 4 (Page 1), Card 1 & Error charts (Page 3) (`12,964`) | `COUNTROWS('Error')` |
+| **`True Data Defects`** | Callout Card 2 – Page 3 (`1,852` true defects excluding cancelled orders) | `CALCULATE(COUNTROWS('Error'), 'Error'[error_type] <> "EXCLUDED_ORDER_CANCELLED") + 0` |
+| **`Affected Files Label`** | Callout Card 3 – Page 3 (`36 Files`) | `DISTINCTCOUNT('Error'[source_file_name])` with suffix `" File(s)"` |
+| **`Violated Columns Label`** | Callout Card 4 – Page 3 (`12 Columns`) | `DISTINCTCOUNT('Error'[column_name])` with suffix `" Column(s)"` |
+| **`Total Operational Warnings`** | Callout Card 5 (Page 1 & 3), Warning chart (`5,096`) | `COUNTROWS('Warning')` |
+| **`Quarantined Error Rate Pct`** | Secondary Line Y-Axis on `Errors & Rejection Rate by Batch` – Page 3 | `DIVIDE([Total Quarantined Errors], [Total Records Ingested RAW], 0)` (with `TREATAS` batch bridge) |
+| **`Operational Warning Rate Pct`** | Secondary Line Y-Axis on `Warnings & Anomaly Rate by Batch` – Page 3 | `DIVIDE([Total Operational Warnings], [Total Records Staged ODS], 0)` (with `TREATAS` batch bridge) |
 
 ---
 
-### Thư mục: `04. Layer Reconciliation`
-12. **`Total Records Ingested RAW`**
-    * **Mô tả**: Tổng sản lượng bản ghi đã tiếp nhận ở tầng RAW trên cả 8 bảng dữ liệu.
-    * **Cú pháp DAX**:
-      ```dax
-      SUM('Reconciliation'[raw_rows])
-      ```
-    * **Kiểu dữ liệu**: `Whole Number` | **Format**: `#,##0`
+### 5.4. Folder: `04. Layer Reconciliation` (9 Measures)
+| Measure Name | Visual Location & Role | Core DAX Expression |
+| :--- | :--- | :--- |
+| **`Reconciliation Checks Label`** | Callout Card 1 – Page 4 (`72 Checks`) | `COUNTROWS('Reconciliation')` with suffix `" Check(s)"` |
+| **`Total Records Ingested RAW`** | `RAW Ingested` Column – Matrix Page 4 (`1,161,911`) | `SUM('Reconciliation'[raw_rows])` |
+| **`Total Records Staged ODS`** | Callout Card 2 & `ODS Staged` Column – Page 4 (`1,147,457`) | `COALESCE(SUM('Reconciliation'[ods_rows]), 0)` |
+| **`Total Records Loaded DWH`** | Callout Card 3 (Page 1 & 4) & `DWH Loaded` Column (`1,149,415`) | `SUM('Reconciliation'[dwh_rows])` |
+| **`Total RAW to ODS Variance`** | `RAW-ODS Variance` Column – Matrix Page 4 (`14,454`) | `COALESCE(SUM('Reconciliation'[raw_to_ods_variance]), 0)` |
+| **`Total ODS to DWH Variance`** | `ODS-DWH Variance` Column – Matrix Page 4 (`-1,958`) | `COALESCE(SUM('Reconciliation'[ods_to_dwh_variance]), 0)` |
+| **`Total Reconciliation Errors`** | `Quarantined Errors` Column – Matrix Page 4 (`12,492`) | `COALESCE(SUM('Reconciliation'[quarantined_error_rows]), 0)` |
+| **`Overall Data Retention Rate Pct`**| Callout Card 4 & `Retention Rate` Column – Page 4 (`98.92%`) | `DIVIDE([Total Records Loaded DWH], [Total Records Ingested RAW], 0)` |
+| **`Total Dimension Changes`** | Callout Card 5 & `Dimension Historical Changes` Chart – Page 4 (`1,975`) | `COUNTROWS('Audit') + 0` |
 
-13. **`Total Records Loaded DWH`**
-    * **Mô tả**: Tổng sản lượng bản ghi đạt chuẩn được nạp vào tầng DWH.
-    * **Cú pháp DAX**:
-      ```dax
-      SUM('Reconciliation'[dwh_rows])
-      ```
-    * **Kiểu dữ liệu**: `Whole Number` | **Format**: `#,##0`
+---
 
-14. **`Overall Data Retention Rate Pct`**
-    * **Mô tả**: Tỷ lệ lưu giữ dữ liệu toàn hệ thống: `(Tổng DWH / Tổng RAW) * 100`.
-    * **Cú pháp DAX**:
-      ```dax
-      DIVIDE([Total Records Loaded DWH], [Total Records Ingested RAW], 0) * 100
-      ```
-    * **Kiểu dữ liệu**: `Decimal Number` | **Format**: `0.00`
+### 5.5. Folder: `05. Formatting & Colors` (6 Measures)
+| Measure Name | Target Visual & Application | Dynamic Hex Rules |
+| :--- | :--- | :--- |
+| **`Batch Status Color`** | Batch status indicator in Combo Chart & Grid (Page 1) | `SUCCESS`: `#009E46` \| `FAILED`: `#C40C0C` \| `RUNNING`: `#D97706` \| Default: `#64748B` |
+| **`SLA Status Color`** | Pointer color on SLA Gauge (Page 1) | `≤ 24h`: `#009E46` \| `24–36h`: `#D97706` \| `> 36h`: `#C40C0C` |
+| **`Health Status Color`** | Overall pipeline health indicator | `SUCCESS`: `#009E46` \| `FAILED`: `#C40C0C` \| `RUNNING`: `#0F2C67` \| `PARTIAL`: `#D97706` |
+| **`Step Status Color`** | Step status column in Grid (Page 2) | `SUCCESS`: `#009E46` \| `FAILED`: `#C40C0C` \| `RUNNING`: `#D97706` \| `PARTIAL`: `#64748B` |
+| **`Step Rejection Color`** | Rejected rows column in Grid (Page 2) | `> 0`: `#C40C0C` (Red) \| `= 0`: `#009E46` (Green) |
+| **`Audit Status Color`** | Audit status column in Reconciliation Matrix (Page 4) | Contains `"RECONCILED"`: `#009E46` (Green) \| `"VARIANCE DETECTED"`: `#C40C0C` (Red) |
+
+---
+
+### 5.6. Folder: `06. Card Subtexts` (20 Measures — Dynamic KPI Subtitles Across 4 Pages)
+* **Page 1 (5 Subtexts)**: `Latest Batch Subtext`, `Batch Duration Subtext`, `Records to DWH Subtext`, `Quarantined Errors Subtext`, `Operational Warnings Subtext`.
+* **Page 2 (5 Subtexts)**: `Step Execution Subtext`, `Process Stages Subtext`, `Step Duration Subtext`, `Step Rows Subtext`, `Step Rejected Subtext`.
+* **Page 3 (5 Subtexts)**: `Error Drilldown Subtext`, `Data Defects Subtext`, `Affected Files Subtext`, `Violated Columns Subtext`, `Warning Drilldown Subtext`.
+* **Page 4 (5 Subtexts)**: `Reconciliation Checks Subtext`, `ODS Staged Subtext`, `DWH Loaded Subtext`, `Retention Rate Subtext`, `Dimension Changes Subtext`.
