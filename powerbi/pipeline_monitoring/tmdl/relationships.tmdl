@@ -14,3 +14,7 @@ relationship Rel_Batch_Scd2Audit
 	fromColumn: Audit.batch_id
 	toColumn: Batch.batch_id
 
+relationship AutoDetected_087d60a3-3604-470c-a8a5-535b2265e44a
+	fromColumn: Reconciliation.batch_id
+	toColumn: Batch.batch_id
+
