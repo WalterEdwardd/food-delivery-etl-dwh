@@ -12,6 +12,7 @@ table Error
 		dataType: int64
 		isNullable: false
 		lineageTag: 21bc05a9-c5fc-4d0d-98a1-1ac63bfbeb0c
+		summarizeBy: none
 		sourceColumn: batch_id
 
 	column pipeline_name
@@ -83,4 +84,8 @@ table Error
 				    bi_v_monitor_data_quality_errors = Source{[Schema="bi",Item="v_monitor_data_quality_errors"]}[Data]
 				in
 				    bi_v_monitor_data_quality_errors
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
 
