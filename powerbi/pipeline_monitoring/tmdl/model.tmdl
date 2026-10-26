@@ -11,13 +11,15 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["MCP-PBIModeling"]
 
+annotation PBI_QueryOrder = ["Batch","Step","Error","Warning","Reconciliation","Audit"]
+
 ref table Batch
 ref table Step
 ref table Error
 ref table Warning
-ref table Reconciliation
 ref table Audit
 ref table _Measures
+ref table Reconciliation
 
 ref cultureInfo en-US
 
