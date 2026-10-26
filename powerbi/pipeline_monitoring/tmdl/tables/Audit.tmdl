@@ -6,12 +6,14 @@ table Audit
 		isKey
 		isNullable: false
 		lineageTag: b34f3e57-c261-41a9-af97-55b97db9a098
+		summarizeBy: none
 		sourceColumn: change_log_id
 
 	column batch_id
 		dataType: int64
 		isNullable: false
 		lineageTag: d6110eff-c15f-4607-a4ae-af412ef47bde
+		summarizeBy: none
 		sourceColumn: batch_id
 
 	column pipeline_name
@@ -66,8 +68,14 @@ table Audit
 	column effective_date
 		dataType: dateTime
 		isNullable: false
+		formatString: Long Date
 		lineageTag: f818bb02-e20d-4354-bf77-283f9c865a7d
+		summarizeBy: none
 		sourceColumn: effective_date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation SummarizationSetBy = Automatic
 
 	column logged_at
 		dataType: dateTime
@@ -83,4 +91,8 @@ table Audit
 				    bi_v_monitor_scd2_audit = Source{[Schema="bi",Item="v_monitor_scd2_audit"]}[Data]
 				in
 				    bi_v_monitor_scd2_audit
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
 
