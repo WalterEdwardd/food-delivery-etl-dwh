@@ -6,12 +6,14 @@ table Warning
 		isKey
 		isNullable: false
 		lineageTag: e65ed114-e505-47e2-af56-89ad9e4e509e
+		summarizeBy: none
 		sourceColumn: warning_id
 
 	column batch_id
 		dataType: int64
 		isNullable: false
 		lineageTag: a4fe1732-8aac-40cc-947d-fd1ac77a8c2b
+		summarizeBy: none
 		sourceColumn: batch_id
 
 	column pipeline_name
@@ -74,4 +76,8 @@ table Warning
 				    bi_v_monitor_warnings_anomalies = Source{[Schema="bi",Item="v_monitor_warnings_anomalies"]}[Data]
 				in
 				    bi_v_monitor_warnings_anomalies
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
 
