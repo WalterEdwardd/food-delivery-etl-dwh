@@ -1,57 +1,52 @@
 # QuickBite Pipeline Monitoring & Observability (Power BI)
 
-Thư mục này lưu trữ toàn bộ tài nguyên, định nghĩa mô hình (TMDL/BIM) và tài liệu phục vụ **Power BI Pipeline Monitoring & Observability Dashboard** của dự án QuickBite Data Platform.
+This directory contains all data assets, Tabular models (TMDL/BIM), themes, and technical documentation for the **Power BI Pipeline Monitoring & Observability Dashboard** of the QuickBite Data Platform.
 
 ---
 
-## 1. Cấu Trúc Thư Mục
+## 1. Directory Structure
 
 ```text
 powerbi/pipeline_monitoring/
 │
-├── Pipeline_Monitoring.pbix     <-- File Power BI Desktop chính (Lưu từ Power BI Desktop)
-├── model.bim                    <-- File định nghĩa toàn bộ mô hình (BIM format)
+├── Pipeline_Monitoring.pbix     <-- Power BI Desktop report for ETL observability
+├── model.bim                    <-- Complete semantic model definition (BIM format)
 │
-├── tmdl/                        <-- Định nghĩa Tabular Model dạng văn bản (TMDL / PBIP format)
+├── quickbite_theme_platinum_silver.json <-- Official Platinum Silver Luxury Theme
+├── quickbite_dark_theme.json            <-- Dark Theme
+│
+├── tmdl/                        <-- Source-controlled Tabular Model Definition Language (PBIP)
 │   ├── database.tmdl
 │   ├── model.tmdl
 │   ├── relationships.tmdl
-│   ├── _Measures.tmdl
-│   ├── Batch.tmdl
-│   ├── Step.tmdl
-│   ├── Error.tmdl
-│   ├── Warning.tmdl
-│   ├── Reconciliation.tmdl
-│   └── Audit.tmdl
+│   ├── cultures/
+│   │   └── en-US.tmdl
+│   └── tables/
+│       ├── _Measures.tmdl
+│       ├── Batch.tmdl
+│       ├── Step.tmdl
+│       ├── Error.tmdl
+│       ├── Warning.tmdl
+│       ├── Reconciliation.tmdl
+│       └── Audit.tmdl
 │
-├── data_dictionary.md           <-- Từ điển dữ liệu chi tiết (Mô tả bảng, cột, kiểu dữ liệu, DAX, relations)
-└── README.md                    <-- Hướng dẫn thư mục này
+├── DASHBOARD_GUIDE.md           <-- Comprehensive dashboard specifications and ops playbooks
+├── data_dictionary.md           <-- Detailed data dictionary (Tables, columns, DAX measures, relationships)
+└── README.md                    <-- This technical documentation
 ```
 
 ---
 
-## 2. Hướng Dẫn Lưu File Power BI Desktop (`.pbix`)
+## 2. Technical Documentation & References
 
-Vì bạn đang mở file **Power BI Desktop ("Untitled - Power BI Desktop")** đã được đồng bộ toàn bộ bảng và measures:
-
-1. Chuyển sang cửa sổ **Power BI Desktop**.
-2. Nhấn tổ hợp phím **`Ctrl + S`** (hoặc chọn menu **File** ➔ **Save As**).
-3. Điều hướng đến thư mục:
-   ```text
-   c:\Users\PC\Downloads\food-delivery-etl-dwh\powerbi\pipeline_monitoring\
-   ```
-4. Đặt tên file là: **`Pipeline_Monitoring.pbix`** và nhấn **Save**.
-
-Sau khi lưu, file `.pbix` sẽ nằm trực tiếp trong thư mục này, kết hợp cùng các file định nghĩa mô hình TMDL / BIM đã được xuất tự động.
-
----
-
-## 3. Tài Liệu Tham Khảo Nhanh
-
-* 📖 **Data Dictionary Đầy Đủ**: [data_dictionary.md](data_dictionary.md)  
-  * Mô tả chi tiết 6 bảng dữ liệu (`Batch`, `Step`, `Error`, `Warning`, `Reconciliation`, `Audit`).
-  * Danh sách toàn bộ các cột, kiểu dữ liệu, nullability và ý nghĩa nghiệp vụ.
-  * 4 Mối quan hệ trong mô hình.
-  * 14 Công thức DAX chuẩn phân theo 4 nhóm.
+* 📘 **Dashboard Technical Specification & User Guide**: [DASHBOARD_GUIDE.md](DASHBOARD_GUIDE.md)  
+  * Detailed architectural and visual breakdown for all 4 dashboard pages (**Page 1**: Executive Health & SLA Overview, **Page 2**: Step Performance & Bottlenecks, **Page 3**: Data Quality & Errors, **Page 4**: Layer Reconciliation & Audit).
+  * Specifications for the 5-KPI card headers (Callout value + dynamic subtext), DAX measures, dynamic conditional formatting, Bookmark navigators, and threshold matrices.
+  * Deep-dive technical reconciliation equations (physical row differences vs. multi-column errors, absolute volume vs. percentage anomaly paradoxes, 3-layer balance equation `RAW ➔ ODS ➔ DWH` with SCD Type 2 expansion) and incident response on-call playbooks.
+* 📖 **Full Data Dictionary**: [data_dictionary.md](data_dictionary.md)  
+  * Detailed technical specifications for all 6 tables (`Batch`, `Step`, `Error`, `Warning`, `Reconciliation`, `Audit`).
+  * Complete column catalogs, data types, nullability, and business definitions.
+  * Semantic model relationships (5 tables connecting 1:N with `Batch`).
+  * Clean catalog of 69 DAX measures organized into 6 standardized display folders.
 * 📜 **SQL Semantic Views**: [`sql/database/11_control_monitoring_views.sql`](file:///c:/Users/PC/Downloads/food-delivery-etl-dwh/sql/database/11_control_monitoring_views.sql)
-* 📘 **Vận Hành & Playbook Giám Sát**: [`docs/runbook/powerbi_pipeline_monitoring_dashboard.md`](file:///c:/Users/PC/Downloads/food-delivery-etl-dwh/docs/runbook/powerbi_pipeline_monitoring_dashboard.md)
+* 📘 **Operations Runbook**: [`docs/runbook/powerbi_pipeline_monitoring_dashboard.md`](file:///c:/Users/PC/Downloads/food-delivery-etl-dwh/docs/runbook/powerbi_pipeline_monitoring_dashboard.md)
