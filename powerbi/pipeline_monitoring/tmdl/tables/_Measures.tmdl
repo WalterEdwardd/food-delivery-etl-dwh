@@ -69,18 +69,36 @@ table _Measures
 		displayFolder: 04. Layer Reconciliation
 		lineageTag: f95641a4-242c-4808-99ae-3666e3493cc8
 
-	/// Dynamic Hex color code for Batch Status (Green/Red/Amber) for conditional formatting
-	measure 'Batch Status Color' = SWITCH(SELECTEDVALUE('Batch'[batch_status]), "SUCCESS", "#009E46", "FAILED", "#C40C0C", "RUNNING", "#D97706", "#64748B")
+	/// Dynamic Hex color code for Batch Status (Green/Orange/Red/Navy) for conditional formatting
+	measure 'Batch Status Color' = ```
+			SWITCH(
+			    SELECTEDVALUE('Batch'[batch_status]),
+			    "SUCCESS", "#009E46",
+			    "PARTIAL", "#FF8F00",
+			    "FAILED",  "#C40C0C",
+			    "RUNNING", "#0F2C67",
+			    "#64748B"
+			)
+			```
 		displayFolder: 05. Formatting & Colors
 		lineageTag: 67a2a247-40e2-4fe6-86bb-c3fa1797a990
 
-	/// Dynamic Hex color code for SLA Freshness (Green <= 24h, Amber 24-36h, Red > 36h)
-	measure 'SLA Status Color' = IF([Hours Since Last Run] <= 24, "#009E46", IF([Hours Since Last Run] <= 36, "#D97706", "#C40C0C"))
+	/// Dynamic Hex color code for SLA Freshness (Green <= 24h, Orange 24-36h, Red > 36h)
+	measure 'SLA Status Color' = IF([Hours Since Last Run] <= 24, "#009E46", IF([Hours Since Last Run] <= 36, "#FF8F00", "#C40C0C"))
 		displayFolder: 05. Formatting & Colors
 		lineageTag: 1ca2f1a3-01e3-4307-9c92-76fc6ac450fc
 
 	/// Dynamic Hex color code for Overall Pipeline Health badge
-	measure 'Health Status Color' = SWITCH([Latest Batch Status], "SUCCESS", "#009E46", "FAILED", "#C40C0C", "RUNNING", "#0F2C67", "#D97706")
+	measure 'Health Status Color' = ```
+			SWITCH(
+			    [Latest Batch Status],
+			    "SUCCESS", "#009E46",
+			    "PARTIAL", "#FF8F00",
+			    "FAILED",  "#C40C0C",
+			    "RUNNING", "#0F2C67",
+			    "#FF8F00"
+			)
+			```
 		displayFolder: 05. Formatting & Colors
 		lineageTag: 71361540-13e7-4a27-9559-85b2f10d8e79
 
@@ -96,8 +114,17 @@ table _Measures
 		displayFolder: 01. Pipeline Status & Health
 		lineageTag: 729b4aa6-bbaf-4e2a-8907-0e6219deb77c
 
-	/// Dynamic Hex color code for Step Status (Success/Failed/Running)
-	measure 'Step Status Color' = SWITCH(SELECTEDVALUE('Step'[step_status]), "SUCCESS", "#009E46", "FAILED", "#C40C0C", "RUNNING", "#D97706", "#64748B")
+	/// Dynamic Hex color code for Step Status (Success/Partial/Failed/Running)
+	measure 'Step Status Color' = ```
+			SWITCH(
+			    SELECTEDVALUE('Step'[step_status]),
+			    "SUCCESS", "#009E46",
+			    "PARTIAL", "#FF8F00",
+			    "FAILED",  "#C40C0C",
+			    "RUNNING", "#0F2C67",
+			    "#64748B"
+			)
+			```
 		displayFolder: 05. Formatting & Colors
 		lineageTag: ada1b2ec-4dfc-422c-9822-374e32cc20ca
 

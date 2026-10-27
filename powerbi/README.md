@@ -12,10 +12,8 @@ powerbi/
 ├── pipeline_monitoring/             <-- Technical Observability & Pipeline Monitoring (Data Engineering & Ops)
 │   ├── Pipeline_Monitoring.pbix     <-- Power BI Desktop report for ETL monitoring
 │   ├── quickbite_theme_platinum_silver.json <-- Official Platinum Silver Luxury theme
-│   ├── quickbite_dark_theme.json    <-- Dark mode theme
 │   ├── data_dictionary.md           <-- Control & Data Quality data dictionary and DAX catalog
 │   ├── DASHBOARD_GUIDE.md           <-- Comprehensive dashboard specifications and ops playbooks
-│   ├── model.bim                    <-- Tabular Model definition (BIM format)
 │   ├── README.md                    <-- Pipeline monitoring technical guide
 │   └── tmdl/                        <-- Source-controlled Tabular Model Definition Language (PBIP)
 │

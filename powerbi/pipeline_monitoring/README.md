@@ -10,11 +10,7 @@ This directory contains all data assets, Tabular models (TMDL/BIM), themes, and 
 powerbi/pipeline_monitoring/
 │
 ├── Pipeline_Monitoring.pbix     <-- Power BI Desktop report for ETL observability
-├── model.bim                    <-- Complete semantic model definition (BIM format)
-│
 ├── quickbite_theme_platinum_silver.json <-- Official Platinum Silver Luxury Theme
-├── quickbite_dark_theme.json            <-- Dark Theme
-│
 ├── tmdl/                        <-- Source-controlled Tabular Model Definition Language (PBIP)
 │   ├── database.tmdl
 │   ├── model.tmdl

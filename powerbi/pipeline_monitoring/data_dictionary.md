@@ -324,10 +324,10 @@ All measures are organized into **6 standardized display folders** inside the `_
 ### 5.5. Folder: `05. Formatting & Colors` (6 Measures)
 | Measure Name | Target Visual & Application | Dynamic Hex Rules |
 | :--- | :--- | :--- |
-| **`Batch Status Color`** | Batch status indicator in Combo Chart & Grid (Page 1) | `SUCCESS`: `#009E46` \| `FAILED`: `#C40C0C` \| `RUNNING`: `#D97706` \| Default: `#64748B` |
-| **`SLA Status Color`** | Pointer color on SLA Gauge (Page 1) | `≤ 24h`: `#009E46` \| `24–36h`: `#D97706` \| `> 36h`: `#C40C0C` |
-| **`Health Status Color`** | Overall pipeline health indicator | `SUCCESS`: `#009E46` \| `FAILED`: `#C40C0C` \| `RUNNING`: `#0F2C67` \| `PARTIAL`: `#D97706` |
-| **`Step Status Color`** | Step status column in Grid (Page 2) | `SUCCESS`: `#009E46` \| `FAILED`: `#C40C0C` \| `RUNNING`: `#D97706` \| `PARTIAL`: `#64748B` |
+| **`Batch Status Color`** | Batch status indicator in Combo Chart & Grid (Page 1) | `SUCCESS`: `#009E46` \| `PARTIAL`: `#FF8F00` \| `FAILED`: `#C40C0C` \| `RUNNING`: `#0F2C67` \| Default: `#64748B` |
+| **`SLA Status Color`** | Pointer color on SLA Gauge (Page 1) | `≤ 24h`: `#009E46` \| `24–36h`: `#FF8F00` \| `> 36h`: `#C40C0C` |
+| **`Health Status Color`** | Overall pipeline health indicator | `SUCCESS`: `#009E46` \| `PARTIAL`: `#FF8F00` \| `FAILED`: `#C40C0C` \| `RUNNING`: `#0F2C67` |
+| **`Step Status Color`** | Step status column in Grid (Page 2) | `SUCCESS`: `#009E46` \| `PARTIAL`: `#FF8F00` \| `FAILED`: `#C40C0C` \| `RUNNING`: `#0F2C67` \| Default: `#64748B` |
 | **`Step Rejection Color`** | Rejected rows column in Grid (Page 2) | `> 0`: `#C40C0C` (Red) \| `= 0`: `#009E46` (Green) |
 | **`Audit Status Color`** | Audit status column in Reconciliation Matrix (Page 4) | Contains `"RECONCILED"`: `#009E46` (Green) \| `"VARIANCE DETECTED"`: `#C40C0C` (Red) |
 

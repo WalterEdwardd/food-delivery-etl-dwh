@@ -3,7 +3,7 @@
   "dataColors": [
     "#009E46",
     "#0F2C67",
-    "#D97706",
+    "#FF8F00",
     "#C40C0C",
     "#7C3AED",
     "#00B14F",
@@ -14,7 +14,7 @@
   "foreground": "#0F172A",
   "tableAccent": "#009E46",
   "good": "#009E46",
-  "neutral": "#D97706",
+  "neutral": "#FF8F00",
   "bad": "#C40C0C",
   "visualStyles": {
     "*": {
@@ -187,7 +187,7 @@
         ],
         "target": [
           {
-            "color": { "solid": { "color": "#D97706" } }
+            "color": { "solid": { "color": "#FF8F00" } }
           }
         ]
       }

@@ -167,7 +167,6 @@ food-delivery-etl-dwh/
 ├── powerbi/
 │   └── pipeline_monitoring/
 │       ├── Pipeline_Monitoring.pbix
-│       ├── model.bim
 │       ├── tmdl/
 │       └── data_dictionary.md
 │
