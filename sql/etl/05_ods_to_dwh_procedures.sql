@@ -2110,32 +2110,32 @@ BEGIN
             CAST(CASE WHEN dp.actual_delivery_time_min <= dp.expected_delivery_time_min AND dp.delivery_item >= dp.order_item THEN 1 ELSE 0 END AS BIT) AS is_otif,
             dp.distance_km,
             CASE 
-                WHEN dp.distance_km <= 3.0 THEN '< 3 km'
+                WHEN dp.distance_km <= 3.0 THEN '0 - 3 km'
                 WHEN dp.distance_km <= 5.0 THEN '3 - 5 km'
-                WHEN dp.distance_km > 5.0  THEN '> 5 km'
+                WHEN dp.distance_km > 5.0  THEN '5+ km'
                 ELSE NULL
             END AS distance_bins,
             CASE 
-                WHEN dp.travel_time <= 15 THEN '< 15 mins'
+                WHEN dp.travel_time <= 15 THEN '0 - 15 mins'
                 WHEN dp.travel_time <= 30 THEN '15 - 30 mins'
                 WHEN dp.travel_time <= 45 THEN '30 - 45 mins'
-                WHEN dp.travel_time > 45  THEN '> 45 mins'
+                WHEN dp.travel_time > 45  THEN '45+ mins'
                 ELSE NULL
             END AS travel_bins,
             CASE 
-                WHEN dp.prep_time <= 15 THEN '< 15 mins'
+                WHEN dp.prep_time <= 15 THEN '0 - 15 mins'
                 WHEN dp.prep_time <= 30 THEN '15 - 30 mins'
                 WHEN dp.prep_time <= 45 THEN '30 - 45 mins'
                 WHEN dp.prep_time <= 60 THEN '45 - 60 mins'
-                WHEN dp.prep_time > 60  THEN '> 60 mins'
+                WHEN dp.prep_time > 60  THEN '60+ mins'
                 ELSE NULL
             END AS prep_time_bins,
             CASE 
-                WHEN dp.actual_delivery_time_min <= 30 THEN '< 30 mins'
+                WHEN dp.actual_delivery_time_min <= 30 THEN '0 - 30 mins'
                 WHEN dp.actual_delivery_time_min <= 45 THEN '30 - 45 mins'
                 WHEN dp.actual_delivery_time_min <= 55 THEN '45 - 55 mins'
                 WHEN dp.actual_delivery_time_min <= 65 THEN '55 - 65 mins'
-                WHEN dp.actual_delivery_time_min > 65  THEN '> 65 mins'
+                WHEN dp.actual_delivery_time_min > 65  THEN '65+ mins'
                 ELSE NULL
             END AS actual_bins,
             dp.batch_id
