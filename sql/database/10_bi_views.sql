@@ -38,6 +38,7 @@ SELECT
     acquisition_channel,
     last_active,
     life_cycle_id,
+    life_cycle_id AS life_cycle,
     -- Dynamic Days Since Last Active (relative to query date)
     CASE 
         WHEN customer_key = -1 THEN NULL
@@ -62,6 +63,11 @@ SELECT
         WHEN DATEDIFF(DAY, COALESCE(last_active, signup_date), CAST(GETDATE() AS DATE)) > 60 THEN CAST(4 AS TINYINT)
         ELSE ISNULL(life_cycle_id, CAST(0 AS TINYINT))
     END AS last_status_id,
+    CASE 
+        WHEN customer_key = -1 THEN CAST(0 AS TINYINT)
+        WHEN DATEDIFF(DAY, COALESCE(last_active, signup_date), CAST(GETDATE() AS DATE)) > 60 THEN CAST(4 AS TINYINT)
+        ELSE ISNULL(life_cycle_id, CAST(0 AS TINYINT))
+    END AS last_status,
     -- Dynamic Churn Risk
     CASE 
         WHEN customer_key = -1 THEN 'Unknown'
@@ -97,6 +103,7 @@ SELECT
     prep_time_index,
     last_active,
     life_cycle_id,
+    life_cycle_id AS life_cycle,
     -- Dynamic Days Since Last Active (relative to query date)
     CASE 
         WHEN restaurant_key = -1 THEN NULL
@@ -121,6 +128,11 @@ SELECT
         WHEN DATEDIFF(DAY, COALESCE(last_active, onboard_date), CAST(GETDATE() AS DATE)) > 60 THEN CAST(4 AS TINYINT)
         ELSE ISNULL(life_cycle_id, CAST(0 AS TINYINT))
     END AS last_status_id,
+    CASE 
+        WHEN restaurant_key = -1 THEN CAST(0 AS TINYINT)
+        WHEN DATEDIFF(DAY, COALESCE(last_active, onboard_date), CAST(GETDATE() AS DATE)) > 60 THEN CAST(4 AS TINYINT)
+        ELSE ISNULL(life_cycle_id, CAST(0 AS TINYINT))
+    END AS last_status,
     -- Dynamic Churn Risk
     CASE 
         WHEN restaurant_key = -1 THEN 'Unknown'
@@ -154,6 +166,7 @@ SELECT
     rating_type,
     last_active,
     life_cycle_id,
+    life_cycle_id AS life_cycle,
     -- Dynamic Days Since Last Active (relative to query date)
     CASE 
         WHEN delivery_partner_key = -1 THEN NULL
@@ -178,6 +191,11 @@ SELECT
         WHEN DATEDIFF(DAY, COALESCE(last_active, onboard_date), CAST(GETDATE() AS DATE)) > 30 THEN CAST(4 AS TINYINT)
         ELSE ISNULL(life_cycle_id, CAST(0 AS TINYINT))
     END AS last_status_id,
+    CASE 
+        WHEN delivery_partner_key = -1 THEN CAST(0 AS TINYINT)
+        WHEN DATEDIFF(DAY, COALESCE(last_active, onboard_date), CAST(GETDATE() AS DATE)) > 30 THEN CAST(4 AS TINYINT)
+        ELSE ISNULL(life_cycle_id, CAST(0 AS TINYINT))
+    END AS last_status,
     -- Dynamic Churn Risk
     CASE 
         WHEN delivery_partner_key = -1 THEN 'Unknown'
@@ -198,14 +216,16 @@ GO
 /* 1.4 BI DIM MENU ITEM */
 CREATE OR ALTER VIEW bi.dim_menu_item AS
 SELECT
-    menu_item_key,
-    menu_item_id,
-    restaurant_key,
-    item_name,
-    category,
-    is_veg,
-    price
-FROM dwh.dim_menu_item;
+    m.menu_item_key,
+    m.menu_item_id,
+    m.restaurant_key,
+    r.restaurant_id,
+    m.item_name,
+    m.category,
+    m.is_veg,
+    m.price
+FROM dwh.dim_menu_item m
+LEFT JOIN dwh.dim_restaurant r ON m.restaurant_key = r.restaurant_key;
 GO
 
 
@@ -259,7 +279,7 @@ GO
 CREATE OR ALTER VIEW bi.dim_aspect AS
 SELECT
     aspect_id,
-    aspect_name,
+    aspect_name AS aspect,
     aspect_description
 FROM dwh.dim_aspect;
 GO
@@ -304,108 +324,144 @@ GO
 /* 2.1 BI FACT ORDER */
 CREATE OR ALTER VIEW bi.fact_order AS
 SELECT
-    order_key,
-    order_id,
-    order_date_key,
-    order_time_key,
-    customer_key,
-    restaurant_key,
-    delivery_partner_key,
-    subtotal_amount,
-    discount_amount,
-    delivery_fee,
-    total_amount,
-    net_order_value,
-    is_cod,
-    is_cancelled,
-    cust_lc_id,
-    rest_lc_id,
-    driver_lc_id
-FROM dwh.fact_order;
+    fo.order_key,
+    fo.order_id,
+    fo.order_date_key,
+    TRY_CONVERT(DATE, CAST(fo.order_date_key AS VARCHAR(8)), 112) AS order_date,
+    fo.order_time_key,
+    CASE 
+        WHEN fo.order_time_key >= 0 AND fo.order_time_key <= 2359 
+        THEN TIMEFROMPARTS(fo.order_time_key / 100, fo.order_time_key % 100, 0, 0, 0) 
+        ELSE NULL 
+    END AS order_time,
+    fo.customer_key,
+    c.customer_id,
+    fo.restaurant_key,
+    r.restaurant_id,
+    fo.delivery_partner_key,
+    dp.delivery_partner_id,
+    fo.subtotal_amount,
+    fo.discount_amount,
+    fo.delivery_fee,
+    fo.total_amount,
+    fo.net_order_value,
+    fo.is_cod,
+    fo.is_cancelled,
+    fo.cust_lc_id,
+    fo.rest_lc_id,
+    fo.driver_lc_id
+FROM dwh.fact_order fo
+LEFT JOIN dwh.dim_customer c ON fo.customer_key = c.customer_key
+LEFT JOIN dwh.dim_restaurant r ON fo.restaurant_key = r.restaurant_key
+LEFT JOIN dwh.dim_delivery_partner dp ON fo.delivery_partner_key = dp.delivery_partner_key;
 GO
 
 
 /* 2.2 BI FACT ORDER ITEM */
 CREATE OR ALTER VIEW bi.fact_order_item AS
 SELECT
-    order_item_key,
-    order_item_id,
-    order_id,
-    order_date_key,
-    customer_key,
-    restaurant_key,
-    menu_item_key,
-    quantity,
-    unit_price,
-    gross_line_total,
-    item_discount,
-    net_line_total
-FROM dwh.fact_order_item;
+    foi.order_item_key,
+    foi.order_item_id,
+    foi.order_id,
+    foi.order_date_key,
+    foi.customer_key,
+    foi.restaurant_key,
+    foi.menu_item_key,
+    m.menu_item_id,
+    foi.quantity,
+    foi.unit_price,
+    foi.gross_line_total,
+    foi.item_discount,
+    foi.net_line_total
+FROM dwh.fact_order_item foi
+LEFT JOIN dwh.dim_menu_item m ON foi.menu_item_key = m.menu_item_key;
 GO
 
 
 /* 2.3 BI FACT DELIVERY PERFORMANCE */
 CREATE OR ALTER VIEW bi.fact_delivery_performance AS
 SELECT
-    delivery_key,
-    delivery_id,
-    order_id,
-    delivery_date_key,
-    customer_key,
-    restaurant_key,
-    delivery_partner_key,
-    order_item,
-    delivery_item,
-    is_infull,
-    prep_time,
-    rider_wait_time,
-    travel_time,
-    expected_delivery_time_min,
-    actual_delivery_time_min,
-    delivery_delay_min,
-    is_ontime,
-    late_time,
-    prep_late_time,
-    late_reason,
-    is_otif,
-    distance_km,
-    distance_bins,
-    travel_bins,
-    prep_time_bins,
-    actual_bins
-FROM dwh.fact_delivery_performance;
+    fdp.delivery_key,
+    fdp.delivery_id,
+    fdp.order_id,
+    fdp.delivery_date_key,
+    TRY_CONVERT(DATE, CAST(fdp.delivery_date_key AS VARCHAR(8)), 112) AS delivery_date,
+    fdp.customer_key,
+    c.customer_id,
+    fdp.restaurant_key,
+    r.restaurant_id,
+    fdp.delivery_partner_key,
+    dp.delivery_partner_id,
+    fdp.order_item,
+    fdp.delivery_item,
+    fdp.is_infull,
+    fdp.prep_time,
+    fdp.rider_wait_time,
+    fdp.travel_time,
+    fdp.expected_delivery_time_min,
+    fdp.actual_delivery_time_min,
+    fdp.delivery_delay_min,
+    fdp.is_ontime,
+    fdp.late_time,
+    fdp.prep_late_time,
+    fdp.late_reason,
+    fdp.is_otif,
+    fdp.distance_km,
+    fdp.distance_bins,
+    fdp.travel_bins,
+    fdp.prep_time_bins,
+    fdp.actual_bins
+FROM dwh.fact_delivery_performance fdp
+LEFT JOIN dwh.dim_customer c ON fdp.customer_key = c.customer_key
+LEFT JOIN dwh.dim_restaurant r ON fdp.restaurant_key = r.restaurant_key
+LEFT JOIN dwh.dim_delivery_partner dp ON fdp.delivery_partner_key = dp.delivery_partner_key;
 GO
 
 
 /* 2.4 BI FACT RATING */
 CREATE OR ALTER VIEW bi.fact_rating AS
 SELECT
-    rating_key,
-    rating_id,
-    order_id,
-    rating_date_key,
-    rating_time_key,
-    customer_key,
-    restaurant_key,
-    delivery_partner_key,
-    rating,
-    rating_type_id,
-    sentiment_score,
-    sentiment_type_id,
-    review_text
-FROM dwh.fact_rating;
+    fr.rating_key,
+    fr.rating_id,
+    fr.order_id,
+    fr.rating_date_key,
+    TRY_CONVERT(DATE, CAST(fr.rating_date_key AS VARCHAR(8)), 112) AS review_date,
+    fr.rating_time_key,
+    CASE 
+        WHEN fr.rating_time_key >= 0 AND fr.rating_time_key <= 2359 
+        THEN TIMEFROMPARTS(fr.rating_time_key / 100, fr.rating_time_key % 100, 0, 0, 0) 
+        ELSE NULL 
+    END AS review_time,
+    fr.customer_key,
+    c.customer_id,
+    fr.restaurant_key,
+    r.restaurant_id,
+    fr.delivery_partner_key,
+    dp.delivery_partner_id,
+    fr.rating,
+    fr.rating_type_id,
+    fr.sentiment_score,
+    fr.sentiment_type_id,
+    fr.review_text
+FROM dwh.fact_rating fr
+LEFT JOIN dwh.dim_customer c ON fr.customer_key = c.customer_key
+LEFT JOIN dwh.dim_restaurant r ON fr.restaurant_key = r.restaurant_key
+LEFT JOIN dwh.dim_delivery_partner dp ON fr.delivery_partner_key = dp.delivery_partner_key;
 GO
 
 
 /* 2.5 BI FACT REVIEW ASPECT */
 CREATE OR ALTER VIEW bi.fact_review_aspect AS
 SELECT
-    review_aspect_key,
-    rating_key,
-    aspect_id,
-    sentiment_type_id,
-    matched_phrase
-FROM dwh.fact_review_aspect;
+    fra.review_aspect_key,
+    r.rating_id,
+    fra.aspect_id,
+    fra.sentiment_type_id AS sentiment_id,
+    fra.sentiment_type_id,
+    TRY_CONVERT(DATE, CAST(r.rating_date_key AS VARCHAR(8)), 112) AS review_date,
+    fra.matched_phrase
+FROM dwh.fact_review_aspect fra
+LEFT JOIN dwh.fact_rating r ON fra.rating_key = r.rating_key;
 GO
 
 
